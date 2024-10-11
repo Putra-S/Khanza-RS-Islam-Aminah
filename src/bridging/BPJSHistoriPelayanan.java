@@ -9,146 +9,211 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
-import simrskhanza.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
+import simrskhanza.DlgCariPasien;
 
 /**
- *
  * @author dosen
  */
 public class BPJSHistoriPelayanan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private int i=0;
-    private DlgCariPasien pasien=new DlgCariPasien(null,false);
-    private ApiBPJS api=new ApiBPJS();
-    private String URL="",link="",utc="";
-    private HttpHeaders headers ;
+
+    private validasi Valid = new validasi();
+
+    private int i = 0;
+
+    private DlgCariPasien pasien = new DlgCariPasien(null, false);
+
+    private ApiBPJS api = new ApiBPJS();
+
+    private String URL = "", link = "", utc = "";
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
+
     private String pilihan;
-        
-    /** Creates new form DlgKamar
+
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public BPJSHistoriPelayanan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        Object[] row={"No.","Diagnosa","Jenis Pelayanan","Kelas Rawat","Nama Peserta","No.Kartu","No.SEP","No.Rujukan","Poli","PPK Pelayanan","Pulang SEP","Tgl.SEP"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"No.", "Diagnosa", "Jenis Pelayanan", "Kelas Rawat",
+            "Nama Peserta", "No.Kartu", "No.SEP",
+            "No.Rujukan", "Poli", "PPK Pelayanan", "Pulang SEP", "Tgl.SEP"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(35);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(230);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(88);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(160);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(85);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(125);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(125);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(115);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(160);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(65);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(65);
             }
         }
-        
+
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        NoKartu.setDocument(new batasInput((byte)100).getKata(NoKartu));
-        
+
+        NoKartu.setDocument(new batasInput((byte) 100).getKata(NoKartu));
+
         pasien.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(pasien.getTable().getSelectedRow()!= -1){                   
-                    if(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(),19).toString().isEmpty()){
-                        JOptionPane.showMessageDialog(rootPane,"Maaf pasien tidak punya Nomor Kartu...!");
-                    }else{
-                        NoKartu.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(),19).toString());
-                    }                            
-                }  
+                if (pasien.getTable().getSelectedRow() != -1) {
+                    if (pasien.getTable().getValueAt(pasien.getTable().
+                            getSelectedRow(), 19).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane,
+                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    } else {
+                        NoKartu
+                                .setText(pasien.getTable().getValueAt(pasien.
+                                        getTable().getSelectedRow(), 19).
+                                        toString());
+                    }
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         pasien.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     pasien.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
-        }); 
-        
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
+
         try {
-            link=koneksiDB.URLAPIBPJS();
+            link = koneksiDB.URLAPIBPJS();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
-
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void initComponents() {
+//GEN-BEGIN:initComponents
     internalFrame1 = new widget.InternalFrame();
     Scroll = new widget.ScrollPane();
     tbKamar = new widget.Table();
@@ -316,19 +381,21 @@ public class BPJSHistoriPelayanan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnRegist,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnRegist, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void NoKartuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoKartuKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnRegist.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnPasienActionPerformed(null);
         }
     }//GEN-LAST:event_NoKartuKeyPressed
@@ -336,133 +403,162 @@ public class BPJSHistoriPelayanan extends javax.swing.JDialog {
     private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
         pasien.emptTeks();
         pasien.isCek();
-        pasien.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        pasien.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         pasien.setLocationRelativeTo(internalFrame1);
         pasien.setVisible(true);
     }//GEN-LAST:event_btnPasienActionPerformed
 
     private void btnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPasienKeyPressed
-        Valid.pindah(evt,NoKartu,BtnRegist);
+        Valid.pindah(evt, NoKartu, BtnRegist);
     }//GEN-LAST:event_btnPasienKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(NoKartu.getText().isEmpty()){
-            Valid.textKosong(NoKartu,"No.Kartu");
-        }else{
+        if (NoKartu.getText().isEmpty()) {
+            Valid.textKosong(NoKartu, "No.Kartu");
+        } else {
             tampil(NoKartu.getText());
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,NoKartu,BtnRegist);
+        } else {
+            Valid.pindah(evt, NoKartu, BtnRegist);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnRegistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistActionPerformed
-        if(NoKartu.getText().isEmpty()){
-            Valid.textKosong(NoKartu,"No.Kartu");
-        }else{
-            try{
-                pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih cara registrasi..!!","Pilihan Registrasi",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Via Cek No.Kartu VClaim","Via Cek Rujukan Kartu PCare di VClaim","Via Cek Rujukan Kartu RS di VClaim","Via Cek No.Rujukan PCare di VClaim","Via Cek No.Rujukan RS di VClaim"},"Via Cek No.Kartu VClaim");
+        if (NoKartu.getText().isEmpty()) {
+            Valid.textKosong(NoKartu, "No.Kartu");
+        } else {
+            try {
+                pilihan = (String) JOptionPane.showInputDialog(null,
+                        "Silahkan pilih cara registrasi..!!",
+                        "Pilihan Registrasi", JOptionPane.QUESTION_MESSAGE, null,
+                        new Object[]{"Via Cek No.Kartu VClaim",
+                            "Via Cek Rujukan Kartu PCare di VClaim",
+                            "Via Cek Rujukan Kartu RS di VClaim",
+                            "Via Cek No.Rujukan PCare di VClaim",
+                            "Via Cek No.Rujukan RS di VClaim"},
+                        "Via Cek No.Kartu VClaim");
                 switch (pilihan) {
                     case "Via Cek No.Kartu VClaim":
-                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        BPJSCekKartu form=new BPJSCekKartu(null,false);
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        BPJSCekKartu form = new BPJSCekKartu(null, false);
                         form.isCek();
-                        form.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                        form.setSize(internalFrame1.getWidth() - 20,
+                                internalFrame1.getHeight() - 20);
                         form.setLocationRelativeTo(internalFrame1);
                         form.SetNoKartu(NoKartu.getText());
                         form.setVisible(true);
                         this.setCursor(Cursor.getDefaultCursor());
                         break;
                     case "Via Cek Rujukan Kartu PCare di VClaim":
-                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        BPJSCekRujukanKartuPCare form2=new BPJSCekRujukanKartuPCare(null,false);
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        BPJSCekRujukanKartuPCare form2 = new BPJSCekRujukanKartuPCare(
+                                null, false);
                         form2.isCek();
-                        form2.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                        form2.setSize(internalFrame1.getWidth() - 20,
+                                internalFrame1.getHeight() - 20);
                         form2.setLocationRelativeTo(internalFrame1);
                         form2.SetNoKartu(NoKartu.getText());
                         form2.setVisible(true);
                         this.setCursor(Cursor.getDefaultCursor());
                         break;
                     case "Via Cek Rujukan Kartu RS di VClaim":
-                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        BPJSCekRujukanKartuRS form3=new BPJSCekRujukanKartuRS(null,false);
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        BPJSCekRujukanKartuRS form3 = new BPJSCekRujukanKartuRS(
+                                null, false);
                         form3.isCek();
-                        form3.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                        form3.setSize(internalFrame1.getWidth() - 20,
+                                internalFrame1.getHeight() - 20);
                         form3.setLocationRelativeTo(internalFrame1);
                         form3.SetNoKartu(NoKartu.getText());
                         form3.setVisible(true);
                         this.setCursor(Cursor.getDefaultCursor());
                         break;
                     case "Via Cek No.Rujukan PCare di VClaim":
-                        if(tbKamar.getSelectedRow()> -1){
-                            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                            BPJSCekNoRujukanPCare form4=new BPJSCekNoRujukanPCare(null,false);
+                        if (tbKamar.getSelectedRow() > -1) {
+                            this.setCursor(Cursor.getPredefinedCursor(
+                                    Cursor.WAIT_CURSOR));
+                            BPJSCekNoRujukanPCare form4 = new BPJSCekNoRujukanPCare(
+                                    null, false);
                             form4.isCek();
-                            form4.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                            form4.setSize(internalFrame1.getWidth() - 20,
+                                    internalFrame1.getHeight() - 20);
                             form4.setLocationRelativeTo(internalFrame1);
-                            form4.SetRujukan(tbKamar.getValueAt(tbKamar.getSelectedRow(),7).toString());
+                            form4.SetRujukan(tbKamar.getValueAt(tbKamar.
+                                    getSelectedRow(), 7).toString());
                             form4.setVisible(true);
                             this.setCursor(Cursor.getDefaultCursor());
-                        }else{
-                            JOptionPane.showMessageDialog(null,"Maaf silahkan pilih data terlebih dahulu..!!");
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Maaf silahkan pilih data terlebih dahulu..!!");
                         }
                         break;
                     case "Via Cek No.Rujukan RS di VClaim":
-                        if(tbKamar.getSelectedRow()> -1){
-                            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                            BPJSCekNoRujukanRS form5=new BPJSCekNoRujukanRS(null,false);
+                        if (tbKamar.getSelectedRow() > -1) {
+                            this.setCursor(Cursor.getPredefinedCursor(
+                                    Cursor.WAIT_CURSOR));
+                            BPJSCekNoRujukanRS form5 = new BPJSCekNoRujukanRS(
+                                    null, false);
                             form5.isCek();
-                            form5.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+                            form5.setSize(internalFrame1.getWidth() - 20,
+                                    internalFrame1.getHeight() - 20);
                             form5.setLocationRelativeTo(internalFrame1);
-                            form5.SetRujukan(tbKamar.getValueAt(tbKamar.getSelectedRow(),7).toString());
+                            form5.SetRujukan(tbKamar.getValueAt(tbKamar.
+                                    getSelectedRow(), 7).toString());
                             form5.setVisible(true);
                             this.setCursor(Cursor.getDefaultCursor());
-                        }else{
-                            JOptionPane.showMessageDialog(null,"Maaf silahkan pilih data terlebih dahulu..!!");
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Maaf silahkan pilih data terlebih dahulu..!!");
                         }
                         break;
-                    
+
                 }
-            }catch(Exception e){
-                System.out.println("Notif : "+e);
+            } catch (HeadlessException e) {
+                System.out.println("Notif : " + e);
             }
-        } 
+        }
     }//GEN-LAST:event_BtnRegistActionPerformed
 
     private void BtnRegistKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnRegistKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnRegistActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnKeluar);
         }
     }//GEN-LAST:event_BtnRegistKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSHistoriPelayanan dialog = new BPJSHistoriPelayanan(new javax.swing.JFrame(), true);
+            BPJSHistoriPelayanan dialog = new BPJSHistoriPelayanan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
     }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private widget.Button BtnCari;
-  private widget.Button BtnKeluar;
+    // Variables declaration - do not modify
+    private widget.Button BtnCari;
+  private widget.Button BtnKeluar;//GEN-BEGIN:variables
   private widget.Button BtnRegist;
   private widget.Tanggal DTPCari1;
   private widget.Tanggal DTPCari2;
@@ -482,47 +578,67 @@ public class BPJSHistoriPelayanan extends javax.swing.JDialog {
         try {
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-	    utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-Timestamp",utc);
-	    headers.add("X-Signature",api.getHmac(utc));
-            headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
-	    requestEntity = new HttpEntity(headers);
-            URL = link+"/monitoring/HistoriPelayanan/NoKartu/"+nomorrujukan+"/tglMulai/"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"/tglAkhir/"+Valid.SetTgl(DTPCari2.getSelectedItem()+"");	
-	    root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utc);
+            headers.add("X-Signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+            requestEntity = new HttpEntity(headers);
+            URL = link + "/monitoring/HistoriPelayanan/NoKartu/" + nomorrujukan + "/tglMulai/"
+                    + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "/tglAkhir/"
+                    + Valid.SetTgl(DTPCari2.getSelectedItem() + "");
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
-            if(nameNode.path("code").asText().equals("200")){
+            if (nameNode.path("code").asText().equals("200")) {
                 Valid.tabelKosong(tabMode);
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc)).path("histori");
-                //response = root.path("response").path("histori");
-                if(response.isArray()){
-                    i=1;
-                    for(JsonNode list:response){
-                        tabMode.addRow(new Object[]{
-                            i+".",list.path("diagnosa").asText(),list.path("jnsPelayanan").asText().replaceAll("1","Rawat Inap").replaceAll("2","Rawat Jalan"),
-                            list.path("kelasRawat").asText(),list.path("namaPeserta").asText(),list.path("noKartu").asText(),list.path("noSep").asText(),
-                            list.path("noRujukan").asText(),list.path("poli").asText(),list.path("ppkPelayanan").asText(),list.path("tglPlgSep").asText(),
-                            list.path("tglSep").asText()
-                        });    
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc)).path("histori");
+                // response = root.path("response").path("histori");
+                if (response.isArray()) {
+                    i = 1;
+                    for (JsonNode list : response) {
+                        tabMode.addRow(new Object[]{i + ".", list.path(
+                            "diagnosa").asText(),
+                            list.path("jnsPelayanan")
+                            .asText()
+                            .replaceAll("1", "Rawat Inap")
+                            .replaceAll("2", "Rawat Jalan"),
+                            list.path("kelasRawat").asText(), list.path(
+                            "namaPeserta").asText(),
+                            list.path("noKartu").asText(), list.path("noSep").
+                            asText(),
+                            list.path("noRujukan").asText(), list.path("poli").
+                            asText(),
+                            list.path("ppkPelayanan").asText(), list.path(
+                            "tglPlgSep").asText(),
+                            list.path("tglSep").asText()});
                         i++;
                     }
-                }        
-            }else {
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-            }   
-        } catch (Exception ex) {
-            System.out.println("Notifikasi Peserta : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi Peserta : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server BPJS terputus...!");
             }
         }
-    }  
-    
+    }
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnRegist.setEnabled(akses.getbpjs_sep());
     }
- 
+
+    private static final Logger LOG = Logger.getLogger(
+            BPJSHistoriPelayanan.class.getName());
+
 }

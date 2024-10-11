@@ -1,94 +1,128 @@
 package keuangan;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class KeuanganNilaiPiutangPerJenisBayarPerBulan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private double tagihan=0,totaltagihan=0,januari=0,totaljanuari=0,februari=0,totalfebruari=0,maret=0,totalmaret=0,april=0,totalapril=0,mei=0,totalmei=0,
-                  juni=0,totaljuni=0,juli=0,totaljuli=0,agustus=0,totalagustus=0,september=0,totalseptember=0,oktober=0,totaloktober=0,november=0,totalnovember=0,
-                  desember=0,totaldesember=0;
-    private int i=0;
+    private double tagihan = 0, totaltagihan = 0, januari = 0, totaljanuari = 0, februari = 0, totalfebruari = 0, maret = 0, totalmaret = 0, april = 0, totalapril = 0, mei = 0, totalmei = 0,
+            juni = 0, totaljuni = 0, juli = 0, totaljuli = 0, agustus = 0, totalagustus = 0, september = 0, totalseptember = 0, oktober = 0, totaloktober = 0, november = 0, totalnovember = 0,
+            desember = 0, totaldesember = 0;
+    private int i = 0;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
-    public KeuanganNilaiPiutangPerJenisBayarPerBulan(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     */
+    public KeuanganNilaiPiutangPerJenisBayarPerBulan(java.awt.Frame parent,
+            boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        Object[] row={"Kode","Jenis/Cara Bayar","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember","Total"};
-        tabMode=new DefaultTableModel(null,row){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             Class[] types = new Class[] {
-                 java.lang.Object.class,java.lang.Object.class,java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,
-                 java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,
-                 java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,java.lang.Double.class,java.lang.Double.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+
+        Object[] row = {"Kode", "Jenis/Cara Bayar", "Januari", "Februari",
+            "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September",
+            "Oktober", "November", "Desember", "Total"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class
+            };
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(75);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(180);
-            }else {
+            } else {
                 column.setPreferredWidth(90);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));  
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         Valid.LoadTahun(ThnCari);
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -245,28 +279,30 @@ public class KeuanganNilaiPiutangPerJenisBayarPerBulan extends javax.swing.JDial
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -276,9 +312,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -289,9 +325,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -299,62 +335,85 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         BtnCariActionPerformed(evt);
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            int row=tabMode.getRowCount();
-            for(i=0;i<row;i++){  
-                Sequel.menyimpan("temporary","'"+i+"','"+
-                                tabMode.getValueAt(i,0).toString()+"','"+
-                                tabMode.getValueAt(i,1).toString()+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,2).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,3).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,4).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,5).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,6).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,7).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,8).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,9).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,10).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,11).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,12).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,13).toString()))+"','"+
-                                Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(i,14).toString()))+"','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Transaksi Penerimaan"); 
+        } else if (tabMode.getRowCount() != 0) {
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            int row = tabMode.getRowCount();
+            for (i = 0; i < row; i++) {
+                Sequel.menyimpan("temporary", "'" + i + "','"
+                        + tabMode.getValueAt(i, 0).toString() + "','"
+                        + tabMode.getValueAt(i, 1).toString() + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 2).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 3).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 4).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 5).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 6).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 7).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 8).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 9).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 10).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 11).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 12).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 13).toString())) + "','"
+                        + Valid.SetAngka(Double.parseDouble(tabMode.
+                                getValueAt(i, 14).toString())) + "','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                        getalamatip() + "'", "Transaksi Penerimaan");
             }
-            Map<String, Object> param = new HashMap<>();    
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptKeuanganNilaiPiutangPerCaraBayarPerBulan.jasper","report","::[ Nilai Piutang Per Cara Bayar Per Bulan ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry(
+                    "rptKeuanganNilaiPiutangPerCaraBayarPerBulan.jasper",
+                    "report", "::[ Nilai Piutang Per Cara Bayar Per Bulan ]::",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnAll,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnAll, BtnAll);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganNilaiPiutangPerJenisBayarPerBulan dialog = new KeuanganNilaiPiutangPerJenisBayarPerBulan(new javax.swing.JFrame(), true);
+            KeuanganNilaiPiutangPerJenisBayarPerBulan dialog = new KeuanganNilaiPiutangPerJenisBayarPerBulan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -378,79 +437,134 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{   
-            ps=koneksi.prepareStatement(
+        try {
+            ps = koneksi.prepareStatement(
                     "select penjab.kd_pj,penjab.png_jawab from penjab where penjab.kd_pj like ? or penjab.png_jawab like ? order by penjab.png_jawab");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                totaltagihan=0;totaljanuari=0;totalfebruari=0;totalmaret=0;totalapril=0;totalmei=0;totaljuni=0;totaljuli=0;
-                totalagustus=0;totalseptember=0;totaloktober=0;totalnovember=0;totaldesember=0;
-                while(rs.next()){
-                    januari=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-01' ");
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                totaltagihan = 0;
+                totaljanuari = 0;
+                totalfebruari = 0;
+                totalmaret = 0;
+                totalapril = 0;
+                totalmei = 0;
+                totaljuni = 0;
+                totaljuli = 0;
+                totalagustus = 0;
+                totalseptember = 0;
+                totaloktober = 0;
+                totalnovember = 0;
+                totaldesember = 0;
+                while (rs.next()) {
+                    januari = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-01' ");
                     totaljanuari += januari;
-                    
-                    februari=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-02' ");
+
+                    februari = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-02' ");
                     totalfebruari += februari;
-                    
-                    maret=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-03' ");
+
+                    maret = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-03' ");
                     totalmaret += maret;
-                    
-                    april=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-04' ");
+
+                    april = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-04' ");
                     totalapril += april;
-                    
-                    mei=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-05' ");
+
+                    mei = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-05' ");
                     totalmei += mei;
-                    
-                    juni=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-06' ");
+
+                    juni = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-06' ");
                     totaljuni += juni;
-                    
-                    juli=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-07' ");
+
+                    juli = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-07' ");
                     totaljuli += juli;
-                    
-                    agustus=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-08' ");
+
+                    agustus = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-08' ");
                     totalagustus += agustus;
-                    
-                    september=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-09' ");
+
+                    september = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-09' ");
                     totalseptember += september;
-                    
-                    oktober=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-10' ");
+
+                    oktober = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-10' ");
                     totaloktober += oktober;
-                    
-                    november=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-11' ");
+
+                    november = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-11' ");
                     totalnovember += november;
-                    
-                    desember=Sequel.cariIsiAngka("select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='"+rs.getString("kd_pj")+"' and left(piutang_pasien.tgl_piutang,7)='"+ThnCari.getSelectedItem().toString()+"-12' ");
+
+                    desember = Sequel.cariIsiAngka(
+                            "select sum(detail_piutang_pasien.totalpiutang) as total from detail_piutang_pasien inner join piutang_pasien on detail_piutang_pasien.no_rawat=piutang_pasien.no_rawat where detail_piutang_pasien.kd_pj='" + rs.
+                                    getString("kd_pj") + "' and left(piutang_pasien.tgl_piutang,7)='" + ThnCari.
+                            getSelectedItem().toString() + "-12' ");
                     totaldesember += desember;
-                    
-                    tagihan=januari+februari+maret+april+mei+juni+juli+agustus+september+oktober+november+desember;
+
+                    tagihan = januari + februari + maret + april + mei + juni + juli + agustus + september + oktober + november + desember;
                     totaltagihan += tagihan;
-                    
+
                     tabMode.addRow(new Object[]{
-                        rs.getString("kd_pj"),rs.getString("png_jawab"),januari,februari,maret,april,mei,juni,juli,agustus,september,oktober,november,desember,tagihan
+                        rs.getString("kd_pj"), rs.getString("png_jawab"),
+                        januari, februari, maret, april, mei, juni, juli,
+                        agustus, september, oktober, november, desember, tagihan
                     });
                 }
-                if(tabMode.getRowCount()>0){
+                if (tabMode.getRowCount() > 0) {
                     tabMode.addRow(new Object[]{
-                        "Total :","",totaljanuari,totalfebruari,totalmaret,totalapril,totalmei,totaljuni,totaljuli,totalagustus,totalseptember,totaloktober,totalnovember,totaldesember,totaltagihan
+                        "Total :", "", totaljanuari, totalfebruari, totalmaret,
+                        totalapril, totalmei, totaljuni, totaljuli, totalagustus,
+                        totalseptember, totaloktober, totalnovember,
+                        totaldesember, totaltagihan
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                
+                System.out.println("Notif : " + e);
+            } finally {
+
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }        
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnPrint.setEnabled(akses.getnilai_piutang_perjenis_bayar_per_bulan());
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(
+            KeuanganNilaiPiutangPerJenisBayarPerBulan.class.getName());
+
 }

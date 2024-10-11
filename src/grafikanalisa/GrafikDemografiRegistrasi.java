@@ -1,119 +1,171 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgSpesialis.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package grafikanalisa;
 
-import fungsi.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import org.jfree.chart.*;
-import org.jfree.chart.plot.*;
-import org.jfree.data.category.*;
-import org.jfree.data.general.*;
-import simrskhanza.*;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import simrskhanza.DlgKabupaten;
+import simrskhanza.DlgKecamatan;
+import simrskhanza.DlgKelurahan;
 
 /**
  *
  * @author dosen
  */
 public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
-    private final Connection koneksi=koneksiDB.condb();
-    private final validasi Valid=new validasi();
+
+    private final Connection koneksi = koneksiDB.condb();
+    private final validasi Valid = new validasi();
     private ResultSet rs;
-    private DlgKabupaten kab=new DlgKabupaten(null,true);
-    private DlgKecamatan kec=new DlgKecamatan(null,true);
-    private DlgKelurahan kel=new DlgKelurahan(null,true);
-    /** Creates new form DlgSpesialis
+    private DlgKabupaten kab = new DlgKabupaten(null, true);
+    private DlgKecamatan kec = new DlgKecamatan(null, true);
+    private DlgKelurahan kel = new DlgKelurahan(null, true);
+
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public GrafikDemografiRegistrasi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         kab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kab.getTable().getSelectedRow()!= -1){                   
-                    Kabupaten2.setText(kab.getTable().getValueAt(kab.getTable().getSelectedRow(),0).toString());
-                }     
+                if (kab.getTable().getSelectedRow() != -1) {
+                    Kabupaten2.setText(kab.getTable().getValueAt(kab.getTable().
+                            getSelectedRow(), 0).toString());
+                }
                 Kabupaten2.requestFocus();
 
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         kec.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kec.getTable().getSelectedRow()!= -1){                   
-                    Kecamatan2.setText(kec.getTable().getValueAt(kec.getTable().getSelectedRow(),0).toString());
-                }                
+                if (kec.getTable().getSelectedRow() != -1) {
+                    Kecamatan2.setText(kec.getTable().getValueAt(kec.getTable().
+                            getSelectedRow(), 0).toString());
+                }
                 Kecamatan2.requestFocus();
 
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         kel.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kel.getTable().getSelectedRow()!= -1){                   
-                    Kelurahan2.setText(kel.getTable().getValueAt(kel.getTable().getSelectedRow(),0).toString());
-                }  
+                if (kel.getTable().getSelectedRow() != -1) {
+                    Kelurahan2.setText(kel.getTable().getValueAt(kel.getTable().
+                            getSelectedRow(), 0).toString());
+                }
                 Kelurahan2.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
 
-        
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -359,115 +411,179 @@ public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
+
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        
+
     }//GEN-LAST:event_formWindowActivated
 
     private void BtnPrint3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint3ActionPerformed
-        if(!Kelurahan2.getText().isEmpty()){
+        if (!Kelurahan2.getText().isEmpty()) {
             DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-            try {                
-                rs = koneksi.prepareStatement("select pasien.alamat,count(pasien.alamat) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                    " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and kelurahan.nm_kel='"+Kelurahan2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by pasien.alamat").executeQuery();
-                while(rs.next()) {
-                    dcd.setValue(rs.getDouble(2),rs.getString(1)+"("+rs.getString(2)+")",rs.getString(1));
+            try {
+                rs = koneksi.prepareStatement(
+                        "select pasien.alamat,count(pasien.alamat) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                        + " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                                getText() + "' and kelurahan.nm_kel='" + Kelurahan2.
+                                getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by pasien.alamat").
+                        executeQuery();
+                while (rs.next()) {
+                    dcd.setValue(rs.getDouble(2), rs.getString(1) + "(" + rs.
+                            getString(2) + ")", rs.getString(1));
                 }
 
-                if(rs!=null){
+                if (rs != null) {
                     rs.close();
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             }
-            JFreeChart freeChart = ChartFactory.createBarChart("Grafik Demografi Registrasi Per Area Kelurahan "+Kelurahan2.getText()+", Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),"Area","Jumlah Pasien", dcd, PlotOrientation.VERTICAL,true, true,true); 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Area Kelurahan "+Kelurahan2.getText()+", Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
+            JFreeChart freeChart = ChartFactory.createBarChart(
+                    "Grafik Demografi Registrasi Per Area Kelurahan " + Kelurahan2.
+                            getText() + ", Kecamatan " + Kecamatan2.getText() + ", Kabupaten " + Kabupaten2.
+                    getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), "Area",
+                    "Jumlah Pasien", dcd, PlotOrientation.VERTICAL, true, true,
+                    true);
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Area Kelurahan " + Kelurahan2.
+                            getText() + ", Kecamatan " + Kecamatan2.getText() + ", Kabupaten " + Kabupaten2.
+                    getText(), freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
             cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
             cf.setLocationRelativeTo(panelBiasa3);
             cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true); 
-        }else if(!Kecamatan2.getText().isEmpty()){
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        } else if (!Kecamatan2.getText().isEmpty()) {
             DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kelurahan.nm_kel,count(kelurahan.nm_kel) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "+
-                     "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                     "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kelurahan.nm_kel ").executeQuery();
-                while(rs.next()) {
-                    dcd.setValue(rs.getDouble(2),rs.getString(1)+"("+rs.getString(2)+")",rs.getString(1));
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kelurahan.nm_kel,count(kelurahan.nm_kel) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "
+                        + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                        + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                                getText() + "' and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kelurahan.nm_kel ").
+                        executeQuery();
+                while (rs.next()) {
+                    dcd.setValue(rs.getDouble(2), rs.getString(1) + "(" + rs.
+                            getString(2) + ")", rs.getString(1));
                 }
 
-                if(rs!=null){
+                if (rs != null) {
                     rs.close();
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             }
-            JFreeChart freeChart = ChartFactory.createBarChart("Grafik Demografi Registrasi Per Kelurahan Kecamatan "+Kecamatan2.getText()+" Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),"Kelurahan","Jumlah Pasien", dcd, PlotOrientation.VERTICAL,true, true,true); 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kelurahan Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
+            JFreeChart freeChart = ChartFactory.createBarChart(
+                    "Grafik Demografi Registrasi Per Kelurahan Kecamatan " + Kecamatan2.
+                            getText() + " Kabupaten " + Kabupaten2.getText() + " Tanggal " + Valid.
+                    SetTgl(Tanggal1.getSelectedItem() + "") + " S.D. " + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + ""), "Kelurahan",
+                    "Jumlah Pasien", dcd, PlotOrientation.VERTICAL, true, true,
+                    true);
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kelurahan Kecamatan " + Kecamatan2.
+                            getText() + ", Kabupaten " + Kabupaten2.getText(),
+                    freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
             cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
             cf.setLocationRelativeTo(panelBiasa3);
             cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true); 
-        }else if(!Kabupaten2.getText().isEmpty()){
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        } else if (!Kabupaten2.getText().isEmpty()) {
             DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kecamatan.nm_kec,count(kecamatan.nm_kec) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "+
-                     "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kecamatan.nm_kec ").executeQuery();
-                while(rs.next()) {
-                    dcd.setValue(rs.getDouble(2),rs.getString(1)+"("+rs.getString(2)+")",rs.getString(1));
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kecamatan.nm_kec,count(kecamatan.nm_kec) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "
+                        + "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kecamatan.nm_kec ").
+                        executeQuery();
+                while (rs.next()) {
+                    dcd.setValue(rs.getDouble(2), rs.getString(1) + "(" + rs.
+                            getString(2) + ")", rs.getString(1));
                 }
 
-                if(rs!=null){
+                if (rs != null) {
                     rs.close();
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             }
-            JFreeChart freeChart = ChartFactory.createBarChart("Grafik Demografi Registrasi Per Kecamatan Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),"Kecamatan","Jumlah Pasien", dcd, PlotOrientation.VERTICAL,true, true,true); 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kecamatan Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
+            JFreeChart freeChart = ChartFactory.createBarChart(
+                    "Grafik Demografi Registrasi Per Kecamatan Kabupaten " + Kabupaten2.
+                            getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), "Kecamatan",
+                    "Jumlah Pasien", dcd, PlotOrientation.VERTICAL, true, true,
+                    true);
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kecamatan Kabupaten " + Kabupaten2.
+                            getText(), freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
             cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
             cf.setLocationRelativeTo(panelBiasa3);
             cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true); 
-        }else if(Kabupaten2.getText().isEmpty()){
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        } else if (Kabupaten2.getText().isEmpty()) {
             DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kabupaten.nm_kab,count(kabupaten.nm_kab) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kabupaten.nm_kab").executeQuery();
-                while(rs.next()) {
-                    dcd.setValue(rs.getDouble(2),rs.getString(1)+"("+rs.getString(2)+")",rs.getString(1));
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kabupaten.nm_kab,count(kabupaten.nm_kab) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kabupaten.nm_kab").
+                        executeQuery();
+                while (rs.next()) {
+                    dcd.setValue(rs.getDouble(2), rs.getString(1) + "(" + rs.
+                            getString(2) + ")", rs.getString(1));
                 }
 
-                if(rs!=null){
+                if (rs != null) {
                     rs.close();
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             }
-            JFreeChart freeChart = ChartFactory.createBarChart("Grafik Demografi Registrasi Per Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),"Kabupaten","Jumlah Pasien", dcd, PlotOrientation.VERTICAL,true, true,true); 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kabupaten ",freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
+            JFreeChart freeChart = ChartFactory.createBarChart(
+                    "Grafik Demografi Registrasi Per Kabupaten " + Kabupaten2.
+                            getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), "Kabupaten",
+                    "Jumlah Pasien", dcd, PlotOrientation.VERTICAL, true, true,
+                    true);
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kabupaten ", freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
             cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
             cf.setLocationRelativeTo(panelBiasa3);
             cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true); 
-        }  
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        }
     }//GEN-LAST:event_BtnPrint3ActionPerformed
 
     private void BtnPrint3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrint3KeyPressed
-        
+
     }//GEN-LAST:event_BtnPrint3KeyPressed
 
     private void BtnKeluar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluar3ActionPerformed
@@ -475,51 +591,81 @@ public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluar3ActionPerformed
 
     private void BtnKeluar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluar3KeyPressed
-        
+
     }//GEN-LAST:event_BtnKeluar3KeyPressed
 
     private void BtnPrint4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint4ActionPerformed
-           if(!Kelurahan2.getText().isEmpty()){
-                grafiksql kas=new grafiksql("Data Demografi Registrasi Per Area Kelurahan "+Kelurahan2.getText()+", Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"",
-                        " reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                        " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and kelurahan.nm_kel='"+Kelurahan2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"'   ", 
-                        "pasien.alamat","Area");
-                kas.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());  
-                kas.setModal(true);
-                kas.setAlwaysOnTop(true);
-                kas.setLocationRelativeTo(panelBiasa3);
-                kas.setVisible(true);
-            }else if(!Kecamatan2.getText().isEmpty()){
-                grafiksql kas=new grafiksql("Data Demografi Registrasi Per Kelurahan Kecamatan "+Kecamatan2.getText()+" Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"",
-                        " reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "+
-                         "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                         "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"'  ", 
-                         "kelurahan.nm_kel","Kelurahan");
-                kas.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());  
-                kas.setModal(true);
-                kas.setAlwaysOnTop(true);
-                kas.setLocationRelativeTo(panelBiasa3);
-                kas.setVisible(true);
-            }else if(!Kabupaten2.getText().isEmpty()){
-                grafiksql kas=new grafiksql("Data Demografi Registrasi Per Kecamatan Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"",
-                         " reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "+
-                         "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"'  ", 
-                         "kecamatan.nm_kec","Kecamatan");
-                kas.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());  
-                kas.setModal(true);
-                kas.setAlwaysOnTop(true);
-                kas.setLocationRelativeTo(panelBiasa3);
-                kas.setVisible(true);
-            }else if(Kabupaten2.getText().isEmpty()){
-                grafiksql kas=new grafiksql("Data Demografi Registrasi Per Kabupaten Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"",
-                         " reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' ", 
-                          "kabupaten.nm_kab","Kabupaten");
-                kas.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());  
-                kas.setModal(true);
-                kas.setAlwaysOnTop(true);
-                kas.setLocationRelativeTo(panelBiasa3);
-                kas.setVisible(true);
-            } 
+        if (!Kelurahan2.getText().isEmpty()) {
+            grafiksql kas = new grafiksql(
+                    "Data Demografi Registrasi Per Area Kelurahan " + Kelurahan2.
+                            getText() + ", Kecamatan " + Kecamatan2.getText() + ", Kabupaten " + Kabupaten2.
+                    getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + "") + "",
+                    " reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                    + " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                            getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                            getText() + "' and kelurahan.nm_kel='" + Kelurahan2.
+                            getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                            SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "'   ",
+                    "pasien.alamat", "Area");
+            kas.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            kas.setModal(true);
+            kas.setAlwaysOnTop(true);
+            kas.setLocationRelativeTo(panelBiasa3);
+            kas.setVisible(true);
+        } else if (!Kecamatan2.getText().isEmpty()) {
+            grafiksql kas = new grafiksql(
+                    "Data Demografi Registrasi Per Kelurahan Kecamatan " + Kecamatan2.
+                            getText() + " Kabupaten " + Kabupaten2.getText() + " Tanggal " + Valid.
+                    SetTgl(Tanggal1.getSelectedItem() + "") + " S.D. " + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "",
+                    " reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "
+                    + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                            getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                            getText() + "' and reg_periksa.tgl_registrasi between '" + Valid.
+                            SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "'  ",
+                    "kelurahan.nm_kel", "Kelurahan");
+            kas.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            kas.setModal(true);
+            kas.setAlwaysOnTop(true);
+            kas.setLocationRelativeTo(panelBiasa3);
+            kas.setVisible(true);
+        } else if (!Kabupaten2.getText().isEmpty()) {
+            grafiksql kas = new grafiksql(
+                    "Data Demografi Registrasi Per Kecamatan Kabupaten " + Kabupaten2.
+                            getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + "") + "",
+                    " reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "
+                    + "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                            getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                            SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "'  ",
+                    "kecamatan.nm_kec", "Kecamatan");
+            kas.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            kas.setModal(true);
+            kas.setAlwaysOnTop(true);
+            kas.setLocationRelativeTo(panelBiasa3);
+            kas.setVisible(true);
+        } else if (Kabupaten2.getText().isEmpty()) {
+            grafiksql kas = new grafiksql(
+                    "Data Demografi Registrasi Per Kabupaten Tanggal " + Valid.
+                            SetTgl(Tanggal1.getSelectedItem() + "") + " S.D. " + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "",
+                    " reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '" + Valid.
+                            SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + "") + "' ",
+                    "kabupaten.nm_kab", "Kabupaten");
+            kas.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            kas.setModal(true);
+            kas.setAlwaysOnTop(true);
+            kas.setLocationRelativeTo(panelBiasa3);
+            kas.setVisible(true);
+        }
     }//GEN-LAST:event_BtnPrint4ActionPerformed
 
     private void BtnPrint4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrint4KeyPressed
@@ -527,107 +673,167 @@ public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnPrint4KeyPressed
 
     private void BtnPrint5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint5ActionPerformed
-        if(!Kelurahan2.getText().isEmpty()){
+        if (!Kelurahan2.getText().isEmpty()) {
             DefaultPieDataset dpd = new DefaultPieDataset();
-            try {                
-                rs = koneksi.prepareStatement("select pasien.alamat,count(pasien.alamat) as jumlah "+
-                        "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                        " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and kelurahan.nm_kel='"+Kelurahan2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by pasien.alamat ").executeQuery();
-                while(rs.next()) {
-                    dpd.setValue(rs.getString(1)+"("+rs.getString(2)+")",rs.getDouble(2));
+            try {
+                rs = koneksi.prepareStatement(
+                        "select pasien.alamat,count(pasien.alamat) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                        + " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                                getText() + "' and kelurahan.nm_kel='" + Kelurahan2.
+                                getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by pasien.alamat ").
+                        executeQuery();
+                while (rs.next()) {
+                    dpd.setValue(rs.getString(1) + "(" + rs.getString(2) + ")",
+                            rs.getDouble(2));
                 }
 
-                if(rs!=null){
+                if (rs != null) {
                     rs.close();
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
-            } 
+            }
 
-            JFreeChart freeChart = ChartFactory.createPieChart("Grafik Demografi Registrasi Per Area Kelurahan "+Kelurahan2.getText()+", Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),dpd,true,true, false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Area Kelurahan "+Kelurahan2.getText()+", Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
+            JFreeChart freeChart = ChartFactory.createPieChart(
+                    "Grafik Demografi Registrasi Per Area Kelurahan " + Kelurahan2.
+                            getText() + ", Kecamatan " + Kecamatan2.getText() + ", Kabupaten " + Kabupaten2.
+                    getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), dpd, true, true,
+                    false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Area Kelurahan " + Kelurahan2.
+                            getText() + ", Kecamatan " + Kecamatan2.getText() + ", Kabupaten " + Kabupaten2.
+                    getText(), freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
             cf.setLocationRelativeTo(panelBiasa3);
             cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
             cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true);  
-        }else if(!Kecamatan2.getText().isEmpty()){
-            DefaultPieDataset dpd = new DefaultPieDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kelurahan.nm_kel,count(kelurahan.nm_kel) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "+
-                     "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "+
-                     "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"' and kecamatan.nm_kec='"+Kecamatan2.getText()+"' and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kelurahan.nm_kel ").executeQuery();
-                while(rs.next()) {
-                    dpd.setValue(rs.getString(1)+"("+rs.getString(2)+")",rs.getDouble(2));
-                }
-
-                if(rs!=null){
-                    rs.close();
-                }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : " + e);
-            } 
-
-            JFreeChart freeChart = ChartFactory.createPieChart("Grafik Demografi Registrasi Per Kelurahan Kecamatan "+Kecamatan2.getText()+" Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),dpd,true,true, false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kelurahan Kecamatan "+Kecamatan2.getText()+", Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
-            cf.setLocationRelativeTo(panelBiasa3);
-            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-            cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true);  
-        }else if(!Kabupaten2.getText().isEmpty()){
-            DefaultPieDataset dpd = new DefaultPieDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kecamatan.nm_kec,count(kecamatan.nm_kec) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "+
-                     "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='"+Kabupaten2.getText()+"'  and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kecamatan.nm_kec ").executeQuery();
-                while(rs.next()) {
-                    dpd.setValue(rs.getString(1)+"("+rs.getString(2)+")",rs.getDouble(2));
-                }
-
-                if(rs!=null){
-                    rs.close();
-                }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : " + e);
-            } 
-
-            JFreeChart freeChart = ChartFactory.createPieChart("Grafik Demografi Registrasi Per Kecamatan Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),dpd,true,true, false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kecamatan Kabupaten "+Kabupaten2.getText(),freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
-            cf.setLocationRelativeTo(panelBiasa3);
-            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-            cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
-            cf.setVisible(true);  
-        }else if(Kabupaten2.getText().isEmpty()){
-            DefaultPieDataset dpd = new DefaultPieDataset();
-            try {                
-                rs = koneksi.prepareStatement("select kabupaten.nm_kab,count(kabupaten.nm_kab) as jumlah "+
-                    "from reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tanggal2.getSelectedItem()+"")+"' group by kabupaten.nm_kab ").executeQuery();
-                while(rs.next()) {
-                    dpd.setValue(rs.getString(1)+"("+rs.getString(2)+")",rs.getDouble(2));
-                }
-
-                if(rs!=null){
-                    rs.close();
-                }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : " + e);
-            } 
-
-            JFreeChart freeChart = ChartFactory.createPieChart("Grafik Demografi Registrasi Per Kabupaten "+Kabupaten2.getText()+" Tanggal "+Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" S.D. "+Valid.SetTgl(Tanggal2.getSelectedItem()+""),dpd,true,true, false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
-            ChartFrame cf = new ChartFrame("Grafik Demografi Registrasi Per Kabupaten",freeChart);
-            cf.setSize(panelBiasa3.getWidth(),panelBiasa3.getHeight());   
-            cf.setLocationRelativeTo(panelBiasa3);
-            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-            cf.setAlwaysOnTop(true);
-            cf.setIconImage(new ImageIcon(super.getClass().getResource("/picture/addressbook-edit24.png")).getImage());
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
             cf.setVisible(true);
-        }  
+        } else if (!Kecamatan2.getText().isEmpty()) {
+            DefaultPieDataset dpd = new DefaultPieDataset();
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kelurahan.nm_kel,count(kelurahan.nm_kel) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan inner join kelurahan on pasien.kd_kab=kabupaten.kd_kab "
+                        + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
+                        + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "' and kecamatan.nm_kec='" + Kecamatan2.
+                                getText() + "' and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kelurahan.nm_kel ").
+                        executeQuery();
+                while (rs.next()) {
+                    dpd.setValue(rs.getString(1) + "(" + rs.getString(2) + ")",
+                            rs.getDouble(2));
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            }
+
+            JFreeChart freeChart = ChartFactory.createPieChart(
+                    "Grafik Demografi Registrasi Per Kelurahan Kecamatan " + Kecamatan2.
+                            getText() + " Kabupaten " + Kabupaten2.getText() + " Tanggal " + Valid.
+                    SetTgl(Tanggal1.getSelectedItem() + "") + " S.D. " + Valid.
+                    SetTgl(Tanggal2.getSelectedItem() + ""), dpd, true, true,
+                    false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kelurahan Kecamatan " + Kecamatan2.
+                            getText() + ", Kabupaten " + Kabupaten2.getText(),
+                    freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            cf.setLocationRelativeTo(panelBiasa3);
+            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+            cf.setAlwaysOnTop(true);
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        } else if (!Kabupaten2.getText().isEmpty()) {
+            DefaultPieDataset dpd = new DefaultPieDataset();
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kecamatan.nm_kec,count(kecamatan.nm_kec) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten inner join kecamatan on pasien.kd_kab=kabupaten.kd_kab "
+                        + "and pasien.kd_kec=kecamatan.kd_kec and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kabupaten.nm_kab='" + Kabupaten2.
+                                getText() + "'  and reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kecamatan.nm_kec ").
+                        executeQuery();
+                while (rs.next()) {
+                    dpd.setValue(rs.getString(1) + "(" + rs.getString(2) + ")",
+                            rs.getDouble(2));
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            }
+
+            JFreeChart freeChart = ChartFactory.createPieChart(
+                    "Grafik Demografi Registrasi Per Kecamatan Kabupaten " + Kabupaten2.
+                            getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), dpd, true, true,
+                    false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kecamatan Kabupaten " + Kabupaten2.
+                            getText(), freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            cf.setLocationRelativeTo(panelBiasa3);
+            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+            cf.setAlwaysOnTop(true);
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        } else if (Kabupaten2.getText().isEmpty()) {
+            DefaultPieDataset dpd = new DefaultPieDataset();
+            try {
+                rs = koneksi.prepareStatement(
+                        "select kabupaten.nm_kab,count(kabupaten.nm_kab) as jumlah "
+                        + "from reg_periksa inner join pasien inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.tgl_registrasi between '" + Valid.
+                                SetTgl(Tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(Tanggal2.getSelectedItem() + "") + "' group by kabupaten.nm_kab ").
+                        executeQuery();
+                while (rs.next()) {
+                    dpd.setValue(rs.getString(1) + "(" + rs.getString(2) + ")",
+                            rs.getDouble(2));
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            }
+
+            JFreeChart freeChart = ChartFactory.createPieChart(
+                    "Grafik Demografi Registrasi Per Kabupaten " + Kabupaten2.
+                            getText() + " Tanggal " + Valid.SetTgl(Tanggal1.
+                            getSelectedItem() + "") + " S.D. " + Valid.SetTgl(
+                            Tanggal2.getSelectedItem() + ""), dpd, true, true,
+                    false); //String title,PieDatasheet datasheet,boolean legends,boolean tooltips,boolean url 
+            ChartFrame cf = new ChartFrame(
+                    "Grafik Demografi Registrasi Per Kabupaten", freeChart);
+            cf.setSize(panelBiasa3.getWidth(), panelBiasa3.getHeight());
+            cf.setLocationRelativeTo(panelBiasa3);
+            cf.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+            cf.setAlwaysOnTop(true);
+            cf.setIconImage(new ImageIcon(super.getClass().getResource(
+                    "/picture/addressbook-edit24.png")).getImage());
+            cf.setVisible(true);
+        }
     }//GEN-LAST:event_BtnPrint5ActionPerformed
 
     private void BtnPrint5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrint5KeyPressed
@@ -636,55 +842,66 @@ public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
 
     private void btnKelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKelActionPerformed
         kel.emptTeks();
-        kel.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kel.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kel.setLocationRelativeTo(internalFrame1);
         kel.setVisible(true);
 
     }//GEN-LAST:event_btnKelActionPerformed
 
     private void Kelurahan2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Kelurahan2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnKelActionPerformed(null);
-        }else{Valid.pindah(evt,Kecamatan2,BtnPrint4);}
+        } else {
+            Valid.pindah(evt, Kecamatan2, BtnPrint4);
+        }
     }//GEN-LAST:event_Kelurahan2KeyPressed
 
     private void Kecamatan2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Kecamatan2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnKecActionPerformed(null);
-        }else{Valid.pindah(evt,Kabupaten2,Kelurahan2);}
+        } else {
+            Valid.pindah(evt, Kabupaten2, Kelurahan2);
+        }
     }//GEN-LAST:event_Kecamatan2KeyPressed
 
     private void btnKecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKecActionPerformed
         kec.emptTeks();
-        kec.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kec.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kec.setLocationRelativeTo(internalFrame1);
         kec.setVisible(true);
     }//GEN-LAST:event_btnKecActionPerformed
 
     private void btnKabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKabActionPerformed
         kab.emptTeks();
-        kab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kab.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kab.setLocationRelativeTo(internalFrame1);
         kab.setVisible(true);
     }//GEN-LAST:event_btnKabActionPerformed
 
     private void Kabupaten2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Kabupaten2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnKabActionPerformed(null);
-        }else{Valid.pindah(evt,BtnKeluar3,Kecamatan2);}
+        } else {
+            Valid.pindah(evt, BtnKeluar3, Kecamatan2);
+        }
     }//GEN-LAST:event_Kabupaten2KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            GrafikDemografiRegistrasi dialog = new GrafikDemografiRegistrasi(new javax.swing.JFrame(), true);
+            GrafikDemografiRegistrasi dialog = new GrafikDemografiRegistrasi(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -713,5 +930,7 @@ public class GrafikDemografiRegistrasi extends javax.swing.JDialog {
     private widget.PanelBiasa panelBiasa3;
     private widget.panelisi panelGlass5;
     // End of variables declaration//GEN-END:variables
+    private static final Logger LOG = Logger.getLogger(
+            GrafikDemografiRegistrasi.class.getName());
 
 }

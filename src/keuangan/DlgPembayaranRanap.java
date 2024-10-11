@@ -3,170 +3,238 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgLhtBiaya.java
  *
  * Created on 12 Jul 10, 16:21:34
  */
-
 package keuangan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import simrskhanza.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import simrskhanza.DlgCariBangsal;
+import simrskhanza.DlgCariCaraBayar;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgPembayaranRanap extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,ps2;
-    private ResultSet rs,rs2;
-    private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
-    private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
-    private double all=0,Laborat=0,Radiologi=0,Operasi=0,Obat=0,Ranap_Dokter=0,Ranap_Paramedis=0,Ranap_Dokter_Paramedis=0,Ralan_Dokter=0,
-             Ralan_Paramedis=0,Ralan_Dokter_Paramedis=0,Tambahan=0,Potongan=0,Kamar=0,Registrasi=0,Harian=0,Retur_Obat=0,Resep_Pulang=0,
-             Service=0,ttlLaborat=0,ttlRadiologi=0,ttlOperasi=0,ttlObat=0,ttlRanap_Dokter=0,ttlRanap_Paramedis=0,ttlRalan_Dokter=0,
-             ttlRalan_Paramedis=0,ttlTambahan=0,ttlPotongan=0,ttlKamar=0,ttlRegistrasi=0,ttlHarian=0,ttlRetur_Obat=0,ttlResep_Pulang=0,ttlService=0;
-    private String sqlps2="select sum(totalbiaya) from billing where no_rawat=? and status=? ",pilihan="",tampilkan="Semua",Keterangan="Belum Bayar";
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private PreparedStatement ps, ps2;
+    private ResultSet rs, rs2;
+    private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+    private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+    private double all = 0, Laborat = 0, Radiologi = 0, Operasi = 0, Obat = 0, Ranap_Dokter = 0, Ranap_Paramedis = 0, Ranap_Dokter_Paramedis = 0, Ralan_Dokter = 0,
+            Ralan_Paramedis = 0, Ralan_Dokter_Paramedis = 0, Tambahan = 0, Potongan = 0, Kamar = 0, Registrasi = 0, Harian = 0, Retur_Obat = 0, Resep_Pulang = 0,
+            Service = 0, ttlLaborat = 0, ttlRadiologi = 0, ttlOperasi = 0, ttlObat = 0, ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0, ttlRalan_Dokter = 0,
+            ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlKamar = 0, ttlRegistrasi = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0;
+    private String sqlps2 = "select sum(totalbiaya) from billing where no_rawat=? and status=? ", pilihan = "", tampilkan = "Semua", Keterangan = "Belum Bayar";
     private StringBuilder htmlContent;
-    private int i=0;
-    
-    /** Creates new form DlgLhtBiaya
+    private int i = 0;
+
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgPembayaranRanap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] rowRwJlDr={"Tgl.Pulang","No.Nota","No.RM","Nama Pasien","Kamar/Bangsal","Perujuk","Registrasi","Tindakan","Obt+Emb+Tsl","Retur Obat","Resep Pulang",
-                            "Laborat","Radiologi","Potongan","Tambahan","Kamar+Service","Operasi","Harian","Total"};
-        tabMode=new DefaultTableModel(null,rowRwJlDr){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] rowRwJlDr = {"Tgl.Pulang", "No.Nota", "No.RM", "Nama Pasien",
+            "Kamar/Bangsal", "Perujuk", "Registrasi", "Tindakan", "Obt+Emb+Tsl",
+            "Retur Obat", "Resep Pulang",
+            "Laborat", "Radiologi", "Potongan", "Tambahan", "Kamar+Service",
+            "Operasi", "Harian", "Total"};
+        tabMode = new DefaultTableModel(null, rowRwJlDr) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbBangsal.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 19; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(170);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(110);
-            }else{
+            } else {
                 column.setPreferredWidth(75);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)20).getKata(TKd));
-        
+        TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
+
         bangsal.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(bangsal.getTable().getSelectedRow()!= -1){
-                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),0).toString());
-                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),1).toString());
-                }      
+                if (bangsal.getTable().getSelectedRow() != -1) {
+                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 0).toString());
+                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 kdbangsal.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {bangsal.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                bangsal.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         bangsal.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     bangsal.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         penjab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(penjab.getTable().getSelectedRow()!= -1){
-                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),1).toString());
-                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),2).toString());
+                if (penjab.getTable().getSelectedRow() != -1) {
+                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 1).toString());
+                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 2).toString());
                     BtnCaraBayar.requestFocus();
-                }      
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {penjab.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                penjab.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         penjab.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     penjab.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         ChkInput.setSelected(false);
         isForm();
 
-    }    
-    
+    }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -533,197 +601,341 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnPrint.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            try {            
-                File g = new File("file2.css");            
-                BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"+                    
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                );
-                bg.close();
+            try {
+                File g = new File("file2.css");
+                try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                    bg.write(
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                    );
+                }
 
-                File f;            
-                BufferedWriter bw; 
+                File f;
+                BufferedWriter bw;
 
-                pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih laporan..!","Pilihan Cetak",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Laporan 1 (HTML)","Laporan 2 (WPS)","Laporan 3 (CSV)","Laporan 4 (Jasper)"},"Laporan 1 (HTML)");
+                pilihan = (String) JOptionPane.showInputDialog(null,
+                        "Silahkan pilih laporan..!", "Pilihan Cetak",
+                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{
+                            "Laporan 1 (HTML)", "Laporan 2 (WPS)",
+                            "Laporan 3 (CSV)", "Laporan 4 (Jasper)"},
+                        "Laporan 1 (HTML)");
                 switch (pilihan) {
                     case "Laporan 1 (HTML)":
-                            htmlContent = new StringBuilder();
-                            htmlContent.append(                             
-                                "<tr class='isi'>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tgl.Pulang</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>No.Nota</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.RM</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='12%'>Nama Pasien</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='8%'>Kamar/Bangsal</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Perujuk</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Registrasi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Tindakan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Obt+Emb+Tsl</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Retur Obat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Resep Pulang</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Laborat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Radiologi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Potongan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tambahan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Kamar+Service</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Operasi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Harian</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>Total</td>"+
-                                "</tr>"
-                            ); 
-                            for(i=0;i<tabMode.getRowCount();i++){  
-                                htmlContent.append("<tr class='isi'><td valign='top'>").append(tabMode.getValueAt(i,0)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,1)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,2)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,3)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,4)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,5)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,6)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,7)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,8)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,9)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,10)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,11)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,12)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,13)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,14)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,15)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,16)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,17)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,18)).append("</td></tr>"); 
-                            }            
+                        htmlContent = new StringBuilder();
+                        htmlContent.append(
+                                "<tr class='isi'>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tgl.Pulang</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>No.Nota</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.RM</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='12%'>Nama Pasien</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='8%'>Kamar/Bangsal</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Perujuk</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Registrasi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Tindakan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Obt+Emb+Tsl</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Retur Obat</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Resep Pulang</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Laborat</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Radiologi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Potongan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tambahan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Kamar+Service</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Operasi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Harian</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>Total</td>"
+                                + "</tr>"
+                        );
+                        for (i = 0; i < tabMode.getRowCount(); i++) {
+                            htmlContent.append(
+                                    "<tr class='isi'><td valign='top'>").append(
+                                            tabMode.getValueAt(i, 0)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 1)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 2)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 3)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 4)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 5)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 6)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 7)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 8)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 9)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 10)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 11)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 12)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 13)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 14)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 15)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 16)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 17)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 18)).append(
+                                    "</td></tr>");
+                        }
 
-                            f = new File("PembayaranRanap.html");            
-                            bw = new BufferedWriter(new FileWriter(f));            
-                            bw.write("<html>"+
-                                        "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                        "<body>"+
-                                            "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                "<tr class='isi2'>"+
-                                                    "<td valign='top' align='center'>"+
-                                                        "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                                        akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                                        akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                                        "<font size='2' face='Tahoma'>REKAP PEMBAYARAN RAWAT RANAP PERIODE "+Tgl1.getSelectedItem()+" s.d. "+Tgl2.getSelectedItem()+"<br><br></font>"+        
-                                                    "</td>"+
-                                               "</tr>"+
-                                            "</table>"+
-                                            "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                htmlContent.toString()+
-                                            "</table>"+
-                                        "</body>"+                   
-                                     "</html>"
-                            );
+                        f = new File("PembayaranRanap.html");
+                        bw = new BufferedWriter(new FileWriter(f));
+                        bw.write("<html>"
+                                + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                + "<body>"
+                                + "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>REKAP PEMBAYARAN RAWAT RANAP PERIODE " + Tgl1.
+                                        getSelectedItem() + " s.d. " + Tgl2.
+                                        getSelectedItem() + "<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>"
+                                + "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + htmlContent.toString()
+                                + "</table>"
+                                + "</body>"
+                                + "</html>"
+                        );
 
-                            bw.close();                         
-                            Desktop.getDesktop().browse(f.toURI());
+                        bw.close();
+                        Desktop.getDesktop().browse(f.toURI());
                         break;
                     case "Laporan 2 (WPS)":
-                            htmlContent = new StringBuilder();
-                            htmlContent.append(                             
-                                "<tr class='isi'>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tgl.Pulang</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>No.Nota</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.RM</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='12%'>Nama Pasien</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='8%'>Kamar/Bangsal</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Perujuk</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Registrasi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Tindakan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Obt+Emb+Tsl</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Retur Obat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Resep Pulang</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Laborat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Radiologi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Potongan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tambahan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Kamar+Service</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Operasi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Harian</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>Total</td>"+
-                                "</tr>"
-                            ); 
-                            for(i=0;i<tabMode.getRowCount();i++){  
-                                htmlContent.append("<tr class='isi'><td valign='top'>").append(tabMode.getValueAt(i,0)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,1)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,2)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,3)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,4)).append("</td><td valign='top'>").append(tabMode.getValueAt(i,5)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,6)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,7)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,8)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,9)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,10)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,11)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,12)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,13)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,14)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,15)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,16)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,17)).append("</td><td valign='top' align='right'>").append(tabMode.getValueAt(i,18)).append("</td></tr>"); 
-                            }            
+                        htmlContent = new StringBuilder();
+                        htmlContent.append(
+                                "<tr class='isi'>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tgl.Pulang</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>No.Nota</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.RM</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='12%'>Nama Pasien</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='8%'>Kamar/Bangsal</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Perujuk</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Registrasi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Tindakan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Obt+Emb+Tsl</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Retur Obat</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Resep Pulang</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Laborat</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Radiologi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Potongan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Tambahan</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Kamar+Service</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Operasi</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>Harian</td>"
+                                + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>Total</td>"
+                                + "</tr>"
+                        );
+                        for (i = 0; i < tabMode.getRowCount(); i++) {
+                            htmlContent.append(
+                                    "<tr class='isi'><td valign='top'>").append(
+                                            tabMode.getValueAt(i, 0)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 1)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 2)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 3)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 4)).append(
+                                    "</td><td valign='top'>").append(tabMode.
+                                            getValueAt(i, 5)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 6)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 7)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 8)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 9)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 10)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 11)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 12)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 13)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 14)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 15)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 16)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 17)).append(
+                                    "</td><td valign='top' align='right'>").
+                                    append(tabMode.getValueAt(i, 18)).append(
+                                    "</td></tr>");
+                        }
 
-                            f = new File("PembayaranRanap.wps");            
-                            bw = new BufferedWriter(new FileWriter(f));            
-                            bw.write("<html>"+
-                                        "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                        "<body>"+
-                                            "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                "<tr class='isi2'>"+
-                                                    "<td valign='top' align='center'>"+
-                                                        "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                                        akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                                        akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                                        "<font size='2' face='Tahoma'>DETAIL JM DOKTER PERIODE "+Tgl1.getSelectedItem()+" s.d. "+Tgl2.getSelectedItem()+"<br><br></font>"+        
-                                                    "</td>"+
-                                               "</tr>"+
-                                            "</table>"+
-                                            "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                htmlContent.toString()+
-                                            "</table>"+
-                                        "</body>"+                   
-                                     "</html>"
-                            );
+                        f = new File("PembayaranRanap.wps");
+                        bw = new BufferedWriter(new FileWriter(f));
+                        bw.write("<html>"
+                                + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                + "<body>"
+                                + "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DETAIL JM DOKTER PERIODE " + Tgl1.
+                                        getSelectedItem() + " s.d. " + Tgl2.
+                                        getSelectedItem() + "<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>"
+                                + "<table width='1900px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + htmlContent.toString()
+                                + "</table>"
+                                + "</body>"
+                                + "</html>"
+                        );
 
-                            bw.close();                         
-                            Desktop.getDesktop().browse(f.toURI());
+                        bw.close();
+                        Desktop.getDesktop().browse(f.toURI());
                         break;
                     case "Laporan 3 (CSV)":
-                            htmlContent = new StringBuilder();
-                            htmlContent.append(                             
+                        htmlContent = new StringBuilder();
+                        htmlContent.append(
                                 "\"Tgl.Pulang\";\"No.Nota\";\"No.RM\";\"Nama Pasien\";\"Kamar/Bangsal\";\"Perujuk\";\"Registrasi\";\"Tindakan\";\"Obt+Emb+Tsl\";\"Retur Obat\";\"Resep Pulang\";\"Laborat\";\"Radiologi\";\"Potongan\";\"Tambahan\";\"Kamar+Service\";\"Operasi\";\"Harian\";\"Total\"\n"
-                            ); 
-                            for(i=0;i<tabMode.getRowCount();i++){  
-                                htmlContent.append("\"").append(tabMode.getValueAt(i,0)).append("\";\"").append(tabMode.getValueAt(i,1)).append("\";\"").append(tabMode.getValueAt(i,2)).append("\";\"").append(tabMode.getValueAt(i,3)).append("\";\"").append(tabMode.getValueAt(i,4)).append("\";\"").append(tabMode.getValueAt(i,5)).append("\";\"").append(tabMode.getValueAt(i,6)).append("\";\"").append(tabMode.getValueAt(i,7)).append("\";\"").append(tabMode.getValueAt(i,8)).append("\";\"").append(tabMode.getValueAt(i,9)).append("\";\"").append(tabMode.getValueAt(i,10)).append("\";\"").append(tabMode.getValueAt(i,11)).append("\";\"").append(tabMode.getValueAt(i,12)).append("\";\"").append(tabMode.getValueAt(i,13)).append("\";\"").append(tabMode.getValueAt(i,14)).append("\";\"").append(tabMode.getValueAt(i,15)).append("\";\"").append(tabMode.getValueAt(i,16)).append("\";\"").append(tabMode.getValueAt(i,17)).append("\";\"").append(tabMode.getValueAt(i,18)).append("\"\n"); 
-                            }            
+                        );
+                        for (i = 0; i < tabMode.getRowCount(); i++) {
+                            htmlContent.append("\"").append(tabMode.
+                                    getValueAt(i, 0)).append("\";\"").append(
+                                    tabMode.getValueAt(i, 1)).append("\";\"").
+                                    append(tabMode.getValueAt(i, 2)).append(
+                                    "\";\"").append(tabMode.getValueAt(i, 3)).
+                                    append("\";\"").append(tabMode.getValueAt(i,
+                                    4)).append("\";\"").append(tabMode.
+                                    getValueAt(i, 5)).append("\";\"").append(
+                                    tabMode.getValueAt(i, 6)).append("\";\"").
+                                    append(tabMode.getValueAt(i, 7)).append(
+                                    "\";\"").append(tabMode.getValueAt(i, 8)).
+                                    append("\";\"").append(tabMode.getValueAt(i,
+                                    9)).append("\";\"").append(tabMode.
+                                    getValueAt(i, 10)).append("\";\"").append(
+                                    tabMode.getValueAt(i, 11)).append("\";\"").
+                                    append(tabMode.getValueAt(i, 12)).append(
+                                    "\";\"").append(tabMode.getValueAt(i, 13)).
+                                    append("\";\"").append(tabMode.getValueAt(i,
+                                    14)).append("\";\"").append(tabMode.
+                                    getValueAt(i, 15)).append("\";\"").append(
+                                    tabMode.getValueAt(i, 16)).append("\";\"").
+                                    append(tabMode.getValueAt(i, 17)).append(
+                                    "\";\"").append(tabMode.getValueAt(i, 18)).
+                                    append("\"\n");
+                        }
 
-                            f = new File("PembayaranRanap.csv");            
-                            bw = new BufferedWriter(new FileWriter(f));            
-                            bw.write(htmlContent.toString());
+                        f = new File("PembayaranRanap.csv");
+                        bw = new BufferedWriter(new FileWriter(f));
+                        bw.write(htmlContent.toString());
 
-                            bw.close();                         
-                            Desktop.getDesktop().browse(f.toURI());
-                        break; 
+                        bw.close();
+                        Desktop.getDesktop().browse(f.toURI());
+                        break;
                     case "Laporan 4 (Jasper)":
-                            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-                            for(int r=0;r<tabMode.getRowCount();r++){  
-                                    Sequel.menyimpan("temporary","'"+r+"','"+
-                                                    tabMode.getValueAt(r,0).toString().replaceAll("'","`") +"','"+
-                                                    tabMode.getValueAt(r,1).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,2).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,3).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,4).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,5).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,6).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,7).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,8).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,9).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,10).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,11).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,12).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,13).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,14).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,15).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,16).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,17).toString().replaceAll("'","`")+"','"+
-                                                    tabMode.getValueAt(r,18).toString().replaceAll("'","`")+"','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Nota Pembayaran");
-                            }
+                        Sequel.queryu(
+                                "delete from temporary where temp37='" + akses.
+                                        getalamatip() + "'");
+                        for (int r = 0; r < tabMode.getRowCount(); r++) {
+                            Sequel.menyimpan("temporary", "'" + r + "','"
+                                    + tabMode.getValueAt(r, 0).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 1).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 2).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 3).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 4).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 5).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 6).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 7).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 8).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 9).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 10).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 11).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 12).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 13).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 14).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 15).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 16).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 17).toString().
+                                            replaceAll("'", "`") + "','"
+                                    + tabMode.getValueAt(r, 18).toString().
+                                            replaceAll("'", "`") + "','','','','','','','','','','','','','','','','','','" + akses.
+                                    getalamatip() + "'", "Rekap Nota Pembayaran");
+                        }
 
-                            Map<String, Object> param = new HashMap<>();                 
-                            param.put("namars",akses.getnamars());
-                            param.put("alamatrs",akses.getalamatrs());
-                            param.put("kotars",akses.getkabupatenrs());
-                            param.put("propinsirs",akses.getpropinsirs());
-                            param.put("kontakrs",akses.getkontakrs());
-                            param.put("emailrs",akses.getemailrs());   
-                            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                            Valid.MyReportqry("rptRTagihanRanap.jasper","report","::[ Rekap Tagihan Ranap Masuk ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
-                        break; 
-                }                 
+                        Map<String, Object> param = new HashMap<>();
+                        param.put("namars", akses.getnamars());
+                        param.put("alamatrs", akses.getalamatrs());
+                        param.put("kotars", akses.getkabupatenrs());
+                        param.put("propinsirs", akses.getpropinsirs());
+                        param.put("kontakrs", akses.getkontakrs());
+                        param.put("emailrs", akses.getemailrs());
+                        param.put("logo", Sequel.cariGambar(
+                                "select setting.logo from setting"));
+                        Valid.MyReportqry("rptRTagihanRanap.jasper", "report",
+                                "::[ Rekap Tagihan Ranap Masuk ]::",
+                                "select * from temporary where temporary.temp37='" + akses.
+                                        getalamatip() + "' order by temporary.no",
+                                param);
+                        break;
+                }
             } catch (Exception e) {
-            }     
+            }
             this.setCursor(Cursor.getDefaultCursor());
         }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -733,13 +945,15 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,TKd);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, TKd);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -748,8 +962,9 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
 }//GEN-LAST:event_tbBangsalMouseClicked
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -759,18 +974,18 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
 }//GEN-LAST:event_tbBangsalKeyPressed
 
 private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
-        
-        tampil();
+
+    tampil();
 }//GEN-LAST:event_BtnCari1ActionPerformed
 
 private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            tampil();
-            this.setCursor(Cursor.getDefaultCursor());
-        }else{
-            Valid.pindah(evt, TKd, BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tampil();
+        this.setCursor(Cursor.getDefaultCursor());
+    } else {
+        Valid.pindah(evt, TKd, BtnPrint);
+    }
 }//GEN-LAST:event_BtnCari1KeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -778,22 +993,29 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_formWindowOpened
 
     private void kdbangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdbangsalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
             BtnAll.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
             Tgl2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnSeek2ActionPerformed(null);
         }
     }//GEN-LAST:event_kdbangsalKeyPressed
 
     private void BtnSeek2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek2ActionPerformed
         bangsal.isCek();
-        bangsal.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        bangsal.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         bangsal.setLocationRelativeTo(internalFrame1);
         bangsal.setAlwaysOnTop(false);
         bangsal.setVisible(true);
@@ -808,29 +1030,33 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         nmbangsal.setText("");
         KdCaraBayar.setText("");
         NmCaraBayar.setText("");
-        tampilkan="Semua";
+        tampilkan = "Semua";
         tampil();
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, kdbangsal, BtnPrint);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void MnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnBillingActionPerformed
-        if(TKd.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
-        }else{
-            DlgBilingRanap billing=new DlgBilingRanap(null,false);
-            billing.TNoRw.setText(Sequel.cariIsi("select no_rawat from nota_inap where no_nota=?",TKd.getText()));            
+        if (TKd.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+        } else {
+            DlgBilingRanap billing = new DlgBilingRanap(null, false);
+            billing.TNoRw.setText(Sequel.cariIsi(
+                    "select no_rawat from nota_inap where no_nota=?", TKd.
+                            getText()));
             billing.isCek();
             billing.isRawat();
-            billing.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            billing.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                    getHeight() - 20);
             billing.setLocationRelativeTo(internalFrame1);
-            billing.setVisible(true); 
+            billing.setVisible(true);
         }
     }//GEN-LAST:event_MnBillingActionPerformed
 
@@ -840,38 +1066,41 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void BtnCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCaraBayarActionPerformed
         penjab.isCek();
-        penjab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
         penjab.setAlwaysOnTop(false);
         penjab.setVisible(true);
     }//GEN-LAST:event_BtnCaraBayarActionPerformed
 
     private void MnSudahBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSudahBayarActionPerformed
-        tampilkan="Sudah Bayar";
+        tampilkan = "Sudah Bayar";
         tampil();
     }//GEN-LAST:event_MnSudahBayarActionPerformed
 
     private void MnBelumBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnBelumBayarActionPerformed
-        tampilkan="Belum Bayar";
+        tampilkan = "Belum Bayar";
         tampil();
     }//GEN-LAST:event_MnBelumBayarActionPerformed
 
     private void MnSemuaStatusBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSemuaStatusBayarActionPerformed
-        tampilkan="Semua";
+        tampilkan = "Semua";
         tampil();
     }//GEN-LAST:event_MnSemuaStatusBayarActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPembayaranRanap dialog = new DlgPembayaranRanap(new javax.swing.JFrame(), true);
+            DlgPembayaranRanap dialog = new DlgPembayaranRanap(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -916,521 +1145,593 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     /**
      *
      */
-    public void tampil(){
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+    public void tampil() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Valid.tabelKosong(tabMode);
-        try{      
-            if(nmbangsal.getText().isEmpty()&&NmCaraBayar.getText().isEmpty()){
-                ps= koneksi.prepareStatement(
-                    "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,kamar_inap.tgl_keluar,bangsal.nm_bangsal,kamar_inap.stts_pulang, "+
-                    "kamar.kd_kamar from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "+
-                    "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "+
-                    "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                    "where kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and "+
-                    "reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) "+
-                    "order by kamar_inap.tgl_keluar,kamar_inap.jam_keluar");
-            }else{
-                ps= koneksi.prepareStatement(
-                    "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,kamar_inap.tgl_keluar,bangsal.nm_bangsal,kamar_inap.stts_pulang, "+
-                    "kamar.kd_kamar from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "+
-                    "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "+
-                    "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                    "where kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and concat(kamar.kd_bangsal,bangsal.nm_bangsal) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and "+
-                    "reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) "+
-                    "order by kamar_inap.tgl_keluar,kamar_inap.jam_keluar");
+        try {
+            if (nmbangsal.getText().isEmpty() && NmCaraBayar.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,kamar_inap.tgl_keluar,bangsal.nm_bangsal,kamar_inap.stts_pulang, "
+                        + "kamar.kd_kamar from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "
+                        + "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "
+                        + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                        + "where kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and "
+                        + "reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) "
+                        + "order by kamar_inap.tgl_keluar,kamar_inap.jam_keluar");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,kamar_inap.tgl_keluar,bangsal.nm_bangsal,kamar_inap.stts_pulang, "
+                        + "kamar.kd_kamar from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "
+                        + "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "
+                        + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                        + "where kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and concat(kamar.kd_bangsal,bangsal.nm_bangsal) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and "
+                        + "reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) "
+                        + "order by kamar_inap.tgl_keluar,kamar_inap.jam_keluar");
             }
-                
+
             try {
-                if(nmbangsal.getText().isEmpty()&&NmCaraBayar.getText().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                }else{
-                    ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                    ps.setString(3,"%"+kdbangsal.getText()+nmbangsal.getText()+"%");
-                    ps.setString(4,"%"+KdCaraBayar.getText()+NmCaraBayar.getText()+"%");
+                if (nmbangsal.getText().isEmpty() && NmCaraBayar.getText().
+                        isEmpty()) {
+                    ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                } else {
+                    ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + kdbangsal.getText() + nmbangsal.
+                            getText() + "%");
+                    ps.setString(4, "%" + KdCaraBayar.getText() + NmCaraBayar.
+                            getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                all=0;ttlLaborat=0;ttlRadiologi=0;ttlOperasi=0;ttlObat=0;
-                ttlRanap_Dokter=0;ttlRanap_Paramedis=0;ttlRalan_Dokter=0;
-                ttlRalan_Paramedis=0;ttlTambahan=0;ttlPotongan=0;ttlKamar=0;
-                ttlRegistrasi=0;ttlHarian=0;ttlRetur_Obat=0;ttlResep_Pulang=0;
-                ttlService=0;
-                while(rs.next()){
-                    if(!rs.getString("stts_pulang").equals("-")){
-                    if(!rs.getString("stts_pulang").equals("Pindah Kamar")){
-                        Keterangan="Belum Bayar";
-                        Laborat=0;   
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Laborat");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlLaborat += rs2.getDouble(1);
-                                Laborat=rs2.getDouble(1);
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Radiologi=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Radiologi");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRadiologi += rs2.getDouble(1);
-                                Radiologi=rs2.getDouble(1);
+                rs = ps.executeQuery();
+                all = 0;
+                ttlLaborat = 0;
+                ttlRadiologi = 0;
+                ttlOperasi = 0;
+                ttlObat = 0;
+                ttlRanap_Dokter = 0;
+                ttlRanap_Paramedis = 0;
+                ttlRalan_Dokter = 0;
+                ttlRalan_Paramedis = 0;
+                ttlTambahan = 0;
+                ttlPotongan = 0;
+                ttlKamar = 0;
+                ttlRegistrasi = 0;
+                ttlHarian = 0;
+                ttlRetur_Obat = 0;
+                ttlResep_Pulang = 0;
+                ttlService = 0;
+                while (rs.next()) {
+                    if (!rs.getString("stts_pulang").equals("-")) {
+                        if (!rs.getString("stts_pulang").equals("Pindah Kamar")) {
+                            Keterangan = "Belum Bayar";
+                            Laborat = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Laborat");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlLaborat += rs2.getDouble(1);
+                                    Laborat = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Operasi=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Operasi");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlOperasi += rs2.getDouble(1);
-                                Operasi=rs2.getDouble(1);
+                            Radiologi = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Radiologi");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRadiologi += rs2.getDouble(1);
+                                    Radiologi = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Obat=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Obat");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlObat += rs2.getDouble(1);
-                                Obat=rs2.getDouble(1);
+                            Operasi = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Operasi");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlOperasi += rs2.getDouble(1);
+                                    Operasi = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Ranap_Dokter=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ranap Dokter");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRanap_Dokter += rs2.getDouble(1);
-                                Ranap_Dokter=rs2.getDouble(1);
+                            Obat = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Obat");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlObat += rs2.getDouble(1);
+                                    Obat = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }                        
 
-                        Ranap_Dokter_Paramedis=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ranap Dokter Paramedis");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRanap_Dokter += rs2.getDouble(1);
-                                Ranap_Dokter_Paramedis=rs2.getDouble(1);
+                            Ranap_Dokter = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ranap Dokter");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRanap_Dokter += rs2.getDouble(1);
+                                    Ranap_Dokter = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Ranap_Paramedis=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ranap Paramedis");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRanap_Paramedis += rs2.getDouble(1);
-                                Ranap_Paramedis=rs2.getDouble(1);
+                            Ranap_Dokter_Paramedis = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ranap Dokter Paramedis");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRanap_Dokter += rs2.getDouble(1);
+                                    Ranap_Dokter_Paramedis = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Ralan_Dokter=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ralan Dokter");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRalan_Dokter += rs2.getDouble(1);
-                                Ralan_Dokter=rs2.getDouble(1);
+                            Ranap_Paramedis = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ranap Paramedis");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRanap_Paramedis += rs2.getDouble(1);
+                                    Ranap_Paramedis = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Ralan_Dokter_Paramedis=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ralan Dokter Paramedis");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRalan_Dokter += rs2.getDouble(1);
-                                Ralan_Dokter_Paramedis=rs2.getDouble(1);
+                            Ralan_Dokter = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ralan Dokter");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRalan_Dokter += rs2.getDouble(1);
+                                    Ralan_Dokter = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Ralan_Paramedis=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Ralan Paramedis");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRalan_Paramedis += rs2.getDouble(1);
-                                Ralan_Paramedis=rs2.getDouble(1);
+                            Ralan_Dokter_Paramedis = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ralan Dokter Paramedis");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRalan_Dokter += rs2.getDouble(1);
+                                    Ralan_Dokter_Paramedis = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Tambahan=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Tambahan");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlTambahan += rs2.getDouble(1);
-                                Tambahan=rs2.getDouble(1);
+                            Ralan_Paramedis = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Ralan Paramedis");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRalan_Paramedis += rs2.getDouble(1);
+                                    Ralan_Paramedis = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Potongan=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Potongan");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlPotongan += rs2.getDouble(1);
-                                Potongan=rs2.getDouble(1);
+                            Tambahan = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Tambahan");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlTambahan += rs2.getDouble(1);
+                                    Tambahan = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Kamar=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Kamar");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlKamar += rs2.getDouble(1);
-                                Kamar=rs2.getDouble(1);
+                            Potongan = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Potongan");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlPotongan += rs2.getDouble(1);
+                                    Potongan = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Registrasi=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Registrasi");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRegistrasi += rs2.getDouble(1);
-                                Registrasi=rs2.getDouble(1);
+                            Kamar = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Kamar");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlKamar += rs2.getDouble(1);
+                                    Kamar = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Harian=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Harian");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlHarian += rs2.getDouble(1);
-                                Harian=rs2.getDouble(1);
+                            Registrasi = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Registrasi");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRegistrasi += rs2.getDouble(1);
+                                    Registrasi = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Retur_Obat=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Retur Obat");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlRetur_Obat += rs2.getDouble(1);
-                                Retur_Obat=rs2.getDouble(1);
+                            Harian = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Harian");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlHarian += rs2.getDouble(1);
+                                    Harian = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Resep_Pulang=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Resep Pulang");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlResep_Pulang += rs2.getDouble(1);
-                                Resep_Pulang=rs2.getDouble(1);
+                            Retur_Obat = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Retur Obat");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlRetur_Obat += rs2.getDouble(1);
+                                    Retur_Obat = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        Service=0;
-                        ps2=koneksi.prepareStatement(sqlps2);
-                        try {
-                            ps2.setString(1,rs.getString("no_rawat"));
-                            ps2.setString(2,"Service");
-                            rs2=ps2.executeQuery();
-                            while(rs2.next()){
-                                ttlService += rs2.getDouble(1);
-                                Service=rs2.getDouble(1);
+                            Resep_Pulang = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Resep Pulang");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlResep_Pulang += rs2.getDouble(1);
+                                    Resep_Pulang = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notif 2: "+e);
-                        } finally{
-                            if(rs2!=null){
-                                rs2.close();
-                            }
-                            if(ps2!=null){
-                                ps2.close();
-                            }
-                        }
 
-                        all=all+Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service;
-                        
-                        if((Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service)>0){
-                            Keterangan="Sudah Bayar";
+                            Service = 0;
+                            ps2 = koneksi.prepareStatement(sqlps2);
+                            try {
+                                ps2.setString(1, rs.getString("no_rawat"));
+                                ps2.setString(2, "Service");
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    ttlService += rs2.getDouble(1);
+                                    Service = rs2.getDouble(1);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Notif 2: " + e);
+                            } finally {
+                                if (rs2 != null) {
+                                    rs2.close();
+                                }
+                                if (ps2 != null) {
+                                    ps2.close();
+                                }
+                            }
+
+                            all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service;
+
+                            if ((Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service) > 0) {
+                                Keterangan = "Sudah Bayar";
+                            }
+
+                            if (tampilkan.equals("Belum Bayar") && Keterangan.
+                                    equals("Belum Bayar")) {
+                                tabMode.addRow(new Object[]{
+                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
+                                    "select no_nota from nota_inap where no_rawat=?",
+                                    rs.getString("no_rawat")),
+                                    rs.getString("no_rkm_medis"), rs.getString(
+                                    "nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.
+                                    getString("nm_bangsal"),
+                                    Sequel.cariIsi(
+                                    "select perujuk from rujuk_masuk where no_rawat=?",
+                                    rs.getString("no_rawat")), Valid.SetAngka(
+                                    Registrasi),
+                                    Valid.SetAngka(
+                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(
+                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(
+                                    Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
+                                    Kamar + Service), Valid.SetAngka(Operasi),
+                                    Valid.SetAngka(Harian), Valid.SetAngka(
+                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
+                                });
+                            } else if (tampilkan.equals("Sudah Bayar") && Keterangan.
+                                    equals("Sudah Bayar")) {
+                                tabMode.addRow(new Object[]{
+                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
+                                    "select no_nota from nota_inap where no_rawat=?",
+                                    rs.getString("no_rawat")),
+                                    rs.getString("no_rkm_medis"), rs.getString(
+                                    "nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.
+                                    getString("nm_bangsal"),
+                                    Sequel.cariIsi(
+                                    "select perujuk from rujuk_masuk where no_rawat=?",
+                                    rs.getString("no_rawat")), Valid.SetAngka(
+                                    Registrasi),
+                                    Valid.SetAngka(
+                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(
+                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(
+                                    Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
+                                    Kamar + Service), Valid.SetAngka(Operasi),
+                                    Valid.SetAngka(Harian), Valid.SetAngka(
+                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
+                                });
+                            } else if (tampilkan.equals("Semua")) {
+                                tabMode.addRow(new Object[]{
+                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
+                                    "select no_nota from nota_inap where no_rawat=?",
+                                    rs.getString("no_rawat")),
+                                    rs.getString("no_rkm_medis"), rs.getString(
+                                    "nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.
+                                    getString("nm_bangsal"),
+                                    Sequel.cariIsi(
+                                    "select perujuk from rujuk_masuk where no_rawat=?",
+                                    rs.getString("no_rawat")), Valid.SetAngka(
+                                    Registrasi),
+                                    Valid.SetAngka(
+                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(
+                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(
+                                    Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
+                                    Kamar + Service), Valid.SetAngka(Operasi),
+                                    Valid.SetAngka(Harian), Valid.SetAngka(
+                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
+                                });
+                            }
+
                         }
-                        
-                        if(tampilkan.equals("Belum Bayar")&&Keterangan.equals("Belum Bayar")){
-                            tabMode.addRow(new Object[]{
-                                rs.getString("tgl_keluar"),Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",rs.getString("no_rawat")),
-                                rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("kd_kamar")+" "+rs.getString("nm_bangsal"),
-                                Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",rs.getString("no_rawat")),Valid.SetAngka(Registrasi),
-                                Valid.SetAngka(Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis),
-                                Valid.SetAngka(Obat),Valid.SetAngka(Retur_Obat),Valid.SetAngka(Resep_Pulang),Valid.SetAngka(Laborat),Valid.SetAngka(Radiologi),Valid.SetAngka(Potongan),
-                                Valid.SetAngka(Tambahan),Valid.SetAngka(Kamar+Service),Valid.SetAngka(Operasi),Valid.SetAngka(Harian),Valid.SetAngka(Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+
-                                        Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service)
-                            });
-                        }else if(tampilkan.equals("Sudah Bayar")&&Keterangan.equals("Sudah Bayar")){
-                            tabMode.addRow(new Object[]{
-                                rs.getString("tgl_keluar"),Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",rs.getString("no_rawat")),
-                                rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("kd_kamar")+" "+rs.getString("nm_bangsal"),
-                                Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",rs.getString("no_rawat")),Valid.SetAngka(Registrasi),
-                                Valid.SetAngka(Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis),
-                                Valid.SetAngka(Obat),Valid.SetAngka(Retur_Obat),Valid.SetAngka(Resep_Pulang),Valid.SetAngka(Laborat),Valid.SetAngka(Radiologi),Valid.SetAngka(Potongan),
-                                Valid.SetAngka(Tambahan),Valid.SetAngka(Kamar+Service),Valid.SetAngka(Operasi),Valid.SetAngka(Harian),Valid.SetAngka(Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+
-                                        Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service)
-                            });
-                        }else if(tampilkan.equals("Semua")){
-                            tabMode.addRow(new Object[]{
-                                rs.getString("tgl_keluar"),Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",rs.getString("no_rawat")),
-                                rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("kd_kamar")+" "+rs.getString("nm_bangsal"),
-                                Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",rs.getString("no_rawat")),Valid.SetAngka(Registrasi),
-                                Valid.SetAngka(Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis),
-                                Valid.SetAngka(Obat),Valid.SetAngka(Retur_Obat),Valid.SetAngka(Resep_Pulang),Valid.SetAngka(Laborat),Valid.SetAngka(Radiologi),Valid.SetAngka(Potongan),
-                                Valid.SetAngka(Tambahan),Valid.SetAngka(Kamar+Service),Valid.SetAngka(Operasi),Valid.SetAngka(Harian),Valid.SetAngka(Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+
-                                        Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service)
-                            });
-                        }
-                            
-                        
-                    }}                
+                    }
                 }
-                LCount2.setText(""+tabMode.getRowCount());
-                if(!tampilkan.equals("Belum Bayar")){
+                LCount2.setText("" + tabMode.getRowCount());
+                if (!tampilkan.equals("Belum Bayar")) {
                     tabMode.addRow(new Object[]{
-                            ">> Total ",":","","","","",Valid.SetAngka(ttlRegistrasi),Valid.SetAngka(ttlRanap_Dokter+ttlRanap_Paramedis+ttlRalan_Dokter+ttlRalan_Paramedis),
-                            Valid.SetAngka(ttlObat),Valid.SetAngka(ttlRetur_Obat),Valid.SetAngka(ttlResep_Pulang),Valid.SetAngka(ttlLaborat),Valid.SetAngka(ttlRadiologi),Valid.SetAngka(ttlPotongan),
-                            Valid.SetAngka(ttlTambahan),Valid.SetAngka(ttlKamar+ttlService),Valid.SetAngka(ttlOperasi),Valid.SetAngka(ttlHarian),Valid.SetAngka(all)
+                        ">> Total ", ":", "", "", "", "", Valid.SetAngka(
+                        ttlRegistrasi), Valid.SetAngka(
+                        ttlRanap_Dokter + ttlRanap_Paramedis + ttlRalan_Dokter + ttlRalan_Paramedis),
+                        Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRetur_Obat),
+                        Valid.SetAngka(ttlResep_Pulang), Valid.SetAngka(
+                        ttlLaborat), Valid.SetAngka(ttlRadiologi), Valid.
+                        SetAngka(ttlPotongan),
+                        Valid.SetAngka(ttlTambahan), Valid.SetAngka(
+                        ttlKamar + ttlService), Valid.SetAngka(ttlOperasi),
+                        Valid.SetAngka(ttlHarian), Valid.SetAngka(all)
                     });
                     LCount.setText(Valid.SetAngka(all));
-                }else{
-                    LCount.setText(""+0);
-                } 
+                } else {
+                    LCount.setText("" + 0);
+                }
             } catch (Exception e) {
-                System.out.println("Notif 1 : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif 1 : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
+
             this.setCursor(Cursor.getDefaultCursor());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void getData() {
-        int row=tbBangsal.getSelectedRow();
-        if(row!= -1){
-            TKd.setText(tabMode.getValueAt(row,1).toString());
+        int row = tbBangsal.getSelectedRow();
+        if (row != -1) {
+            TKd.setText(tabMode.getValueAt(row, 1).toString());
         }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,65));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 65));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgPembayaranRanap.class.
+            getName());
 
 }

@@ -3,199 +3,251 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgAbout.java
  *
  * Created on 23 Jun 10, 19:03:08
  */
-
 package perpustakaan;
 
-import fungsi.*;
-import java.awt.*;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javafx.application.*;
-import javafx.beans.value.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 import static javafx.concurrent.Worker.State.FAILED;
-import javafx.embed.swing.*;
-import javafx.print.*;
-import javafx.scene.*;
-import javafx.scene.transform.*;
-import javafx.scene.web.*;
-import javafx.stage.*;
-import javafx.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import javafx.embed.swing.JFXPanel;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.transform.Scale;
+import javafx.scene.web.PopupFeatures;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
 
 /**
  *
  * @author perpustakaan
  */
 public class PerpustakaanPenelitian extends javax.swing.JDialog {
+
     private final JFXPanel jfxPanel = new JFXPanel();
     private WebEngine engine;
- 
+
     private final JLabel lblStatus = new JLabel();
 
     private final JTextField txtURL = new JTextField();
     private final JProgressBar progressBar = new JProgressBar();
-    private final Properties prop = new Properties(); 
-    private final validasi Valid=new validasi();
-    
+    private final Properties prop = new Properties();
+    private final validasi Valid = new validasi();
+
     public PerpustakaanPenelitian(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         initComponents2();
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         BtnCariActionPerformed(null);
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         BtnCariActionPerformed(null);
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         BtnCariActionPerformed(null);
                     }
                 }
+
             });
         }
     }
-    
-    private void initComponents2() {           
+
+    private void initComponents2() {
         txtURL.addActionListener((ActionEvent e) -> {
             loadURL(txtURL.getText());
         });
-  
+
         progressBar.setPreferredSize(new Dimension(150, 18));
         progressBar.setStringPainted(true);
-        
+
         panel.add(jfxPanel, BorderLayout.CENTER);
-        
-        internalFrame1.add(panel);        
+
+        internalFrame1.add(panel);
     }
-    
-     private void createScene() {        
+
+    private void createScene() {
         Platform.runLater(new Runnable() {
 
+            @Override
             public void run() {
                 WebView view = new WebView();
-                
+
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
-                
-                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
+
+                engine.setCreatePopupHandler(
+                        new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
                         return view.getEngine();
                     }
+
                 });
-                
-                engine.titleProperty().addListener((ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                    SwingUtilities.invokeLater(() -> {
-                        PerpustakaanPenelitian.this.setTitle(newValue);
-                    });
-                });
-                
-                
+
+                engine.titleProperty().addListener(
+                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                PerpustakaanPenelitian.this.setTitle(newValue);
+                            });
+                        });
+
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
                         lblStatus.setText(event.getData());
                     });
                 });
-                
-                
-                engine.getLoadWorker().workDoneProperty().addListener((ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
-                    SwingUtilities.invokeLater(() -> {
-                        progressBar.setValue(newValue.intValue());
-                    });                                                   
-                });
-                
-                engine.getLoadWorker().exceptionProperty().addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
-                    if (engine.getLoadWorker().getState() == FAILED) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(
-                                    panel,
-                                    (value != null) ?
-                                            engine.getLocation() + "\n" + value.getMessage() :
-                                            engine.getLocation() + "\nUnexpected Catatan.",
-                                    "Loading Catatan...",
-                                    JOptionPane.ERROR_MESSAGE);
+
+                engine.getLoadWorker().workDoneProperty().addListener(
+                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                progressBar.setValue(newValue.intValue());
+                            });
                         });
-                    }
-                });
-                
-                
-                engine.locationProperty().addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
-                    SwingUtilities.invokeLater(() -> {
-                        txtURL.setText(newValue);
-                    });
-                });
-                
-                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+
+                engine.getLoadWorker().exceptionProperty().addListener(
+                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                            if (engine.getLoadWorker().getState() == FAILED) {
+                                SwingUtilities.invokeLater(() -> {
+                                    JOptionPane.showMessageDialog(
+                                            panel,
+                                            (value != null)
+                                                    ? engine.getLocation() + "\n" + value.
+                                                    getMessage()
+                                                    : engine.getLocation() + "\nUnexpected Catatan.",
+                                            "Loading Catatan...",
+                                            JOptionPane.ERROR_MESSAGE);
+                                });
+                            }
+                        });
+
+                engine.locationProperty().addListener(
+                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                txtURL.setText(newValue);
+                            });
+                        });
+
+                engine.getLoadWorker().stateProperty().addListener(
+                        new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState, State newState) {
+                    public void changed(ObservableValue ov, State oldState,
+                            State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
-                                prop.loadFromXML(new FileInputStream("setting/database.xml"));
-                                if(engine.getLocation().replaceAll("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+prop.getProperty("PORTWEB")+"/"+prop.getProperty("HYBRIDWEB")+"/","").contains("penggajian/pages")){
-                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().replaceAll("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+prop.getProperty("PORTWEB")+"/"+prop.getProperty("HYBRIDWEB")+"/penggajian/pages/pages/","penggajian/pages/").replaceAll("http://"+koneksiDB.HOSTHYBRIDWEB()+"/"+prop.getProperty("HYBRIDWEB")+"/penggajian/pages/pages/","penggajian/pages/"));
+                                prop.loadFromXML(new FileInputStream(
+                                        "setting/database.xml"));
+                                if (engine.getLocation().replaceAll(
+                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
+                                        getProperty("PORTWEB") + "/" + prop.
+                                        getProperty("HYBRIDWEB") + "/", "").
+                                        contains("penggajian/pages")) {
+                                    setCursor(Cursor.getPredefinedCursor(
+                                            Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation().
+                                            replaceAll("http://" + koneksiDB.
+                                                    HOSTHYBRIDWEB() + ":" + prop.
+                                                            getProperty(
+                                                                    "PORTWEB") + "/" + prop.
+                                                            getProperty(
+                                                                    "HYBRIDWEB") + "/penggajian/pages/pages/",
+                                                    "penggajian/pages/").
+                                            replaceAll("http://" + koneksiDB.
+                                                    HOSTHYBRIDWEB() + "/" + prop.
+                                                            getProperty(
+                                                                    "HYBRIDWEB") + "/penggajian/pages/pages/",
+                                                    "penggajian/pages/"));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
                                 }
                             } catch (Exception ex) {
-                                System.out.println("Notifikasi : "+ex);
+                                System.out.println("Notifikasi : " + ex);
                             }
-                        } 
+                        }
                     }
+
                 });
-                
+
                 jfxPanel.setScene(new Scene(view));
             }
+
         });
     }
- 
-    public void loadURL(String url) {  
+
+    public void loadURL(String url) {
         try {
             createScene();
         } catch (Exception e) {
         }
-        
+
         Platform.runLater(() -> {
             try {
                 engine.load(url);
-            }catch (Exception exception) {
+            } catch (Exception exception) {
                 engine.load(url);
             }
-        });        
-    }    
-    
-    public void CloseScane(){
+        });
+    }
+
+    public void CloseScane() {
         Platform.setImplicitExit(false);
     }
-    
+
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
+                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.
+                getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.
+                getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -206,12 +258,9 @@ public class PerpustakaanPenelitian extends javax.swing.JDialog {
             }
         }
     }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -339,45 +388,48 @@ public class PerpustakaanPenelitian extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
-        if(this.isActive()==false){
+        if (this.isActive() == false) {
             Platform.setImplicitExit(false);
         }
     }//GEN-LAST:event_formWindowStateChanged
 
     private void TCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyTyped
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyTyped
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         try {
-            if(engine.getLocation().contains("ListPerpustakaanPenelitian")){
-                loadURL("http://" +koneksiDB.HOSTHYBRIDWEB()+":"+prop.getProperty("PORTWEB")+"/"+prop.getProperty("HYBRIDWEB")+"/"+"penggajian/index.php?act=ListPerpustakaanPenelitian&action=LIHAT&keyword="+TCari.getText().replaceAll(" ","_"));
-            }                
+            if (engine.getLocation().contains("ListPerpustakaanPenelitian")) {
+                loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
+                        getProperty("PORTWEB") + "/" + prop.getProperty(
+                        "HYBRIDWEB") + "/" + "penggajian/index.php?act=ListPerpustakaanPenelitian&action=LIHAT&keyword=" + TCari.
+                                getText().replaceAll(" ", "_"));
+            }
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-        }        
+            System.out.println("Notifikasi : " + ex);
+        }
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -388,10 +440,10 @@ public class PerpustakaanPenelitian extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari, BtnKeluar);
+        } else {
+            Valid.pindah(evt, TCari, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
@@ -400,22 +452,26 @@ public class PerpustakaanPenelitian extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,TCari);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, TCari);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanPenelitian dialog = new PerpustakaanPenelitian(new javax.swing.JFrame(), true);
+            PerpustakaanPenelitian dialog = new PerpustakaanPenelitian(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -432,6 +488,7 @@ public class PerpustakaanPenelitian extends javax.swing.JDialog {
     private widget.panelisi panel;
     private widget.panelisi panelGlass5;
     // End of variables declaration//GEN-END:variables
+    private static final Logger LOG = Logger.getLogger(
+            PerpustakaanPenelitian.class.getName());
 
-   
 }

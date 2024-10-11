@@ -2,175 +2,233 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariPegawai;
 
 /**
  *
  * @author perpustakaan
  */
 public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
-    private DlgCariPegawai pegawai=new DlgCariPegawai(null,false);
-    private String finger="";
+    private int i = 0;
+    private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+    private String finger = "";
     private StringBuilder htmlContent;
-    private String TANGGALMUNDUR="yes";
-    /** Creates new form DlgRujuk
+    private String TANGGALMUNDUR = "yes";
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMChecklistKriteriaMasukICU(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","J.K.","Tanggal","Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi","Gagal Nafas","Gagal Jantung Dengan Tanda Bendungan Paru",
-            "Gangguan Asam Basa / Elektrolit","Gagal Ginjal Dengan Tanda Bendungan Paru","Syok Karena Perdarahan Anafilaksis","Pasca Operasi Besar","Kejang Berulang","Gangguan Kesadaran",
-            "Dehidrasi Berat","Gangguan Jalan Nafas","Arimia Jantung","Asma Akut Berat","Diabetes Yang Memerlukan Terapi Insulin Kontinyu","Penyakit Keganasan Dengan Metastasis",
-            "Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal","Pasien Dengan GCS 3","Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat","Nadi < 40 atau >150 (x/menit)",
-            "SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien","MAP < 60 mmHg","DBP > 120 mmHg","R > 35 x/menit","Na < 110 meq/L Atau > 170 meq/L","Ca > 15 mg/dl","GDS > 800 mg/dl",
-            "K < 2 meq/L Atau 7meq/L","PaO2 < 50 mmHg","PH < 7,1 Atau 7,7","Perbedaan Cerebrovaskuler, SAH, Atau Contusion Dengan Gangguan Kesadaran Atau Neorologi",
-            "Ruptor Organ Dalam, Kandung Kemih, Hati, Varices Esophagus Atau Uterus Dengan Gangguan Hemodinamik","Pupil Anisokor","Obstruksi Jalan Nafas","Anuria","Kejang Berulang",
-            "Tamponade Jantung","Coma","Sianosis","Luka Bakar > 10 % BSA","NIP/Kode Dokter","DPJP/Dokter Jaga/IGD"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
+            "Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi", "Gagal Nafas",
+            "Gagal Jantung Dengan Tanda Bendungan Paru",
+            "Gangguan Asam Basa / Elektrolit",
+            "Gagal Ginjal Dengan Tanda Bendungan Paru",
+            "Syok Karena Perdarahan Anafilaksis", "Pasca Operasi Besar",
+            "Kejang Berulang", "Gangguan Kesadaran",
+            "Dehidrasi Berat", "Gangguan Jalan Nafas", "Arimia Jantung",
+            "Asma Akut Berat",
+            "Diabetes Yang Memerlukan Terapi Insulin Kontinyu",
+            "Penyakit Keganasan Dengan Metastasis",
+            "Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal",
+            "Pasien Dengan GCS 3",
+            "Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat",
+            "Nadi < 40 atau >150 (x/menit)",
+            "SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien", "MAP < 60 mmHg",
+            "DBP > 120 mmHg", "R > 35 x/menit",
+            "Na < 110 meq/L Atau > 170 meq/L", "Ca > 15 mg/dl",
+            "GDS > 800 mg/dl",
+            "K < 2 meq/L Atau 7meq/L", "PaO2 < 50 mmHg", "PH < 7,1 Atau 7,7",
+            "Perbedaan Cerebrovaskuler, SAH, Atau Contusion Dengan Gangguan Kesadaran Atau Neorologi",
+            "Ruptor Organ Dalam, Kandung Kemih, Hati, Varices Esophagus Atau Uterus Dengan Gangguan Hemodinamik",
+            "Pupil Anisokor", "Obstruksi Jalan Nafas", "Anuria",
+            "Kejang Berulang",
+            "Tamponade Jantung", "Coma", "Sianosis", "Luka Bakar > 10 % BSA",
+            "NIP/Kode Dokter", "DPJP/Dokter Jaga/IGD"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 47; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(105);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(70);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(25);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(115);
-            }else if(i==45){
+            } else if (i == 45) {
                 column.setPreferredWidth(90);
-            }else if(i==46){
+            } else if (i == 46) {
                 column.setPreferredWidth(150);
-            }else{
+            } else {
                 column.setPreferredWidth(100);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         pegawai.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(pegawai.getTable().getSelectedRow()!= -1){  
-                    KodePetugas.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(),0).toString());
-                    NamaPetugas.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(),1).toString());
+                if (pegawai.getTable().getSelectedRow() != -1) {
+                    KodePetugas.setText(pegawai.getTable().getValueAt(pegawai.
+                            getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas.setText(pegawai.getTable().getValueAt(pegawai.
+                            getTable().getSelectedRow(), 1).toString());
                     btnPetugas.requestFocus();
-                }  
-                    
+                }
+
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         ChkInput.setSelected(false);
         isForm();
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
-        
+
         try {
-            TANGGALMUNDUR=koneksiDB.TANGGALMUNDUR();
+            TANGGALMUNDUR = koneksiDB.TANGGALMUNDUR();
         } catch (Exception e) {
-            TANGGALMUNDUR="yes";
+            TANGGALMUNDUR = "yes";
         }
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1623,30 +1681,36 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
-        }else{            
-            Valid.pindah(evt,TCari,Tanggal);
+        } else {
+            Valid.pindah(evt, TCari, Tanggal);
         }
 }//GEN-LAST:event_TNoRwKeyPressed
 
     private void TPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TPasienKeyPressed
-        Valid.pindah(evt,TCari,BtnSimpan);
+        Valid.pindah(evt, TCari, BtnSimpan);
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(KodePetugas.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"DPJP/Dokter Jaga/IGD");
-        }else{
-            if(akses.getkode().equals("Admin Utama")){
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (KodePetugas.getText().trim().isEmpty() || NamaPetugas.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(btnPetugas, "DPJP/Dokter Jaga/IGD");
+        } else {
+            if (akses.getkode().equals("Admin Utama")) {
                 simpan();
-            }else{
-                if(TanggalRegistrasi.getText().isEmpty()){
-                    TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",TNoRw.getText()));
+            } else {
+                if (TanggalRegistrasi.getText().isEmpty()) {
+                    TanggalRegistrasi.setText(Sequel.cariIsi(
+                            "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
+                            TNoRw.getText()));
                 }
-                if(Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19))==true){
+                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                        getSelectedItem().toString().substring(11, 19)) == true) {
                     simpan();
                 }
             }
@@ -1654,84 +1718,104 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt,Infeksi,BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else {
-                if(akses.getkode().equals(tbObat.getValueAt(tbObat.getSelectedRow(),45).toString())){
-                    if(Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString(),Sequel.ambiltanggalsekarang())==true){
+            } else {
+                if (akses.getkode().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 45).toString())) {
+                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 5).toString(), Sequel.
+                                    ambiltanggalsekarang()) == true) {
                         hapus();
                     }
-                }else{
-                    JOptionPane.showMessageDialog(null,"Harus salah satu petugas sesuai user login..!!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Harus salah satu petugas sesuai user login..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }   
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(KodePetugas.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"DPJP/Dokter Jaga/IGD");
-        }else{  
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (KodePetugas.getText().trim().isEmpty() || NamaPetugas.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(btnPetugas, "DPJP/Dokter Jaga/IGD");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else {
-                    if(akses.getkode().equals(tbObat.getValueAt(tbObat.getSelectedRow(),45).toString())){
-                        if(Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString(),Sequel.ambiltanggalsekarang())==true){
-                            if(TanggalRegistrasi.getText().isEmpty()){
-                                TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",TNoRw.getText()));
+                } else {
+                    if (akses.getkode().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 45).toString())) {
+                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
+                                getSelectedRow(), 5).toString(), Sequel.
+                                        ambiltanggalsekarang()) == true) {
+                            if (TanggalRegistrasi.getText().isEmpty()) {
+                                TanggalRegistrasi.setText(Sequel.cariIsi(
+                                        "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
+                                        TNoRw.getText()));
                             }
-                            if(Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19))==true){
+                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.
+                                    getText(), Valid.SetTgl(Tanggal.
+                                            getSelectedItem() + "") + " " + Tanggal.
+                                            getSelectedItem().toString().
+                                            substring(11, 19)) == true) {
                                 ganti();
                             }
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Harus salah satu petugas sesuai user login..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Harus salah satu petugas sesuai user login..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1742,186 +1826,239 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
+        } else if (tabMode.getRowCount() != 0) {
+            try {
                 htmlContent = new StringBuilder();
-                htmlContent.append(                             
-                    "<tr class='isi'>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl.Lahir</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>J.K.</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Nafas</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Jantung Dengan Tanda Bendungan Paru</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Asam Basa / Elektrolit</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Ginjal Dengan Tanda Bendungan Paru</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Syok Karena Perdarahan Anafilaksis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasca Operasi Besar</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kejang Berulang</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Kesadaran</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Dehidrasi Berat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Jalan Nafas</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arimia Jantung</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Asma Akut Berat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Diabetes Yang Memerlukan Terapi Insulin Kontinyu</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Penyakit Keganasan Dengan Metastasis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Dengan GCS 3</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nadi < 40 atau >150 (x/menit)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>MAP < 60 mmHg</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>DBP > 120 mmHg</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>R > 35 x/menit</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Na < 110 meq/L Atau > 170 meq/L</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ca > 15 mg/dl</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>GDS > 800 mg/dl</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>K < 2 meq/L Atau 7meq/L</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>PaO2 < 50 mmHg</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>PH < 7,1 Atau 7,7</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Perbedaan Cerebrovaskuler, SAH, Atau Contusion Dengan Gangguan Kesadaran Atau Neorologi</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ruptor Organ Dalam, Kandung Kemih, Hati, Varices Esophagus Atau Uterus Dengan Gangguan Hemodinamik</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pupil Anisokor</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Obstruksi Jalan Nafas</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Anuria</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kejang Berulang</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tamponade Jantung</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Coma</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Sianosis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Luka Bakar > 10 % BSA</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>NIP/Kode Dokter</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>DPJP/Dokter Jaga/IGD</b></td>"+
-                    "</tr>"
+                htmlContent.append(
+                        "<tr class='isi'>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl.Lahir</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>J.K.</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Nafas</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Jantung Dengan Tanda Bendungan Paru</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Asam Basa / Elektrolit</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gagal Ginjal Dengan Tanda Bendungan Paru</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Syok Karena Perdarahan Anafilaksis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasca Operasi Besar</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kejang Berulang</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Kesadaran</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Dehidrasi Berat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Gangguan Jalan Nafas</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arimia Jantung</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Asma Akut Berat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Diabetes Yang Memerlukan Terapi Insulin Kontinyu</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Penyakit Keganasan Dengan Metastasis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Dengan GCS 3</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nadi < 40 atau >150 (x/menit)</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>MAP < 60 mmHg</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>DBP > 120 mmHg</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>R > 35 x/menit</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Na < 110 meq/L Atau > 170 meq/L</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ca > 15 mg/dl</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>GDS > 800 mg/dl</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>K < 2 meq/L Atau 7meq/L</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>PaO2 < 50 mmHg</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>PH < 7,1 Atau 7,7</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Perbedaan Cerebrovaskuler, SAH, Atau Contusion Dengan Gangguan Kesadaran Atau Neorologi</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ruptor Organ Dalam, Kandung Kemih, Hati, Varices Esophagus Atau Uterus Dengan Gangguan Hemodinamik</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pupil Anisokor</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Obstruksi Jalan Nafas</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Anuria</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kejang Berulang</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tamponade Jantung</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Coma</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Sianosis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Luka Bakar > 10 % BSA</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>NIP/Kode Dokter</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>DPJP/Dokter Jaga/IGD</b></td>"
+                        + "</tr>"
                 );
-                
+
                 for (i = 0; i < tabMode.getRowCount(); i++) {
                     htmlContent.append(
-                        "<tr class='isi'>"+
-                           "<td valign='top'>"+tbObat.getValueAt(i,0).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,1).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,2).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,3).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,4).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,5).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,6).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,7).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,8).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,9).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,10).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,11).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,12).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,13).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,14).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,15).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,16).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,17).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,18).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,19).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,20).toString()+"</td>"+ 
-                            "<td valign='top'>"+tbObat.getValueAt(i,21).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,22).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,23).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,24).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,25).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,26).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,27).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,28).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,29).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,30).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,31).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,32).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,33).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,34).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,35).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,36).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,37).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,38).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,39).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,40).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,41).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,42).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,43).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,44).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,45).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,46).toString()+"</td>"+
-                        "</tr>");
+                            "<tr class='isi'>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 22).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 23).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 24).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 25).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 26).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 27).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 28).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 29).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 30).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 31).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 32).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 33).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 34).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 35).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 36).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 37).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 38).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 39).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 40).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 41).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 42).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 43).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 44).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 45).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 46).
+                                    toString() + "</td>"
+                            + "</tr>");
                 }
-                
+
                 LoadHTML.setText(
-                    "<html>"+
-                      "<table width='5100px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                       htmlContent.toString()+
-                      "</table>"+
-                    "</html>"
+                        "<html>"
+                        + "<table width='5100px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                        + htmlContent.toString()
+                        + "</table>"
+                        + "</html>"
                 );
 
-                File g = new File("file2.css");            
-                BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                bg.write(
-                    ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                    ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                    ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                    ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                    ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                );
-                bg.close();
+                File g = new File("file2.css");
+                try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                    bg.write(
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                            + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                            + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                            + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                            + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                    );
+                }
 
-                File f = new File("DataChecklistKriteriaMasukICU.html");            
-                BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                            "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                            "<table width='5100px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                "<tr class='isi2'>"+
-                                    "<td valign='top' align='center'>"+
-                                        "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                        akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                        akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                        "<font size='2' face='Tahoma'>DATA CHECK LIST KRITERIA MASUK ICU<br><br></font>"+        
-                                    "</td>"+
-                               "</tr>"+
-                            "</table>")
-                );
-                bw.close();                         
+                File f = new File("DataChecklistKriteriaMasukICU.html");
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                    bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                            + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                            + "<table width='5100px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                            + "<tr class='isi2'>"
+                            + "<td valign='top' align='center'>"
+                            + "<font size='4' face='Tahoma'>" + akses.
+                                    getnamars() + "</font><br>"
+                            + akses.getalamatrs() + ", " + akses.
+                            getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                            + akses.getkontakrs() + ", E-mail : " + akses.
+                            getemailrs() + "<br><br>"
+                            + "<font size='2' face='Tahoma'>DATA CHECK LIST KRITERIA MASUK ICU<br><br></font>"
+                            + "</td>"
+                            + "</tr>"
+                            + "</table>")
+                    );
+                }
                 Desktop.getDesktop().browse(f.toURI());
 
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1931,9 +2068,9 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1944,10 +2081,10 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -1957,7 +2094,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_TNoRMKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1966,8 +2103,9 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1977,40 +2115,53 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void MnKriteriaMasukICUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKriteriaMasukICUActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),45).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),46).toString()+"\nID "+(finger.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),45).toString():finger)+"\n"+Tanggal.getSelectedItem()); 
-            Valid.MyReportqry("rptFormulirChecklistKriteriaMasukICU.jasper","report","::[ Formulir Check List Kriteria Masuk ICU ]::",
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"+
-                    "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "+
-                    "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "+
-                    "where checklist_kriteria_masuk_icu.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"' and checklist_kriteria_masuk_icu.tanggal='"+tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()+"' ",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            finger = Sequel.cariIsi(
+                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            param.put("finger",
+                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 46).toString() + "\nID " + (finger.
+                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 45).
+                                    toString() : finger) + "\n" + Tanggal.
+                            getSelectedItem());
+            Valid.MyReportqry("rptFormulirChecklistKriteriaMasukICU.jasper",
+                    "report", "::[ Formulir Check List Kriteria Masuk ICU ]::",
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"
+                    + "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"
+                    + "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"
+                    + "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"
+                    + "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"
+                    + "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"
+                    + "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"
+                    + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "
+                    + "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "
+                    + "where checklist_kriteria_masuk_icu.no_rawat='" + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString() + "' and checklist_kriteria_masuk_icu.tanggal='" + tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 5).toString() + "' ",
+                    param);
         }
     }//GEN-LAST:event_MnKriteriaMasukICUActionPerformed
 
@@ -2019,22 +2170,23 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-       Valid.pindah(evt,TCari,btnPetugas);
+        Valid.pindah(evt, TCari, btnPetugas);
     }//GEN-LAST:event_TanggalKeyPressed
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         pegawai.emptTeks();
-        pegawai.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        pegawai.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         pegawai.setLocationRelativeTo(internalFrame1);
         pegawai.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
 
     private void btnPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPetugasKeyPressed
-       Valid.pindah(evt,Tanggal,Prioritas1_1);
+        Valid.pindah(evt, Tanggal, Prioritas1_1);
     }//GEN-LAST:event_btnPetugasKeyPressed
 
     private void Prioritas1_5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_5KeyPressed
-       Valid.pindah(evt,Prioritas1_4,Prioritas1_6);
+        Valid.pindah(evt, Prioritas1_4, Prioritas1_6);
     }//GEN-LAST:event_Prioritas1_5KeyPressed
 
     private void Prioritas1_6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_6KeyPressed
@@ -2042,19 +2194,19 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }//GEN-LAST:event_Prioritas1_6KeyPressed
 
     private void Prioritas1_2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_2KeyPressed
-        Valid.pindah(evt,Prioritas1_1,Prioritas1_3);
+        Valid.pindah(evt, Prioritas1_1, Prioritas1_3);
     }//GEN-LAST:event_Prioritas1_2KeyPressed
 
     private void Prioritas1_3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_3KeyPressed
-        Valid.pindah(evt,Prioritas1_2,Prioritas1_4);
+        Valid.pindah(evt, Prioritas1_2, Prioritas1_4);
     }//GEN-LAST:event_Prioritas1_3KeyPressed
 
     private void Prioritas1_1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_1KeyPressed
-        Valid.pindah(evt,btnPetugas,Prioritas1_2);
+        Valid.pindah(evt, btnPetugas, Prioritas1_2);
     }//GEN-LAST:event_Prioritas1_1KeyPressed
 
     private void Prioritas1_4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas1_4KeyPressed
-        Valid.pindah(evt,Prioritas1_3,Prioritas1_5);
+        Valid.pindah(evt, Prioritas1_3, Prioritas1_5);
     }//GEN-LAST:event_Prioritas1_4KeyPressed
 
     private void Prioritas2_1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Prioritas2_1KeyPressed
@@ -2190,16 +2342,18 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }//GEN-LAST:event_Kinis8KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMChecklistKriteriaMasukICU dialog = new RMChecklistKriteriaMasukICU(new javax.swing.JFrame(), true);
+            RMChecklistKriteriaMasukICU dialog = new RMChecklistKriteriaMasukICU(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2367,111 +2521,140 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     private widget.ScrollPane scrollInput;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      *
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"+
-                    "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "+
-                    "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "+
-                    "where checklist_kriteria_masuk_icu.tanggal between ? and ? order by checklist_kriteria_masuk_icu.tanggal ");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"+
-                    "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"+
-                    "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"+
-                    "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "+
-                    "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "+
-                    "where checklist_kriteria_masuk_icu.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or "+
-                    "pasien.nm_pasien like ? or pegawai.nama like ? or checklist_kriteria_masuk_icu.nik like ?) order by checklist_kriteria_masuk_icu.tanggal ");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"
+                        + "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"
+                        + "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"
+                        + "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "
+                        + "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "
+                        + "where checklist_kriteria_masuk_icu.tanggal between ? and ? order by checklist_kriteria_masuk_icu.tanggal ");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,checklist_kriteria_masuk_icu.tanggal,"
+                        + "checklist_kriteria_masuk_icu.prioritas1_1,checklist_kriteria_masuk_icu.prioritas1_2,checklist_kriteria_masuk_icu.prioritas1_3,"
+                        + "checklist_kriteria_masuk_icu.prioritas1_4,checklist_kriteria_masuk_icu.prioritas1_5,checklist_kriteria_masuk_icu.prioritas1_6,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_1,checklist_kriteria_masuk_icu.prioritas2_2,checklist_kriteria_masuk_icu.prioritas2_3,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_4,checklist_kriteria_masuk_icu.prioritas2_5,checklist_kriteria_masuk_icu.prioritas2_6,"
+                        + "checklist_kriteria_masuk_icu.prioritas2_7,checklist_kriteria_masuk_icu.prioritas2_8,checklist_kriteria_masuk_icu.prioritas3_1,"
+                        + "checklist_kriteria_masuk_icu.prioritas3_2,checklist_kriteria_masuk_icu.prioritas3_3,checklist_kriteria_masuk_icu.prioritas3_4,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_1,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_2,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_3,checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_4,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_tanda_vital_5,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_3,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_5,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_laborat_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_radiologi_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_1,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_2,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_3,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_4,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_5,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_6,checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_7,"
+                        + "checklist_kriteria_masuk_icu.kriteria_fisiologis_klinis_8,checklist_kriteria_masuk_icu.nik,pegawai.nama "
+                        + "from checklist_kriteria_masuk_icu inner join reg_periksa on checklist_kriteria_masuk_icu.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join pegawai on pegawai.nik=checklist_kriteria_masuk_icu.nik "
+                        + "where checklist_kriteria_masuk_icu.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or "
+                        + "pasien.nm_pasien like ? or pegawai.nama like ? or checklist_kriteria_masuk_icu.nik like ?) order by checklist_kriteria_masuk_icu.tanggal ");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                while(rs.next()){
+
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("tgl_lahir"),rs.getString("jk"),
-                        rs.getString("tanggal"),rs.getString("prioritas1_1"),rs.getString("prioritas1_2"),rs.getString("prioritas1_3"),rs.getString("prioritas1_4"),
-                        rs.getString("prioritas1_5"),rs.getString("prioritas1_6"),rs.getString("prioritas2_1"),rs.getString("prioritas2_2"),rs.getString("prioritas2_3"),
-                        rs.getString("prioritas2_4"),rs.getString("prioritas2_5"),rs.getString("prioritas2_6"),rs.getString("prioritas2_7"),rs.getString("prioritas2_8"),
-                        rs.getString("prioritas3_1"),rs.getString("prioritas3_2"),rs.getString("prioritas3_3"),rs.getString("prioritas3_4"),rs.getString("kriteria_fisiologis_tanda_vital_1"),
-                        rs.getString("kriteria_fisiologis_tanda_vital_2"),rs.getString("kriteria_fisiologis_tanda_vital_3"),rs.getString("kriteria_fisiologis_tanda_vital_4"),
-                        rs.getString("kriteria_fisiologis_tanda_vital_5"),rs.getString("kriteria_fisiologis_laborat_1"),rs.getString("kriteria_fisiologis_laborat_2"),
-                        rs.getString("kriteria_fisiologis_laborat_3"),rs.getString("kriteria_fisiologis_laborat_4"),rs.getString("kriteria_fisiologis_laborat_5"),
-                        rs.getString("kriteria_fisiologis_laborat_6"),rs.getString("kriteria_fisiologis_radiologi_1"),rs.getString("kriteria_fisiologis_radiologi_2"),
-                        rs.getString("kriteria_fisiologis_klinis_1"),rs.getString("kriteria_fisiologis_klinis_2"),rs.getString("kriteria_fisiologis_klinis_3"),
-                        rs.getString("kriteria_fisiologis_klinis_4"),rs.getString("kriteria_fisiologis_klinis_5"),rs.getString("kriteria_fisiologis_klinis_6"),
-                        rs.getString("kriteria_fisiologis_klinis_7"),rs.getString("kriteria_fisiologis_klinis_8"),rs.getString("nik"),rs.getString("nama")
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
+                        rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("prioritas1_1"),
+                        rs.getString("prioritas1_2"), rs.getString(
+                        "prioritas1_3"), rs.getString("prioritas1_4"),
+                        rs.getString("prioritas1_5"), rs.getString(
+                        "prioritas1_6"), rs.getString("prioritas2_1"), rs.
+                        getString("prioritas2_2"), rs.getString("prioritas2_3"),
+                        rs.getString("prioritas2_4"), rs.getString(
+                        "prioritas2_5"), rs.getString("prioritas2_6"), rs.
+                        getString("prioritas2_7"), rs.getString("prioritas2_8"),
+                        rs.getString("prioritas3_1"), rs.getString(
+                        "prioritas3_2"), rs.getString("prioritas3_3"), rs.
+                        getString("prioritas3_4"), rs.getString(
+                        "kriteria_fisiologis_tanda_vital_1"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_2"), rs.
+                        getString("kriteria_fisiologis_tanda_vital_3"), rs.
+                        getString("kriteria_fisiologis_tanda_vital_4"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_5"), rs.
+                        getString("kriteria_fisiologis_laborat_1"), rs.
+                        getString("kriteria_fisiologis_laborat_2"),
+                        rs.getString("kriteria_fisiologis_laborat_3"), rs.
+                        getString("kriteria_fisiologis_laborat_4"), rs.
+                        getString("kriteria_fisiologis_laborat_5"),
+                        rs.getString("kriteria_fisiologis_laborat_6"), rs.
+                        getString("kriteria_fisiologis_radiologi_1"), rs.
+                        getString("kriteria_fisiologis_radiologi_2"),
+                        rs.getString("kriteria_fisiologis_klinis_1"), rs.
+                        getString("kriteria_fisiologis_klinis_2"), rs.getString(
+                        "kriteria_fisiologis_klinis_3"),
+                        rs.getString("kriteria_fisiologis_klinis_4"), rs.
+                        getString("kriteria_fisiologis_klinis_5"), rs.getString(
+                        "kriteria_fisiologis_klinis_6"),
+                        rs.getString("kriteria_fisiologis_klinis_7"), rs.
+                        getString("kriteria_fisiologis_klinis_8"), rs.getString(
+                        "nik"), rs.getString("nama")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     public void emptTeks() {
         Prioritas1_1.setSelectedIndex(1);
         Prioritas1_2.setSelectedIndex(1);
@@ -2514,90 +2697,136 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
         Kinis8.setSelectedIndex(1);
         Tanggal.setDate(new Date());
         Prioritas1_1.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            Prioritas1_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-            Prioritas1_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            Prioritas1_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-            Prioritas1_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            Prioritas1_5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-            Prioritas1_6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            Prioritas2_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-            Prioritas2_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            Prioritas2_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
-            Prioritas2_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            Prioritas2_5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
-            Prioritas2_6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            Prioritas2_7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
-            Prioritas2_8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            Prioritas3_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
-            Prioritas3_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());
-            Prioritas3_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());
-            Prioritas3_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString());
-            TandaVital1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),24).toString());
-            TandaVital2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString());
-            TandaVital3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),26).toString());
-            TandaVital4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),27).toString());
-            TandaVital5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),28).toString());
-            Laborat1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString());
-            Laborat2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),30).toString());
-            Laborat3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());
-            Laborat4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),32).toString());
-            Laborat5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),33).toString());
-            Laborat6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),34).toString());
-            Radiologi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),35).toString());
-            Radiologi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),36).toString());
-            Kinis1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),37).toString());
-            Kinis2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString());
-            Kinis3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),39).toString());
-            Kinis4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),40).toString());
-            Kinis5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),41).toString());
-            Kinis6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),42).toString());
-            Kinis7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),43).toString());
-            Kinis8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),44).toString());
-            Valid.SetTgl2(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Prioritas1_1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 6).toString());
+            Prioritas1_2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 7).toString());
+            Prioritas1_3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 8).toString());
+            Prioritas1_4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 9).toString());
+            Prioritas1_5.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 10).toString());
+            Prioritas1_6.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 11).toString());
+            Prioritas2_1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 12).toString());
+            Prioritas2_2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 13).toString());
+            Prioritas2_3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 14).toString());
+            Prioritas2_4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 15).toString());
+            Prioritas2_5.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 16).toString());
+            Prioritas2_6.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 17).toString());
+            Prioritas2_7.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 18).toString());
+            Prioritas2_8.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 19).toString());
+            Prioritas3_1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 20).toString());
+            Prioritas3_2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 21).toString());
+            Prioritas3_3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 22).toString());
+            Prioritas3_4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 23).toString());
+            TandaVital1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 24).toString());
+            TandaVital2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 25).toString());
+            TandaVital3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 26).toString());
+            TandaVital4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 27).toString());
+            TandaVital5.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 28).toString());
+            Laborat1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    29).toString());
+            Laborat2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    30).toString());
+            Laborat3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    31).toString());
+            Laborat4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    32).toString());
+            Laborat5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    33).toString());
+            Laborat6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    34).toString());
+            Radiologi1.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 35).toString());
+            Radiologi2.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 36).toString());
+            Kinis1.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 37).toString());
+            Kinis2.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 38).toString());
+            Kinis3.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 39).toString());
+            Kinis4.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Kinis5.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 41).toString());
+            Kinis6.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Kinis7.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Kinis8.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 44).toString());
+            Valid.SetTgl2(Tanggal,
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
-    
+
     private void isRawat() {
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,"+
-                    "reg_periksa.jam_reg from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,"
+                    + "reg_periksa.jam_reg from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"));
+                    TanggalRegistrasi.setText(
+                            rs.getString("tgl_registrasi") + " " + rs.getString(
+                            "jam_reg"));
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     /**
      *
      * @param norwt
@@ -2611,36 +2840,37 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
         ChkInput.setSelected(true);
         isForm();
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,internalFrame1.getHeight()-182));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
+                    getHeight() - 182));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getchecklist_kriteria_masuk_icu());
         BtnHapus.setEnabled(akses.getchecklist_kriteria_masuk_icu());
         BtnEdit.setEnabled(akses.getchecklist_kriteria_masuk_icu());
-        BtnPrint.setEnabled(akses.getchecklist_kriteria_masuk_icu()); 
-        if(akses.getjml2()>=1){
+        BtnPrint.setEnabled(akses.getchecklist_kriteria_masuk_icu());
+        if (akses.getjml2() >= 1) {
             btnPetugas.setEnabled(false);
             KodePetugas.setText(akses.getkode());
             NamaPetugas.setText(pegawai.tampil3(akses.getkode()));
         }
-        if(TANGGALMUNDUR.equals("no")){
-            if(!akses.getkode().equals("Admin Utama")){
+        if (TANGGALMUNDUR.equals("no")) {
+            if (!akses.getkode().equals("Admin Utama")) {
                 Tanggal.setEditable(false);
                 Tanggal.setEnabled(false);
             }
@@ -2648,114 +2878,252 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("checklist_kriteria_masuk_icu","no_rawat=? and tanggal=?","no_rawat=?,tanggal=?,prioritas1_1=?,prioritas1_2=?,prioritas1_3=?,prioritas1_4=?,prioritas1_5=?,prioritas1_6=?,"+
-                "prioritas2_1=?,prioritas2_2=?,prioritas2_3=?,prioritas2_4=?,prioritas2_5=?,prioritas2_6=?,prioritas2_7=?,prioritas2_8=?,prioritas3_1=?,prioritas3_2=?,prioritas3_3=?,prioritas3_4=?,"+
-                "kriteria_fisiologis_tanda_vital_1=?,kriteria_fisiologis_tanda_vital_2=?,kriteria_fisiologis_tanda_vital_3=?,kriteria_fisiologis_tanda_vital_4=?,kriteria_fisiologis_tanda_vital_5=?,"+
-                "kriteria_fisiologis_laborat_1=?,kriteria_fisiologis_laborat_2=?,kriteria_fisiologis_laborat_3=?,kriteria_fisiologis_laborat_4=?,kriteria_fisiologis_laborat_5=?,kriteria_fisiologis_laborat_6=?,"+
-                "kriteria_fisiologis_radiologi_1=?,kriteria_fisiologis_radiologi_2=?,kriteria_fisiologis_klinis_1=?,kriteria_fisiologis_klinis_2=?,kriteria_fisiologis_klinis_3=?,kriteria_fisiologis_klinis_4=?,"+
-                "kriteria_fisiologis_klinis_5=?,kriteria_fisiologis_klinis_6=?,kriteria_fisiologis_klinis_7=?,kriteria_fisiologis_klinis_8=?,nik=?",44,new String[]{
-                TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),Prioritas1_1.getSelectedItem().toString(),
-                Prioritas1_2.getSelectedItem().toString(),Prioritas1_3.getSelectedItem().toString(),Prioritas1_4.getSelectedItem().toString(),Prioritas1_5.getSelectedItem().toString(),
-                Prioritas1_6.getSelectedItem().toString(),Prioritas2_1.getSelectedItem().toString(),Prioritas2_2.getSelectedItem().toString(),Prioritas2_3.getSelectedItem().toString(),
-                Prioritas2_4.getSelectedItem().toString(),Prioritas2_5.getSelectedItem().toString(),Prioritas2_6.getSelectedItem().toString(),Prioritas2_7.getSelectedItem().toString(),
-                Prioritas2_8.getSelectedItem().toString(),Prioritas3_1.getSelectedItem().toString(),Prioritas3_2.getSelectedItem().toString(),Prioritas3_3.getSelectedItem().toString(),
-                Prioritas3_4.getSelectedItem().toString(),TandaVital1.getSelectedItem().toString(),TandaVital2.getSelectedItem().toString(),TandaVital3.getSelectedItem().toString(),
-                TandaVital4.getSelectedItem().toString(),TandaVital5.getSelectedItem().toString(),Laborat1.getSelectedItem().toString(),Laborat2.getSelectedItem().toString(),
-                Laborat3.getSelectedItem().toString(),Laborat4.getSelectedItem().toString(),Laborat5.getSelectedItem().toString(),Laborat6.getSelectedItem().toString(),
-                Radiologi1.getSelectedItem().toString(),Radiologi2.getSelectedItem().toString(),Kinis1.getSelectedItem().toString(),Kinis2.getSelectedItem().toString(),
-                Kinis3.getSelectedItem().toString(),Kinis4.getSelectedItem().toString(),Kinis5.getSelectedItem().toString(),Kinis6.getSelectedItem().toString(),Kinis7.getSelectedItem().toString(),
-                Kinis8.getSelectedItem().toString(),KodePetugas.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()
-        })==true){
-            tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
-            tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
-            tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),2);
-            tbObat.setValueAt(TglLahir.getText(),tbObat.getSelectedRow(),3);
-            tbObat.setValueAt(JK.getText(),tbObat.getSelectedRow(),4);
-            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),tbObat.getSelectedRow(),5);
-            tbObat.setValueAt(Prioritas1_1.getSelectedItem().toString(),tbObat.getSelectedRow(),6);
-            tbObat.setValueAt(Prioritas1_2.getSelectedItem().toString(),tbObat.getSelectedRow(),7);
-            tbObat.setValueAt(Prioritas1_3.getSelectedItem().toString(),tbObat.getSelectedRow(),8);
-            tbObat.setValueAt(Prioritas1_4.getSelectedItem().toString(),tbObat.getSelectedRow(),9);
-            tbObat.setValueAt(Prioritas1_5.getSelectedItem().toString(),tbObat.getSelectedRow(),10);
-            tbObat.setValueAt(Prioritas1_6.getSelectedItem().toString(),tbObat.getSelectedRow(),11);
-            tbObat.setValueAt(Prioritas2_1.getSelectedItem().toString(),tbObat.getSelectedRow(),12);
-            tbObat.setValueAt(Prioritas2_2.getSelectedItem().toString(),tbObat.getSelectedRow(),13);
-            tbObat.setValueAt(Prioritas2_3.getSelectedItem().toString(),tbObat.getSelectedRow(),14);
-            tbObat.setValueAt(Prioritas2_4.getSelectedItem().toString(),tbObat.getSelectedRow(),15);
-            tbObat.setValueAt(Prioritas2_5.getSelectedItem().toString(),tbObat.getSelectedRow(),16);
-            tbObat.setValueAt(Prioritas2_6.getSelectedItem().toString(),tbObat.getSelectedRow(),17);
-            tbObat.setValueAt(Prioritas2_7.getSelectedItem().toString(),tbObat.getSelectedRow(),18);
-            tbObat.setValueAt(Prioritas2_8.getSelectedItem().toString(),tbObat.getSelectedRow(),19);
-            tbObat.setValueAt(Prioritas3_1.getSelectedItem().toString(),tbObat.getSelectedRow(),20);
-            tbObat.setValueAt(Prioritas3_2.getSelectedItem().toString(),tbObat.getSelectedRow(),21);
-            tbObat.setValueAt(Prioritas3_3.getSelectedItem().toString(),tbObat.getSelectedRow(),22);
-            tbObat.setValueAt(Prioritas3_4.getSelectedItem().toString(),tbObat.getSelectedRow(),23);
-            tbObat.setValueAt(TandaVital1.getSelectedItem().toString(),tbObat.getSelectedRow(),24);
-            tbObat.setValueAt(TandaVital2.getSelectedItem().toString(),tbObat.getSelectedRow(),25);
-            tbObat.setValueAt(TandaVital3.getSelectedItem().toString(),tbObat.getSelectedRow(),26);
-            tbObat.setValueAt(TandaVital4.getSelectedItem().toString(),tbObat.getSelectedRow(),27);
-            tbObat.setValueAt(TandaVital5.getSelectedItem().toString(),tbObat.getSelectedRow(),28);
-            tbObat.setValueAt(Laborat1.getSelectedItem().toString(),tbObat.getSelectedRow(),29);
-            tbObat.setValueAt(Laborat2.getSelectedItem().toString(),tbObat.getSelectedRow(),30);
-            tbObat.setValueAt(Laborat3.getSelectedItem().toString(),tbObat.getSelectedRow(),31);
-            tbObat.setValueAt(Laborat4.getSelectedItem().toString(),tbObat.getSelectedRow(),32);
-            tbObat.setValueAt(Laborat5.getSelectedItem().toString(),tbObat.getSelectedRow(),33);
-            tbObat.setValueAt(Laborat6.getSelectedItem().toString(),tbObat.getSelectedRow(),34);
-            tbObat.setValueAt(Radiologi1.getSelectedItem().toString(),tbObat.getSelectedRow(),35);
-            tbObat.setValueAt(Radiologi2.getSelectedItem().toString(),tbObat.getSelectedRow(),36);
-            tbObat.setValueAt(Kinis1.getSelectedItem().toString(),tbObat.getSelectedRow(),37);
-            tbObat.setValueAt(Kinis2.getSelectedItem().toString(),tbObat.getSelectedRow(),38);
-            tbObat.setValueAt(Kinis3.getSelectedItem().toString(),tbObat.getSelectedRow(),39);
-            tbObat.setValueAt(Kinis4.getSelectedItem().toString(),tbObat.getSelectedRow(),40);
-            tbObat.setValueAt(Kinis5.getSelectedItem().toString(),tbObat.getSelectedRow(),41);
-            tbObat.setValueAt(Kinis6.getSelectedItem().toString(),tbObat.getSelectedRow(),42);
-            tbObat.setValueAt(Kinis7.getSelectedItem().toString(),tbObat.getSelectedRow(),43);
-            tbObat.setValueAt(Kinis8.getSelectedItem().toString(),tbObat.getSelectedRow(),44);
-            tbObat.setValueAt(KodePetugas.getText(),tbObat.getSelectedRow(),45);
-            tbObat.setValueAt(NamaPetugas.getText(),tbObat.getSelectedRow(),46);
+        if (Sequel.mengedittf("checklist_kriteria_masuk_icu",
+                "no_rawat=? and tanggal=?",
+                "no_rawat=?,tanggal=?,prioritas1_1=?,prioritas1_2=?,prioritas1_3=?,prioritas1_4=?,prioritas1_5=?,prioritas1_6=?,"
+                + "prioritas2_1=?,prioritas2_2=?,prioritas2_3=?,prioritas2_4=?,prioritas2_5=?,prioritas2_6=?,prioritas2_7=?,prioritas2_8=?,prioritas3_1=?,prioritas3_2=?,prioritas3_3=?,prioritas3_4=?,"
+                + "kriteria_fisiologis_tanda_vital_1=?,kriteria_fisiologis_tanda_vital_2=?,kriteria_fisiologis_tanda_vital_3=?,kriteria_fisiologis_tanda_vital_4=?,kriteria_fisiologis_tanda_vital_5=?,"
+                + "kriteria_fisiologis_laborat_1=?,kriteria_fisiologis_laborat_2=?,kriteria_fisiologis_laborat_3=?,kriteria_fisiologis_laborat_4=?,kriteria_fisiologis_laborat_5=?,kriteria_fisiologis_laborat_6=?,"
+                + "kriteria_fisiologis_radiologi_1=?,kriteria_fisiologis_radiologi_2=?,kriteria_fisiologis_klinis_1=?,kriteria_fisiologis_klinis_2=?,kriteria_fisiologis_klinis_3=?,kriteria_fisiologis_klinis_4=?,"
+                + "kriteria_fisiologis_klinis_5=?,kriteria_fisiologis_klinis_6=?,kriteria_fisiologis_klinis_7=?,kriteria_fisiologis_klinis_8=?,nik=?",
+                44, new String[]{
+                    TNoRw.getText(), Valid.
+                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19),
+                    Prioritas1_1.getSelectedItem().toString(),
+                    Prioritas1_2.getSelectedItem().toString(), Prioritas1_3.
+                    getSelectedItem().toString(),
+                    Prioritas1_4.getSelectedItem().toString(), Prioritas1_5.
+                    getSelectedItem().toString(),
+                    Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
+                    getSelectedItem().toString(),
+                    Prioritas2_2.getSelectedItem().toString(), Prioritas2_3.
+                    getSelectedItem().toString(),
+                    Prioritas2_4.getSelectedItem().toString(), Prioritas2_5.
+                    getSelectedItem().toString(),
+                    Prioritas2_6.getSelectedItem().toString(), Prioritas2_7.
+                    getSelectedItem().toString(),
+                    Prioritas2_8.getSelectedItem().toString(), Prioritas3_1.
+                    getSelectedItem().toString(),
+                    Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
+                    getSelectedItem().toString(),
+                    Prioritas3_4.getSelectedItem().toString(), TandaVital1.
+                    getSelectedItem().toString(), TandaVital2.getSelectedItem().
+                            toString(), TandaVital3.getSelectedItem().toString(),
+                    TandaVital4.getSelectedItem().toString(), TandaVital5.
+                    getSelectedItem().toString(), Laborat1.getSelectedItem().
+                            toString(), Laborat2.getSelectedItem().toString(),
+                    Laborat3.getSelectedItem().toString(), Laborat4.
+                    getSelectedItem().toString(), Laborat5.getSelectedItem().
+                            toString(), Laborat6.getSelectedItem().toString(),
+                    Radiologi1.getSelectedItem().toString(), Radiologi2.
+                    getSelectedItem().toString(), Kinis1.getSelectedItem().
+                            toString(), Kinis2.getSelectedItem().toString(),
+                    Kinis3.getSelectedItem().toString(), Kinis4.
+                    getSelectedItem().toString(), Kinis5.getSelectedItem().
+                            toString(), Kinis6.getSelectedItem().toString(),
+                    Kinis7.getSelectedItem().toString(),
+                    Kinis8.getSelectedItem().toString(), KodePetugas.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
+                }) == true) {
+            tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
+            tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
+            tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
+            tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
+            tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
+            tbObat.setValueAt(
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19), tbObat.
+                    getSelectedRow(), 5);
+            tbObat.setValueAt(Prioritas1_1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 6);
+            tbObat.setValueAt(Prioritas1_2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 7);
+            tbObat.setValueAt(Prioritas1_3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 8);
+            tbObat.setValueAt(Prioritas1_4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 9);
+            tbObat.setValueAt(Prioritas1_5.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 10);
+            tbObat.setValueAt(Prioritas1_6.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 11);
+            tbObat.setValueAt(Prioritas2_1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 12);
+            tbObat.setValueAt(Prioritas2_2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 13);
+            tbObat.setValueAt(Prioritas2_3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 14);
+            tbObat.setValueAt(Prioritas2_4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 15);
+            tbObat.setValueAt(Prioritas2_5.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 16);
+            tbObat.setValueAt(Prioritas2_6.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 17);
+            tbObat.setValueAt(Prioritas2_7.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 18);
+            tbObat.setValueAt(Prioritas2_8.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 19);
+            tbObat.setValueAt(Prioritas3_1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 20);
+            tbObat.setValueAt(Prioritas3_2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 21);
+            tbObat.setValueAt(Prioritas3_3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 22);
+            tbObat.setValueAt(Prioritas3_4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 23);
+            tbObat.setValueAt(TandaVital1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 24);
+            tbObat.setValueAt(TandaVital2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 25);
+            tbObat.setValueAt(TandaVital3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 26);
+            tbObat.setValueAt(TandaVital4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 27);
+            tbObat.setValueAt(TandaVital5.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 28);
+            tbObat.setValueAt(Laborat1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 29);
+            tbObat.setValueAt(Laborat2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 30);
+            tbObat.setValueAt(Laborat3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 31);
+            tbObat.setValueAt(Laborat4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 32);
+            tbObat.setValueAt(Laborat5.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 33);
+            tbObat.setValueAt(Laborat6.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 34);
+            tbObat.setValueAt(Radiologi1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 35);
+            tbObat.setValueAt(Radiologi2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 36);
+            tbObat.setValueAt(Kinis1.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 37);
+            tbObat.setValueAt(Kinis2.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 38);
+            tbObat.setValueAt(Kinis3.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 39);
+            tbObat.setValueAt(Kinis4.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 40);
+            tbObat.setValueAt(Kinis5.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 41);
+            tbObat.setValueAt(Kinis6.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 42);
+            tbObat.setValueAt(Kinis7.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 43);
+            tbObat.setValueAt(Kinis8.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 44);
+            tbObat.
+                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
+                            45);
+            tbObat.
+                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
+                            46);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from checklist_kriteria_masuk_icu where no_rawat=? and tanggal=?",2,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from checklist_kriteria_masuk_icu where no_rawat=? and tanggal=?",
+                2, new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             emptTeks();
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
 
     private void simpan() {
-        if(Sequel.menyimpantf("checklist_kriteria_masuk_icu","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",42,new String[]{
-            TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),Prioritas1_1.getSelectedItem().toString(),
-            Prioritas1_2.getSelectedItem().toString(),Prioritas1_3.getSelectedItem().toString(),Prioritas1_4.getSelectedItem().toString(),Prioritas1_5.getSelectedItem().toString(),
-            Prioritas1_6.getSelectedItem().toString(),Prioritas2_1.getSelectedItem().toString(),Prioritas2_2.getSelectedItem().toString(),Prioritas2_3.getSelectedItem().toString(),
-            Prioritas2_4.getSelectedItem().toString(),Prioritas2_5.getSelectedItem().toString(),Prioritas2_6.getSelectedItem().toString(),Prioritas2_7.getSelectedItem().toString(),
-            Prioritas2_8.getSelectedItem().toString(),Prioritas3_1.getSelectedItem().toString(),Prioritas3_2.getSelectedItem().toString(),Prioritas3_3.getSelectedItem().toString(),
-            Prioritas3_4.getSelectedItem().toString(),TandaVital1.getSelectedItem().toString(),TandaVital2.getSelectedItem().toString(),TandaVital3.getSelectedItem().toString(),
-            TandaVital4.getSelectedItem().toString(),TandaVital5.getSelectedItem().toString(),Laborat1.getSelectedItem().toString(),Laborat2.getSelectedItem().toString(),
-            Laborat3.getSelectedItem().toString(),Laborat4.getSelectedItem().toString(),Laborat5.getSelectedItem().toString(),Laborat6.getSelectedItem().toString(),
-            Radiologi1.getSelectedItem().toString(),Radiologi2.getSelectedItem().toString(),Kinis1.getSelectedItem().toString(),Kinis2.getSelectedItem().toString(),
-            Kinis3.getSelectedItem().toString(),Kinis4.getSelectedItem().toString(),Kinis5.getSelectedItem().toString(),Kinis6.getSelectedItem().toString(),Kinis7.getSelectedItem().toString(),
-            Kinis8.getSelectedItem().toString(),KodePetugas.getText()
-        })==true){
+        if (Sequel.menyimpantf("checklist_kriteria_masuk_icu",
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                "Data", 42, new String[]{
+                    TNoRw.getText(), Valid.
+                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19),
+                    Prioritas1_1.getSelectedItem().toString(),
+                    Prioritas1_2.getSelectedItem().toString(), Prioritas1_3.
+                    getSelectedItem().toString(),
+                    Prioritas1_4.getSelectedItem().toString(), Prioritas1_5.
+                    getSelectedItem().toString(),
+                    Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
+                    getSelectedItem().toString(),
+                    Prioritas2_2.getSelectedItem().toString(), Prioritas2_3.
+                    getSelectedItem().toString(),
+                    Prioritas2_4.getSelectedItem().toString(), Prioritas2_5.
+                    getSelectedItem().toString(),
+                    Prioritas2_6.getSelectedItem().toString(), Prioritas2_7.
+                    getSelectedItem().toString(),
+                    Prioritas2_8.getSelectedItem().toString(), Prioritas3_1.
+                    getSelectedItem().toString(),
+                    Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
+                    getSelectedItem().toString(),
+                    Prioritas3_4.getSelectedItem().toString(), TandaVital1.
+                    getSelectedItem().toString(), TandaVital2.getSelectedItem().
+                            toString(), TandaVital3.getSelectedItem().toString(),
+                    TandaVital4.getSelectedItem().toString(), TandaVital5.
+                    getSelectedItem().toString(), Laborat1.getSelectedItem().
+                            toString(), Laborat2.getSelectedItem().toString(),
+                    Laborat3.getSelectedItem().toString(), Laborat4.
+                    getSelectedItem().toString(), Laborat5.getSelectedItem().
+                            toString(), Laborat6.getSelectedItem().toString(),
+                    Radiologi1.getSelectedItem().toString(), Radiologi2.
+                    getSelectedItem().toString(), Kinis1.getSelectedItem().
+                            toString(), Kinis2.getSelectedItem().toString(),
+                    Kinis3.getSelectedItem().toString(), Kinis4.
+                    getSelectedItem().toString(), Kinis5.getSelectedItem().
+                            toString(), Kinis6.getSelectedItem().toString(),
+                    Kinis7.getSelectedItem().toString(),
+                    Kinis8.getSelectedItem().toString(), KodePetugas.getText()
+                }) == true) {
             tabMode.addRow(new String[]{
-                TNoRw.getText(),TNoRM.getText(),TPasien.getText(),TglLahir.getText(),JK.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),
-                Prioritas1_1.getSelectedItem().toString(),Prioritas1_2.getSelectedItem().toString(),Prioritas1_3.getSelectedItem().toString(),Prioritas1_4.getSelectedItem().toString(),Prioritas1_5.getSelectedItem().toString(),
-                Prioritas1_6.getSelectedItem().toString(),Prioritas2_1.getSelectedItem().toString(),Prioritas2_2.getSelectedItem().toString(),Prioritas2_3.getSelectedItem().toString(),Prioritas2_4.getSelectedItem().toString(),
-                Prioritas2_5.getSelectedItem().toString(),Prioritas2_6.getSelectedItem().toString(),Prioritas2_7.getSelectedItem().toString(),Prioritas2_8.getSelectedItem().toString(),Prioritas3_1.getSelectedItem().toString(),
-                Prioritas3_2.getSelectedItem().toString(),Prioritas3_3.getSelectedItem().toString(),Prioritas3_4.getSelectedItem().toString(),TandaVital1.getSelectedItem().toString(),TandaVital2.getSelectedItem().toString(),
-                TandaVital3.getSelectedItem().toString(),TandaVital4.getSelectedItem().toString(),TandaVital5.getSelectedItem().toString(),Laborat1.getSelectedItem().toString(),Laborat2.getSelectedItem().toString(),
-                Laborat3.getSelectedItem().toString(),Laborat4.getSelectedItem().toString(),Laborat5.getSelectedItem().toString(),Laborat6.getSelectedItem().toString(),Radiologi1.getSelectedItem().toString(),
-                Radiologi2.getSelectedItem().toString(),Kinis1.getSelectedItem().toString(),Kinis2.getSelectedItem().toString(),Kinis3.getSelectedItem().toString(),Kinis4.getSelectedItem().toString(),Kinis5.getSelectedItem().toString(),
-                Kinis6.getSelectedItem().toString(),Kinis7.getSelectedItem().toString(),Kinis8.getSelectedItem().toString(),KodePetugas.getText(),NamaPetugas.getText()
+                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
+                getText(), JK.getText(), Valid.SetTgl(
+                Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                getSelectedItem().toString().substring(11, 19),
+                Prioritas1_1.getSelectedItem().toString(), Prioritas1_2.
+                getSelectedItem().toString(), Prioritas1_3.getSelectedItem().
+                toString(), Prioritas1_4.getSelectedItem().toString(),
+                Prioritas1_5.getSelectedItem().toString(),
+                Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
+                getSelectedItem().toString(), Prioritas2_2.getSelectedItem().
+                toString(), Prioritas2_3.getSelectedItem().toString(),
+                Prioritas2_4.getSelectedItem().toString(),
+                Prioritas2_5.getSelectedItem().toString(), Prioritas2_6.
+                getSelectedItem().toString(), Prioritas2_7.getSelectedItem().
+                toString(), Prioritas2_8.getSelectedItem().toString(),
+                Prioritas3_1.getSelectedItem().toString(),
+                Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
+                getSelectedItem().toString(), Prioritas3_4.getSelectedItem().
+                toString(), TandaVital1.getSelectedItem().toString(),
+                TandaVital2.getSelectedItem().toString(),
+                TandaVital3.getSelectedItem().toString(), TandaVital4.
+                getSelectedItem().toString(), TandaVital5.getSelectedItem().
+                toString(), Laborat1.getSelectedItem().toString(), Laborat2.
+                getSelectedItem().toString(),
+                Laborat3.getSelectedItem().toString(), Laborat4.
+                getSelectedItem().toString(), Laborat5.getSelectedItem().
+                toString(), Laborat6.getSelectedItem().toString(), Radiologi1.
+                getSelectedItem().toString(),
+                Radiologi2.getSelectedItem().toString(), Kinis1.
+                getSelectedItem().toString(), Kinis2.getSelectedItem().
+                toString(), Kinis3.getSelectedItem().toString(), Kinis4.
+                getSelectedItem().toString(), Kinis5.getSelectedItem().
+                toString(),
+                Kinis6.getSelectedItem().toString(), Kinis7.getSelectedItem().
+                toString(), Kinis8.getSelectedItem().toString(), KodePetugas.
+                getText(), NamaPetugas.getText()
             });
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             emptTeks();
-        } 
+        }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            RMChecklistKriteriaMasukICU.class.getName());
 }

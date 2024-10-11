@@ -1,153 +1,205 @@
 package tranfusidarah;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTableStokDarah;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class UTDStokDarah extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private UTDKomponenDarah komponen=new UTDKomponenDarah(null,true);
+    private UTDKomponenDarah komponen = new UTDKomponenDarah(null, true);
     private int i;
     private Calendar cal;
     private SimpleDateFormat sdf;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public UTDStokDarah(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row={
-            "No.Kantung","Komponen","G.D.","Rhesus","Aftap","Kadaluarsa",
-            "Asal Darah","Status","Jasa Sarana","Paket BHP",
-            "KSO","Manajemen","Biaya","Pembatalan","Kode Komponen"
+        Object[] row = {
+            "No.Kantung", "Komponen", "G.D.", "Rhesus", "Aftap", "Kadaluarsa",
+            "Asal Darah", "Status", "Jasa Sarana", "Paket BHP",
+            "KSO", "Manajemen", "Biaya", "Pembatalan", "Kode Komponen"
         };
-        tabMode=new DefaultTableModel(null,row){
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}            
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(80);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(230);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(35);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(50);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(75);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(75);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(80);
-            }else{
+            } else {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
-        tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
+        tbDokter.setDefaultRenderer(Object.class, new WarnaTableStokDarah());
 
-        NoKantong.setDocument(new batasInput((byte)20).getKata(NoKantong));
-        KodeKomponen.setDocument(new batasInput((byte)5).getKata(KodeKomponen));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));    
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        NoKantong.setDocument(new batasInput((byte) 20).getKata(NoKantong));
+        KodeKomponen.setDocument(new batasInput((byte) 5).getKata(KodeKomponen));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }   
-        
+        }
+
         komponen.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(komponen.getTable().getSelectedRow()!= -1){ 
-                    KodeKomponen.setText(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(),0).toString());
-                    NoKantong.setText(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(),0).toString()+NoKantong.getText());
-                    NamaKomponen.setText(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(),1).toString());
+                if (komponen.getTable().getSelectedRow() != -1) {
+                    KodeKomponen.setText(komponen.getTable().getValueAt(
+                            komponen.getTable().getSelectedRow(), 0).toString());
+                    NoKantong.setText(komponen.getTable().getValueAt(komponen.
+                            getTable().getSelectedRow(), 0).toString() + NoKantong.
+                                    getText());
+                    NamaKomponen.setText(komponen.getTable().getValueAt(
+                            komponen.getTable().getSelectedRow(), 1).toString());
                     KodeKomponen.requestFocus();
                     cal = Calendar.getInstance();
                     cal.setTime(Aftap.getDate());
-                    cal.add( Calendar.DATE,Integer.parseInt(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(),2).toString()));
+                    cal.add(Calendar.DATE, Integer.parseInt(komponen.getTable().
+                            getValueAt(komponen.getTable().getSelectedRow(), 2).
+                            toString()));
                     sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Valid.SetTgl(Kadaluarsa,sdf.format(cal.getTime()));
+                    Valid.SetTgl(Kadaluarsa, sdf.format(cal.getTime()));
                     NoKantong.requestFocus();
-                } 
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         komponen.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                    if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                        komponen.dispose();
-                    }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    komponen.dispose();
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
-        });  
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
         ChkInput.setSelected(false);
         panelCari.setVisible(false);
-        posisi(); 
-        isForm();           
+        posisi();
+        isForm();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -740,13 +792,13 @@ public class UTDStokDarah extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -756,15 +808,15 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbDokterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDokterMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -773,8 +825,9 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterMouseClicked
 
     private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDokterKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -784,38 +837,46 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(KodeKomponen.getText().trim().isEmpty()||NamaKomponen.getText().trim().isEmpty()||NoKantong.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
+        if (KodeKomponen.getText().trim().isEmpty() || NamaKomponen.getText().
+                trim().isEmpty() || NoKantong.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
             tbDokter.requestFocus();
-        }else{
-            Valid.hapusTable(tabMode,NoKantong,"utd_stok_darah","no_kantong");
+        } else {
+            Valid.hapusTable(tabMode, NoKantong, "utd_stok_darah", "no_kantong");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(NoKantong.getText().trim().isEmpty()){
-            Valid.textKosong(NoKantong,"Nomor Kantong");
-        }else if(KodeKomponen.getText().trim().isEmpty()||NamaKomponen.getText().trim().isEmpty()){
-            Valid.textKosong(KodeKomponen,"Komponen");
-        }else{
-            if(Sequel.mengedittf("utd_stok_darah","no_kantong=?",
-                "no_kantong=?,kode_komponen=?,golongan_darah=?,resus=?,"+
-                "tanggal_aftap=?,tanggal_kadaluarsa=?,asal_darah=?",8,new String[]{     
-                    NoKantong.getText(),KodeKomponen.getText(),GolonganDarah.getSelectedItem().toString(),
-                    Resus.getSelectedItem().toString(),Valid.SetTgl(Aftap.getSelectedItem()+""),
-                    Valid.SetTgl(Kadaluarsa.getSelectedItem()+""),Asal.getSelectedItem().toString(),
-                    tabMode.getValueAt(tbDokter.getSelectedRow(),0).toString()
-              })==true){
+        if (NoKantong.getText().trim().isEmpty()) {
+            Valid.textKosong(NoKantong, "Nomor Kantong");
+        } else if (KodeKomponen.getText().trim().isEmpty() || NamaKomponen.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodeKomponen, "Komponen");
+        } else {
+            if (Sequel.mengedittf("utd_stok_darah", "no_kantong=?",
+                    "no_kantong=?,kode_komponen=?,golongan_darah=?,resus=?,"
+                    + "tanggal_aftap=?,tanggal_kadaluarsa=?,asal_darah=?", 8,
+                    new String[]{
+                        NoKantong.getText(), KodeKomponen.getText(),
+                        GolonganDarah.getSelectedItem().toString(),
+                        Resus.getSelectedItem().toString(), Valid.SetTgl(Aftap.
+                        getSelectedItem() + ""),
+                        Valid.SetTgl(Kadaluarsa.getSelectedItem() + ""), Asal.
+                        getSelectedItem().toString(),
+                        tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
+                                toString()
+                    }) == true) {
                 emptTeks();
                 tampil();
             }
@@ -823,72 +884,91 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){            
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Map<String, Object> param = new HashMap<>(); 
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting"));                 
-            if(panelCari.isVisible()==false){
-                Valid.MyReportqry("rptUTDStokDarah.jasper","report","::[ Data Stok Darah ]::",
-                    "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"+
-                    "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"+
-                    "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"+
-                    "utd_stok_darah.asal_darah,utd_stok_darah.status,"+
-                    "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"+
-                    "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"+
-                    "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "+
-                    "from utd_komponen_darah inner join utd_stok_darah "+
-                    "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "+
-                    "where utd_stok_darah.status='Ada' and utd_stok_darah.no_kantong like '%"+TCari.getText().trim()+"%' or "+
-                    "utd_stok_darah.status='Ada' and utd_komponen_darah.nama like '%"+TCari.getText().trim()+"%' or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.resus like '%"+TCari.getText().trim()+"%' or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.asal_darah like '%"+TCari.getText().trim()+"%' or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.status like '%"+TCari.getText().trim()+"%' "+
-                    "order by utd_stok_darah.tanggal_kadaluarsa",param);            
-            }else{
-                Valid.MyReportqry("rptUTDStokDarah.jasper","report","::[ Data Stok Darah ]::",
-                    "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"+
-                    "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"+
-                    "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"+
-                    "utd_stok_darah.asal_darah,utd_stok_darah.status,"+
-                    "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"+
-                    "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"+
-                    "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "+
-                    "from utd_komponen_darah inner join utd_stok_darah "+
-                    "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "+
-                    "where utd_stok_darah.status='"+CmbCrStatus.getSelectedItem().toString()+"' and utd_stok_darah.resus='"+CmbCariResus.getSelectedItem().toString()+"' and "+
-                    "utd_stok_darah.golongan_darah='"+CmbCariGd.getSelectedItem().toString()+"' and utd_stok_darah.asal_darah='"+CmbCariAsal.getSelectedItem().toString()+"' and "+
-                    "utd_stok_darah.no_kantong like '%"+TCari.getText().trim()+"%' or "+
-                    "utd_stok_darah.status='"+CmbCrStatus.getSelectedItem().toString()+"' and utd_stok_darah.resus='"+CmbCariResus.getSelectedItem().toString()+"' and "+
-                    "utd_stok_darah.golongan_darah='"+CmbCariGd.getSelectedItem().toString()+"' and utd_stok_darah.asal_darah='"+CmbCariAsal.getSelectedItem().toString()+"' and "+
-                    "utd_komponen_darah.nama like '%"+TCari.getText().trim()+"%' "+
-                    " order by utd_stok_darah.tanggal_kadaluarsa",param);            
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            if (panelCari.isVisible() == false) {
+                Valid.MyReportqry("rptUTDStokDarah.jasper", "report",
+                        "::[ Data Stok Darah ]::",
+                        "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+                        + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
+                        + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
+                        + "utd_stok_darah.asal_darah,utd_stok_darah.status,"
+                        + "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"
+                        + "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"
+                        + "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "
+                        + "from utd_komponen_darah inner join utd_stok_darah "
+                        + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
+                        + "where utd_stok_darah.status='Ada' and utd_stok_darah.no_kantong like '%" + TCari.
+                                getText().trim() + "%' or "
+                        + "utd_stok_darah.status='Ada' and utd_komponen_darah.nama like '%" + TCari.
+                                getText().trim() + "%' or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.resus like '%" + TCari.
+                                getText().trim() + "%' or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.asal_darah like '%" + TCari.
+                                getText().trim() + "%' or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.status like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "order by utd_stok_darah.tanggal_kadaluarsa", param);
+            } else {
+                Valid.MyReportqry("rptUTDStokDarah.jasper", "report",
+                        "::[ Data Stok Darah ]::",
+                        "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+                        + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
+                        + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
+                        + "utd_stok_darah.asal_darah,utd_stok_darah.status,"
+                        + "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"
+                        + "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"
+                        + "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "
+                        + "from utd_komponen_darah inner join utd_stok_darah "
+                        + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
+                        + "where utd_stok_darah.status='" + CmbCrStatus.
+                                getSelectedItem().toString() + "' and utd_stok_darah.resus='" + CmbCariResus.
+                                getSelectedItem().toString() + "' and "
+                        + "utd_stok_darah.golongan_darah='" + CmbCariGd.
+                                getSelectedItem().toString() + "' and utd_stok_darah.asal_darah='" + CmbCariAsal.
+                                getSelectedItem().toString() + "' and "
+                        + "utd_stok_darah.no_kantong like '%" + TCari.getText().
+                                trim() + "%' or "
+                        + "utd_stok_darah.status='" + CmbCrStatus.
+                                getSelectedItem().toString() + "' and utd_stok_darah.resus='" + CmbCariResus.
+                                getSelectedItem().toString() + "' and "
+                        + "utd_stok_darah.golongan_darah='" + CmbCariGd.
+                                getSelectedItem().toString() + "' and utd_stok_darah.asal_darah='" + CmbCariAsal.
+                                getSelectedItem().toString() + "' and "
+                        + "utd_komponen_darah.nama like '%" + TCari.getText().
+                                trim() + "%' "
+                        + " order by utd_stok_darah.tanggal_kadaluarsa", param);
             }
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnEdit,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -898,35 +978,42 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoKantong.getText().trim().isEmpty()){
-            Valid.textKosong(NoKantong,"Nomor Kantong");
-        }else if(KodeKomponen.getText().trim().isEmpty()||NamaKomponen.getText().trim().isEmpty()){
-            Valid.textKosong(KodeKomponen,"Komponen");
-        }else{
-            if(Sequel.menyimpantf("utd_stok_darah","?,?,?,?,?,?,?,?","Kode",8,new String[]{
-                NoKantong.getText(),KodeKomponen.getText(),GolonganDarah.getSelectedItem().toString(),
-                Resus.getSelectedItem().toString(),Valid.SetTgl(Aftap.getSelectedItem()+""),
-                Valid.SetTgl(Kadaluarsa.getSelectedItem()+""),Asal.getSelectedItem().toString(),
-                "Ada"
-              })==true){
+        if (NoKantong.getText().trim().isEmpty()) {
+            Valid.textKosong(NoKantong, "Nomor Kantong");
+        } else if (KodeKomponen.getText().trim().isEmpty() || NamaKomponen.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodeKomponen, "Komponen");
+        } else {
+            if (Sequel.menyimpantf("utd_stok_darah", "?,?,?,?,?,?,?,?", "Kode",
+                    8, new String[]{
+                        NoKantong.getText(), KodeKomponen.getText(),
+                        GolonganDarah.getSelectedItem().toString(),
+                        Resus.getSelectedItem().toString(), Valid.SetTgl(Aftap.
+                        getSelectedItem() + ""),
+                        Valid.SetTgl(Kadaluarsa.getSelectedItem() + ""), Asal.
+                        getSelectedItem().toString(),
+                        "Ada"
+                    }) == true) {
                 emptTeks();
                 tampil();
             }
@@ -934,36 +1021,38 @@ public class UTDStokDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Asal,BtnBatal);
+        } else {
+            Valid.pindah(evt, Asal, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void NoKantongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoKantongKeyPressed
-        Valid.pindah(evt,KodeKomponen,TCari);
+        Valid.pindah(evt, KodeKomponen, TCari);
     }//GEN-LAST:event_NoKantongKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -971,41 +1060,43 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_formWindowOpened
 
     private void KodeKomponenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodeKomponenKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select nama from utd_komponen_darah where kode=?",NamaKomponen,KodeKomponen.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Sequel.cariIsi("select nama from utd_komponen_darah where kode=?",
+                    NamaKomponen, KodeKomponen.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnKomponenActionPerformed(null);
-        }else{
-            Valid.pindah(evt,NoKantong,Aftap);
+        } else {
+            Valid.pindah(evt, NoKantong, Aftap);
         }
     }//GEN-LAST:event_KodeKomponenKeyPressed
 
     private void btnKomponenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKomponenActionPerformed
         komponen.emptTeks();
         komponen.isCek();
-        komponen.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-        komponen.setLocationRelativeTo(internalFrame1);        
+        komponen.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
+        komponen.setLocationRelativeTo(internalFrame1);
         komponen.setVisible(true);
     }//GEN-LAST:event_btnKomponenActionPerformed
 
     private void GolonganDarahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GolonganDarahKeyPressed
-        Valid.pindah(evt,Resus,Asal);
+        Valid.pindah(evt, Resus, Asal);
     }//GEN-LAST:event_GolonganDarahKeyPressed
 
     private void ResusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResusKeyPressed
-        Valid.pindah(evt,Kadaluarsa,GolonganDarah);
+        Valid.pindah(evt, Kadaluarsa, GolonganDarah);
     }//GEN-LAST:event_ResusKeyPressed
 
     private void AftapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AftapKeyPressed
-        Valid.pindah(evt,KodeKomponen,Kadaluarsa);
+        Valid.pindah(evt, KodeKomponen, Kadaluarsa);
     }//GEN-LAST:event_AftapKeyPressed
 
     private void KadaluarsaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KadaluarsaKeyPressed
-        Valid.pindah(evt,Aftap,Resus);
+        Valid.pindah(evt, Aftap, Resus);
     }//GEN-LAST:event_KadaluarsaKeyPressed
 
     private void AsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AsalKeyPressed
-        Valid.pindah(evt,GolonganDarah,BtnSimpan);
+        Valid.pindah(evt, GolonganDarah, BtnSimpan);
     }//GEN-LAST:event_AsalKeyPressed
 
     private void CmbCrStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CmbCrStatusItemStateChanged
@@ -1013,12 +1104,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_CmbCrStatusItemStateChanged
 
     private void ChkCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkCariActionPerformed
-        if(ChkCari.isSelected()==true){
+        if (ChkCari.isSelected() == true) {
             panelCari.setVisible(true);
             TCari.setText("");
             tampil();
             posisi();
-        }else if(ChkCari.isSelected()==false){
+        } else if (ChkCari.isSelected() == false) {
             panelCari.setVisible(false);
             BtnCariActionPerformed(null);
             posisi();
@@ -1050,16 +1141,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_CmbCariAsalItemStateChanged
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            UTDStokDarah dialog = new UTDStokDarah(new javax.swing.JFrame(), true);
+            UTDStokDarah dialog = new UTDStokDarah(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1121,88 +1214,88 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(panelCari.isVisible()==false){
-                ps=koneksi.prepareStatement(
-                    "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"+
-                    "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"+
-                    "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"+
-                    "utd_stok_darah.asal_darah,utd_stok_darah.status,"+
-                    "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"+
-                    "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"+
-                    "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "+
-                    "from utd_komponen_darah inner join utd_stok_darah "+
-                    "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "+
-                    "where utd_stok_darah.status='Ada' and utd_stok_darah.no_kantong like ? or "+
-                    "utd_stok_darah.status='Ada' and utd_komponen_darah.nama like ? or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.resus like ? or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.asal_darah like ? or "+
-                    "utd_stok_darah.status='Ada' and utd_stok_darah.status like ? "+
-                    "order by utd_stok_darah.tanggal_kadaluarsa");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"+
-                    "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"+
-                    "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"+
-                    "utd_stok_darah.asal_darah,utd_stok_darah.status,"+
-                    "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"+
-                    "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"+
-                    "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "+
-                    "from utd_komponen_darah inner join utd_stok_darah "+
-                    "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "+
-                    "where utd_stok_darah.status=? and utd_stok_darah.resus=? and "+
-                    "utd_stok_darah.golongan_darah=? and utd_stok_darah.asal_darah=? and "+
-                    "utd_stok_darah.no_kantong like ? or "+
-                    "utd_stok_darah.status=? and utd_stok_darah.resus=? and "+
-                    "utd_stok_darah.golongan_darah=? and utd_stok_darah.asal_darah=? and "+
-                    "utd_komponen_darah.nama like ? "+
-                    " order by utd_stok_darah.tanggal_kadaluarsa");
+        try {
+            if (panelCari.isVisible() == false) {
+                ps = koneksi.prepareStatement(
+                        "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+                        + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
+                        + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
+                        + "utd_stok_darah.asal_darah,utd_stok_darah.status,"
+                        + "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"
+                        + "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"
+                        + "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "
+                        + "from utd_komponen_darah inner join utd_stok_darah "
+                        + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
+                        + "where utd_stok_darah.status='Ada' and utd_stok_darah.no_kantong like ? or "
+                        + "utd_stok_darah.status='Ada' and utd_komponen_darah.nama like ? or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.resus like ? or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.asal_darah like ? or "
+                        + "utd_stok_darah.status='Ada' and utd_stok_darah.status like ? "
+                        + "order by utd_stok_darah.tanggal_kadaluarsa");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+                        + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
+                        + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
+                        + "utd_stok_darah.asal_darah,utd_stok_darah.status,"
+                        + "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"
+                        + "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"
+                        + "utd_komponen_darah.total,utd_komponen_darah.pembatalan,utd_stok_darah.kode_komponen "
+                        + "from utd_komponen_darah inner join utd_stok_darah "
+                        + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
+                        + "where utd_stok_darah.status=? and utd_stok_darah.resus=? and "
+                        + "utd_stok_darah.golongan_darah=? and utd_stok_darah.asal_darah=? and "
+                        + "utd_stok_darah.no_kantong like ? or "
+                        + "utd_stok_darah.status=? and utd_stok_darah.resus=? and "
+                        + "utd_stok_darah.golongan_darah=? and utd_stok_darah.asal_darah=? and "
+                        + "utd_komponen_darah.nama like ? "
+                        + " order by utd_stok_darah.tanggal_kadaluarsa");
             }
-            
+
             try {
-                if(panelCari.isVisible()==false){
-                    ps.setString(1,"%"+TCari.getText().trim()+"%");
-                    ps.setString(2,"%"+TCari.getText().trim()+"%");
-                    ps.setString(3,"%"+TCari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
-                    ps.setString(5,"%"+TCari.getText().trim()+"%");
-                }else{
-                    ps.setString(1,CmbCrStatus.getSelectedItem().toString());
-                    ps.setString(2,CmbCariResus.getSelectedItem().toString());
-                    ps.setString(3,CmbCariGd.getSelectedItem().toString());
-                    ps.setString(4,CmbCariAsal.getSelectedItem().toString());
-                    ps.setString(5,"%"+TCari.getText().trim()+"%");
-                    ps.setString(6,CmbCrStatus.getSelectedItem().toString());
-                    ps.setString(7,CmbCariResus.getSelectedItem().toString());
-                    ps.setString(8,CmbCariGd.getSelectedItem().toString());
-                    ps.setString(9,CmbCariAsal.getSelectedItem().toString());
-                    ps.setString(10,"%"+TCari.getText().trim()+"%");
+                if (panelCari.isVisible() == false) {
+                    ps.setString(1, "%" + TCari.getText().trim() + "%");
+                    ps.setString(2, "%" + TCari.getText().trim() + "%");
+                    ps.setString(3, "%" + TCari.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                    ps.setString(5, "%" + TCari.getText().trim() + "%");
+                } else {
+                    ps.setString(1, CmbCrStatus.getSelectedItem().toString());
+                    ps.setString(2, CmbCariResus.getSelectedItem().toString());
+                    ps.setString(3, CmbCariGd.getSelectedItem().toString());
+                    ps.setString(4, CmbCariAsal.getSelectedItem().toString());
+                    ps.setString(5, "%" + TCari.getText().trim() + "%");
+                    ps.setString(6, CmbCrStatus.getSelectedItem().toString());
+                    ps.setString(7, CmbCariResus.getSelectedItem().toString());
+                    ps.setString(8, CmbCariGd.getSelectedItem().toString());
+                    ps.setString(9, CmbCariAsal.getSelectedItem().toString());
+                    ps.setString(10, "%" + TCari.getText().trim() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                while(rs.next()){
+
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8),rs.getDouble(9),
-                        rs.getDouble(10),rs.getDouble(11),rs.getDouble(12),
-                        rs.getDouble(13),rs.getDouble(14),rs.getString(15)
+                        rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getString(8), rs.getDouble(9),
+                        rs.getDouble(10), rs.getDouble(11), rs.getDouble(12),
+                        rs.getDouble(13), rs.getDouble(14), rs.getString(15)
                     });
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -1216,15 +1309,23 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void getData() {
-        if(tbDokter.getSelectedRow()!= -1){
-            NoKantong.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString());
-            KodeKomponen.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),14).toString());
-            NamaKomponen.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),1).toString());
-            GolonganDarah.setSelectedItem(tbDokter.getValueAt(tbDokter.getSelectedRow(),2).toString());
-            Resus.setSelectedItem(tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString());
-            Valid.SetTgl(Aftap,tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString());
-            Valid.SetTgl(Kadaluarsa,tbDokter.getValueAt(tbDokter.getSelectedRow(),5).toString());
-            Asal.setSelectedItem(tbDokter.getValueAt(tbDokter.getSelectedRow(),6).toString());
+        if (tbDokter.getSelectedRow() != -1) {
+            NoKantong.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).
+                    toString());
+            KodeKomponen.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),
+                    14).toString());
+            NamaKomponen.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),
+                    1).toString());
+            GolonganDarah.setSelectedItem(tbDokter.getValueAt(tbDokter.
+                    getSelectedRow(), 2).toString());
+            Resus.setSelectedItem(tbDokter.getValueAt(tbDokter.getSelectedRow(),
+                    3).toString());
+            Valid.SetTgl(Aftap, tbDokter.
+                    getValueAt(tbDokter.getSelectedRow(), 4).toString());
+            Valid.SetTgl(Kadaluarsa, tbDokter.getValueAt(tbDokter.
+                    getSelectedRow(), 5).toString());
+            Asal.setSelectedItem(tbDokter.getValueAt(tbDokter.getSelectedRow(),
+                    6).toString());
         }
     }
 
@@ -1232,39 +1333,42 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbDokter;
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getutd_stok_darah());
         BtnHapus.setEnabled(akses.getutd_stok_darah());
         BtnEdit.setEnabled(akses.getutd_stok_darah());
         BtnPrint.setEnabled(akses.getutd_stok_darah());
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
-            ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,158));
-            FormInput.setVisible(true);      
-            ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
-            ChkInput.setVisible(true);
-        }
-    }    
 
-    private void posisi() {
-        if(panelCari.isVisible()==false){
-            panelCariKategori.setPreferredSize(new Dimension(WIDTH,22));
-            PanelCariUtama.setPreferredSize(new Dimension(WIDTH,122));
-        }else if(panelCari.isVisible()==true){
-            panelCariKategori.setPreferredSize(new Dimension(WIDTH,61));
-            PanelCariUtama.setPreferredSize(new Dimension(WIDTH,161));
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 158));
+            FormInput.setVisible(true);
+            ChkInput.setVisible(true);
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
+            ChkInput.setVisible(true);
         }
     }
- 
+
+    private void posisi() {
+        if (panelCari.isVisible() == false) {
+            panelCariKategori.setPreferredSize(new Dimension(WIDTH, 22));
+            PanelCariUtama.setPreferredSize(new Dimension(WIDTH, 122));
+        } else if (panelCari.isVisible() == true) {
+            panelCariKategori.setPreferredSize(new Dimension(WIDTH, 61));
+            PanelCariUtama.setPreferredSize(new Dimension(WIDTH, 161));
+        }
+    }
+
+    private static final Logger LOG = Logger.getLogger(UTDStokDarah.class.
+            getName());
+
 }

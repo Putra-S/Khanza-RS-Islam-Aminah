@@ -9,7 +9,7 @@
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
-            <StringItem index="0" value="2023-04-17 08:18:14"/>
+            <StringItem index="0" value="2024-07-30 10:35:59"/>
           </StringArray>
         </Property>
         <Property name="displayFormat" type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
@@ -617,34 +617,38 @@
                   <Properties>
                     <Property name="maximumRowCount" type="int" value="40"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="27">
-                        <StringItem index="0" value=" "/>
-                        <StringItem index="1" value="0001 VVIP/Super VIP"/>
-                        <StringItem index="2" value="0002 VIP"/>
-                        <StringItem index="3" value="0003 Kelas 1"/>
-                        <StringItem index="4" value="0004 Kelas 2"/>
-                        <StringItem index="5" value="0005 Kelas 3"/>
-                        <StringItem index="6" value="0006 ICU"/>
-                        <StringItem index="7" value="0007 HCU"/>
-                        <StringItem index="8" value="0008 ICCU/ICVCU"/>
-                        <StringItem index="9" value="0009 RICU"/>
-                        <StringItem index="10" value="0010 NICU"/>
-                        <StringItem index="11" value="0011 PICU"/>
-                        <StringItem index="12" value="0012 Isolasi"/>
-                        <StringItem index="13" value="0014 Perinatologi"/>
-                        <StringItem index="14" value="0024 ICU Tekanan Negatif dengan Ventilator"/>
-                        <StringItem index="15" value="0025 ICU Tekanan Negatif tanpa Ventilator"/>
-                        <StringItem index="16" value="0026 ICU Tanpa Tekanan Negatif Dengan Ventilator"/>
-                        <StringItem index="17" value="0027 ICU Tanpa Tekanan Negatif Tanpa Ventilator"/>
-                        <StringItem index="18" value="0028 Isolasi Tekanan Negatif"/>
-                        <StringItem index="19" value="0029 Isolasi Tanpa Tekanan Negatif"/>
-                        <StringItem index="20" value="0030 NICU Khusus Covid"/>
-                        <StringItem index="21" value="0031 PICU Khusus Covid"/>
-                        <StringItem index="22" value="0032 IGD Khusus Covid"/>
-                        <StringItem index="23" value="0033 VK (Ibu Melahirkan) Khusus Covid"/>
-                        <StringItem index="24" value="0034 Isolasi Perinatologi Khusus Covid"/>
-                        <StringItem index="25" value="0036 VK (Ibu Melahirkan) Non Covid"/>
-                        <StringItem index="26" value="0037 Intermediate Ward (IGD)"/>
+                      <StringArray count="31">
+                        <StringItem index="0" value="0001 VVIP/Super VIP"/>
+                        <StringItem index="1" value="0002 VIP"/>
+                        <StringItem index="2" value="0003 Kelas 1"/>
+                        <StringItem index="3" value="0004 Kelas 2"/>
+                        <StringItem index="4" value="0005 Kelas 3"/>
+                        <StringItem index="5" value="0006 ICU Tanpa Ventilator"/>
+                        <StringItem index="6" value="0007 HCU"/>
+                        <StringItem index="7" value="0008 ICCU/ICVCU Tanpa Ventilator"/>
+                        <StringItem index="8" value="0009 RICU Tanpa Ventilator"/>
+                        <StringItem index="9" value="0010 NICU Tanpa Ventilator"/>
+                        <StringItem index="10" value="0011 PICU Tanpa Ventilator"/>
+                        <StringItem index="11" value="0012 Isolasi"/>
+                        <StringItem index="12" value="0014 Perinatologi"/>
+                        <StringItem index="13" value="0024 ICU Tekanan Negatif dengan Ventilator"/>
+                        <StringItem index="14" value="0025 ICU Tekanan Negatif tanpa Ventilator"/>
+                        <StringItem index="15" value="0026 ICU Tanpa Tekanan Negatif Dengan Ventilator"/>
+                        <StringItem index="16" value="0027 ICU Tanpa Tekanan Negatif Tanpa Ventilator"/>
+                        <StringItem index="17" value="0028 Isolasi Tekanan Negatif"/>
+                        <StringItem index="18" value="0029 Isolasi Tanpa Tekanan Negatif"/>
+                        <StringItem index="19" value="0030 NICU Khusus Covid"/>
+                        <StringItem index="20" value="0031 PICU Khusus Covid"/>
+                        <StringItem index="21" value="0032 IGD Khusus Covid"/>
+                        <StringItem index="22" value="0033 VK (Ibu Melahirkan) Khusus Covid"/>
+                        <StringItem index="23" value="0034 Isolasi Perinatologi Khusus Covid"/>
+                        <StringItem index="24" value="0036 VK (Ibu Melahirkan) Non Covid"/>
+                        <StringItem index="25" value="0037 Intermediate Ward (IGD)"/>
+                        <StringItem index="26" value="0038 ICU Dengan Ventilator"/>
+                        <StringItem index="27" value="0039 NICU Dengan Ventilator"/>
+                        <StringItem index="28" value="0040 PICU Dengan Ventilator"/>
+                        <StringItem index="29" value="0050 RICU Dengan Ventilator"/>
+                        <StringItem index="30" value="0051 ICCU/ICVCU Dengan Ventilator"/>
                       </StringArray>
                     </Property>
                     <Property name="name" type="java.lang.String" value="KelasSiranap" noResource="true"/>

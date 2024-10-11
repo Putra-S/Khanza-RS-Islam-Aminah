@@ -3,339 +3,460 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgRujuk.java
  *
  * Created on 31 Mei 10, 20:19:56
  */
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import kepegawaian.*;
-import laporan.*;
-
-
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariDokter;
+import laporan.DlgCariPenyakit;
+import laporan.DlgDiagnosaPenyakit;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgOdontogram extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabMode2;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private final DefaultTableModel tabMode, tabMode2;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
+    private int i = 0;
     private String bagian;
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
-    private RMCariKeluhan carikeluhan=new RMCariKeluhan(null,false);
-    private RMCariPemeriksaan caripemeriksaan=new RMCariPemeriksaan(null,false);
-    private RMCariHasilRadiologi cariradiologi=new RMCariHasilRadiologi(null,false);
-    private RMCariHasilLaborat carilaborat=new RMCariHasilLaborat(null,false);
-    private RMCariJumlahObat cariobat=new RMCariJumlahObat(null,false);
-    private DlgDiagnosaPenyakit penyakit=new DlgDiagnosaPenyakit(null,false);
-    private RMCariDiagnosa1 rmcaridiagnosa1=new RMCariDiagnosa1(null,false);
-    private RMCariDiagnosa2 rmcaridiagnosa2=new RMCariDiagnosa2(null,false);
-    private RMCariDiagnosa3 rmcaridiagnosa3=new RMCariDiagnosa3(null,false);
-    private RMCariDiagnosa4 rmcaridiagnosa4=new RMCariDiagnosa4(null,false);
-    private RMCariDiagnosa5 rmcaridiagnosa5=new RMCariDiagnosa5(null,false);
-    private RMCariProsedur1 rmcariprosedur1=new RMCariProsedur1(null,false);
-    private RMCariProsedur2 rmcariprosedur2=new RMCariProsedur2(null,false);
-    private RMCariProsedur3 rmcariprosedur3=new RMCariProsedur3(null,false);
-    private RMCariProsedur4 rmcariprosedur4=new RMCariProsedur4(null,false);
-    private RMCariRencana carirencana=new RMCariRencana(null,false);
-    private RMCariTerapi cariterapi=new RMCariTerapi(null,false);
-    private DlgCariPenyakit penyakit1=new DlgCariPenyakit(null,false);
-    
-    /** Creates new form DlgRujuk
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
+    private RMCariKeluhan carikeluhan = new RMCariKeluhan(null, false);
+    private RMCariPemeriksaan caripemeriksaan = new RMCariPemeriksaan(null,
+            false);
+    private RMCariHasilRadiologi cariradiologi = new RMCariHasilRadiologi(null,
+            false);
+    private RMCariHasilLaborat carilaborat = new RMCariHasilLaborat(null, false);
+    private RMCariJumlahObat cariobat = new RMCariJumlahObat(null, false);
+    private DlgDiagnosaPenyakit penyakit = new DlgDiagnosaPenyakit(null, false);
+    private RMCariDiagnosa1 rmcaridiagnosa1 = new RMCariDiagnosa1(null, false);
+    private RMCariDiagnosa2 rmcaridiagnosa2 = new RMCariDiagnosa2(null, false);
+    private RMCariDiagnosa3 rmcaridiagnosa3 = new RMCariDiagnosa3(null, false);
+    private RMCariDiagnosa4 rmcaridiagnosa4 = new RMCariDiagnosa4(null, false);
+    private RMCariDiagnosa5 rmcaridiagnosa5 = new RMCariDiagnosa5(null, false);
+    private RMCariProsedur1 rmcariprosedur1 = new RMCariProsedur1(null, false);
+    private RMCariProsedur2 rmcariprosedur2 = new RMCariProsedur2(null, false);
+    private RMCariProsedur3 rmcariprosedur3 = new RMCariProsedur3(null, false);
+    private RMCariProsedur4 rmcariprosedur4 = new RMCariProsedur4(null, false);
+    private RMCariRencana carirencana = new RMCariRencana(null, false);
+    private RMCariTerapi cariterapi = new RMCariTerapi(null, false);
+    private DlgCariPenyakit penyakit1 = new DlgCariPenyakit(null, false);
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgOdontogram(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Tgl.Rawat","Status","No.Rawat","No.RM","Nama Pasien","Kode Dokter","Dokter Gigi","Bagian Gigi","Diagnosa Gigi","ICD10",
-            "Hasil Pemeriksaan","Catatan Pemeriksaan","Tanggal Permintaan","No Permintaan","Rahang"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien",
+            "Kode Dokter", "Dokter Gigi", "Bagian Gigi", "Diagnosa Gigi",
+            "ICD10",
+            "Hasil Pemeriksaan", "Catatan Pemeriksaan", "Tanggal Permintaan",
+            "No Permintaan", "Rahang"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(65);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(90);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(150);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(60);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(250);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(250);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(250);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(250);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(250);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(250);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(250);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabMode2=new DefaultTableModel(null,new Object[]{
-            "Tgl.Rawat","Status","No.Rawat","No.RM","Nama Pasien","Occlusi","Torus Palatinus","Torus Mandibularis","Palatum","Diastema",
-            "Tambahan Diastema","Gigi Anomali","Tambahan Gigi Anomali","Lain-Lain","D","M","F"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode2 = new DefaultTableModel(null, new Object[]{
+            "Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "Occlusi",
+            "Torus Palatinus", "Torus Mandibularis", "Palatum", "Diastema",
+            "Tambahan Diastema", "Gigi Anomali", "Tambahan Gigi Anomali",
+            "Lain-Lain", "D", "M", "F"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat1.setModel(tabMode2);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat1.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat1.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 17; i++) {
             TableColumn column = tbObat1.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(65);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(100);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(100);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(100);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(100);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(100);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(100);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(100);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(100);
             }
         }
         tbObat1.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TNoPermintaan.setDocument(new batasInput((byte)15).getKata(TNoPermintaan));
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+
+        TNoPermintaan.setDocument(new batasInput((byte) 15).getKata(
+                TNoPermintaan));
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         DiagnosaUtama.setDocument(new batasInput(80).getKata(DiagnosaUtama));
-        KodeDiagnosaUtama.setDocument(new batasInput(10).getKata(KodeDiagnosaUtama));
+        KodeDiagnosaUtama.setDocument(new batasInput(10).getKata(
+                KodeDiagnosaUtama));
         Catatan.setDocument(new batasInput(1000).getKata(Catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 0).toString());
+                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 1).toString());
                     KodeDokter.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         cariobat.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(cariobat.getTable().getSelectedRow()!= -1){
-                    Catatan.append(cariobat.getTable().getValueAt(cariobat.getTable().getSelectedRow(),2).toString()+", ");
+                if (cariobat.getTable().getSelectedRow() != -1) {
+                    Catatan.append(cariobat.getTable().getValueAt(cariobat.
+                            getTable().getSelectedRow(), 2).toString() + ", ");
                     Catatan.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         penyakit.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
                 tampil();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         rmcaridiagnosa1.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(rmcaridiagnosa1.getTable().getSelectedRow()!= -1){
-                    KodeDiagnosaUtama.setText(rmcaridiagnosa1.getTable().getValueAt(rmcaridiagnosa1.getTable().getSelectedRow(),0).toString());
-                    DiagnosaUtama.setText(rmcaridiagnosa1.getTable().getValueAt(rmcaridiagnosa1.getTable().getSelectedRow(),1).toString());
+                if (rmcaridiagnosa1.getTable().getSelectedRow() != -1) {
+                    KodeDiagnosaUtama.setText(rmcaridiagnosa1.getTable().
+                            getValueAt(rmcaridiagnosa1.getTable().
+                                    getSelectedRow(), 0).toString());
+                    DiagnosaUtama.setText(rmcaridiagnosa1.getTable().getValueAt(
+                            rmcaridiagnosa1.getTable().getSelectedRow(), 1).
+                            toString());
                     KodeDiagnosaUtama.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         carirencana.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(carirencana.getTable().getSelectedRow()!= -1){
-                    Catatan.append(carirencana.getTable().getValueAt(carirencana.getTable().getSelectedRow(),2).toString()+", ");
+                if (carirencana.getTable().getSelectedRow() != -1) {
+                    Catatan.append(carirencana.getTable().getValueAt(
+                            carirencana.getTable().getSelectedRow(), 2).
+                            toString() + ", ");
                     Catatan.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         penyakit1.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if( penyakit1.getTable().getSelectedRow()!= -1){                   
-                    KodeDiagnosaUtama.setText(penyakit1.getTable().getValueAt(penyakit1.getTable().getSelectedRow(),0).toString());
-                    DiagnosaUtama.setText(penyakit1.getTable().getValueAt(penyakit1.getTable().getSelectedRow(),1).toString());
-                }  
+                if (penyakit1.getTable().getSelectedRow() != -1) {
+                    KodeDiagnosaUtama.setText(penyakit1.getTable().getValueAt(
+                            penyakit1.getTable().getSelectedRow(), 0).toString());
+                    DiagnosaUtama.setText(penyakit1.getTable().getValueAt(
+                            penyakit1.getTable().getSelectedRow(), 1).toString());
+                }
                 DiagnosaUtama.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         ChkInput.setSelected(false);
         isForm();
-        
+
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2548,458 +2669,511 @@ public class DlgOdontogram extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void autoNomor() {
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='"+Valid.SetTgl(Tanggal.getSelectedItem()+"")+"' ","OD"+Valid.SetTgl(Tanggal.getSelectedItem()+"").replaceAll("-",""),5,TNoPermintaan);           
-    }    
-    
+    private void autoNomor() {
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='" + Valid.
+                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").replaceAll(
+                        "-", ""), 5, TNoPermintaan);
+    }
+
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().isEmpty()||TNoRM.getText().isEmpty()||TPasien.getText().isEmpty()){
-            Valid.textKosong(TNoRw,"Pasien");
-        }else{
-            switch (TabOdontogram.getSelectedIndex()){
+        if (TNoRw.getText().isEmpty() || TNoRM.getText().isEmpty() || TPasien.
+                getText().isEmpty()) {
+            Valid.textKosong(TNoRw, "Pasien");
+        } else {
+            switch (TabOdontogram.getSelectedIndex()) {
                 case 0:
-                    if(gigi11.isSelected()==true){
-                            bagian="1.1";
-                        }
-                    if(gigi12.isSelected()==true){
-                            bagian="1.2";
-                        }
-                    if(gigi13.isSelected()==true){
-                            bagian="1.3";
-                        }
-                    if(gigi14.isSelected()==true){
-                            bagian="1.4";
-                        }
-                    if(gigi15.isSelected()==true){
-                            bagian="1.5";
-                        }
-                    if(gigi16.isSelected()==true){
-                            bagian="1.6";
-                        }
-                    if(gigi17.isSelected()==true){
-                            bagian="1.7";
-                        }
-                    if(gigi18.isSelected()==true){
-                            bagian="1.8";
-                        }
-                    if(gigi21.isSelected()==true){
-                            bagian="2.1";
-                        }
-                    if(gigi22.isSelected()==true){
-                            bagian="2.2";
-                        }
-                    if(gigi23.isSelected()==true){
-                            bagian="2.3";
-                        }
-                    if(gigi24.isSelected()==true){
-                            bagian="2.4";
-                        }
-                    if(gigi25.isSelected()==true){
-                            bagian="2.5";
-                        }
-                    if(gigi26.isSelected()==true){
-                            bagian="2.6";
-                        }
-                    if(gigi27.isSelected()==true){
-                            bagian="2.7";
-                        }
-                    if(gigi28.isSelected()==true){
-                            bagian="2.8";
-                        }
-                    if(gigi31.isSelected()==true){
-                            bagian="3.1";
-                        }
-                    if(gigi32.isSelected()==true){
-                            bagian="3.2";
-                        }
-                    if(gigi33.isSelected()==true){
-                            bagian="3.3";
-                        }
-                    if(gigi34.isSelected()==true){
-                            bagian="3.4";
-                        }
-                    if(gigi35.isSelected()==true){
-                            bagian="3.5";
-                        }
-                    if(gigi36.isSelected()==true){
-                            bagian="3.6";
-                        }
-                    if(gigi37.isSelected()==true){
-                            bagian="3.7";
-                        }
-                    if(gigi38.isSelected()==true){
-                            bagian="3.8";
-                        }
-                    if(gigi41.isSelected()==true){
-                            bagian="4.1";
-                        }
-                    if(gigi42.isSelected()==true){
-                            bagian="4.2";
-                        }
-                    if(gigi43.isSelected()==true){
-                            bagian="4.3";
-                        }
-                    if(gigi44.isSelected()==true){
-                            bagian="4.4";
-                        }
-                    if(gigi45.isSelected()==true){
-                            bagian="4.5";
-                        }
-                    if(gigi46.isSelected()==true){
-                            bagian="4.6";
-                        }
-                    if(gigi47.isSelected()==true){
-                            bagian="4.7";
-                        }
-                    if(gigi48.isSelected()==true){
-                            bagian="4.8";
-                        }
-                    if(gigi51.isSelected()==true){
-                            bagian="5.1";
-                        }
-                    if(gigi52.isSelected()==true){
-                            bagian="5.2";
-                        }
-                    if(gigi53.isSelected()==true){
-                            bagian="5.3";
-                        }
-                    if(gigi54.isSelected()==true){
-                            bagian="5.4";
-                        }
-                    if(gigi55.isSelected()==true){
-                            bagian="5.5";
-                        }
-                    if(gigi61.isSelected()==true){
-                            bagian="6.1";
-                        }
-                    if(gigi62.isSelected()==true){
-                            bagian="6.2";
-                        }
-                    if(gigi63.isSelected()==true){
-                            bagian="6.3";
-                        }
-                    if(gigi64.isSelected()==true){
-                            bagian="6.4";
-                        }
-                    if(gigi65.isSelected()==true){
-                            bagian="6.5";
-                        }
-                    if(gigi71.isSelected()==true){
-                            bagian="7.1";
-                        }
-                    if(gigi72.isSelected()==true){
-                            bagian="7.2";
-                        }
-                    if(gigi73.isSelected()==true){
-                            bagian="7.3";
-                        }
-                    if(gigi74.isSelected()==true){
-                            bagian="7.4";
-                        }
-                    if(gigi75.isSelected()==true){
-                            bagian="7.5";
-                        }
-                    if(gigi81.isSelected()==true){
-                            bagian="8.1";
-                        }
-                    if(gigi82.isSelected()==true){
-                            bagian="8.2";
-                        }
-                    if(gigi83.isSelected()==true){
-                            bagian="8.3";
-                        }
-                    if(gigi84.isSelected()==true){
-                            bagian="8.4";
-                        }
-                    if(gigi85.isSelected()==true){
-                            bagian="8.5";
-                        }
-                        if(Sequel.menyimpantf("pemeriksaan_gigi","?,?,?,?,?,?,?,?,?","No.Rawat",9,new String[]{
-                                TNoRw.getText(),KodeDokter.getText(),bagian,KodeDiagnosaUtama.getText(),
-                                Hasil.getSelectedItem().toString(),Catatan.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),
-                                TNoPermintaan.getText(),Rahang.getSelectedItem().toString()
-                            })==true){
-                                tampil();
-                                emptTeks();
-                        }
+                    if (gigi11.isSelected() == true) {
+                        bagian = "1.1";
+                    }
+                    if (gigi12.isSelected() == true) {
+                        bagian = "1.2";
+                    }
+                    if (gigi13.isSelected() == true) {
+                        bagian = "1.3";
+                    }
+                    if (gigi14.isSelected() == true) {
+                        bagian = "1.4";
+                    }
+                    if (gigi15.isSelected() == true) {
+                        bagian = "1.5";
+                    }
+                    if (gigi16.isSelected() == true) {
+                        bagian = "1.6";
+                    }
+                    if (gigi17.isSelected() == true) {
+                        bagian = "1.7";
+                    }
+                    if (gigi18.isSelected() == true) {
+                        bagian = "1.8";
+                    }
+                    if (gigi21.isSelected() == true) {
+                        bagian = "2.1";
+                    }
+                    if (gigi22.isSelected() == true) {
+                        bagian = "2.2";
+                    }
+                    if (gigi23.isSelected() == true) {
+                        bagian = "2.3";
+                    }
+                    if (gigi24.isSelected() == true) {
+                        bagian = "2.4";
+                    }
+                    if (gigi25.isSelected() == true) {
+                        bagian = "2.5";
+                    }
+                    if (gigi26.isSelected() == true) {
+                        bagian = "2.6";
+                    }
+                    if (gigi27.isSelected() == true) {
+                        bagian = "2.7";
+                    }
+                    if (gigi28.isSelected() == true) {
+                        bagian = "2.8";
+                    }
+                    if (gigi31.isSelected() == true) {
+                        bagian = "3.1";
+                    }
+                    if (gigi32.isSelected() == true) {
+                        bagian = "3.2";
+                    }
+                    if (gigi33.isSelected() == true) {
+                        bagian = "3.3";
+                    }
+                    if (gigi34.isSelected() == true) {
+                        bagian = "3.4";
+                    }
+                    if (gigi35.isSelected() == true) {
+                        bagian = "3.5";
+                    }
+                    if (gigi36.isSelected() == true) {
+                        bagian = "3.6";
+                    }
+                    if (gigi37.isSelected() == true) {
+                        bagian = "3.7";
+                    }
+                    if (gigi38.isSelected() == true) {
+                        bagian = "3.8";
+                    }
+                    if (gigi41.isSelected() == true) {
+                        bagian = "4.1";
+                    }
+                    if (gigi42.isSelected() == true) {
+                        bagian = "4.2";
+                    }
+                    if (gigi43.isSelected() == true) {
+                        bagian = "4.3";
+                    }
+                    if (gigi44.isSelected() == true) {
+                        bagian = "4.4";
+                    }
+                    if (gigi45.isSelected() == true) {
+                        bagian = "4.5";
+                    }
+                    if (gigi46.isSelected() == true) {
+                        bagian = "4.6";
+                    }
+                    if (gigi47.isSelected() == true) {
+                        bagian = "4.7";
+                    }
+                    if (gigi48.isSelected() == true) {
+                        bagian = "4.8";
+                    }
+                    if (gigi51.isSelected() == true) {
+                        bagian = "5.1";
+                    }
+                    if (gigi52.isSelected() == true) {
+                        bagian = "5.2";
+                    }
+                    if (gigi53.isSelected() == true) {
+                        bagian = "5.3";
+                    }
+                    if (gigi54.isSelected() == true) {
+                        bagian = "5.4";
+                    }
+                    if (gigi55.isSelected() == true) {
+                        bagian = "5.5";
+                    }
+                    if (gigi61.isSelected() == true) {
+                        bagian = "6.1";
+                    }
+                    if (gigi62.isSelected() == true) {
+                        bagian = "6.2";
+                    }
+                    if (gigi63.isSelected() == true) {
+                        bagian = "6.3";
+                    }
+                    if (gigi64.isSelected() == true) {
+                        bagian = "6.4";
+                    }
+                    if (gigi65.isSelected() == true) {
+                        bagian = "6.5";
+                    }
+                    if (gigi71.isSelected() == true) {
+                        bagian = "7.1";
+                    }
+                    if (gigi72.isSelected() == true) {
+                        bagian = "7.2";
+                    }
+                    if (gigi73.isSelected() == true) {
+                        bagian = "7.3";
+                    }
+                    if (gigi74.isSelected() == true) {
+                        bagian = "7.4";
+                    }
+                    if (gigi75.isSelected() == true) {
+                        bagian = "7.5";
+                    }
+                    if (gigi81.isSelected() == true) {
+                        bagian = "8.1";
+                    }
+                    if (gigi82.isSelected() == true) {
+                        bagian = "8.2";
+                    }
+                    if (gigi83.isSelected() == true) {
+                        bagian = "8.3";
+                    }
+                    if (gigi84.isSelected() == true) {
+                        bagian = "8.4";
+                    }
+                    if (gigi85.isSelected() == true) {
+                        bagian = "8.5";
+                    }
+                    if (Sequel.menyimpantf("pemeriksaan_gigi",
+                            "?,?,?,?,?,?,?,?,?", "No.Rawat", 9, new String[]{
+                                TNoRw.getText(), KodeDokter.getText(), bagian,
+                                KodeDiagnosaUtama.getText(),
+                                Hasil.getSelectedItem().toString(), Catatan.
+                                getText(), Valid.SetTgl(Tanggal.
+                                        getSelectedItem() + ""),
+                                TNoPermintaan.getText(), Rahang.
+                                getSelectedItem().toString()
+                            }) == true) {
+                        tampil();
+                        emptTeks();
+                    }
                     break;
                 case 1:
-                    if(Sequel.menyimpantf("tambahan_pemeriksaan_gigi","?,?,?,?,?,?,?,?,?,?,?,?,?","No.Rawat",13,new String[]{
-                            TNoRw.getText(),Occlusi.getSelectedItem().toString(),TorusPalatinus.getSelectedItem().toString(),
-                            TorusMandibularis.getSelectedItem().toString(),Palatum.getSelectedItem().toString(),Diastema.getSelectedItem().toString(),
-                            TDiastema.getText(),GigiAnomali.getSelectedItem().toString(),TGigiAnomali.getText(),TLain.getText(),TextD.getText(),
-                            TextM.getText(),TextF.getText()
-                        })==true){
-                            tampil2();
-                            emptTeks();
+                    if (Sequel.menyimpantf("tambahan_pemeriksaan_gigi",
+                            "?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 13,
+                            new String[]{
+                                TNoRw.getText(), Occlusi.getSelectedItem().
+                                toString(), TorusPalatinus.getSelectedItem().
+                                        toString(),
+                                TorusMandibularis.getSelectedItem().toString(),
+                                Palatum.getSelectedItem().toString(), Diastema.
+                                getSelectedItem().toString(),
+                                TDiastema.getText(), GigiAnomali.
+                                getSelectedItem().toString(), TGigiAnomali.
+                                        getText(), TLain.getText(), TextD.
+                                getText(),
+                                TextM.getText(), TextF.getText()
+                            }) == true) {
+                        tampil2();
+                        emptTeks();
                     }
                     break;
                 default:
                     break;
             }
-        
+
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Catatan,BtnBatal);
+        } else {
+            Valid.pindah(evt, Catatan, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         emptTeks();
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        switch (TabOdontogram.getSelectedIndex()){
+        switch (TabOdontogram.getSelectedIndex()) {
             case 0:
-                if(tbObat.getSelectedRow()>-1){
-                    if(Sequel.queryu2tf("delete from pemeriksaan_gigi where noorder=?",1,new String[]{
-                        tbObat.getValueAt(tbObat.getSelectedRow(),13).toString()
-                    })==true){
+                if (tbObat.getSelectedRow() > -1) {
+                    if (Sequel.queryu2tf(
+                            "delete from pemeriksaan_gigi where noorder=?", 1,
+                            new String[]{
+                                tbObat.getValueAt(tbObat.getSelectedRow(), 13).
+                                        toString()
+                            }) == true) {
                         tampil();
                         emptTeks();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Gagal menghapus..!!");
                     }
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-                }  
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Silahkan anda pilih data terlebih dahulu..!!");
+                }
                 break;
             case 1:
-                if(tbObat1.getSelectedRow()>-1){
-                    if(Sequel.queryu2tf("delete from tambahan_pemeriksaan_gigi where no_rawat=?",1,new String[]{
-                        tbObat1.getValueAt(tbObat1.getSelectedRow(),2).toString()
-                    })==true){
+                if (tbObat1.getSelectedRow() > -1) {
+                    if (Sequel.queryu2tf(
+                            "delete from tambahan_pemeriksaan_gigi where no_rawat=?",
+                            1, new String[]{
+                                tbObat1.getValueAt(tbObat1.getSelectedRow(), 2).
+                                        toString()
+                            }) == true) {
                         tampil();
                         emptTeks();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Gagal menghapus..!!");
                     }
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Silahkan anda pilih data terlebih dahulu..!!");
                 }
                 break;
         }
-                  
-            
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRw.getText().isEmpty()||TNoRM.getText().isEmpty()||TPasien.getText().isEmpty()){
-            Valid.textKosong(TNoRw,"Pasien");
-        }else{
-            switch(TabOdontogram.getSelectedIndex()){
+        if (TNoRw.getText().isEmpty() || TNoRM.getText().isEmpty() || TPasien.
+                getText().isEmpty()) {
+            Valid.textKosong(TNoRw, "Pasien");
+        } else {
+            switch (TabOdontogram.getSelectedIndex()) {
                 case 0:
-                    if(tbObat.getSelectedRow()>-1){
-                    if(gigi11.isSelected()==true){
-                            bagian="1.1";
+                    if (tbObat.getSelectedRow() > -1) {
+                        if (gigi11.isSelected() == true) {
+                            bagian = "1.1";
                         }
-                    if(gigi12.isSelected()==true){
-                            bagian="1.2";
+                        if (gigi12.isSelected() == true) {
+                            bagian = "1.2";
                         }
-                    if(gigi13.isSelected()==true){
-                            bagian="1.3";
+                        if (gigi13.isSelected() == true) {
+                            bagian = "1.3";
                         }
-                    if(gigi14.isSelected()==true){
-                            bagian="1.4";
+                        if (gigi14.isSelected() == true) {
+                            bagian = "1.4";
                         }
-                    if(gigi15.isSelected()==true){
-                            bagian="1.5";
+                        if (gigi15.isSelected() == true) {
+                            bagian = "1.5";
                         }
-                    if(gigi16.isSelected()==true){
-                            bagian="1.6";
+                        if (gigi16.isSelected() == true) {
+                            bagian = "1.6";
                         }
-                    if(gigi17.isSelected()==true){
-                            bagian="1.7";
+                        if (gigi17.isSelected() == true) {
+                            bagian = "1.7";
                         }
-                    if(gigi18.isSelected()==true){
-                            bagian="1.8";
+                        if (gigi18.isSelected() == true) {
+                            bagian = "1.8";
                         }
-                    if(gigi21.isSelected()==true){
-                            bagian="2.1";
+                        if (gigi21.isSelected() == true) {
+                            bagian = "2.1";
                         }
-                    if(gigi22.isSelected()==true){
-                            bagian="2.2";
+                        if (gigi22.isSelected() == true) {
+                            bagian = "2.2";
                         }
-                    if(gigi23.isSelected()==true){
-                            bagian="2.3";
+                        if (gigi23.isSelected() == true) {
+                            bagian = "2.3";
                         }
-                    if(gigi24.isSelected()==true){
-                            bagian="2.4";
+                        if (gigi24.isSelected() == true) {
+                            bagian = "2.4";
                         }
-                    if(gigi25.isSelected()==true){
-                            bagian="2.5";
+                        if (gigi25.isSelected() == true) {
+                            bagian = "2.5";
                         }
-                    if(gigi26.isSelected()==true){
-                            bagian="2.6";
+                        if (gigi26.isSelected() == true) {
+                            bagian = "2.6";
                         }
-                    if(gigi27.isSelected()==true){
-                            bagian="2.7";
+                        if (gigi27.isSelected() == true) {
+                            bagian = "2.7";
                         }
-                    if(gigi28.isSelected()==true){
-                            bagian="2.8";
+                        if (gigi28.isSelected() == true) {
+                            bagian = "2.8";
                         }
-                    if(gigi31.isSelected()==true){
-                            bagian="3.1";
+                        if (gigi31.isSelected() == true) {
+                            bagian = "3.1";
                         }
-                    if(gigi32.isSelected()==true){
-                            bagian="3.2";
+                        if (gigi32.isSelected() == true) {
+                            bagian = "3.2";
                         }
-                    if(gigi33.isSelected()==true){
-                            bagian="3.3";
+                        if (gigi33.isSelected() == true) {
+                            bagian = "3.3";
                         }
-                    if(gigi34.isSelected()==true){
-                            bagian="3.4";
+                        if (gigi34.isSelected() == true) {
+                            bagian = "3.4";
                         }
-                    if(gigi35.isSelected()==true){
-                            bagian="3.5";
+                        if (gigi35.isSelected() == true) {
+                            bagian = "3.5";
                         }
-                    if(gigi36.isSelected()==true){
-                            bagian="3.6";
+                        if (gigi36.isSelected() == true) {
+                            bagian = "3.6";
                         }
-                    if(gigi37.isSelected()==true){
-                            bagian="3.7";
+                        if (gigi37.isSelected() == true) {
+                            bagian = "3.7";
                         }
-                    if(gigi38.isSelected()==true){
-                            bagian="3.8";
+                        if (gigi38.isSelected() == true) {
+                            bagian = "3.8";
                         }
-                    if(gigi41.isSelected()==true){
-                            bagian="4.1";
+                        if (gigi41.isSelected() == true) {
+                            bagian = "4.1";
                         }
-                    if(gigi42.isSelected()==true){
-                            bagian="4.2";
+                        if (gigi42.isSelected() == true) {
+                            bagian = "4.2";
                         }
-                    if(gigi43.isSelected()==true){
-                            bagian="4.3";
+                        if (gigi43.isSelected() == true) {
+                            bagian = "4.3";
                         }
-                    if(gigi44.isSelected()==true){
-                            bagian="4.4";
+                        if (gigi44.isSelected() == true) {
+                            bagian = "4.4";
                         }
-                    if(gigi45.isSelected()==true){
-                            bagian="4.5";
+                        if (gigi45.isSelected() == true) {
+                            bagian = "4.5";
                         }
-                    if(gigi46.isSelected()==true){
-                            bagian="4.6";
+                        if (gigi46.isSelected() == true) {
+                            bagian = "4.6";
                         }
-                    if(gigi47.isSelected()==true){
-                            bagian="4.7";
+                        if (gigi47.isSelected() == true) {
+                            bagian = "4.7";
                         }
-                    if(gigi48.isSelected()==true){
-                            bagian="4.8";
+                        if (gigi48.isSelected() == true) {
+                            bagian = "4.8";
                         }
-                    if(gigi51.isSelected()==true){
-                            bagian="5.1";
+                        if (gigi51.isSelected() == true) {
+                            bagian = "5.1";
                         }
-                    if(gigi52.isSelected()==true){
-                            bagian="5.2";
+                        if (gigi52.isSelected() == true) {
+                            bagian = "5.2";
                         }
-                    if(gigi53.isSelected()==true){
-                            bagian="5.3";
+                        if (gigi53.isSelected() == true) {
+                            bagian = "5.3";
                         }
-                    if(gigi54.isSelected()==true){
-                            bagian="5.4";
+                        if (gigi54.isSelected() == true) {
+                            bagian = "5.4";
                         }
-                    if(gigi55.isSelected()==true){
-                            bagian="5.5";
+                        if (gigi55.isSelected() == true) {
+                            bagian = "5.5";
                         }
-                    if(gigi61.isSelected()==true){
-                            bagian="6.1";
+                        if (gigi61.isSelected() == true) {
+                            bagian = "6.1";
                         }
-                    if(gigi62.isSelected()==true){
-                            bagian="6.2";
+                        if (gigi62.isSelected() == true) {
+                            bagian = "6.2";
                         }
-                    if(gigi63.isSelected()==true){
-                            bagian="6.3";
+                        if (gigi63.isSelected() == true) {
+                            bagian = "6.3";
                         }
-                    if(gigi64.isSelected()==true){
-                            bagian="6.4";
+                        if (gigi64.isSelected() == true) {
+                            bagian = "6.4";
                         }
-                    if(gigi65.isSelected()==true){
-                            bagian="6.5";
+                        if (gigi65.isSelected() == true) {
+                            bagian = "6.5";
                         }
-                    if(gigi71.isSelected()==true){
-                            bagian="7.1";
+                        if (gigi71.isSelected() == true) {
+                            bagian = "7.1";
                         }
-                    if(gigi72.isSelected()==true){
-                            bagian="7.2";
+                        if (gigi72.isSelected() == true) {
+                            bagian = "7.2";
                         }
-                    if(gigi73.isSelected()==true){
-                            bagian="7.3";
+                        if (gigi73.isSelected() == true) {
+                            bagian = "7.3";
                         }
-                    if(gigi74.isSelected()==true){
-                            bagian="7.4";
+                        if (gigi74.isSelected() == true) {
+                            bagian = "7.4";
                         }
-                    if(gigi75.isSelected()==true){
-                            bagian="7.5";
+                        if (gigi75.isSelected() == true) {
+                            bagian = "7.5";
                         }
-                    if(gigi81.isSelected()==true){
-                            bagian="8.1";
+                        if (gigi81.isSelected() == true) {
+                            bagian = "8.1";
                         }
-                    if(gigi82.isSelected()==true){
-                            bagian="8.2";
+                        if (gigi82.isSelected() == true) {
+                            bagian = "8.2";
                         }
-                    if(gigi83.isSelected()==true){
-                            bagian="8.3";
+                        if (gigi83.isSelected() == true) {
+                            bagian = "8.3";
                         }
-                    if(gigi84.isSelected()==true){
-                            bagian="8.4";
+                        if (gigi84.isSelected() == true) {
+                            bagian = "8.4";
                         }
-                    if(gigi85.isSelected()==true){
-                            bagian="8.5";
+                        if (gigi85.isSelected() == true) {
+                            bagian = "8.5";
                         }
-                    }else if(DiagnosaUtama.getText().isEmpty()){
-                        Valid.textKosong(DiagnosaUtama,"Diagnosa Gigi");
-                    }else if(Catatan.getText().isEmpty()){
-                        Valid.textKosong(Catatan,"Catatan Pemeriksaan");
-                    }else{
-                        if(tbObat.getSelectedRow()>-1){
-                            if(Sequel.mengedittf("pemeriksaan_gigi","no_rawat=?","no_rawat=?,kd_dokter=?,bagian=?,kd_diagnosa=?,hasil=?,catatan=?,tanggal=?,rahang=?",9,new String[]{
-                                TNoRw.getText(),KodeDokter.getText(),bagian,KodeDiagnosaUtama.getText(),
-                                Hasil.getSelectedItem().toString(),Catatan.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),
-                                Rahang.getSelectedItem().toString(),
-                                    tbObat.getValueAt(tbObat.getSelectedRow(),2).toString()
-                                })==true){
-                                   tampil();
-                                   emptTeks();
+                    } else if (DiagnosaUtama.getText().isEmpty()) {
+                        Valid.textKosong(DiagnosaUtama, "Diagnosa Gigi");
+                    } else if (Catatan.getText().isEmpty()) {
+                        Valid.textKosong(Catatan, "Catatan Pemeriksaan");
+                    } else {
+                        if (tbObat.getSelectedRow() > -1) {
+                            if (Sequel.mengedittf("pemeriksaan_gigi",
+                                    "no_rawat=?",
+                                    "no_rawat=?,kd_dokter=?,bagian=?,kd_diagnosa=?,hasil=?,catatan=?,tanggal=?,rahang=?",
+                                    9, new String[]{
+                                        TNoRw.getText(), KodeDokter.getText(),
+                                        bagian, KodeDiagnosaUtama.getText(),
+                                        Hasil.getSelectedItem().toString(),
+                                        Catatan.getText(), Valid.SetTgl(Tanggal.
+                                        getSelectedItem() + ""),
+                                        Rahang.getSelectedItem().toString(),
+                                        tbObat.getValueAt(tbObat.
+                                                getSelectedRow(), 2).toString()
+                                    }) == true) {
+                                tampil();
+                                emptTeks();
                             }
-                        }else{
-                            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Silahkan anda pilih data terlebih dahulu..!!");
                         }
                     }
                     break;
                 case 1:
-                    if(tbObat1.getSelectedRow()>-1){
-                        if(Sequel.mengedittf("tambahan_pemeriksaan_gigi","no_rawat=?","no_rawat=?,occlusi=?,torus_palatinus=?,torus_mandibularis=?,palatum=?,diastema=?,tambahan_diastema=?,gigi_anomali=?,tambahan_gigi_anomali=?,lain=?,d=?,m=?,f=?",14,new String[]{
-                            TNoRw.getText(),Occlusi.getSelectedItem().toString(),TorusPalatinus.getSelectedItem().toString(),TorusMandibularis.getSelectedItem().toString(),
-                            Palatum.getSelectedItem().toString(),Diastema.getSelectedItem().toString(),TDiastema.getText(),GigiAnomali.getSelectedItem().toString(),
-                            TGigiAnomali.getText(),TLain.getText(),TextD.getText(),TextM.getText(),TextF.getText(),
-                                tbObat1.getValueAt(tbObat1.getSelectedRow(),2).toString()
-                            })==true){
-                               tampil2();
-                               emptTeks();
+                    if (tbObat1.getSelectedRow() > -1) {
+                        if (Sequel.mengedittf("tambahan_pemeriksaan_gigi",
+                                "no_rawat=?",
+                                "no_rawat=?,occlusi=?,torus_palatinus=?,torus_mandibularis=?,palatum=?,diastema=?,tambahan_diastema=?,gigi_anomali=?,tambahan_gigi_anomali=?,lain=?,d=?,m=?,f=?",
+                                14, new String[]{
+                                    TNoRw.getText(), Occlusi.getSelectedItem().
+                                    toString(),
+                                    TorusPalatinus.getSelectedItem().toString(),
+                                    TorusMandibularis.getSelectedItem().
+                                            toString(),
+                                    Palatum.getSelectedItem().toString(),
+                                    Diastema.getSelectedItem().toString(),
+                                    TDiastema.getText(), GigiAnomali.
+                                    getSelectedItem().toString(),
+                                    TGigiAnomali.getText(), TLain.getText(),
+                                    TextD.getText(), TextM.getText(), TextF.
+                                    getText(),
+                                    tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                                            2).toString()
+                                }) == true) {
+                            tampil2();
+                            emptTeks();
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane,
+                                "Silahkan anda pilih data terlebih dahulu..!!");
                     }
                     break;
             }
@@ -3007,9 +3181,9 @@ private void autoNomor() {
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -3035,25 +3209,27 @@ private void autoNomor() {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        
+
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        
+
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -3063,9 +3239,9 @@ private void autoNomor() {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -3076,16 +3252,16 @@ private void autoNomor() {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TampilkanData();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -3094,16 +3270,17 @@ private void autoNomor() {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     ChkInput.setSelected(true);
-                    isForm(); 
+                    isForm();
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
@@ -3112,35 +3289,36 @@ private void autoNomor() {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void DiagnosaUtamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaUtamaKeyPressed
-       Valid.pindah(evt,Hasil,KodeDiagnosaUtama);
+        Valid.pindah(evt, Hasil, KodeDiagnosaUtama);
     }//GEN-LAST:event_DiagnosaUtamaKeyPressed
 
     private void KodeDiagnosaUtamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodeDiagnosaUtamaKeyPressed
-        Valid.pindah(evt,DiagnosaUtama,Hasil);
+        Valid.pindah(evt, DiagnosaUtama, Hasil);
     }//GEN-LAST:event_KodeDiagnosaUtamaKeyPressed
 
     private void KodeDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodeDokterKeyPressed
-        Valid.pindah(evt,TCari,DiagnosaUtama);
+        Valid.pindah(evt, TCari, DiagnosaUtama);
     }//GEN-LAST:event_KodeDokterKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
         dokter.emptTeks();
         dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void BtnDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnDokterKeyPressed
-       Valid.pindah(evt,TCari,DiagnosaUtama);
+        Valid.pindah(evt, TCari, DiagnosaUtama);
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void CatatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CatatanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(evt.isShiftDown()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (evt.isShiftDown()) {
                 BtnSimpan.requestFocus();
             }
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Hasil.requestFocus();
         }
     }//GEN-LAST:event_CatatanKeyPressed
@@ -3152,325 +3330,326 @@ private void autoNomor() {
     private void BtnDokter6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter6ActionPerformed
         penyakit1.isCek();
         penyakit1.emptTeks();
-        penyakit1.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penyakit1.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penyakit1.setLocationRelativeTo(internalFrame1);
         penyakit1.setVisible(true);    // TODO add your handling code here:
     }//GEN-LAST:event_BtnDokter6ActionPerformed
 
     private void gigi18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi18ActionPerformed
-        if(gigi18.isSelected()==true){
+        if (gigi18.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi18ActionPerformed
 
     private void gigi17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi17ActionPerformed
-        if(gigi17.isSelected()==true){
+        if (gigi17.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi17ActionPerformed
 
     private void gigi28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi28ActionPerformed
-        if(gigi28.isSelected()==true){
+        if (gigi28.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi28ActionPerformed
 
     private void gigi16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi16ActionPerformed
-        if(gigi16.isSelected()==true){
+        if (gigi16.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi16ActionPerformed
 
     private void gigi15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi15ActionPerformed
-        if(gigi15.isSelected()==true){
+        if (gigi15.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi15ActionPerformed
 
     private void gigi14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi14ActionPerformed
-        if(gigi14.isSelected()==true){
+        if (gigi14.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi14ActionPerformed
 
     private void gigi13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi13ActionPerformed
-        if(gigi13.isSelected()==true){
+        if (gigi13.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi13ActionPerformed
 
     private void gigi12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi12ActionPerformed
-        if(gigi12.isSelected()==true){
+        if (gigi12.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi12ActionPerformed
 
     private void gigi11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi11ActionPerformed
-        if(gigi11.isSelected()==true){
+        if (gigi11.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi11ActionPerformed
 
     private void gigi21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi21ActionPerformed
-        if(gigi21.isSelected()==true){
+        if (gigi21.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi21ActionPerformed
 
     private void gigi22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi22ActionPerformed
-        if(gigi22.isSelected()==true){
+        if (gigi22.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi22ActionPerformed
 
     private void gigi23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi23ActionPerformed
-        if(gigi23.isSelected()==true){
+        if (gigi23.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi23ActionPerformed
 
     private void gigi24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi24ActionPerformed
-        if(gigi24.isSelected()==true){
+        if (gigi24.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi24ActionPerformed
 
     private void gigi25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi25ActionPerformed
-        if(gigi25.isSelected()==true){
+        if (gigi25.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi25ActionPerformed
 
     private void gigi26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi26ActionPerformed
-        if(gigi26.isSelected()==true){
+        if (gigi26.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi26ActionPerformed
 
     private void gigi27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi27ActionPerformed
-        if(gigi27.isSelected()==true){
+        if (gigi27.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi27ActionPerformed
 
     private void gigi31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi31ActionPerformed
-        if(gigi31.isSelected()==true){
+        if (gigi31.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi31ActionPerformed
 
     private void gigi32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi32ActionPerformed
-        if(gigi32.isSelected()==true){
+        if (gigi32.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi32ActionPerformed
 
     private void gigi33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi33ActionPerformed
-        if(gigi33.isSelected()==true){
+        if (gigi33.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi33ActionPerformed
 
     private void gigi34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi34ActionPerformed
-        if(gigi34.isSelected()==true){
+        if (gigi34.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi34ActionPerformed
 
     private void gigi35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi35ActionPerformed
-        if(gigi35.isSelected()==true){
+        if (gigi35.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi35ActionPerformed
 
     private void gigi36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi36ActionPerformed
-        if(gigi36.isSelected()==true){
+        if (gigi36.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi36ActionPerformed
 
     private void gigi37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi37ActionPerformed
-        if(gigi37.isSelected()==true){
+        if (gigi37.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi37ActionPerformed
 
     private void gigi38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi38ActionPerformed
-        if(gigi38.isSelected()==true){
+        if (gigi38.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi38ActionPerformed
 
     private void gigi41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi41ActionPerformed
-        if(gigi41.isSelected()==true){
+        if (gigi41.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi41ActionPerformed
 
     private void gigi42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi42ActionPerformed
-        if(gigi42.isSelected()==true){
+        if (gigi42.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi42ActionPerformed
 
     private void gigi43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi43ActionPerformed
-        if(gigi43.isSelected()==true){
+        if (gigi43.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi43ActionPerformed
 
     private void gigi44ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi44ActionPerformed
-        if(gigi44.isSelected()==true){
+        if (gigi44.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi44ActionPerformed
 
     private void gigi45ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi45ActionPerformed
-        if(gigi45.isSelected()==true){
+        if (gigi45.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi45ActionPerformed
 
     private void gigi46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi46ActionPerformed
-        if(gigi46.isSelected()==true){
+        if (gigi46.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi46ActionPerformed
 
     private void gigi47ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi47ActionPerformed
-        if(gigi47.isSelected()==true){
+        if (gigi47.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi47ActionPerformed
 
     private void gigi48ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi48ActionPerformed
-        if(gigi48.isSelected()==true){
+        if (gigi48.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi48ActionPerformed
 
     private void gigi51ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi51ActionPerformed
-        if(gigi51.isSelected()==true){
+        if (gigi51.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi51ActionPerformed
 
     private void gigi52ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi52ActionPerformed
-        if(gigi52.isSelected()==true){
+        if (gigi52.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi52ActionPerformed
 
     private void gigi53ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi53ActionPerformed
-        if(gigi53.isSelected()==true){
+        if (gigi53.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi53ActionPerformed
 
     private void gigi54ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi54ActionPerformed
-        if(gigi54.isSelected()==true){
+        if (gigi54.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi54ActionPerformed
 
     private void gigi55ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi55ActionPerformed
-        if(gigi55.isSelected()==true){
+        if (gigi55.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi55ActionPerformed
 
     private void gigi61ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi61ActionPerformed
-        if(gigi61.isSelected()==true){
+        if (gigi61.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi61ActionPerformed
 
     private void gigi62ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi62ActionPerformed
-        if(gigi62.isSelected()==true){
+        if (gigi62.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi62ActionPerformed
 
     private void gigi63ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi63ActionPerformed
-        if(gigi63.isSelected()==true){
+        if (gigi63.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi63ActionPerformed
 
     private void gigi64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi64ActionPerformed
-        if(gigi64.isSelected()==true){
+        if (gigi64.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi64ActionPerformed
 
     private void gigi65ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi65ActionPerformed
-        if(gigi65.isSelected()==true){
+        if (gigi65.isSelected() == true) {
             Rahang.setSelectedIndex(1);
         }
     }//GEN-LAST:event_gigi65ActionPerformed
 
     private void gigi71ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi71ActionPerformed
-        if(gigi71.isSelected()==true){
+        if (gigi71.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi71ActionPerformed
 
     private void gigi72ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi72ActionPerformed
-        if(gigi72.isSelected()==true){
+        if (gigi72.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi72ActionPerformed
 
     private void gigi73ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi73ActionPerformed
-        if(gigi73.isSelected()==true){
+        if (gigi73.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi73ActionPerformed
 
     private void gigi74ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi74ActionPerformed
-        if(gigi74.isSelected()==true){
+        if (gigi74.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi74ActionPerformed
 
     private void gigi75ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi75ActionPerformed
-        if(gigi75.isSelected()==true){
+        if (gigi75.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi75ActionPerformed
 
     private void gigi81ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi81ActionPerformed
-        if(gigi81.isSelected()==true){
+        if (gigi81.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi81ActionPerformed
 
     private void gigi82ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi82ActionPerformed
-        if(gigi82.isSelected()==true){
+        if (gigi82.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi82ActionPerformed
 
     private void gigi83ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi83ActionPerformed
-        if(gigi83.isSelected()==true){
+        if (gigi83.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi83ActionPerformed
 
     private void gigi84ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi84ActionPerformed
-        if(gigi84.isSelected()==true){
+        if (gigi84.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi84ActionPerformed
 
     private void gigi85ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gigi85ActionPerformed
-        if(gigi85.isSelected()==true){
+        if (gigi85.isSelected() == true) {
             Rahang.setSelectedIndex(2);
         }
     }//GEN-LAST:event_gigi85ActionPerformed
 
     private void HasilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HasilKeyPressed
-        Valid.pindah(evt,Hasil,Catatan);
+        Valid.pindah(evt, Hasil, Catatan);
     }//GEN-LAST:event_HasilKeyPressed
 
     private void TNoPermintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoPermintaanKeyPressed
@@ -3537,27 +3716,27 @@ private void autoNomor() {
     }//GEN-LAST:event_DiastemaKeyPressed
 
     private void DiastemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DiastemaActionPerformed
-        if(Diastema.getSelectedIndex()==1){
+        if (Diastema.getSelectedIndex() == 1) {
             jScrollPane3.setEnabled(true);
             TDiastema.setEnabled(true);
-        }else{
+        } else {
             jScrollPane3.setEnabled(false);
             TDiastema.setEnabled(false);
         }
     }//GEN-LAST:event_DiastemaActionPerformed
 
     private void GigiAnomaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GigiAnomaliActionPerformed
-        if(GigiAnomali.getSelectedIndex()==1){
+        if (GigiAnomali.getSelectedIndex() == 1) {
             jScrollPane1.setEnabled(true);
             TGigiAnomali.setEnabled(true);
-        }else{
+        } else {
             jScrollPane1.setEnabled(false);
             TGigiAnomali.setEnabled(false);
         }
     }//GEN-LAST:event_GigiAnomaliActionPerformed
 
     private void tbObat1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObat1MouseClicked
-        if(tabMode2.getRowCount()!=0){
+        if (tabMode2.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -3566,16 +3745,17 @@ private void autoNomor() {
     }//GEN-LAST:event_tbObat1MouseClicked
 
     private void tbObat1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObat1KeyPressed
-        if(tabMode2.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode2.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     ChkInput.setSelected(true);
-                    isForm(); 
+                    isForm();
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
@@ -3584,7 +3764,7 @@ private void autoNomor() {
     }//GEN-LAST:event_tbObat1KeyPressed
 
     private void TabOdontogramMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabOdontogramMouseClicked
-        switch(TabOdontogram.getSelectedIndex()){
+        switch (TabOdontogram.getSelectedIndex()) {
             case 0:
                 tampil();
                 break;
@@ -3599,16 +3779,18 @@ private void autoNomor() {
     }//GEN-LAST:event_TabOdontogramKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgOdontogram dialog = new DlgOdontogram(new javax.swing.JFrame(), true);
+            DlgOdontogram dialog = new DlgOdontogram(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -3814,156 +3996,198 @@ private void autoNomor() {
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien, "+
-                    "pemeriksaan_gigi.kd_dokter,dokter.nm_dokter,pemeriksaan_gigi.bagian,pemeriksaan_gigi.kd_diagnosa,penyakit.nm_penyakit, "+
-                    "pemeriksaan_gigi.hasil,pemeriksaan_gigi.catatan,pemeriksaan_gigi.tanggal,pemeriksaan_gigi.noorder,pemeriksaan_gigi.rahang from pemeriksaan_gigi inner join reg_periksa on pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on pemeriksaan_gigi.kd_dokter=dokter.kd_dokter inner join penyakit on pemeriksaan_gigi.kd_diagnosa = penyakit.kd_penyakit "+
-                    "where reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien, "+
-                    "pemeriksaan_gigi.kd_dokter,dokter.nm_dokter,pemeriksaan_gigi.bagian,pemeriksaan_gigi.kd_diagnosa,penyakit.nm_penyakit, "+
-                    "pemeriksaan_gigi.hasil,pemeriksaan_gigi.catatan,pemeriksaan_gigi.tanggal,pemeriksaan_gigi.noorder,pemeriksaan_gigi.rahang from pemeriksaan_gigi inner join reg_periksa on pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on pemeriksaan_gigi.kd_dokter=dokter.kd_dokter inner join penyakit on pemeriksaan_gigi.kd_diagnosa = penyakit.kd_penyakit "+
-                    "where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and pemeriksaan_gigi.kd_dokter like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and dokter.nm_dokter like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and pemeriksaan_gigi.kd_diagnosa like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rawat like ? "+
-                    "order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
+        try {
+            if (TCari.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien, "
+                        + "pemeriksaan_gigi.kd_dokter,dokter.nm_dokter,pemeriksaan_gigi.bagian,pemeriksaan_gigi.kd_diagnosa,penyakit.nm_penyakit, "
+                        + "pemeriksaan_gigi.hasil,pemeriksaan_gigi.catatan,pemeriksaan_gigi.tanggal,pemeriksaan_gigi.noorder,pemeriksaan_gigi.rahang from pemeriksaan_gigi inner join reg_periksa on pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on pemeriksaan_gigi.kd_dokter=dokter.kd_dokter inner join penyakit on pemeriksaan_gigi.kd_diagnosa = penyakit.kd_penyakit "
+                        + "where reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien, "
+                        + "pemeriksaan_gigi.kd_dokter,dokter.nm_dokter,pemeriksaan_gigi.bagian,pemeriksaan_gigi.kd_diagnosa,penyakit.nm_penyakit, "
+                        + "pemeriksaan_gigi.hasil,pemeriksaan_gigi.catatan,pemeriksaan_gigi.tanggal,pemeriksaan_gigi.noorder,pemeriksaan_gigi.rahang from pemeriksaan_gigi inner join reg_periksa on pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on pemeriksaan_gigi.kd_dokter=dokter.kd_dokter inner join penyakit on pemeriksaan_gigi.kd_diagnosa = penyakit.kd_penyakit "
+                        + "where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and pemeriksaan_gigi.kd_dokter like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and dokter.nm_dokter like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and pemeriksaan_gigi.kd_diagnosa like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rawat like ? "
+                        + "order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
             }
             try {
-                if(TCari.getText().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(5,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(8,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(9,"%"+TCari.getText()+"%");
-                    ps.setString(10,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(11,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(12,"%"+TCari.getText()+"%");
-                    ps.setString(13,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(14,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(15,"%"+TCari.getText()+"%");
-                    ps.setString(16,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(17,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(18,"%"+TCari.getText()+"%");
-                    ps.setString(19,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(20,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(21,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(5, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(9, "%" + TCari.getText() + "%");
+                    ps.setString(10, Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + ""));
+                    ps.setString(11, Valid.SetTgl(
+                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(12, "%" + TCari.getText() + "%");
+                    ps.setString(13, Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + ""));
+                    ps.setString(14, Valid.SetTgl(
+                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(15, "%" + TCari.getText() + "%");
+                    ps.setString(16, Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + ""));
+                    ps.setString(17, Valid.SetTgl(
+                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(18, "%" + TCari.getText() + "%");
+                    ps.setString(19, Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + ""));
+                    ps.setString(20, Valid.SetTgl(
+                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(21, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("tgl_registrasi"),rs.getString("status_lanjut"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("kd_dokter"),rs.getString("nm_dokter"),rs.getString("bagian"),rs.getString("nm_penyakit"),
-                        rs.getString("kd_diagnosa"),rs.getString("hasil"),rs.getString("catatan"),rs.getString("tanggal"),rs.getString("noorder"),rs.getString("rahang")
+                        rs.getString("tgl_registrasi"), rs.getString(
+                        "status_lanjut"), rs.getString("no_rawat"), rs.
+                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("bagian"), rs.getString("nm_penyakit"),
+                        rs.getString("kd_diagnosa"), rs.getString("hasil"), rs.
+                        getString("catatan"), rs.getString("tanggal"), rs.
+                        getString("noorder"), rs.getString("rahang")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        int b=tabMode.getRowCount();
-        LCount.setText(""+b);
+        int b = tabMode.getRowCount();
+        LCount.setText("" + b);
     }
-    
+
     /**
      *
      */
     public void tampil2() {
         Valid.tabelKosong(tabMode2);
-        try{
-            if(TCari.getText().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                    "tambahan_pemeriksaan_gigi.occlusi,tambahan_pemeriksaan_gigi.torus_palatinus,tambahan_pemeriksaan_gigi.torus_mandibularis,"+
-                    "tambahan_pemeriksaan_gigi.palatum,tambahan_pemeriksaan_gigi.diastema,tambahan_pemeriksaan_gigi.tambahan_diastema,tambahan_pemeriksaan_gigi.gigi_anomali,tambahan_pemeriksaan_gigi.tambahan_gigi_anomali,"+
-                    "tambahan_pemeriksaan_gigi.lain,tambahan_pemeriksaan_gigi.d,tambahan_pemeriksaan_gigi.m,tambahan_pemeriksaan_gigi.f from tambahan_pemeriksaan_gigi inner join reg_periksa on tambahan_pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "where reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                    "tambahan_pemeriksaan_gigi.occlusi,tambahan_pemeriksaan_gigi.torus_palatinus,tambahan_pemeriksaan_gigi.torus_mandibularis,"+
-                    "tambahan_pemeriksaan_gigi.palatum,tambahan_pemeriksaan_gigi.diastema,tambahan_pemeriksaan_gigi.tambahan_diastema,tambahan_pemeriksaan_gigi.gigi_anomali,tambahan_pemeriksaan_gigi.tambahan_gigi_anomali,"+
-                    "tambahan_pemeriksaan_gigi.lain,tambahan_pemeriksaan_gigi.d,tambahan_pemeriksaan_gigi.m,tambahan_pemeriksaan_gigi.f from tambahan_pemeriksaan_gigi inner join reg_periksa on tambahan_pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ? or "+
-                    "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rawat like ? "+
-                    "order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
+        try {
+            if (TCari.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien,"
+                        + "tambahan_pemeriksaan_gigi.occlusi,tambahan_pemeriksaan_gigi.torus_palatinus,tambahan_pemeriksaan_gigi.torus_mandibularis,"
+                        + "tambahan_pemeriksaan_gigi.palatum,tambahan_pemeriksaan_gigi.diastema,tambahan_pemeriksaan_gigi.tambahan_diastema,tambahan_pemeriksaan_gigi.gigi_anomali,tambahan_pemeriksaan_gigi.tambahan_gigi_anomali,"
+                        + "tambahan_pemeriksaan_gigi.lain,tambahan_pemeriksaan_gigi.d,tambahan_pemeriksaan_gigi.m,tambahan_pemeriksaan_gigi.f from tambahan_pemeriksaan_gigi inner join reg_periksa on tambahan_pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "where reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.tgl_registrasi,reg_periksa.no_rawat,reg_periksa.status_lanjut,reg_periksa.no_rkm_medis,pasien.nm_pasien,"
+                        + "tambahan_pemeriksaan_gigi.occlusi,tambahan_pemeriksaan_gigi.torus_palatinus,tambahan_pemeriksaan_gigi.torus_mandibularis,"
+                        + "tambahan_pemeriksaan_gigi.palatum,tambahan_pemeriksaan_gigi.diastema,tambahan_pemeriksaan_gigi.tambahan_diastema,tambahan_pemeriksaan_gigi.gigi_anomali,tambahan_pemeriksaan_gigi.tambahan_gigi_anomali,"
+                        + "tambahan_pemeriksaan_gigi.lain,tambahan_pemeriksaan_gigi.d,tambahan_pemeriksaan_gigi.m,tambahan_pemeriksaan_gigi.f from tambahan_pemeriksaan_gigi inner join reg_periksa on tambahan_pemeriksaan_gigi.no_rawat=reg_periksa.no_rawat  "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ? or "
+                        + "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rawat like ? "
+                        + "order by reg_periksa.tgl_registrasi,reg_periksa.status_lanjut");
             }
             try {
-                if(TCari.getText().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(5,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(8,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(9,"%"+TCari.getText()+"%");
-                    ps.setString(10,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(11,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(12,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(5, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(9, "%" + TCari.getText() + "%");
+                    ps.setString(10, Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + ""));
+                    ps.setString(11, Valid.SetTgl(
+                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(12, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode2.addRow(new String[]{
-                        rs.getString("tgl_registrasi"),rs.getString("status_lanjut"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("occlusi"),rs.getString("torus_palatinus"),rs.getString("torus_mandibularis"),rs.getString("palatum"),
-                        rs.getString("diastema"),rs.getString("tambahan_diastema"),rs.getString("gigi_anomali"),rs.getString("tambahan_gigi_anomali"),rs.getString("lain"),rs.getString("d"),
-                        rs.getString("m"),rs.getString("f")
+                        rs.getString("tgl_registrasi"), rs.getString(
+                        "status_lanjut"), rs.getString("no_rawat"), rs.
+                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("occlusi"), rs.getString("torus_palatinus"),
+                        rs.getString("torus_mandibularis"), rs.getString(
+                        "palatum"),
+                        rs.getString("diastema"), rs.getString(
+                        "tambahan_diastema"), rs.getString("gigi_anomali"), rs.
+                        getString("tambahan_gigi_anomali"), rs.getString("lain"),
+                        rs.getString("d"),
+                        rs.getString("m"), rs.getString("f")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        int b=tabMode2.getRowCount();
-        LCount.setText(""+b);
+        int b = tabMode2.getRowCount();
+        LCount.setText("" + b);
     }
 
     public void emptTeks() {
-        switch(TabOdontogram.getSelectedIndex()){
+        switch (TabOdontogram.getSelectedIndex()) {
             case 0:
-                Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='"+Valid.SetTgl(Tanggal.getSelectedItem()+"")+"' ","OD"+Valid.SetTgl(Tanggal.getSelectedItem()+"").replaceAll("-",""),5,TNoPermintaan);
+                Valid.autoNomer3(
+                        "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='" + Valid.
+                                SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                        "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").
+                                replaceAll("-", ""), 5, TNoPermintaan);
                 Catatan.setText("");
                 DiagnosaUtama.setText("");
                 KodeDiagnosaUtama.setText("");
@@ -3987,214 +4211,297 @@ private void autoNomor() {
                 TextF.setText("");
                 break;
         }
-        
-    } 
+
+    }
 
     private void getData() {
-        switch(TabOdontogram.getSelectedIndex()){
+        switch (TabOdontogram.getSelectedIndex()) {
             case 0:
-                if(tbObat.getSelectedRow()!= -1){
-                TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());  
-                TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());  
-                TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());  
-                KodeDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());  
-                NamaDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.1")){
-                    gigi11.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.2")){
-                    gigi12.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.3")){
-                    gigi13.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.4")){
-                    gigi14.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.5")){
-                    gigi15.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.6")){
-                    gigi16.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.7")){
-                    gigi17.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("1.8")){
-                    gigi18.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.1")){
-                    gigi21.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.2")){
-                    gigi22.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.3")){
-                    gigi23.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.4")){
-                    gigi24.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.5")){
-                    gigi25.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.6")){
-                    gigi26.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.7")){
-                    gigi27.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("2.8")){
-                    gigi28.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.1")){
-                    gigi31.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.2")){
-                    gigi32.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.3")){
-                    gigi33.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.4")){
-                    gigi34.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.5")){
-                    gigi35.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.6")){
-                    gigi36.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.7")){
-                    gigi37.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("3.8")){
-                    gigi38.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.1")){
-                    gigi41.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.2")){
-                    gigi42.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.3")){
-                    gigi43.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.4")){
-                    gigi44.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.5")){
-                    gigi45.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.6")){
-                    gigi46.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.7")){
-                    gigi47.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("4.8")){
-                    gigi48.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("5.1")){
-                    gigi51.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("5.2")){
-                    gigi52.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("5.3")){
-                    gigi53.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("5.4")){
-                    gigi54.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("5.5")){
-                    gigi55.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("6.1")){
-                    gigi61.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("6.2")){
-                    gigi62.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("6.3")){
-                    gigi63.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("6.4")){
-                    gigi64.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("6.5")){
-                    gigi65.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("7.1")){
-                    gigi71.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("7.2")){
-                    gigi72.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("7.3")){
-                    gigi73.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("7.4")){
-                    gigi74.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("7.5")){
-                    gigi75.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("8.1")){
-                    gigi81.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("8.2")){
-                    gigi82.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("8.3")){
-                    gigi83.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("8.4")){
-                    gigi84.setSelected(true);
-                }
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString().equals("8.5")){
-                    gigi85.setSelected(true);
-                }
-                DiagnosaUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-                KodeDiagnosaUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-                Hasil.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-                Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-                Valid.SetTgl2(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-                TNoPermintaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-                Rahang.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
+                if (tbObat.getSelectedRow() != -1) {
+                    TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                            toString());
+                    TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                            toString());
+                    TPasien.setText(tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 4).toString());
+                    KodeDokter.setText(tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 5).toString());
+                    NamaDokter.setText(tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 6).toString());
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.1")) {
+                        gigi11.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.2")) {
+                        gigi12.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.3")) {
+                        gigi13.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.4")) {
+                        gigi14.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.5")) {
+                        gigi15.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.6")) {
+                        gigi16.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.7")) {
+                        gigi17.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("1.8")) {
+                        gigi18.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.1")) {
+                        gigi21.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.2")) {
+                        gigi22.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.3")) {
+                        gigi23.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.4")) {
+                        gigi24.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.5")) {
+                        gigi25.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.6")) {
+                        gigi26.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.7")) {
+                        gigi27.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("2.8")) {
+                        gigi28.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.1")) {
+                        gigi31.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.2")) {
+                        gigi32.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.3")) {
+                        gigi33.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.4")) {
+                        gigi34.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.5")) {
+                        gigi35.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.6")) {
+                        gigi36.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.7")) {
+                        gigi37.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("3.8")) {
+                        gigi38.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.1")) {
+                        gigi41.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.2")) {
+                        gigi42.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.3")) {
+                        gigi43.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.4")) {
+                        gigi44.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.5")) {
+                        gigi45.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.6")) {
+                        gigi46.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.7")) {
+                        gigi47.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("4.8")) {
+                        gigi48.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("5.1")) {
+                        gigi51.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("5.2")) {
+                        gigi52.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("5.3")) {
+                        gigi53.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("5.4")) {
+                        gigi54.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("5.5")) {
+                        gigi55.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("6.1")) {
+                        gigi61.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("6.2")) {
+                        gigi62.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("6.3")) {
+                        gigi63.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("6.4")) {
+                        gigi64.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("6.5")) {
+                        gigi65.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("7.1")) {
+                        gigi71.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("7.2")) {
+                        gigi72.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("7.3")) {
+                        gigi73.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("7.4")) {
+                        gigi74.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("7.5")) {
+                        gigi75.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("8.1")) {
+                        gigi81.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("8.2")) {
+                        gigi82.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("8.3")) {
+                        gigi83.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("8.4")) {
+                        gigi84.setSelected(true);
+                    }
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
+                            equals("8.5")) {
+                        gigi85.setSelected(true);
+                    }
+                    DiagnosaUtama.setText(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 8).toString());
+                    KodeDiagnosaUtama.setText(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 9).toString());
+                    Hasil.setSelectedItem(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 10).toString());
+                    Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                            11).toString());
+                    Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 12).toString());
+                    TNoPermintaan.setText(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 13).toString());
+                    Rahang.setSelectedItem(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 14).toString());
                 }
                 break;
             case 1:
-                if(tbObat1.getSelectedRow()!= -1){
-                TNoRw.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),2).toString());  
-                TNoRM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),3).toString());  
-                TPasien.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),4).toString());
-                Occlusi.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),5).toString());  
-                TorusPalatinus.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),6).toString());  
-                TorusMandibularis.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),7).toString());
-                Palatum.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),8).toString());  
-                Diastema.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),9).toString());  
-                TDiastema.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),10).toString());
-                GigiAnomali.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(),11).toString());  
-                TGigiAnomali.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),12).toString());  
-                TLain.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),13).toString());
-                TextD.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),14).toString());  
-                TextM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),15).toString());  
-                TextF.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),16).toString());
+                if (tbObat1.getSelectedRow() != -1) {
+                    TNoRw.setText(tbObat1.
+                            getValueAt(tbObat1.getSelectedRow(), 2).toString());
+                    TNoRM.setText(tbObat1.
+                            getValueAt(tbObat1.getSelectedRow(), 3).toString());
+                    TPasien.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                            4).toString());
+                    Occlusi.setSelectedItem(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 5).toString());
+                    TorusPalatinus.setSelectedItem(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 6).toString());
+                    TorusMandibularis.setSelectedItem(tbObat1.getValueAt(
+                            tbObat1.getSelectedRow(), 7).toString());
+                    Palatum.setSelectedItem(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 8).toString());
+                    Diastema.setSelectedItem(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 9).toString());
+                    TDiastema.setText(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 10).toString());
+                    GigiAnomali.setSelectedItem(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 11).toString());
+                    TGigiAnomali.setText(tbObat1.getValueAt(tbObat1.
+                            getSelectedRow(), 12).toString());
+                    TLain.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                            13).toString());
+                    TextD.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                            14).toString());
+                    TextM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                            15).toString());
+                    TextF.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
+                            16).toString());
                 }
                 break;
         }
-        
+
     }
 
     private void isRawat() {
-         Sequel.cariIsi("select no_rkm_medis from reg_periksa where no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+        Sequel.cariIsi(
+                "select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.
+                        getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi("select nm_pasien from pasien where no_rkm_medis='"+TNoRM.getText()+"' ",TPasien);
+        Sequel.cariIsi(
+                "select nm_pasien from pasien where no_rkm_medis='" + TNoRM.
+                        getText() + "' ", TPasien);
     }
-    
+
     /**
      *
      * @param norwt
@@ -4203,28 +4510,30 @@ private void autoNomor() {
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi("select tgl_registrasi from reg_periksa where no_rawat='"+norwt+"'", DTPCari1);
-        DTPCari2.setDate(tgl2);    
+        Sequel.cariIsi(
+                "select tgl_registrasi from reg_periksa where no_rawat='" + norwt + "'",
+                DTPCari1);
+        DTPCari2.setDate(tgl2);
         isRawat();
-        isPsien();              
+        isPsien();
         ChkInput.setSelected(true);
         isForm();
         emptTeks();
         Hasil.requestFocus();
         try {
-            ps=koneksi.prepareStatement(
-                    "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "+
-                    "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "+
-                    "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
+            ps = koneksi.prepareStatement(
+                    "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
+                    + "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
+                    + "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
             try {
-                ps.setString(1,norwt);
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    if(rs.getInt("prioritas")==1){
+                ps.setString(1, norwt);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    if (rs.getInt("prioritas") == 1) {
                         KodeDiagnosaUtama.setText(rs.getString("kd_penyakit"));
                         DiagnosaUtama.setText(rs.getString("nm_penyakit"));
                     }
-                    
+
 //                    if(rs.getInt("prioritas")==2){
 //                        KodeDiagnosaSekunder1.setText(rs.getString("kd_penyakit"));
 //                        DiagnosaSekunder1.setText(rs.getString("nm_penyakit"));
@@ -4236,28 +4545,27 @@ private void autoNomor() {
 //                    }
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        } 
-        
+            System.out.println("Notif : " + e);
+        }
         try {
-            ps=koneksi.prepareStatement(
-                    "select prosedur_pasien.kode,icd9.deskripsi_panjang, prosedur_pasien.prioritas "+
-                    "from prosedur_pasien inner join icd9 on prosedur_pasien.kode=icd9.kode "+
-                    "where prosedur_pasien.no_rawat=? order by prosedur_pasien.prioritas ");
+            ps = koneksi.prepareStatement(
+                    "select prosedur_pasien.kode,icd9.deskripsi_panjang, prosedur_pasien.prioritas "
+                    + "from prosedur_pasien inner join icd9 on prosedur_pasien.kode=icd9.kode "
+                    + "where prosedur_pasien.no_rawat=? order by prosedur_pasien.prioritas ");
             try {
-                ps.setString(1,norwt);
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, norwt);
+                rs = ps.executeQuery();
+                while (rs.next()) {
 //                    if(rs.getInt("prioritas")==1){
 //                        KodeProsedurUtama.setText(rs.getString("kode"));
 //                        ProsedurUtama.setText(rs.getString("deskripsi_panjang"));
@@ -4279,61 +4587,63 @@ private void autoNomor() {
 //                    }
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        } 
+            System.out.println("Notif : " + e);
+        }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true||ChkInput1.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true || ChkInput1.isSelected() == true) {
             ChkInput.setVisible(false);
 //            PanelInput.setPreferredSize(new Dimension(WIDTH,this.getHeight()-122));
-            PanelInput.setPreferredSize(new Dimension(WIDTH,350));
-            scrollInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 350));
+            scrollInput.setVisible(true);
             ChkInput.setVisible(true);
             ChkInput1.setVisible(false);
-            PanelInput1.setPreferredSize(new Dimension(WIDTH,350));
-            scrollInput1.setVisible(true);      
+            PanelInput1.setPreferredSize(new Dimension(WIDTH, 350));
+            scrollInput1.setVisible(true);
             ChkInput1.setVisible(true);
-        }else if(ChkInput.isSelected()==false||ChkInput1.isSelected()==true){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            scrollInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false || ChkInput1.isSelected() == true) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            scrollInput.setVisible(false);
             ChkInput.setVisible(true);
-            ChkInput1.setVisible(false);            
-            PanelInput1.setPreferredSize(new Dimension(WIDTH,20));
-            scrollInput1.setVisible(false);      
+            ChkInput1.setVisible(false);
+            PanelInput1.setPreferredSize(new Dimension(WIDTH, 20));
+            scrollInput1.setVisible(false);
             ChkInput1.setVisible(true);
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getdata_resume_pasien());
         BtnHapus.setEnabled(akses.getdata_resume_pasien());
         BtnEdit.setEnabled(akses.getdata_resume_pasien());
-        BtnPrint.setEnabled(akses.getdata_resume_pasien());   
-        if(akses.getjml2()>=1){
+        BtnPrint.setEnabled(akses.getdata_resume_pasien());
+        if (akses.getjml2() >= 1) {
             KodeDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KodeDokter.setText(akses.getkode());
-            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?", NamaDokter,KodeDokter.getText());
-            if(NamaDokter.getText().isEmpty()){
+            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?",
+                    NamaDokter, KodeDokter.getText());
+            if (NamaDokter.getText().isEmpty()) {
                 KodeDokter.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan dokter...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan dokter...!!");
             }
-        }            
+        }
     }
-    
-    private void TampilkanData(){
+
+    private void TampilkanData() {
         switch (TabOdontogram.getSelectedIndex()) {
             case 0:
                 tampil();
@@ -4346,5 +4656,7 @@ private void autoNomor() {
         }
     }
 
-    
+    private static final Logger LOG = Logger.getLogger(DlgOdontogram.class.
+            getName());
+
 }

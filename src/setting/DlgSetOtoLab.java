@@ -3,113 +3,156 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgObatPenyakit.java
  *
  * Created on May 23, 2010, 12:40:35 AM
  */
-
 package setting;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import keuangan.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import keuangan.DlgJnsPerawatanLab;
 
 /**
  *
  * @author dosen
  */
 public class DlgSetOtoLab extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
+    private sekuel Sequel = new sekuel();
     private PreparedStatement ps;
     private ResultSet rs;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private DlgJnsPerawatanLab datatindakan=new DlgJnsPerawatanLab(null,false);
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private DlgJnsPerawatanLab datatindakan = new DlgJnsPerawatanLab(null, false);
 //    private DlgTemplateLaboratorium template=new DlgTemplateLaboratorium(null,false);
 
-    /** Creates new form DlgObatPenyakit
+    /**
+     * Creates new form DlgObatPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSetOtoLab(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(885,674);
- 
-        tabMode=new DefaultTableModel(null,new String[]{
-            "Kode Pemeriksaan","Nama Pemeriksaan", "Template Pemeriksaan"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        this.setLocation(8, 1);
+        setSize(885, 674);
+
+        tabMode = new DefaultTableModel(null, new String[]{
+            "Kode Pemeriksaan", "Nama Pemeriksaan", "Template Pemeriksaan"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         Table1.setModel(tabMode);
 
         //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
-        Table1.setPreferredScrollableViewportSize(new Dimension(800,800));
+        Table1.setPreferredScrollableViewportSize(new Dimension(800, 800));
         Table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-         for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             TableColumn column = Table1.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
             }
         }
         Table1.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        kdtindakan.setDocument(new batasInput((byte)15).getKata(kdtindakan));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+
+        kdtindakan.setDocument(new batasInput((byte) 15).getKata(kdtindakan));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         datatindakan.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(datatindakan.getTable().getSelectedRow()!= -1){    
-                    if(TabRawat.getSelectedIndex()==0){
-                        kdtindakan.setText(datatindakan.getTable().getValueAt(datatindakan.getTable().getSelectedRow(),1).toString());   
-                        nmtindakan.setText(datatindakan.getTable().getValueAt(datatindakan.getTable().getSelectedRow(),2).toString()); 
+                if (datatindakan.getTable().getSelectedRow() != -1) {
+                    if (TabRawat.getSelectedIndex() == 0) {
+                        kdtindakan.setText(datatindakan.getTable().getValueAt(
+                                datatindakan.getTable().getSelectedRow(), 1).
+                                toString());
+                        nmtindakan.setText(datatindakan.getTable().getValueAt(
+                                datatindakan.getTable().getSelectedRow(), 2).
+                                toString());
                         kdtindakan.requestFocus();
-                    }                       
-                }                        
+                    }
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         datatindakan.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
-            
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     datatindakan.dispose();
                 }
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
 //        template.addWindowListener(new WindowListener() {
 //            @Override
 //            public void windowOpened(WindowEvent e) {}
@@ -148,13 +191,10 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
 //            @Override
 //            public void keyReleased(KeyEvent e) {}
 //        });
-        
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -496,61 +536,71 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            if(kdtindakan.getText().trim().isEmpty()||nmtindakan.getText().trim().isEmpty()||nmdetailtindakan.getText().trim().isEmpty()){
-                Valid.textKosong(kdtindakan,"Tindakan");
-            }else{
-                if(Sequel.menyimpantf(
-                        "set_otomatis_tindakan_lab","'"+kdtindakan.getText()+"','"+nmtindakan.getText()+"','"+nmdetailtindakan.getText()+"'",
-                        "Tindakan")==true){
+        if (TabRawat.getSelectedIndex() == 0) {
+            if (kdtindakan.getText().trim().isEmpty() || nmtindakan.getText().
+                    trim().isEmpty() || nmdetailtindakan.getText().trim().
+                            isEmpty()) {
+                Valid.textKosong(kdtindakan, "Tindakan");
+            } else {
+                if (Sequel.menyimpantf(
+                        "set_otomatis_tindakan_lab",
+                        "'" + kdtindakan.getText() + "','" + nmtindakan.
+                        getText() + "','" + nmdetailtindakan.getText() + "'",
+                        "Tindakan") == true) {
                     tampil();
                     emptTeks();
-                }                
+                }
             }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            if(TabRawat.getSelectedIndex()==0){
-                Valid.pindah(evt,kdtindakan,BtnBatal);
-            }               
+        } else {
+            if (TabRawat.getSelectedIndex() == 0) {
+                Valid.pindah(evt, kdtindakan, BtnBatal);
+            }
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
+        if (TabRawat.getSelectedIndex() == 0) {
             emptTeks();
         }
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            if(tabMode.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (TabRawat.getSelectedIndex() == 0) {
+            if (tabMode.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 kdtindakan.requestFocus();
-            }else if(nmtindakan.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(!(nmtindakan.getText().trim().isEmpty())){
-                Valid.hapusTable(tabMode,kdtindakan,"set_otomatis_tindakan_lab","template_perawatan='"+nmdetailtindakan.getText()+"' and kd_jenis_prw");
+            } else if (nmtindakan.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!(nmtindakan.getText().trim().isEmpty())) {
+                Valid.hapusTable(tabMode, kdtindakan,
+                        "set_otomatis_tindakan_lab",
+                        "template_perawatan='" + nmdetailtindakan.getText() + "' and kd_jenis_prw");
                 tampil();
                 emptTeks();
             }
-        } 
+        }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnPrint);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -558,35 +608,42 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         tampil();
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){    
-            Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                    Valid.MyReportqry("rptOtoRalan.jasper","report","::[ Data Tindakan Otomatis Dokter Ralan ]::","select set_otomatis_tindakan_ralan.kd_dokter,dokter.nm_dokter, set_otomatis_tindakan_ralan.kd_jenis_prw,jns_perawatan.nm_perawatan "+
-                   "from set_otomatis_tindakan_ralan inner join dokter inner join jns_perawatan on  "+
-                   "set_otomatis_tindakan_ralan.kd_dokter=dokter.kd_dokter and "+
-                   "set_otomatis_tindakan_ralan.kd_jenis_prw=jns_perawatan.kd_jenis_prw "+
-                   "where set_otomatis_tindakan_ralan.kd_dokter like '%"+TCari.getText().trim()+"%' or "+
-                   "dokter.nm_dokter like '%"+TCari.getText().trim()+"%' or "+
-                   "set_otomatis_tindakan_ralan.kd_jenis_prw like '%"+TCari.getText().trim()+"%' or "+
-                   "jns_perawatan.nm_perawatan like '%"+TCari.getText().trim()+"%' "+
-                   " order by dokter.nm_dokter",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptOtoRalan.jasper", "report",
+                    "::[ Data Tindakan Otomatis Dokter Ralan ]::",
+                    "select set_otomatis_tindakan_ralan.kd_dokter,dokter.nm_dokter, set_otomatis_tindakan_ralan.kd_jenis_prw,jns_perawatan.nm_perawatan "
+                    + "from set_otomatis_tindakan_ralan inner join dokter inner join jns_perawatan on  "
+                    + "set_otomatis_tindakan_ralan.kd_dokter=dokter.kd_dokter and "
+                    + "set_otomatis_tindakan_ralan.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
+                    + "where set_otomatis_tindakan_ralan.kd_dokter like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "dokter.nm_dokter like '%" + TCari.getText().trim() + "%' or "
+                    + "set_otomatis_tindakan_ralan.kd_jenis_prw like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "jns_perawatan.nm_perawatan like '%" + TCari.getText().
+                            trim() + "%' "
+                    + " order by dokter.nm_dokter", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -596,9 +653,11 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,BtnSimpan);}
+        } else {
+            Valid.pindah(evt, BtnAll, BtnSimpan);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
@@ -607,19 +666,19 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -629,9 +688,9 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -641,24 +700,27 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==0){
+        if (TabRawat.getSelectedIndex() == 0) {
             tampil();
         }
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdtindakanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select nm_perawatan from jns_perawatan_lab where kd_jenis_prw=? ",nmtindakan,kdtindakan.getText());
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Sequel.cariIsi(
+                    "select nm_perawatan from jns_perawatan_lab where kd_jenis_prw=? ",
+                    nmtindakan, kdtindakan.getText());
         }
     }//GEN-LAST:event_kdtindakanKeyPressed
 
     private void BtnSeek1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSeek1KeyPressed
-        Valid.pindah(evt,kdtindakan,BtnSimpan);
+        Valid.pindah(evt, kdtindakan, BtnSimpan);
     }//GEN-LAST:event_BtnSeek1KeyPressed
 
     private void BtnSeek1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek1ActionPerformed
         datatindakan.isCek();
-        datatindakan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        datatindakan.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         datatindakan.setLocationRelativeTo(internalFrame1);
         datatindakan.setVisible(true);
     }//GEN-LAST:event_BtnSeek1ActionPerformed
@@ -668,8 +730,9 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     }//GEN-LAST:event_nmtindakanKeyPressed
 
     private void Table1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Table1KeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -679,7 +742,7 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     }//GEN-LAST:event_Table1KeyPressed
 
     private void Table1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table1MouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -705,16 +768,18 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnSeek2KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetOtoLab dialog = new DlgSetOtoLab(new javax.swing.JFrame(), true);
+            DlgSetOtoLab dialog = new DlgSetOtoLab(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -750,42 +815,41 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
     private widget.panelisi panelGlass9;
     // End of variables declaration//GEN-END:variables
 
-
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps=koneksi.prepareStatement(
-               "select set_otomatis_tindakan_lab.kd_jenis_prw,set_otomatis_tindakan_lab.nm_perawatan,set_otomatis_tindakan_lab.template_perawatan "+
-               "from set_otomatis_tindakan_lab "+
-               "where set_otomatis_tindakan_lab.kd_jenis_prw like ? or "+
-               "set_otomatis_tindakan_lab.nm_perawatan like ? "+
-               " order by set_otomatis_tindakan_lab.kd_jenis_prw");
-            try{            
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+            ps = koneksi.prepareStatement(
+                    "select set_otomatis_tindakan_lab.kd_jenis_prw,set_otomatis_tindakan_lab.nm_perawatan,set_otomatis_tindakan_lab.template_perawatan "
+                    + "from set_otomatis_tindakan_lab "
+                    + "where set_otomatis_tindakan_lab.kd_jenis_prw like ? or "
+                    + "set_otomatis_tindakan_lab.nm_perawatan like ? "
+                    + " order by set_otomatis_tindakan_lab.kd_jenis_prw");
+            try {
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3)
+                        rs.getString(1), rs.getString(2), rs.getString(3)
                     });
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            }finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("setting.DlgSetOtoLab.tampil() : "+e);
-        } 
-            
-        LCount.setText(""+tabMode.getRowCount());
+        } catch (SQLException e) {
+            System.out.println("setting.DlgSetOtoLab.tampil() : " + e);
+        }
+
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     /**
      *
      */
@@ -793,14 +857,17 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
         nmdetailtindakan.setText("");
         kdtindakan.requestFocus();
     }
-    
+
     private void getData() {
-        int row=Table1.getSelectedRow();
-        if(row!= -1){
-            kdtindakan.setText(Table1.getValueAt(row,0).toString());
-            nmtindakan.setText(Table1.getValueAt(row,1).toString());
-            nmdetailtindakan.setText(Table1.getValueAt(row,2).toString());
+        int row = Table1.getSelectedRow();
+        if (row != -1) {
+            kdtindakan.setText(Table1.getValueAt(row, 0).toString());
+            nmtindakan.setText(Table1.getValueAt(row, 1).toString());
+            nmdetailtindakan.setText(Table1.getValueAt(row, 2).toString());
         }
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(DlgSetOtoLab.class.
+            getName());
+
 }

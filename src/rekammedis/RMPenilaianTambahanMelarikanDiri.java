@@ -2,246 +2,301 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author perpustakaan
  */
 public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
-    private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
-    private String finger="";
+    private int i = 0;
+    private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+    private String finger = "";
     private StringBuilder htmlContent;
-    /** Creates new form DlgRujuk
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMPenilaianTambahanMelarikanDiri(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rawat","No.R.M.","Nama Pasien","Tgl.Lahir","JK","Tanggal","Faktor Statik 1","Skor Statik 1","Faktor Statik 2","Skor Statik 2",
-            "Faktor Statik 3","Skor Statik 3","Faktor Statik 4","Skor Statik 4","Faktor Statik 5","Skor Statik 5","Faktor Statik 6","Skor Statik 6",
-            "Faktor Statik 7","Skor Statik 7","Faktor Statik 8","Skor Statik 8","Faktor Statik 9","Skor Statik 9","Jml Skor Statik",
-            "Faktor Dinamis 1","Skor Dinamis 1", "Faktor Dinamis 2","Skor Dinamis 2","Faktor Dinamis 3","Skor Dinamis 3","Faktor Dinamis 4","Skor Dinamis 4",
-            "Faktor Dinamis 5","Skor Dinamis 5","Faktor Dinamis 6","Skor Dinamis 6","Faktor Dinamis 7","Skor Dinamis 7","Faktor Dinamis 8","Skor Dinamis 8",
-            "Jml Skor Dinamis","Faktor-faktor Pencegahan","Total Skor","Level Skor","NIP","Petugas"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal",
+            "Faktor Statik 1", "Skor Statik 1", "Faktor Statik 2",
+            "Skor Statik 2",
+            "Faktor Statik 3", "Skor Statik 3", "Faktor Statik 4",
+            "Skor Statik 4", "Faktor Statik 5", "Skor Statik 5",
+            "Faktor Statik 6", "Skor Statik 6",
+            "Faktor Statik 7", "Skor Statik 7", "Faktor Statik 8",
+            "Skor Statik 8", "Faktor Statik 9", "Skor Statik 9",
+            "Jml Skor Statik",
+            "Faktor Dinamis 1", "Skor Dinamis 1", "Faktor Dinamis 2",
+            "Skor Dinamis 2", "Faktor Dinamis 3", "Skor Dinamis 3",
+            "Faktor Dinamis 4", "Skor Dinamis 4",
+            "Faktor Dinamis 5", "Skor Dinamis 5", "Faktor Dinamis 6",
+            "Skor Dinamis 6", "Faktor Dinamis 7", "Skor Dinamis 7",
+            "Faktor Dinamis 8", "Skor Dinamis 8",
+            "Jml Skor Dinamis", "Faktor-faktor Pencegahan", "Total Skor",
+            "Level Skor", "NIP", "Petugas"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 47; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(105);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(65);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(160);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(25);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(115);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(80);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(70);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(80);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(70);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(80);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(70);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(80);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(70);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(80);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(70);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(80);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(70);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(80);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(70);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(80);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(70);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(80);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(70);
-            }else if(i==24){
+            } else if (i == 24) {
                 column.setPreferredWidth(80);
-            }else if(i==25){
+            } else if (i == 25) {
                 column.setPreferredWidth(90);
-            }else if(i==26){
+            } else if (i == 26) {
                 column.setPreferredWidth(80);
-            }else if(i==27){
+            } else if (i == 27) {
                 column.setPreferredWidth(90);
-            }else if(i==28){
+            } else if (i == 28) {
                 column.setPreferredWidth(80);
-            }else if(i==29){
+            } else if (i == 29) {
                 column.setPreferredWidth(90);
-            }else if(i==30){
+            } else if (i == 30) {
                 column.setPreferredWidth(80);
-            }else if(i==31){
+            } else if (i == 31) {
                 column.setPreferredWidth(90);
-            }else if(i==32){
+            } else if (i == 32) {
                 column.setPreferredWidth(80);
-            }else if(i==33){
+            } else if (i == 33) {
                 column.setPreferredWidth(90);
-            }else if(i==34){
+            } else if (i == 34) {
                 column.setPreferredWidth(80);
-            }else if(i==35){
+            } else if (i == 35) {
                 column.setPreferredWidth(90);
-            }else if(i==36){
+            } else if (i == 36) {
                 column.setPreferredWidth(80);
-            }else if(i==37){
+            } else if (i == 37) {
                 column.setPreferredWidth(90);
-            }else if(i==38){
+            } else if (i == 38) {
                 column.setPreferredWidth(80);
-            }else if(i==39){
+            } else if (i == 39) {
                 column.setPreferredWidth(90);
-            }else if(i==40){
+            } else if (i == 40) {
                 column.setPreferredWidth(80);
-            }else if(i==41){
+            } else if (i == 41) {
                 column.setPreferredWidth(90);
-            }else if(i==42){
+            } else if (i == 42) {
                 column.setPreferredWidth(200);
-            }else if(i==43){
+            } else if (i == 43) {
                 column.setPreferredWidth(60);
-            }else if(i==44){
+            } else if (i == 44) {
                 column.setPreferredWidth(75);
-            }else if(i==45){
+            } else if (i == 45) {
                 column.setPreferredWidth(80);
-            }else if(i==46){
+            } else if (i == 46) {
                 column.setPreferredWidth(150);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
-        NIP.setDocument(new batasInput((byte)20).getKata(NIP));
-        FaktorPencegahan.setDocument(new batasInput(500).getKata(FaktorPencegahan));
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
+        NIP.setDocument(new batasInput((byte) 20).getKata(NIP));
+        FaktorPencegahan.setDocument(new batasInput(500).getKata(
+                FaktorPencegahan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){                   
-                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());
-                }  
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    NIP.setText(petugas.getTable().getValueAt(
+                            petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 NIP.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         ChkInput.setSelected(false);
         isForm();
         jam();
-        
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1517,120 +1572,181 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
             isPsien();
-        }else{            
-            Valid.pindah(evt,TCari,Tanggal);
+        } else {
+            Valid.pindah(evt, TCari, Tanggal);
         }
 }//GEN-LAST:event_TNoRwKeyPressed
 
     private void TPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TPasienKeyPressed
-        Valid.pindah(evt,TCari,BtnSimpan);
+        Valid.pindah(evt, TCari, BtnSimpan);
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(NIP.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(NIP,"Petugas");
-        }else{
-            if(Sequel.menyimpantf("penilaian_tambahan_beresiko_melarikan_diri","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",42,new String[]{
-                TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),NIP.getText(),
-                FaktorStatik1.getSelectedItem().toString(),SkorStatik1.getText(),FaktorStatik2.getSelectedItem().toString(),SkorStatik2.getText(),FaktorStatik3.getSelectedItem().toString(),SkorStatik3.getText(),
-                FaktorStatik4.getSelectedItem().toString(),SkorStatik4.getText(),FaktorStatik5.getSelectedItem().toString(),SkorStatik5.getText(),FaktorStatik6.getSelectedItem().toString(),SkorStatik6.getText(), 
-                FaktorStatik7.getSelectedItem().toString(),SkorStatik7.getText(),FaktorStatik8.getSelectedItem().toString(),SkorStatik8.getText(),FaktorStatik9.getSelectedItem().toString(),SkorStatik9.getText(),
-                TotalStatik.getText(),FaktorDinamis1.getSelectedItem().toString(),SkorDinamis1.getText(),FaktorDinamis2.getSelectedItem().toString(),SkorDinamis2.getText(),FaktorDinamis3.getSelectedItem().toString(),
-                SkorDinamis3.getText(),FaktorDinamis4.getSelectedItem().toString(),SkorDinamis4.getText(),FaktorDinamis5.getSelectedItem().toString(),SkorDinamis5.getText(),FaktorDinamis6.getSelectedItem().toString(),
-                SkorDinamis6.getText(),FaktorDinamis7.getSelectedItem().toString(),SkorDinamis7.getText(),FaktorDinamis8.getSelectedItem().toString(),SkorDinamis8.getText(),TotalDinamis.getText(),
-                FaktorPencegahan.getText(),SkorTotal.getText(),Level.getText()
-            })==true){
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (NIP.getText().trim().isEmpty() || NamaPetugas.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(NIP, "Petugas");
+        } else {
+            if (Sequel.menyimpantf("penilaian_tambahan_beresiko_melarikan_diri",
+                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                    "Data", 42, new String[]{
+                        TNoRw.getText(), Valid.SetTgl(
+                        Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), NIP.getText(),
+                        FaktorStatik1.getSelectedItem().toString(), SkorStatik1.
+                        getText(), FaktorStatik2.getSelectedItem().toString(),
+                        SkorStatik2.getText(), FaktorStatik3.getSelectedItem().
+                        toString(), SkorStatik3.getText(),
+                        FaktorStatik4.getSelectedItem().toString(), SkorStatik4.
+                        getText(), FaktorStatik5.getSelectedItem().toString(),
+                        SkorStatik5.getText(), FaktorStatik6.getSelectedItem().
+                        toString(), SkorStatik6.getText(),
+                        FaktorStatik7.getSelectedItem().toString(), SkorStatik7.
+                        getText(), FaktorStatik8.getSelectedItem().toString(),
+                        SkorStatik8.getText(), FaktorStatik9.getSelectedItem().
+                        toString(), SkorStatik9.getText(),
+                        TotalStatik.getText(), FaktorDinamis1.getSelectedItem().
+                        toString(), SkorDinamis1.getText(), FaktorDinamis2.
+                        getSelectedItem().toString(), SkorDinamis2.getText(),
+                        FaktorDinamis3.getSelectedItem().toString(),
+                        SkorDinamis3.getText(),
+                        FaktorDinamis4.getSelectedItem().toString(),
+                        SkorDinamis4.getText(),
+                        FaktorDinamis5.getSelectedItem().toString(),
+                        SkorDinamis5.getText(),
+                        FaktorDinamis6.getSelectedItem().toString(),
+                        SkorDinamis6.getText(),
+                        FaktorDinamis7.getSelectedItem().toString(),
+                        SkorDinamis7.getText(),
+                        FaktorDinamis8.getSelectedItem().toString(),
+                        SkorDinamis8.getText(), TotalDinamis.getText(),
+                        FaktorPencegahan.getText(), SkorTotal.getText(), Level.
+                        getText()
+                    }) == true) {
                 tabMode.addRow(new String[]{
-                    TNoRw.getText(),TNoRM.getText(),TPasien.getText(),TglLahir.getText(),JK.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-                    FaktorStatik1.getSelectedItem().toString(),SkorStatik1.getText(),FaktorStatik2.getSelectedItem().toString(),SkorStatik2.getText(),FaktorStatik3.getSelectedItem().toString(),SkorStatik3.getText(),
-                    FaktorStatik4.getSelectedItem().toString(),SkorStatik4.getText(),FaktorStatik5.getSelectedItem().toString(),SkorStatik5.getText(),FaktorStatik6.getSelectedItem().toString(),SkorStatik6.getText(), 
-                    FaktorStatik7.getSelectedItem().toString(),SkorStatik7.getText(),FaktorStatik8.getSelectedItem().toString(),SkorStatik8.getText(),FaktorStatik9.getSelectedItem().toString(),SkorStatik9.getText(),
-                    TotalStatik.getText(),FaktorDinamis1.getSelectedItem().toString(),SkorDinamis1.getText(),FaktorDinamis2.getSelectedItem().toString(),SkorDinamis2.getText(),FaktorDinamis3.getSelectedItem().toString(),
-                    SkorDinamis3.getText(),FaktorDinamis4.getSelectedItem().toString(),SkorDinamis4.getText(),FaktorDinamis5.getSelectedItem().toString(),SkorDinamis5.getText(),FaktorDinamis6.getSelectedItem().toString(),
-                    SkorDinamis6.getText(),FaktorDinamis7.getSelectedItem().toString(),SkorDinamis7.getText(),FaktorDinamis8.getSelectedItem().toString(),SkorDinamis8.getText(),TotalDinamis.getText(),
-                    FaktorPencegahan.getText(),SkorTotal.getText(),Level.getText(),NIP.getText(),NamaPetugas.getText()
+                    TNoRw.getText(), TNoRM.getText(), TPasien.getText(),
+                    TglLahir.getText(), JK.getText(), Valid.SetTgl(Tanggal.
+                    getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.
+                    getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    FaktorStatik1.getSelectedItem().toString(), SkorStatik1.
+                    getText(), FaktorStatik2.getSelectedItem().toString(),
+                    SkorStatik2.getText(), FaktorStatik3.getSelectedItem().
+                    toString(), SkorStatik3.getText(),
+                    FaktorStatik4.getSelectedItem().toString(), SkorStatik4.
+                    getText(), FaktorStatik5.getSelectedItem().toString(),
+                    SkorStatik5.getText(), FaktorStatik6.getSelectedItem().
+                    toString(), SkorStatik6.getText(),
+                    FaktorStatik7.getSelectedItem().toString(), SkorStatik7.
+                    getText(), FaktorStatik8.getSelectedItem().toString(),
+                    SkorStatik8.getText(), FaktorStatik9.getSelectedItem().
+                    toString(), SkorStatik9.getText(),
+                    TotalStatik.getText(), FaktorDinamis1.getSelectedItem().
+                    toString(), SkorDinamis1.getText(), FaktorDinamis2.
+                    getSelectedItem().toString(), SkorDinamis2.getText(),
+                    FaktorDinamis3.getSelectedItem().toString(),
+                    SkorDinamis3.getText(), FaktorDinamis4.getSelectedItem().
+                    toString(), SkorDinamis4.getText(), FaktorDinamis5.
+                    getSelectedItem().toString(), SkorDinamis5.getText(),
+                    FaktorDinamis6.getSelectedItem().toString(),
+                    SkorDinamis6.getText(), FaktorDinamis7.getSelectedItem().
+                    toString(), SkorDinamis7.getText(), FaktorDinamis8.
+                    getSelectedItem().toString(), SkorDinamis8.getText(),
+                    TotalDinamis.getText(),
+                    FaktorPencegahan.getText(), SkorTotal.getText(), Level.
+                    getText(), NIP.getText(), NamaPetugas.getText()
                 });
                 emptTeks();
-                LCount.setText(""+tabMode.getRowCount());
-            }  
+                LCount.setText("" + tabMode.getRowCount());
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,FaktorPencegahan,BtnBatal);
+        } else {
+            Valid.pindah(evt, FaktorPencegahan, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         emptTeks();
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else{
-                if(NIP.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),45).toString())){
+            } else {
+                if (NIP.getText().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 45).toString())) {
                     hapus();
-                }else{
-                    JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }   
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(NIP.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(NIP,"Petugas");
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (NIP.getText().trim().isEmpty() || NamaPetugas.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(NIP, "Petugas");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else{
-                    if(NIP.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),45).toString())){
+                } else {
+                    if (NIP.getText().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 45).toString())) {
                         ganti();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh petugas yang bersangkutan..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1641,134 +1757,235 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
+        } else if (tabMode.getRowCount() != 0) {
+            try {
                 htmlContent = new StringBuilder();
-                htmlContent.append(                             
-                    "<tr class='isi'>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>No.Rawat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>No.R.M.</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Nama Pasien</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Tgl.Lahir</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>JK</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Tanggal</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 1</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 1</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 2</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 2</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 3</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 3</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 4</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 4</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 5</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 5</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 6</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 6</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 7</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 7</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 8</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 8</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 9</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 9</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Jml Skor Statik</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 1</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 1</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 2</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 2</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 3</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 3</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 4</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 4</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 5</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 5</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 6</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 6</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 7</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 7</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 8</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 8</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Jml Skor Dinamis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor-faktor Pencegahan</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Total Skor</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Level Skor</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>NIP</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Petugas</b></td>"+
-                    "</tr>"
+                htmlContent.append(
+                        "<tr class='isi'>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>No.Rawat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>No.R.M.</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Nama Pasien</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Tgl.Lahir</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>JK</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Tanggal</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 1</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 1</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 2</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 2</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 3</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 3</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 4</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 4</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 5</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 5</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 6</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 6</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 7</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 7</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 8</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 8</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Statik 9</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Statik 9</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Jml Skor Statik</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 1</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 1</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 2</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 2</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 3</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 3</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 4</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 4</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 5</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 5</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 6</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 6</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 7</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 7</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor Dinamis 8</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Skor Dinamis 8</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Jml Skor Dinamis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Faktor-faktor Pencegahan</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Total Skor</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Level Skor</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>NIP</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAF8' align='center'><b>Petugas</b></td>"
+                        + "</tr>"
                 );
                 for (i = 0; i < tabMode.getRowCount(); i++) {
-                    htmlContent.append("<tr class='isi'><td valign='top'>").append(tbObat.getValueAt(i,0).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,1).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,2).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,3).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,4).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,5).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,6).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,7).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,8).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,9).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,10).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,11).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,12).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,13).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,14).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,15).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,16).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,17).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,18).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,19).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,20).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,21).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,22).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,23).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,24).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,25).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,26).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,27).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,28).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,29).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,30).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,31).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,32).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,33).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,34).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,35).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,36).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,37).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,38).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,39).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,40).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,41).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,42).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,43).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,44).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,45).toString()).append("</td><td valign='top'>").append(tbObat.getValueAt(i,46).toString()).append("</td></tr>");
+                    htmlContent.append("<tr class='isi'><td valign='top'>").
+                            append(tbObat.getValueAt(i, 0).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 1).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 2).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 3).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 4).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 5).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 6).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 7).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 8).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 9).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 10).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 11).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 12).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 13).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 14).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 15).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 16).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 17).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 18).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 19).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 20).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 21).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 22).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 23).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 24).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 25).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 26).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 27).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 28).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 29).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 30).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 31).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 32).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 33).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 34).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 35).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 36).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 37).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 38).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 39).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 40).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 41).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 42).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 43).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 44).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 45).toString()).append(
+                            "</td><td valign='top'>").append(tbObat.
+                                    getValueAt(i, 46).toString()).append(
+                            "</td></tr>");
                 }
                 LoadHTML.setText(
-                    "<html>"+
-                      "<table width='4400px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                       htmlContent.toString()+
-                      "</table>"+
-                    "</html>"
+                        "<html>"
+                        + "<table width='4400px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                        + htmlContent.toString()
+                        + "</table>"
+                        + "</html>"
                 );
 
-                File g = new File("file2.css");            
+                File g = new File("file2.css");
                 try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                     bg.write(
-                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                    ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                    ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                                    ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                                    ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                                    ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                                    ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                            + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                            + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                            + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                            + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                     );
                 }
 
-                File f = new File("DataPenilaianTambahanBerisikoMelarikanDiri.html");            
-                BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                            "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                            "<table width='4400px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                "<tr class='isi2'>"+
-                                    "<td valign='top' align='center'>"+
-                                        "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                        akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                        akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                        "<font size='2' face='Tahoma'>DATA PENILAIAN TAMBAHAN BERISIKO MELARIKAN DIRI<br><br></font>"+        
-                                    "</td>"+
-                               "</tr>"+
-                            "</table>")
-                );
-                bw.close();                         
+                File f = new File(
+                        "DataPenilaianTambahanBerisikoMelarikanDiri.html");
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                    bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                            + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                            + "<table width='4400px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                            + "<tr class='isi2'>"
+                            + "<td valign='top' align='center'>"
+                            + "<font size='4' face='Tahoma'>" + akses.
+                                    getnamars() + "</font><br>"
+                            + akses.getalamatrs() + ", " + akses.
+                            getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                            + akses.getkontakrs() + ", E-mail : " + akses.
+                            getemailrs() + "<br><br>"
+                            + "<font size='2' face='Tahoma'>DATA PENILAIAN TAMBAHAN BERISIKO MELARIKAN DIRI<br><br></font>"
+                            + "</td>"
+                            + "</tr>"
+                            + "</table>")
+                    );
+                }
                 Desktop.getDesktop().browse(f.toURI());
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1778,9 +1995,9 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1791,16 +2008,16 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,TCari,Jam);
+        Valid.pindah(evt, TCari, Jam);
 }//GEN-LAST:event_TanggalKeyPressed
 
     private void TNoRMKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRMKeyPressed
@@ -1808,7 +2025,7 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
 }//GEN-LAST:event_TNoRMKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1817,8 +2034,9 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1832,306 +2050,324 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void JamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JamKeyPressed
-        Valid.pindah(evt,Tanggal,Menit);
+        Valid.pindah(evt, Tanggal, Menit);
     }//GEN-LAST:event_JamKeyPressed
 
     private void MenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MenitKeyPressed
-        Valid.pindah(evt,Jam,Detik);
+        Valid.pindah(evt, Jam, Detik);
     }//GEN-LAST:event_MenitKeyPressed
 
     private void DetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DetikKeyPressed
-        Valid.pindah(evt,Menit,btnPetugas);
+        Valid.pindah(evt, Menit, btnPetugas);
     }//GEN-LAST:event_DetikKeyPressed
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         petugas.emptTeks();
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
 
     private void btnPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPetugasKeyPressed
-        Valid.pindah(evt,Detik,FaktorStatik1);
+        Valid.pindah(evt, Detik, FaktorStatik1);
     }//GEN-LAST:event_btnPetugasKeyPressed
 
     private void MnPenilaianTambahanMelarikanDiriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianTambahanMelarikanDiriActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),45).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),46).toString()+"\nID "+(finger.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),45).toString():finger)+"\n"+Tanggal.getSelectedItem());
-            Valid.MyReportqry("rptFormulirPenilaianTambahanMelarikanDiri.jasper","report","::[ Formulir Penilaian Tambahan Berisiko Melarikan Diri ]::",
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,date_format(reg_periksa.tgl_registrasi,'%d-%m-%Y')as tgl_registrasi,reg_periksa.jam_reg,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama,dokter.nm_dokter,poliklinik.nm_poli,reg_periksa.umurdaftar,reg_periksa.sttsumur "+
-                    "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
-                    "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "+
-                    "where reg_periksa.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            finger = Sequel.cariIsi(
+                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            param.put("finger",
+                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 46).toString() + "\nID " + (finger.
+                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 45).
+                                    toString() : finger) + "\n" + Tanggal.
+                            getSelectedItem());
+            Valid.
+                    MyReportqry(
+                            "rptFormulirPenilaianTambahanMelarikanDiri.jasper",
+                            "report",
+                            "::[ Formulir Penilaian Tambahan Berisiko Melarikan Diri ]::",
+                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,date_format(reg_periksa.tgl_registrasi,'%d-%m-%Y')as tgl_registrasi,reg_periksa.jam_reg,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"
+                            + "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama,dokter.nm_dokter,poliklinik.nm_poli,reg_periksa.umurdaftar,reg_periksa.sttsumur "
+                            + "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "
+                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
+                            + "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
+                            + "where reg_periksa.no_rawat='" + tbObat.
+                                    getValueAt(tbObat.getSelectedRow(), 0).
+                                    toString() + "'", param);
         }
     }//GEN-LAST:event_MnPenilaianTambahanMelarikanDiriActionPerformed
 
     private void FaktorStatik1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik1ItemStateChanged
-        if(FaktorStatik1.getSelectedIndex()==1){
+        if (FaktorStatik1.getSelectedIndex() == 1) {
             SkorStatik1.setText("1");
-        }else{
+        } else {
             SkorStatik1.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik1ItemStateChanged
 
     private void FaktorStatik1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik1KeyPressed
-        Valid.pindah(evt,btnPetugas,FaktorStatik2);
+        Valid.pindah(evt, btnPetugas, FaktorStatik2);
     }//GEN-LAST:event_FaktorStatik1KeyPressed
 
     private void FaktorStatik2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik2ItemStateChanged
-        if(FaktorStatik2.getSelectedIndex()==1){
+        if (FaktorStatik2.getSelectedIndex() == 1) {
             SkorStatik2.setText("1");
-        }else{
+        } else {
             SkorStatik2.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik2ItemStateChanged
 
     private void FaktorStatik2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik2KeyPressed
-        Valid.pindah(evt,FaktorStatik1,FaktorStatik3);
+        Valid.pindah(evt, FaktorStatik1, FaktorStatik3);
     }//GEN-LAST:event_FaktorStatik2KeyPressed
 
     private void FaktorStatik3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik3ItemStateChanged
-        if(FaktorStatik3.getSelectedIndex()==1){
+        if (FaktorStatik3.getSelectedIndex() == 1) {
             SkorStatik3.setText("1");
-        }else{
+        } else {
             SkorStatik3.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik3ItemStateChanged
 
     private void FaktorStatik3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik3KeyPressed
-        Valid.pindah(evt,FaktorStatik2,FaktorStatik4);
+        Valid.pindah(evt, FaktorStatik2, FaktorStatik4);
     }//GEN-LAST:event_FaktorStatik3KeyPressed
 
     private void FaktorStatik4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik4ItemStateChanged
-        if(FaktorStatik4.getSelectedIndex()==1){
+        if (FaktorStatik4.getSelectedIndex() == 1) {
             SkorStatik4.setText("1");
-        }else{
+        } else {
             SkorStatik4.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik4ItemStateChanged
 
     private void FaktorStatik4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik4KeyPressed
-        Valid.pindah(evt,FaktorStatik3,FaktorStatik5);
+        Valid.pindah(evt, FaktorStatik3, FaktorStatik5);
     }//GEN-LAST:event_FaktorStatik4KeyPressed
 
     private void FaktorStatik5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik5ItemStateChanged
-        if(FaktorStatik5.getSelectedIndex()==1){
+        if (FaktorStatik5.getSelectedIndex() == 1) {
             SkorStatik5.setText("1");
-        }else{
+        } else {
             SkorStatik5.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik5ItemStateChanged
 
     private void FaktorStatik5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik5KeyPressed
-        Valid.pindah(evt,FaktorStatik4,FaktorStatik6);
+        Valid.pindah(evt, FaktorStatik4, FaktorStatik6);
     }//GEN-LAST:event_FaktorStatik5KeyPressed
 
     private void FaktorStatik6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik6ItemStateChanged
-        if(FaktorStatik6.getSelectedIndex()==1){
+        if (FaktorStatik6.getSelectedIndex() == 1) {
             SkorStatik6.setText("1");
-        }else{
+        } else {
             SkorStatik6.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik6ItemStateChanged
 
     private void FaktorStatik6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik6KeyPressed
-        Valid.pindah(evt,FaktorStatik5,FaktorStatik7);
+        Valid.pindah(evt, FaktorStatik5, FaktorStatik7);
     }//GEN-LAST:event_FaktorStatik6KeyPressed
 
     private void FaktorPencegahanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorPencegahanKeyPressed
-        Valid.pindah2(evt,FaktorDinamis7,BtnSimpan);
+        Valid.pindah2(evt, FaktorDinamis7, BtnSimpan);
     }//GEN-LAST:event_FaktorPencegahanKeyPressed
 
     private void FaktorStatik7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik7ItemStateChanged
-        if(FaktorStatik7.getSelectedIndex()==1){
+        if (FaktorStatik7.getSelectedIndex() == 1) {
             SkorStatik7.setText("1");
-        }else{
+        } else {
             SkorStatik7.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik7ItemStateChanged
 
     private void FaktorStatik7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik7KeyPressed
-        Valid.pindah(evt,FaktorStatik6,FaktorStatik8);
+        Valid.pindah(evt, FaktorStatik6, FaktorStatik8);
     }//GEN-LAST:event_FaktorStatik7KeyPressed
 
     private void FaktorDinamis1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis1ItemStateChanged
-        if(FaktorDinamis1.getSelectedIndex()==1){
+        if (FaktorDinamis1.getSelectedIndex() == 1) {
             SkorDinamis1.setText("2");
-        }else{
+        } else {
             SkorDinamis1.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis1ItemStateChanged
 
     private void FaktorDinamis1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis1KeyPressed
-        Valid.pindah(evt,FaktorStatik9,FaktorDinamis2);
+        Valid.pindah(evt, FaktorStatik9, FaktorDinamis2);
     }//GEN-LAST:event_FaktorDinamis1KeyPressed
 
     private void FaktorDinamis2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis2ItemStateChanged
-        if(FaktorDinamis2.getSelectedIndex()==1){
+        if (FaktorDinamis2.getSelectedIndex() == 1) {
             SkorDinamis2.setText("2");
-        }else{
+        } else {
             SkorDinamis2.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis2ItemStateChanged
 
     private void FaktorDinamis2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis2KeyPressed
-        Valid.pindah(evt,FaktorDinamis1,FaktorDinamis3);
+        Valid.pindah(evt, FaktorDinamis1, FaktorDinamis3);
     }//GEN-LAST:event_FaktorDinamis2KeyPressed
 
     private void FaktorDinamis3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis3ItemStateChanged
-        if(FaktorDinamis3.getSelectedIndex()==1){
+        if (FaktorDinamis3.getSelectedIndex() == 1) {
             SkorDinamis3.setText("2");
-        }else{
+        } else {
             SkorDinamis3.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis3ItemStateChanged
 
     private void FaktorDinamis3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis3KeyPressed
-        Valid.pindah(evt,FaktorDinamis2,FaktorDinamis4);
+        Valid.pindah(evt, FaktorDinamis2, FaktorDinamis4);
     }//GEN-LAST:event_FaktorDinamis3KeyPressed
 
     private void FaktorDinamis4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis4ItemStateChanged
-        if(FaktorDinamis4.getSelectedIndex()==1){
+        if (FaktorDinamis4.getSelectedIndex() == 1) {
             SkorDinamis4.setText("2");
-        }else{
+        } else {
             SkorDinamis4.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis4ItemStateChanged
 
     private void FaktorDinamis4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis4KeyPressed
-        Valid.pindah(evt,FaktorDinamis3,FaktorDinamis5);
+        Valid.pindah(evt, FaktorDinamis3, FaktorDinamis5);
     }//GEN-LAST:event_FaktorDinamis4KeyPressed
 
     private void FaktorDinamis5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis5ItemStateChanged
-        if(FaktorDinamis5.getSelectedIndex()==1){
+        if (FaktorDinamis5.getSelectedIndex() == 1) {
             SkorDinamis5.setText("2");
-        }else{
+        } else {
             SkorDinamis5.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis5ItemStateChanged
 
     private void FaktorDinamis5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis5KeyPressed
-        Valid.pindah(evt,FaktorDinamis4,FaktorDinamis6);
+        Valid.pindah(evt, FaktorDinamis4, FaktorDinamis6);
     }//GEN-LAST:event_FaktorDinamis5KeyPressed
 
     private void FaktorDinamis6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis6ItemStateChanged
-        if(FaktorDinamis6.getSelectedIndex()==1){
+        if (FaktorDinamis6.getSelectedIndex() == 1) {
             SkorDinamis6.setText("2");
-        }else{
+        } else {
             SkorDinamis6.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis6ItemStateChanged
 
     private void FaktorDinamis6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis6KeyPressed
-        Valid.pindah(evt,FaktorDinamis5,FaktorDinamis7);
+        Valid.pindah(evt, FaktorDinamis5, FaktorDinamis7);
     }//GEN-LAST:event_FaktorDinamis6KeyPressed
 
     private void FaktorDinamis7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis7ItemStateChanged
-        if(FaktorDinamis7.getSelectedIndex()==1){
+        if (FaktorDinamis7.getSelectedIndex() == 1) {
             SkorDinamis7.setText("2");
-        }else{
+        } else {
             SkorDinamis7.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis7ItemStateChanged
 
     private void FaktorDinamis7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis7KeyPressed
-        Valid.pindah(evt,FaktorDinamis6,FaktorDinamis8);
+        Valid.pindah(evt, FaktorDinamis6, FaktorDinamis8);
     }//GEN-LAST:event_FaktorDinamis7KeyPressed
 
     private void FaktorStatik8ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik8ItemStateChanged
-        if(FaktorStatik8.getSelectedIndex()==1){
+        if (FaktorStatik8.getSelectedIndex() == 1) {
             SkorStatik8.setText("1");
-        }else{
+        } else {
             SkorStatik8.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik8ItemStateChanged
 
     private void FaktorStatik8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik8KeyPressed
-        Valid.pindah(evt,FaktorStatik7,FaktorStatik9);
+        Valid.pindah(evt, FaktorStatik7, FaktorStatik9);
     }//GEN-LAST:event_FaktorStatik8KeyPressed
 
     private void FaktorDinamis8ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorDinamis8ItemStateChanged
-        if(FaktorDinamis8.getSelectedIndex()==1){
+        if (FaktorDinamis8.getSelectedIndex() == 1) {
             SkorDinamis8.setText("2");
-        }else{
+        } else {
             SkorDinamis8.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorDinamis8ItemStateChanged
 
     private void FaktorDinamis8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorDinamis8KeyPressed
-        Valid.pindah(evt,FaktorDinamis7,FaktorPencegahan);
+        Valid.pindah(evt, FaktorDinamis7, FaktorPencegahan);
     }//GEN-LAST:event_FaktorDinamis8KeyPressed
 
     private void FaktorStatik9ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FaktorStatik9ItemStateChanged
-        if(FaktorStatik9.getSelectedIndex()==1){
+        if (FaktorStatik9.getSelectedIndex() == 1) {
             SkorStatik9.setText("1");
-        }else{
+        } else {
             SkorStatik9.setText("0");
         }
         isTotalSkor();
     }//GEN-LAST:event_FaktorStatik9ItemStateChanged
 
     private void FaktorStatik9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FaktorStatik9KeyPressed
-        Valid.pindah(evt,FaktorStatik8,FaktorDinamis1);
+        Valid.pindah(evt, FaktorStatik8, FaktorDinamis1);
     }//GEN-LAST:event_FaktorStatik9KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianTambahanMelarikanDiri dialog = new RMPenilaianTambahanMelarikanDiri(new javax.swing.JFrame(), true);
+            RMPenilaianTambahanMelarikanDiri dialog = new RMPenilaianTambahanMelarikanDiri(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2270,118 +2506,152 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
     private widget.ScrollPane scrollPane1;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      *
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama "+
-                    "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip where "+
-                    "penilaian_tambahan_beresiko_melarikan_diri.tanggal between ? and ? order by penilaian_tambahan_beresiko_melarikan_diri.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"+
-                    "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama "+
-                    "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip where "+
-                    "penilaian_tambahan_beresiko_melarikan_diri.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or penilaian_tambahan_beresiko_melarikan_diri.nip like ? or petugas.nama like ?) "+
-                    "order by penilaian_tambahan_beresiko_melarikan_diri.tanggal ");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama "
+                        + "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip where "
+                        + "penilaian_tambahan_beresiko_melarikan_diri.tanggal between ? and ? order by penilaian_tambahan_beresiko_melarikan_diri.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,penilaian_tambahan_beresiko_melarikan_diri.tanggal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_melarikan_diri,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_melarikan_diri,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penolakan_pengobatan,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_penolakan_pengobatan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_usia_dibawah_35,penilaian_tambahan_beresiko_melarikan_diri.statik_skorusia_dibawah_35,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_laki_laki,penilaian_tambahan_beresiko_melarikan_diri.statik_skorlaki_laki,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_skizofrenia,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_skizofrenia,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_belum_menikah,penilaian_tambahan_beresiko_melarikan_diri.statik_skorbelum_menikah,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_penggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.statik_skoriwayat_penggunaan_napza,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_diagnosis_gangguan_kepribadian,penilaian_tambahan_beresiko_melarikan_diri.statik_skordiagnosis_gangguan_kepribadian,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_riwayat_kriminal,penilaian_tambahan_beresiko_melarikan_diri.statik_skorriwayat_kriminal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.statik_skortotal,penilaian_tambahan_beresiko_melarikan_diri.dinamis_anti_treatment,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skoranti_treatment,penilaian_tambahan_beresiko_melarikan_diri.dinamis_penggunaan_napza,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorpenggunaan_napza,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kebosanan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkebosanan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_perintah_halusinasi,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorperintah_halusinasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_hilangnya_kontrol_diri,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorhilangnya_kontrol_diri,penilaian_tambahan_beresiko_melarikan_diri.dinamis_seksual_tidak_wajar,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorseksual_tidak_wajar,penilaian_tambahan_beresiko_melarikan_diri.dinamis_kemarahan_frustasi,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorkemarahan_frustasi,penilaian_tambahan_beresiko_melarikan_diri.dinamis_ketakutan_perawatan,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.dinamis_skorketakutan_perawatan,penilaian_tambahan_beresiko_melarikan_diri.dinamis_skortotal,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.faktor_faktor_pencegahan,penilaian_tambahan_beresiko_melarikan_diri.total_skor,"
+                        + "penilaian_tambahan_beresiko_melarikan_diri.level_skor,penilaian_tambahan_beresiko_melarikan_diri.nip,petugas.nama "
+                        + "from penilaian_tambahan_beresiko_melarikan_diri inner join reg_periksa on penilaian_tambahan_beresiko_melarikan_diri.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join petugas on penilaian_tambahan_beresiko_melarikan_diri.nip=petugas.nip where "
+                        + "penilaian_tambahan_beresiko_melarikan_diri.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or penilaian_tambahan_beresiko_melarikan_diri.nip like ? or petugas.nama like ?) "
+                        + "order by penilaian_tambahan_beresiko_melarikan_diri.tanggal ");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                while(rs.next()){
+
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("tgl_lahir"),rs.getString("jk"),rs.getString("tanggal"),
-                        rs.getString("statik_riwayat_melarikan_diri"),rs.getString("statik_skorriwayat_melarikan_diri"),rs.getString("statik_riwayat_penolakan_pengobatan"),
-                        rs.getString("statik_skorriwayat_penolakan_pengobatan"),rs.getString("statik_usia_dibawah_35"),rs.getString("statik_skorusia_dibawah_35"),rs.getString("statik_laki_laki"),
-                        rs.getString("statik_skorlaki_laki"),rs.getString("statik_diagnosis_skizofrenia"),rs.getString("statik_skordiagnosis_skizofrenia"),rs.getString("statik_belum_menikah"),
-                        rs.getString("statik_skorbelum_menikah"),rs.getString("statik_riwayat_penggunaan_napza"),rs.getString("statik_skoriwayat_penggunaan_napza"),
-                        rs.getString("statik_diagnosis_gangguan_kepribadian"),rs.getString("statik_skordiagnosis_gangguan_kepribadian"),rs.getString("statik_riwayat_kriminal"),
-                        rs.getString("statik_skorriwayat_kriminal"),rs.getString("statik_skortotal"),rs.getString("dinamis_anti_treatment"),rs.getString("dinamis_skoranti_treatment"),
-                        rs.getString("dinamis_penggunaan_napza"),rs.getString("dinamis_skorpenggunaan_napza"),rs.getString("dinamis_kebosanan"),rs.getString("dinamis_skorkebosanan"),
-                        rs.getString("dinamis_perintah_halusinasi"),rs.getString("dinamis_skorperintah_halusinasi"),rs.getString("dinamis_hilangnya_kontrol_diri"),
-                        rs.getString("dinamis_skorhilangnya_kontrol_diri"),rs.getString("dinamis_seksual_tidak_wajar"),rs.getString("dinamis_skorseksual_tidak_wajar"),
-                        rs.getString("dinamis_kemarahan_frustasi"),rs.getString("dinamis_skorkemarahan_frustasi"),rs.getString("dinamis_ketakutan_perawatan"),
-                        rs.getString("dinamis_skorketakutan_perawatan"),rs.getString("dinamis_skortotal"),rs.getString("faktor_faktor_pencegahan"),rs.getString("total_skor"),
-                        rs.getString("level_skor"),rs.getString("nip"),rs.getString("nama")
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
+                        rs.getString("jk"), rs.getString("tanggal"),
+                        rs.getString("statik_riwayat_melarikan_diri"), rs.
+                        getString("statik_skorriwayat_melarikan_diri"), rs.
+                        getString("statik_riwayat_penolakan_pengobatan"),
+                        rs.getString("statik_skorriwayat_penolakan_pengobatan"),
+                        rs.getString("statik_usia_dibawah_35"), rs.getString(
+                        "statik_skorusia_dibawah_35"), rs.getString(
+                        "statik_laki_laki"),
+                        rs.getString("statik_skorlaki_laki"), rs.getString(
+                        "statik_diagnosis_skizofrenia"), rs.getString(
+                        "statik_skordiagnosis_skizofrenia"), rs.getString(
+                        "statik_belum_menikah"),
+                        rs.getString("statik_skorbelum_menikah"), rs.getString(
+                        "statik_riwayat_penggunaan_napza"), rs.getString(
+                        "statik_skoriwayat_penggunaan_napza"),
+                        rs.getString("statik_diagnosis_gangguan_kepribadian"),
+                        rs.
+                        getString("statik_skordiagnosis_gangguan_kepribadian"),
+                        rs.getString("statik_riwayat_kriminal"),
+                        rs.getString("statik_skorriwayat_kriminal"), rs.
+                        getString("statik_skortotal"), rs.getString(
+                        "dinamis_anti_treatment"), rs.getString(
+                        "dinamis_skoranti_treatment"),
+                        rs.getString("dinamis_penggunaan_napza"), rs.getString(
+                        "dinamis_skorpenggunaan_napza"), rs.getString(
+                        "dinamis_kebosanan"), rs.getString(
+                        "dinamis_skorkebosanan"),
+                        rs.getString("dinamis_perintah_halusinasi"), rs.
+                        getString("dinamis_skorperintah_halusinasi"), rs.
+                        getString("dinamis_hilangnya_kontrol_diri"),
+                        rs.getString("dinamis_skorhilangnya_kontrol_diri"), rs.
+                        getString("dinamis_seksual_tidak_wajar"), rs.getString(
+                        "dinamis_skorseksual_tidak_wajar"),
+                        rs.getString("dinamis_kemarahan_frustasi"), rs.
+                        getString("dinamis_skorkemarahan_frustasi"), rs.
+                        getString("dinamis_ketakutan_perawatan"),
+                        rs.getString("dinamis_skorketakutan_perawatan"), rs.
+                        getString("dinamis_skortotal"), rs.getString(
+                        "faktor_faktor_pencegahan"), rs.getString("total_skor"),
+                        rs.getString("level_skor"), rs.getString("nip"), rs.
+                        getString("nama")
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     /**
      *
      */
@@ -2427,92 +2697,143 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
         Level.setText("Rendah(<7)");
         FaktorPencegahan.setText("");
         FaktorStatik1.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()); 
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            
-            FaktorStatik1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-            SkorStatik1.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            FaktorStatik2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-            SkorStatik2.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            FaktorStatik3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-            SkorStatik3.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            FaktorStatik4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-            SkorStatik4.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            FaktorStatik5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
-            SkorStatik5.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            FaktorStatik6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
-            SkorStatik6.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            FaktorStatik7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
-            SkorStatik7.setText(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            FaktorStatik8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
-            SkorStatik8.setText(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());
-            FaktorStatik9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());
-            SkorStatik9.setText(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString());
-            TotalStatik.setText(tbObat.getValueAt(tbObat.getSelectedRow(),24).toString());
-            FaktorDinamis1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString());
-            SkorDinamis1.setText(tbObat.getValueAt(tbObat.getSelectedRow(),26).toString());
-            FaktorDinamis2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),27).toString());
-            SkorDinamis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(),28).toString());
-            FaktorDinamis3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString());
-            SkorDinamis3.setText(tbObat.getValueAt(tbObat.getSelectedRow(),30).toString());
-            FaktorDinamis4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());
-            SkorDinamis4.setText(tbObat.getValueAt(tbObat.getSelectedRow(),32).toString());
-            FaktorDinamis5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),33).toString());
-            SkorDinamis5.setText(tbObat.getValueAt(tbObat.getSelectedRow(),34).toString());
-            FaktorDinamis6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),35).toString());
-            SkorDinamis6.setText(tbObat.getValueAt(tbObat.getSelectedRow(),36).toString());
-            FaktorDinamis7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),37).toString());
-            SkorDinamis7.setText(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString());
-            FaktorDinamis8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),39).toString());
-            SkorDinamis8.setText(tbObat.getValueAt(tbObat.getSelectedRow(),40).toString());
-            TotalDinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),41).toString());
-            FaktorPencegahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),42).toString());
-            SkorTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(),43).toString());
-            Level.setText(tbObat.getValueAt(tbObat.getSelectedRow(),44).toString());
-            
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString().substring(11,13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString().substring(14,16));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString().substring(17,19));
-            Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+
+            FaktorStatik1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 6).toString());
+            SkorStatik1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
+                    toString());
+            FaktorStatik2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 8).toString());
+            SkorStatik2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
+                    toString());
+            FaktorStatik3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 10).toString());
+            SkorStatik3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
+                    toString());
+            FaktorStatik4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 12).toString());
+            SkorStatik4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
+                    toString());
+            FaktorStatik5.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 14).toString());
+            SkorStatik5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
+                    toString());
+            FaktorStatik6.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 16).toString());
+            SkorStatik6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
+                    toString());
+            FaktorStatik7.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 18).toString());
+            SkorStatik7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
+                    toString());
+            FaktorStatik8.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 20).toString());
+            SkorStatik8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
+                    toString());
+            FaktorStatik9.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 22).toString());
+            SkorStatik9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
+                    toString());
+            TotalStatik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
+                    toString());
+            FaktorDinamis1.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 25).toString());
+            SkorDinamis1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
+                    toString());
+            FaktorDinamis2.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 27).toString());
+            SkorDinamis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
+                    toString());
+            FaktorDinamis3.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 29).toString());
+            SkorDinamis3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
+                    toString());
+            FaktorDinamis4.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 31).toString());
+            SkorDinamis4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
+                    toString());
+            FaktorDinamis5.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 33).toString());
+            SkorDinamis5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
+                    toString());
+            FaktorDinamis6.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 35).toString());
+            SkorDinamis6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).
+                    toString());
+            FaktorDinamis7.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 37).toString());
+            SkorDinamis7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).
+                    toString());
+            FaktorDinamis8.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 39).toString());
+            SkorDinamis8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).
+                    toString());
+            TotalDinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).
+                    toString());
+            FaktorPencegahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    42).toString());
+            SkorTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
+                    toString());
+            Level.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).
+                    toString());
+
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                    toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                    toString().substring(14, 16));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                    toString().substring(17, 19));
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                    toString());
         }
     }
+
     private void isRawat() {
-         Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+        Sequel.cariIsi(
+                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
+                        getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
         try {
-            ps=koneksi.prepareStatement("select pasien.nm_pasien,pasien.jk,pasien.tgl_lahir as lahir from pasien where pasien.no_rkm_medis=?");
+            ps = koneksi.prepareStatement(
+                    "select pasien.nm_pasien,pasien.jk,pasien.tgl_lahir as lahir from pasien where pasien.no_rkm_medis=?");
             try {
-                ps.setString(1,TNoRM.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRM.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("lahir"));
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            }finally {
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     /**
      *
      * @param norwt
@@ -2521,76 +2842,86 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='"+norwt+"'", DTPCari1);
+        Sequel.cariIsi(
+                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+                DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
         isPsien();
         ChkInput.setSelected(true);
         isForm();
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
-            if(internalFrame1.getHeight()>628){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
+            if (internalFrame1.getHeight() > 628) {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH,456));
-                FormInput.setVisible(true);      
+                PanelInput.setPreferredSize(new Dimension(WIDTH, 456));
+                FormInput.setVisible(true);
                 ChkInput.setVisible(true);
-            }else{
+            } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH,internalFrame1.getHeight()-172));
-                FormInput.setVisible(true);      
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
+                        getHeight() - 172));
+                FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
-        BtnSimpan.setEnabled(akses.getpenilaian_tambahan_beresiko_melarikan_diri());
-        BtnHapus.setEnabled(akses.getpenilaian_tambahan_beresiko_melarikan_diri());
-        BtnEdit.setEnabled(akses.getpenilaian_tambahan_beresiko_melarikan_diri());
-        BtnPrint.setEnabled(akses.getpenilaian_tambahan_beresiko_melarikan_diri()); 
-        if(akses.getjml2()>=1){
+    public void isCek() {
+        BtnSimpan.setEnabled(akses.
+                getpenilaian_tambahan_beresiko_melarikan_diri());
+        BtnHapus.setEnabled(akses.
+                getpenilaian_tambahan_beresiko_melarikan_diri());
+        BtnEdit.
+                setEnabled(akses.getpenilaian_tambahan_beresiko_melarikan_diri());
+        BtnPrint.setEnabled(akses.
+                getpenilaian_tambahan_beresiko_melarikan_diri());
+        if (akses.getjml2() >= 1) {
             NIP.setEditable(false);
             btnPetugas.setEnabled(false);
             NIP.setText(akses.getkode());
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
-            if(NamaPetugas.getText().isEmpty()){
+            if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan petugas...!!");
             }
-        }            
+        }
     }
 
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
                 String nol_detik = "";
-                
+
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkKejadian.isSelected()==true){
+                if (ChkKejadian.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkKejadian.isSelected()==false){
-                    nilai_jam =Jam.getSelectedIndex();
-                    nilai_menit =Menit.getSelectedIndex();
-                    nilai_detik =Detik.getSelectedIndex();
+                } else if (ChkKejadian.isSelected() == false) {
+                    nilai_jam = Jam.getSelectedIndex();
+                    nilai_menit = Menit.getSelectedIndex();
+                    nilai_detik = Detik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -2618,100 +2949,193 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("penilaian_tambahan_beresiko_melarikan_diri","no_rawat=?","no_rawat=?,tanggal=?,nip=?,statik_riwayat_melarikan_diri=?,statik_skorriwayat_melarikan_diri=?,statik_riwayat_penolakan_pengobatan=?,"+
-                "statik_skorriwayat_penolakan_pengobatan=?,statik_usia_dibawah_35=?,statik_skorusia_dibawah_35=?,statik_laki_laki=?,statik_skorlaki_laki=?,statik_diagnosis_skizofrenia=?,statik_skordiagnosis_skizofrenia=?,"+
-                "statik_belum_menikah=?,statik_skorbelum_menikah=?,statik_riwayat_penggunaan_napza=?,statik_skoriwayat_penggunaan_napza=?,statik_diagnosis_gangguan_kepribadian=?,statik_skordiagnosis_gangguan_kepribadian=?,"+
-                "statik_riwayat_kriminal=?,statik_skorriwayat_kriminal=?,statik_skortotal=?,dinamis_anti_treatment=?,dinamis_skoranti_treatment=?,dinamis_penggunaan_napza=?,dinamis_skorpenggunaan_napza=?,dinamis_kebosanan=?,"+
-                "dinamis_skorkebosanan=?,dinamis_perintah_halusinasi=?,dinamis_skorperintah_halusinasi=?,dinamis_hilangnya_kontrol_diri=?,dinamis_skorhilangnya_kontrol_diri=?,dinamis_seksual_tidak_wajar=?,dinamis_skorseksual_tidak_wajar=?,"+
-                "dinamis_kemarahan_frustasi=?,dinamis_skorkemarahan_frustasi=?,dinamis_ketakutan_perawatan=?,dinamis_skorketakutan_perawatan=?,dinamis_skortotal=?,faktor_faktor_pencegahan=?,total_skor=?,level_skor=?",43,new String[]{
-                TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),NIP.getText(),
-                FaktorStatik1.getSelectedItem().toString(),SkorStatik1.getText(),FaktorStatik2.getSelectedItem().toString(),SkorStatik2.getText(),FaktorStatik3.getSelectedItem().toString(),SkorStatik3.getText(),
-                FaktorStatik4.getSelectedItem().toString(),SkorStatik4.getText(),FaktorStatik5.getSelectedItem().toString(),SkorStatik5.getText(),FaktorStatik6.getSelectedItem().toString(),SkorStatik6.getText(), 
-                FaktorStatik7.getSelectedItem().toString(),SkorStatik7.getText(),FaktorStatik8.getSelectedItem().toString(),SkorStatik8.getText(),FaktorStatik9.getSelectedItem().toString(),SkorStatik9.getText(),
-                TotalStatik.getText(),FaktorDinamis1.getSelectedItem().toString(),SkorDinamis1.getText(),FaktorDinamis2.getSelectedItem().toString(),SkorDinamis2.getText(),FaktorDinamis3.getSelectedItem().toString(),
-                SkorDinamis3.getText(),FaktorDinamis4.getSelectedItem().toString(),SkorDinamis4.getText(),FaktorDinamis5.getSelectedItem().toString(),SkorDinamis5.getText(),FaktorDinamis6.getSelectedItem().toString(),
-                SkorDinamis6.getText(),FaktorDinamis7.getSelectedItem().toString(),SkorDinamis7.getText(),FaktorDinamis8.getSelectedItem().toString(),SkorDinamis8.getText(),TotalDinamis.getText(),
-                FaktorPencegahan.getText(),SkorTotal.getText(),Level.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
-            tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
-            tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
-            tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),2);
-            tbObat.setValueAt(TglLahir.getText(),tbObat.getSelectedRow(),3);
-            tbObat.setValueAt(JK.getText(),tbObat.getSelectedRow(),4);
-            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),tbObat.getSelectedRow(),5);
-            tbObat.setValueAt(FaktorStatik1.getSelectedItem().toString(),tbObat.getSelectedRow(),6);
-            tbObat.setValueAt(SkorStatik1.getText(),tbObat.getSelectedRow(),7);
-            tbObat.setValueAt(FaktorStatik2.getSelectedItem().toString(),tbObat.getSelectedRow(),8);
-            tbObat.setValueAt(SkorStatik2.getText(),tbObat.getSelectedRow(),9);
-            tbObat.setValueAt(FaktorStatik3.getSelectedItem().toString(),tbObat.getSelectedRow(),10);
-            tbObat.setValueAt(SkorStatik3.getText(),tbObat.getSelectedRow(),11);
-            tbObat.setValueAt(FaktorStatik4.getSelectedItem().toString(),tbObat.getSelectedRow(),12);
-            tbObat.setValueAt(SkorStatik4.getText(),tbObat.getSelectedRow(),13);
-            tbObat.setValueAt(FaktorStatik5.getSelectedItem().toString(),tbObat.getSelectedRow(),14);
-            tbObat.setValueAt(SkorStatik5.getText(),tbObat.getSelectedRow(),15);
-            tbObat.setValueAt(FaktorStatik6.getSelectedItem().toString(),tbObat.getSelectedRow(),16);
-            tbObat.setValueAt(SkorStatik6.getText(),tbObat.getSelectedRow(),17);
-            tbObat.setValueAt(FaktorStatik7.getSelectedItem().toString(),tbObat.getSelectedRow(),18);
-            tbObat.setValueAt(SkorStatik7.getText(),tbObat.getSelectedRow(),19);
-            tbObat.setValueAt(FaktorStatik8.getSelectedItem().toString(),tbObat.getSelectedRow(),20);
-            tbObat.setValueAt(SkorStatik8.getText(),tbObat.getSelectedRow(),21);
-            tbObat.setValueAt(FaktorStatik9.getSelectedItem().toString(),tbObat.getSelectedRow(),22);
-            tbObat.setValueAt(SkorStatik9.getText(),tbObat.getSelectedRow(),23);
-            tbObat.setValueAt(TotalStatik.getText(),tbObat.getSelectedRow(),24);
-            tbObat.setValueAt(FaktorDinamis1.getSelectedItem().toString(),tbObat.getSelectedRow(),25);
-            tbObat.setValueAt(SkorDinamis1.getText(),tbObat.getSelectedRow(),26);
-            tbObat.setValueAt(FaktorDinamis2.getSelectedItem().toString(),tbObat.getSelectedRow(),27);
-            tbObat.setValueAt(SkorDinamis2.getText(),tbObat.getSelectedRow(),28);
-            tbObat.setValueAt(FaktorDinamis3.getSelectedItem().toString(),tbObat.getSelectedRow(),29);
-            tbObat.setValueAt(SkorDinamis3.getText(),tbObat.getSelectedRow(),30);
-            tbObat.setValueAt(FaktorDinamis4.getSelectedItem().toString(),tbObat.getSelectedRow(),31);
-            tbObat.setValueAt(SkorDinamis4.getText(),tbObat.getSelectedRow(),32);
-            tbObat.setValueAt(FaktorDinamis5.getSelectedItem().toString(),tbObat.getSelectedRow(),33);
-            tbObat.setValueAt(SkorDinamis5.getText(),tbObat.getSelectedRow(),34);
-            tbObat.setValueAt(FaktorDinamis6.getSelectedItem().toString(),tbObat.getSelectedRow(),35);
-            tbObat.setValueAt(SkorDinamis6.getText(),tbObat.getSelectedRow(),36);
-            tbObat.setValueAt(FaktorDinamis7.getSelectedItem().toString(),tbObat.getSelectedRow(),37);
-            tbObat.setValueAt(SkorDinamis7.getText(),tbObat.getSelectedRow(),38);
-            tbObat.setValueAt(FaktorDinamis8.getSelectedItem().toString(),tbObat.getSelectedRow(),39);
-            tbObat.setValueAt(SkorDinamis8.getText(),tbObat.getSelectedRow(),40);
-            tbObat.setValueAt(TotalDinamis.getText(),tbObat.getSelectedRow(),41);
-            tbObat.setValueAt(FaktorPencegahan.getText(),tbObat.getSelectedRow(),42);
-            tbObat.setValueAt(SkorTotal.getText(),tbObat.getSelectedRow(),43);
-            tbObat.setValueAt(Level.getText(),tbObat.getSelectedRow(),44);
-            tbObat.setValueAt(NIP.getText(),tbObat.getSelectedRow(),45);
-            tbObat.setValueAt(NamaPetugas.getText(),tbObat.getSelectedRow(),46);
+        if (Sequel.mengedittf("penilaian_tambahan_beresiko_melarikan_diri",
+                "no_rawat=?",
+                "no_rawat=?,tanggal=?,nip=?,statik_riwayat_melarikan_diri=?,statik_skorriwayat_melarikan_diri=?,statik_riwayat_penolakan_pengobatan=?,"
+                + "statik_skorriwayat_penolakan_pengobatan=?,statik_usia_dibawah_35=?,statik_skorusia_dibawah_35=?,statik_laki_laki=?,statik_skorlaki_laki=?,statik_diagnosis_skizofrenia=?,statik_skordiagnosis_skizofrenia=?,"
+                + "statik_belum_menikah=?,statik_skorbelum_menikah=?,statik_riwayat_penggunaan_napza=?,statik_skoriwayat_penggunaan_napza=?,statik_diagnosis_gangguan_kepribadian=?,statik_skordiagnosis_gangguan_kepribadian=?,"
+                + "statik_riwayat_kriminal=?,statik_skorriwayat_kriminal=?,statik_skortotal=?,dinamis_anti_treatment=?,dinamis_skoranti_treatment=?,dinamis_penggunaan_napza=?,dinamis_skorpenggunaan_napza=?,dinamis_kebosanan=?,"
+                + "dinamis_skorkebosanan=?,dinamis_perintah_halusinasi=?,dinamis_skorperintah_halusinasi=?,dinamis_hilangnya_kontrol_diri=?,dinamis_skorhilangnya_kontrol_diri=?,dinamis_seksual_tidak_wajar=?,dinamis_skorseksual_tidak_wajar=?,"
+                + "dinamis_kemarahan_frustasi=?,dinamis_skorkemarahan_frustasi=?,dinamis_ketakutan_perawatan=?,dinamis_skorketakutan_perawatan=?,dinamis_skortotal=?,faktor_faktor_pencegahan=?,total_skor=?,level_skor=?",
+                43, new String[]{
+                    TNoRw.getText(), Valid.
+                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                    getSelectedItem(), NIP.getText(),
+                    FaktorStatik1.getSelectedItem().toString(), SkorStatik1.
+                    getText(), FaktorStatik2.getSelectedItem().toString(),
+                    SkorStatik2.getText(), FaktorStatik3.getSelectedItem().
+                    toString(), SkorStatik3.getText(),
+                    FaktorStatik4.getSelectedItem().toString(), SkorStatik4.
+                    getText(), FaktorStatik5.getSelectedItem().toString(),
+                    SkorStatik5.getText(), FaktorStatik6.getSelectedItem().
+                    toString(), SkorStatik6.getText(),
+                    FaktorStatik7.getSelectedItem().toString(), SkorStatik7.
+                    getText(), FaktorStatik8.getSelectedItem().toString(),
+                    SkorStatik8.getText(), FaktorStatik9.getSelectedItem().
+                    toString(), SkorStatik9.getText(),
+                    TotalStatik.getText(), FaktorDinamis1.getSelectedItem().
+                    toString(), SkorDinamis1.getText(), FaktorDinamis2.
+                    getSelectedItem().toString(), SkorDinamis2.getText(),
+                    FaktorDinamis3.getSelectedItem().toString(),
+                    SkorDinamis3.getText(), FaktorDinamis4.getSelectedItem().
+                    toString(), SkorDinamis4.getText(), FaktorDinamis5.
+                    getSelectedItem().toString(), SkorDinamis5.getText(),
+                    FaktorDinamis6.getSelectedItem().toString(),
+                    SkorDinamis6.getText(), FaktorDinamis7.getSelectedItem().
+                    toString(), SkorDinamis7.getText(), FaktorDinamis8.
+                    getSelectedItem().toString(), SkorDinamis8.getText(),
+                    TotalDinamis.getText(),
+                    FaktorPencegahan.getText(), SkorTotal.getText(), Level.
+                    getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                            toString()
+                }) == true) {
+            tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
+            tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
+            tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
+            tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
+            tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
+            tbObat.setValueAt(
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                    getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(FaktorStatik1.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(SkorStatik1.getText(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(FaktorStatik2.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(SkorStatik2.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(FaktorStatik3.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 10);
+            tbObat.
+                    setValueAt(SkorStatik3.getText(), tbObat.getSelectedRow(),
+                            11);
+            tbObat.setValueAt(FaktorStatik4.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 12);
+            tbObat.
+                    setValueAt(SkorStatik4.getText(), tbObat.getSelectedRow(),
+                            13);
+            tbObat.setValueAt(FaktorStatik5.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 14);
+            tbObat.
+                    setValueAt(SkorStatik5.getText(), tbObat.getSelectedRow(),
+                            15);
+            tbObat.setValueAt(FaktorStatik6.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 16);
+            tbObat.
+                    setValueAt(SkorStatik6.getText(), tbObat.getSelectedRow(),
+                            17);
+            tbObat.setValueAt(FaktorStatik7.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 18);
+            tbObat.
+                    setValueAt(SkorStatik7.getText(), tbObat.getSelectedRow(),
+                            19);
+            tbObat.setValueAt(FaktorStatik8.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 20);
+            tbObat.
+                    setValueAt(SkorStatik8.getText(), tbObat.getSelectedRow(),
+                            21);
+            tbObat.setValueAt(FaktorStatik9.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 22);
+            tbObat.
+                    setValueAt(SkorStatik9.getText(), tbObat.getSelectedRow(),
+                            23);
+            tbObat.
+                    setValueAt(TotalStatik.getText(), tbObat.getSelectedRow(),
+                            24);
+            tbObat.setValueAt(FaktorDinamis1.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(SkorDinamis1.getText(), tbObat.getSelectedRow(),
+                    26);
+            tbObat.setValueAt(FaktorDinamis2.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(SkorDinamis2.getText(), tbObat.getSelectedRow(),
+                    28);
+            tbObat.setValueAt(FaktorDinamis3.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(SkorDinamis3.getText(), tbObat.getSelectedRow(),
+                    30);
+            tbObat.setValueAt(FaktorDinamis4.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(SkorDinamis4.getText(), tbObat.getSelectedRow(),
+                    32);
+            tbObat.setValueAt(FaktorDinamis5.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(SkorDinamis5.getText(), tbObat.getSelectedRow(),
+                    34);
+            tbObat.setValueAt(FaktorDinamis6.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(SkorDinamis6.getText(), tbObat.getSelectedRow(),
+                    36);
+            tbObat.setValueAt(FaktorDinamis7.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(SkorDinamis7.getText(), tbObat.getSelectedRow(),
+                    38);
+            tbObat.setValueAt(FaktorDinamis8.getSelectedItem().toString(),
+                    tbObat.getSelectedRow(), 39);
+            tbObat.setValueAt(SkorDinamis8.getText(), tbObat.getSelectedRow(),
+                    40);
+            tbObat.setValueAt(TotalDinamis.getText(), tbObat.getSelectedRow(),
+                    41);
+            tbObat.setValueAt(FaktorPencegahan.getText(), tbObat.
+                    getSelectedRow(), 42);
+            tbObat.setValueAt(SkorTotal.getText(), tbObat.getSelectedRow(), 43);
+            tbObat.setValueAt(Level.getText(), tbObat.getSelectedRow(), 44);
+            tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 45);
+            tbObat.
+                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
+                            46);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from penilaian_tambahan_beresiko_melarikan_diri where no_rawat=?",1,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from penilaian_tambahan_beresiko_melarikan_diri where no_rawat=?",
+                1, new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             emptTeks();
-            LCount.setText(""+tabMode.getRowCount());
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            LCount.setText("" + tabMode.getRowCount());
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
-    
-    private void isTotalSkor(){
+
+    private void isTotalSkor() {
         try {
-            TotalStatik.setText((Integer.parseInt(SkorStatik1.getText())+Integer.parseInt(SkorStatik2.getText())+Integer.parseInt(SkorStatik3.getText())+Integer.parseInt(SkorStatik4.getText())+Integer.parseInt(SkorStatik5.getText())+Integer.parseInt(SkorStatik6.getText())+Integer.parseInt(SkorStatik7.getText())+Integer.parseInt(SkorStatik8.getText())+Integer.parseInt(SkorStatik9.getText()))+"");
-            TotalDinamis.setText((Integer.parseInt(SkorDinamis1.getText())+Integer.parseInt(SkorDinamis2.getText())+Integer.parseInt(SkorDinamis3.getText())+Integer.parseInt(SkorDinamis4.getText())+Integer.parseInt(SkorDinamis5.getText())+Integer.parseInt(SkorDinamis6.getText())+Integer.parseInt(SkorDinamis7.getText())+Integer.parseInt(SkorDinamis8.getText()))+"");
-            SkorTotal.setText((Integer.parseInt(TotalStatik.getText())+Integer.parseInt(TotalDinamis.getText()))+"");
-            if(Integer.parseInt(SkorTotal.getText())<7){
+            TotalStatik.setText(
+                    (Integer.parseInt(SkorStatik1.getText()) + Integer.parseInt(
+                    SkorStatik2.getText()) + Integer.parseInt(SkorStatik3.
+                    getText()) + Integer.parseInt(SkorStatik4.getText()) + Integer.
+                    parseInt(SkorStatik5.getText()) + Integer.parseInt(
+                    SkorStatik6.getText()) + Integer.parseInt(SkorStatik7.
+                    getText()) + Integer.parseInt(SkorStatik8.getText()) + Integer.
+                    parseInt(SkorStatik9.getText())) + "");
+            TotalDinamis.setText(
+                    (Integer.parseInt(SkorDinamis1.getText()) + Integer.
+                    parseInt(SkorDinamis2.getText()) + Integer.parseInt(
+                    SkorDinamis3.getText()) + Integer.parseInt(SkorDinamis4.
+                    getText()) + Integer.parseInt(SkorDinamis5.getText()) + Integer.
+                    parseInt(SkorDinamis6.getText()) + Integer.parseInt(
+                    SkorDinamis7.getText()) + Integer.parseInt(SkorDinamis8.
+                    getText())) + "");
+            SkorTotal.setText(
+                    (Integer.parseInt(TotalStatik.getText()) + Integer.parseInt(
+                    TotalDinamis.getText())) + "");
+            if (Integer.parseInt(SkorTotal.getText()) < 7) {
                 Level.setText("Rendah(<7)");
-            }else if(Integer.parseInt(SkorTotal.getText())<=14){
+            } else if (Integer.parseInt(SkorTotal.getText()) <= 14) {
                 Level.setText("Sedang(7-14)");
-            }else if(Integer.parseInt(SkorTotal.getText())>14){
+            } else if (Integer.parseInt(SkorTotal.getText()) > 14) {
                 Level.setText("Tinggi(>14)");
             }
         } catch (Exception e) {
@@ -2719,4 +3143,7 @@ public class RMPenilaianTambahanMelarikanDiri extends javax.swing.JDialog {
             Level.setText("Rendah(<7)");
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            RMPenilaianTambahanMelarikanDiri.class.getName());
 }

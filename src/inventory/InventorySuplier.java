@@ -1,97 +1,121 @@
 package inventory;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class InventorySuplier extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public InventorySuplier(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row={"Kode Supplier","Nama Supplier","Alamat Supplier","Kota","No.Telp","Nama Bank","No.Rekening"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Supplier", "Nama Supplier", "Alamat Supplier",
+            "Kota", "No.Telp", "Nama Bank", "No.Rekening"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Kd.setDocument(new batasInput((byte)5).getKata(Kd));
-        Nm.setDocument(new batasInput((byte)50).getKata(Nm));      
-        Alamat.setDocument(new batasInput((byte)50).getKata(Alamat));  
-        Kota.setDocument(new batasInput((byte)20).getKata(Kota));    
-        Bank.setDocument(new batasInput((byte)30).getKata(Bank));    
-        NoRek.setDocument(new batasInput((byte)20).getKata(NoRek));    
-        Telp.setDocument(new batasInput((byte)13).getOnlyAngka(Telp)); 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));      
-        Bank.setDocument(new batasInput((byte)30).getKata(Bank));  
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        Kd.setDocument(new batasInput((byte) 5).getKata(Kd));
+        Nm.setDocument(new batasInput((byte) 50).getKata(Nm));
+        Alamat.setDocument(new batasInput((byte) 50).getKata(Alamat));
+        Kota.setDocument(new batasInput((byte) 20).getKata(Kota));
+        Bank.setDocument(new batasInput((byte) 30).getKata(Bank));
+        NoRek.setDocument(new batasInput((byte) 20).getKata(NoRek));
+        Telp.setDocument(new batasInput((byte) 13).getOnlyAngka(Telp));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        Bank.setDocument(new batasInput((byte) 30).getKata(Bank));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }   
+        }
         ChkInput.setSelected(false);
-        isForm();           
+        isForm();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -525,13 +549,13 @@ public class InventorySuplier extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -541,15 +565,15 @@ public class InventorySuplier extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbDokterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDokterMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -558,8 +582,9 @@ public class InventorySuplier extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterMouseClicked
 
     private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDokterKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -569,93 +594,108 @@ public class InventorySuplier extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterKeyPressed
 
     private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyPressed
-       Valid.pindah(evt,Telp,Alamat);
+        Valid.pindah(evt, Telp, Alamat);
 }//GEN-LAST:event_NmKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
+        if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
             tbDokter.requestFocus();
-        }else{
-            Valid.hapusTable(tabMode,Kd,"datasuplier","kode_suplier");
+        } else {
+            Valid.hapusTable(tabMode, Kd, "datasuplier", "kode_suplier");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"Kode Supplier");
-        }else if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Supplier");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat Supplier");
-        }else if(Telp.getText().trim().isEmpty()){
-            Valid.textKosong(Telp,"No.Telp");
-        }else if(Kota.getText().trim().isEmpty()){
-            Valid.textKosong(Kota,"Kota");
-        }else if(Bank.getText().trim().isEmpty()){
-            Valid.textKosong(Bank,"Nama Bank Suplier");
-        }else if(NoRek.getText().trim().isEmpty()){
-            Valid.textKosong(NoRek,"Nomer Rekening");
-        }else{
-            Valid.editTable(tabMode,"datasuplier","kode_suplier","?","kode_suplier=?,nama_suplier=?,alamat=?,kota=?,no_telp=?,nama_bank=?,rekening=?",8,new String[]{
-                Kd.getText(),Nm.getText(),Alamat.getText(),Kota.getText(),Telp.getText(),Bank.getText(),NoRek.getText(),tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "Kode Supplier");
+        } else if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Supplier");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat Supplier");
+        } else if (Telp.getText().trim().isEmpty()) {
+            Valid.textKosong(Telp, "No.Telp");
+        } else if (Kota.getText().trim().isEmpty()) {
+            Valid.textKosong(Kota, "Kota");
+        } else if (Bank.getText().trim().isEmpty()) {
+            Valid.textKosong(Bank, "Nama Bank Suplier");
+        } else if (NoRek.getText().trim().isEmpty()) {
+            Valid.textKosong(NoRek, "Nomer Rekening");
+        } else {
+            Valid.editTable(tabMode, "datasuplier", "kode_suplier", "?",
+                    "kode_suplier=?,nama_suplier=?,alamat=?,kota=?,no_telp=?,nama_bank=?,rekening=?",
+                    8, new String[]{
+                        Kd.getText(), Nm.getText(), Alamat.getText(), Kota.
+                        getText(), Telp.getText(), Bank.getText(), NoRek.
+                        getText(), tbDokter.
+                                getValueAt(tbDokter.getSelectedRow(), 0).
+                                toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptSuplier.jasper","report","::[ Data Suplier ]::",
-                    " select datasuplier.kode_suplier, datasuplier.nama_suplier, "+
-                    " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"+
-                    " datasuplier.nama_bank,datasuplier.rekening from datasuplier "+
-                    " where datasuplier.kode_suplier like '%"+TCari.getText().trim()+"%' or "+
-                    " datasuplier.nama_suplier like '%"+TCari.getText().trim()+"%' or "+
-                    " datasuplier.alamat like '%"+TCari.getText().trim()+"%' or "+
-                    " datasuplier.kota like '%"+TCari.getText().trim()+"%' or "+
-                    " datasuplier.nama_bank like '%"+TCari.getText().trim()+"%' or "+
-                    " datasuplier.no_telp like '%"+TCari.getText().trim()+"%' order by datasuplier.kode_suplier",param);            
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptSuplier.jasper", "report",
+                    "::[ Data Suplier ]::",
+                    " select datasuplier.kode_suplier, datasuplier.nama_suplier, "
+                    + " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"
+                    + " datasuplier.nama_bank,datasuplier.rekening from datasuplier "
+                    + " where datasuplier.kode_suplier like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + " datasuplier.nama_suplier like '%" + TCari.getText().
+                            trim() + "%' or "
+                    + " datasuplier.alamat like '%" + TCari.getText().trim() + "%' or "
+                    + " datasuplier.kota like '%" + TCari.getText().trim() + "%' or "
+                    + " datasuplier.nama_bank like '%" + TCari.getText().trim() + "%' or "
+                    + " datasuplier.no_telp like '%" + TCari.getText().trim() + "%' order by datasuplier.kode_suplier",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnEdit,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -665,103 +705,110 @@ public class InventorySuplier extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"Kode Supplier");
-        }else if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Supplier");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat Supplier");
-        }else if(Telp.getText().trim().isEmpty()){
-            Valid.textKosong(Telp,"No.Telp");
-        }else if(Kota.getText().trim().isEmpty()){
-            Valid.textKosong(Kota,"Kota");
-        }else if(Bank.getText().trim().isEmpty()){
-            Valid.textKosong(Bank,"Nama Bank Suplier");
-        }else if(NoRek.getText().trim().isEmpty()){
-            Valid.textKosong(NoRek,"Nomer Rekening");
-        }else{
-            if(Sequel.menyimpantf("datasuplier","?,?,?,?,?,?,?","Kode Supplier",7,new String[]{
-                Kd.getText(),Nm.getText(),Alamat.getText(),Kota.getText(),Telp.getText(),Bank.getText(),NoRek.getText()
-            })==true){
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "Kode Supplier");
+        } else if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Supplier");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat Supplier");
+        } else if (Telp.getText().trim().isEmpty()) {
+            Valid.textKosong(Telp, "No.Telp");
+        } else if (Kota.getText().trim().isEmpty()) {
+            Valid.textKosong(Kota, "Kota");
+        } else if (Bank.getText().trim().isEmpty()) {
+            Valid.textKosong(Bank, "Nama Bank Suplier");
+        } else if (NoRek.getText().trim().isEmpty()) {
+            Valid.textKosong(NoRek, "Nomer Rekening");
+        } else {
+            if (Sequel.menyimpantf("datasuplier", "?,?,?,?,?,?,?",
+                    "Kode Supplier", 7, new String[]{
+                        Kd.getText(), Nm.getText(), Alamat.getText(), Kota.
+                        getText(), Telp.getText(), Bank.getText(), NoRek.
+                        getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }                
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,NoRek,BtnBatal);
+        } else {
+            Valid.pindah(evt, NoRek, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void TelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TelpKeyPressed
-         Valid.pindah(evt,Kd,Nm);
+        Valid.pindah(evt, Kd, Nm);
     }//GEN-LAST:event_TelpKeyPressed
 
 private void AlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlamatKeyPressed
-        Valid.pindah(evt,Nm,Kota);
+    Valid.pindah(evt, Nm, Kota);
 }//GEN-LAST:event_AlamatKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdKeyPressed
-        Valid.pindah(evt,NoRek,Telp,TCari);
+        Valid.pindah(evt, NoRek, Telp, TCari);
     }//GEN-LAST:event_KdKeyPressed
 
     private void TelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelpMouseExited
-        if(Telp.getText().isEmpty()){
+        if (Telp.getText().isEmpty()) {
             Telp.setText("0");
         }
     }//GEN-LAST:event_TelpMouseExited
 
     private void TelpMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelpMouseMoved
-        if(Telp.getText().equals("0")||Telp.getText().equals("0.0")){
+        if (Telp.getText().equals("0") || Telp.getText().equals("0.0")) {
             Telp.setText("");
         }
     }//GEN-LAST:event_TelpMouseMoved
 
     private void KotaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KotaKeyPressed
-        Valid.pindah(evt,Alamat,Bank);
+        Valid.pindah(evt, Alamat, Bank);
     }//GEN-LAST:event_KotaKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -769,24 +816,26 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_formWindowOpened
 
     private void BankKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BankKeyPressed
-        Valid.pindah(evt,Kota,NoRek);
+        Valid.pindah(evt, Kota, NoRek);
     }//GEN-LAST:event_BankKeyPressed
 
     private void NoRekKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoRekKeyPressed
-        Valid.pindah(evt,Bank,BtnSimpan);
+        Valid.pindah(evt, Bank, BtnSimpan);
     }//GEN-LAST:event_NoRekKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventorySuplier dialog = new InventorySuplier(new javax.swing.JFrame(), true);
+            InventorySuplier dialog = new InventorySuplier(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -832,45 +881,46 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select datasuplier.kode_suplier, datasuplier.nama_suplier, "+
-                    " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"+
-                    " datasuplier.nama_bank,datasuplier.rekening from datasuplier "+
-                    " where datasuplier.kode_suplier like ? or "+
-                    " datasuplier.nama_suplier like ? or "+
-                    " datasuplier.alamat like ? or "+
-                    " datasuplier.kota like ? or "+
-                    " datasuplier.nama_bank like ? or "+
-                    " datasuplier.no_telp like ? order by datasuplier.kode_suplier");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select datasuplier.kode_suplier, datasuplier.nama_suplier, "
+                    + " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"
+                    + " datasuplier.nama_bank,datasuplier.rekening from datasuplier "
+                    + " where datasuplier.kode_suplier like ? or "
+                    + " datasuplier.nama_suplier like ? or "
+                    + " datasuplier.alamat like ? or "
+                    + " datasuplier.kota like ? or "
+                    + " datasuplier.nama_bank like ? or "
+                    + " datasuplier.no_telp like ? order by datasuplier.kode_suplier");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText().trim()+"%");
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText().trim() + "%");
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5),rs.getString(6),rs.getString(7)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7)
                     });
                 }
             } catch (Exception e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -884,46 +934,56 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Bank.setText("");
         NoRek.setText("");
         Telp.setText("0");
-        
+
         Kd.requestFocus();
-        Valid.autoNomer("datasuplier","S",4,Kd);
+        Valid.autoNomer("datasuplier", "S", 4, Kd);
     }
 
     private void getData() {
-        if(tbDokter.getSelectedRow()!= -1){
-            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),0).toString());
-            Nm.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),1).toString());
-            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),2).toString());
-            Kota.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),3).toString());
-            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),4).toString());
-            Bank.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),5).toString());
-            NoRek.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),6).toString());
+        if (tbDokter.getSelectedRow() != -1) {
+            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
+                    toString());
+            Nm.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 1).
+                    toString());
+            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 2).
+                    toString());
+            Kota.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 3).
+                    toString());
+            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 4).
+                    toString());
+            Bank.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 5).
+                    toString());
+            NoRek.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 6).
+                    toString());
         }
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbDokter;
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getsuplier());
         BtnHapus.setEnabled(akses.getsuplier());
         BtnEdit.setEnabled(akses.getsuplier());
         BtnPrint.setEnabled(akses.getsuplier());
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,128));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 128));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
-    }    
- 
+    }
+
+    private static final Logger LOG = Logger.getLogger(InventorySuplier.class.
+            getName());
+
 }

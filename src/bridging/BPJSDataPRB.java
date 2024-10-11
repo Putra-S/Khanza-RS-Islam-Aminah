@@ -4,100 +4,143 @@
  *
  * Created on May 22, 2010, 11:58:21 PM
  */
-
 package bridging;
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class BPJSDataPRB extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private sekuel Sequel = new sekuel();
+
     private PreparedStatement ps;
-    private ResultSet rs;    
-    private int i=0;
-    private ApiMobileJKN api=new ApiMobileJKN();
-    private String URL="",link="",utc="";
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    private ApiMobileJKN api = new ApiMobileJKN();
+
+    private String URL = "", link = "", utc = "";
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
 
-    /** Creates new form DlgJnsPerawatanRalan
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public BPJSDataPRB(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No SEP","No Kartu","No SRB","Dokter","Pasien","Kode Program PRB","Nama Program PRB","Keterangan","Saran","Tanggal SRB"
-            }){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{"No SEP", "No Kartu",
+            "No SRB", "Dokter", "Pasien",
+            "Kode Program PRB", "Nama Program PRB", "Keterangan", "Saran",
+            "Tanggal SRB"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(130);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(120);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(200);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(200);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
-        
+
         try {
-            link=koneksiDB.URLAPIBPJS();
+            link = koneksiDB.URLAPIBPJS();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
-
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void initComponents() {
+//GEN-BEGIN:initComponents
     internalFrame1 = new widget.InternalFrame();
     Scroll = new widget.ScrollPane();
     tbJnsPerawatan = new widget.Table();
@@ -232,26 +275,26 @@ public class BPJSDataPRB extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
 //            Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnKeluar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluar1ActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_BtnKeluar1ActionPerformed
 
     private void BtnKeluar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluar1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
         }
     }//GEN-LAST:event_BtnKeluar1KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             BPJSDataPRB dialog = new BPJSDataPRB(new javax.swing.JFrame(), true);
@@ -260,19 +303,19 @@ public class BPJSDataPRB extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
     }
-    
-    
-    private void emptTeks(){
+
+    private void emptTeks() {
 
     }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private widget.Button BtnCari;
-  private widget.Button BtnKeluar1;
+    // Variables declaration - do not modify
+    private widget.Button BtnCari;
+  private widget.Button BtnKeluar1;//GEN-BEGIN:variables
   private widget.Tanggal DTPCari1;
   private widget.Tanggal DTPCari2;
   private widget.Label LCount;
@@ -289,61 +332,82 @@ public class BPJSDataPRB extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-//        try{
-//            ps=koneksi.prepareStatement(
-//                   "SELECT reg_periksa.tgl_registrasi,pasien.no_peserta,pasien.nm_pasien FROM reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? group by reg_periksa.tgl_registrasi");
-//            try {
-//                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-//                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-//                rs=ps.executeQuery();
-//                while(rs.next()){
-                    try {
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIBPJS());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
-                        requestEntity = new HttpEntity(headers);
-                        URL = link+"/prb/tglMulai/"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"/tglAkhir/"+Valid.SetTgl(DTPCari2.getSelectedItem()+"");	
-                        System.out.println("URL : "+URL);
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-                        nameNode = root.path("metaData");
-                        if(nameNode.path("code").asText().equals("200")){
-                            response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc)).path("prb").path("list");
-                            if(response.isArray()){
-                              i=1;
-                                for(JsonNode list:response){
-                                    tabMode.addRow(new Object[]{
-                                        list.path("noSEP").asText(),list.path("peserta").path("noKartu").asText(),list.path("noSRB").asText(),list.path("DPJP").path("nama").asText(),list.path("peserta").path("nama").asText(),list.path("programPRB").path("kode").asText(),list.path("programPRB").path("nama").asText(),list.path("keterangan").asText(),list.path("saran").asText(),list.path("tglSRB").asText()
-                                    });
-                              i++;      
-                                }
-                            }
-                        }else {
-                            JOptionPane.showMessageDialog(rootPane,nameNode.path("message").asText());               
-                        }   
-                    } catch (Exception ex) {
-                        System.out.println("Notifikasi : "+ex);
-                        if(ex.toString().contains("UnknownHostException")){
-                            JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
-                        }
+        // try{
+        // ps=koneksi.prepareStatement(
+        // "SELECT reg_periksa.tgl_registrasi,pasien.no_peserta,pasien.nm_pasien FROM
+        // reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis
+        // WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? group by
+        // reg_periksa.tgl_registrasi");
+        // try {
+        // ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
+        // ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
+        // rs=ps.executeQuery();
+        // while(rs.next()){
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("x-cons-id", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("x-timestamp", utc);
+            headers.add("x-signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+            requestEntity = new HttpEntity(headers);
+            URL = link + "/prb/tglMulai/" + Valid.SetTgl(DTPCari1.
+                    getSelectedItem() + "") + "/tglAkhir/"
+                    + Valid.SetTgl(DTPCari2.getSelectedItem() + "");
+            System.out.println("URL : " + URL);
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
+            nameNode = root.path("metaData");
+            if (nameNode.path("code").asText().equals("200")) {
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc)).path("prb").path("list");
+                if (response.isArray()) {
+                    i = 1;
+                    for (JsonNode list : response) {
+                        tabMode.addRow(new Object[]{list.path("noSEP").asText(),
+                            list.path("peserta").path("noKartu").asText(), list.
+                            path("noSRB").asText(),
+                            list.path("DPJP").path("nama").asText(), list.path(
+                            "peserta").path("nama").asText(),
+                            list.path("programPRB").path("kode").asText(),
+                            list.path("programPRB").path("nama").asText(), list.
+                            path("keterangan").asText(),
+                            list.path("saran").asText(), list.path("tglSRB").
+                            asText()});
+                        i++;
                     }
                 }
-//            } catch (Exception e) {
-//                System.out.println("Notif : "+e);
-//            } finally{
-//                if(rs!=null){
-//                    rs.close();
-//                }
-//                if(ps!=null){
-//                    ps.close();
-//                }
-//            }
-//        }catch(Exception e){
-//            System.out.println("Notifikasi : "+e);
-//        }
-        
-//    }
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        nameNode.path("message").asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server BPJS terputus...!");
+            }
+        }
+    }
+    // } catch (Exception e) {
+    // System.out.println("Notif : "+e);
+    // } finally{
+    // if(rs!=null){
+    // rs.close();
+    // }
+    // if(ps!=null){
+    // ps.close();
+    // }
+    // }
+    // }catch(Exception e){
+    // System.out.println("Notifikasi : "+e);
+    // }
+
+    // }
+    private static final Logger LOG = Logger.getLogger(BPJSDataPRB.class.
+            getName());
+
 }

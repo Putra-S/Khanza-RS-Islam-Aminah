@@ -3,76 +3,103 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgBangsal.java
  *
  * Created on May 22, 2010, 9:58:42 PM
  */
-
 package kepegawaian;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
-import java.util.logging.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgBulanan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,psketerlambatan;
-    private ResultSet rs,rsketerlambatan;
-    private String masuk="",pulang="";
-    private DlgBarcode bar=new DlgBarcode(null,false);
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private PreparedStatement ps, psketerlambatan;
+    private ResultSet rs, rsketerlambatan;
+    private String masuk = "", pulang = "";
+    private DlgBarcode bar = new DlgBarcode(null, false);
     private String[] id;
     private String[] tgl;
-    private String pilih="";
-    
-    int no=0,i=0,toleransi=0,terlambat1=0,terlambat2=0;
-    /** Creates new form DlgBangsal
+    private String pilih = "";
+
+    int no = 0, i = 0, toleransi = 0, terlambat1 = 0, terlambat2 = 0;
+
+    /**
+     * Creates new form DlgBangsal
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgBulanan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        Object[] row={"NIP","Nama","Shift","Jam Datang","Jam Pulang","Status","Keterlambatan","Durasi","Catatan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"NIP", "Nama", "Shift", "Jam Datang", "Jam Pulang",
+            "Status", "Keterlambatan", "Durasi", "Catatan"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbBangsal.setModel(tabMode);
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 9; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(300);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(120);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(90);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(80);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(300);
             }
         }
@@ -80,110 +107,131 @@ public class DlgBulanan extends javax.swing.JDialog {
 
         Nik.setDocument(new batasInput(25).getKata(Nik));
         catatan.setDocument(new batasInput(100).getKata(catatan));
-        
+
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
-        Valid.loadCombo(Departemen,"nama","departemen");
+        }
+
+        Valid.loadCombo(Departemen, "nama", "departemen");
         Departemen.addItem("Semua");
         Departemen.setSelectedItem("Semua");
-        
+
         bar.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(bar.getTable().getSelectedRow()!= -1){                   
-                    Idpresensi.setText(bar.getTable().getValueAt(bar.getTable().getSelectedRow(),0).toString());                        
-                    Nik.setText(bar.getTable().getValueAt(bar.getTable().getSelectedRow(),1).toString());                        
-                    Nm.setText(bar.getTable().getValueAt(bar.getTable().getSelectedRow(),2).toString());                        
-                }  
+                if (bar.getTable().getSelectedRow() != -1) {
+                    Idpresensi.setText(bar.getTable().getValueAt(bar.getTable().
+                            getSelectedRow(), 0).toString());
+                    Nik.setText(bar.getTable().getValueAt(bar.getTable().
+                            getSelectedRow(), 1).toString());
+                    Nm.setText(bar.getTable().getValueAt(bar.getTable().
+                            getSelectedRow(), 2).toString());
+                }
                 catatan.requestFocus();
-                
+
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}            
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         bar.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    bar.dispose();                    
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    bar.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
-        }); 
-        
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
+
         loadTahun();
         try {
-           ps=koneksi.prepareStatement(
-                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id where "+
-                " pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and pegawai.nik like ? and rekap_presensi.jam_datang like ?  "+
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and pegawai.nama like ? and  rekap_presensi.jam_datang like ?  "+                   
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.shift like ? and  rekap_presensi.jam_datang like ?  "+
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.status like ? and  rekap_presensi.jam_datang like ?  "+
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.keterlambatan like ? and  rekap_presensi.jam_datang like ?  "+
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.jam_datang like ? and  rekap_presensi.jam_datang like ? "+
-                "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.jam_pulang like ? and  rekap_presensi.jam_datang like ?  order by pegawai.nama ");
-            psketerlambatan=koneksi.prepareStatement("select * from set_keterlambatan");
-            rsketerlambatan=psketerlambatan.executeQuery();
-            if(rsketerlambatan.next()){
-                toleransi=rsketerlambatan.getInt(1);
-                terlambat1=rsketerlambatan.getInt(2);
-                terlambat2=rsketerlambatan.getInt(3);
-            }else{
-                toleransi=0;
-                terlambat1=0;
-                terlambat2=0;
+            ps = koneksi.prepareStatement(
+                    "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                    + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                    + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                    + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id where "
+                    + " pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and pegawai.nik like ? and rekap_presensi.jam_datang like ?  "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and pegawai.nama like ? and  rekap_presensi.jam_datang like ?  "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.shift like ? and  rekap_presensi.jam_datang like ?  "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.status like ? and  rekap_presensi.jam_datang like ?  "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.keterlambatan like ? and  rekap_presensi.jam_datang like ?  "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.jam_datang like ? and  rekap_presensi.jam_datang like ? "
+                    + "or pegawai.stts_aktif<>'KELUAR' and departemen.nama like ? and rekap_presensi.jam_pulang like ? and  rekap_presensi.jam_datang like ?  order by pegawai.nama ");
+            psketerlambatan = koneksi.prepareStatement(
+                    "select * from set_keterlambatan");
+            rsketerlambatan = psketerlambatan.executeQuery();
+            if (rsketerlambatan.next()) {
+                toleransi = rsketerlambatan.getInt(1);
+                terlambat1 = rsketerlambatan.getInt(2);
+                terlambat2 = rsketerlambatan.getInt(3);
+            } else {
+                toleransi = 0;
+                terlambat1 = 0;
+                terlambat2 = 0;
             }
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    
-    
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -684,11 +732,11 @@ public class DlgBulanan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -698,9 +746,9 @@ public class DlgBulanan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -711,49 +759,66 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCloseActionPerformed
 
     private void BtnCloseKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCloseKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             DlgInput.dispose();
-        }else{Valid.pindah(evt,BtnBatal,BtnClose);}
+        } else {
+            Valid.pindah(evt, BtnBatal, BtnClose);
+        }
     }//GEN-LAST:event_BtnCloseKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Nik.getText().trim().isEmpty()){
-            Valid.textKosong(Nik,"ID");
-        }else{
-            Sequel.cariIsi("select jam_jaga.jam_masuk from jam_jaga inner join pegawai on pegawai.departemen=jam_jaga.dep_id "+
-                " where jam_jaga.shift='"+Shift.getSelectedItem().toString()+"' and pegawai.id='"+Idpresensi.getText()+"'", jamdatang);
-            Sequel.cariIsi("select jam_jaga.jam_pulang from jam_jaga inner join pegawai on pegawai.departemen=jam_jaga.dep_id "+
-                " where jam_jaga.shift='"+Shift.getSelectedItem().toString()+"' and pegawai.id='"+Idpresensi.getText()+"'", jampulang);
-            String jam="now()";
-            if(!jamdatang.getText().isEmpty()){
-                jam="'"+Valid.SetTgl(tglMasuk.getSelectedItem()+"")+" "+jamdatang.getText()+"'";
+        if (Nik.getText().trim().isEmpty()) {
+            Valid.textKosong(Nik, "ID");
+        } else {
+            Sequel.cariIsi(
+                    "select jam_jaga.jam_masuk from jam_jaga inner join pegawai on pegawai.departemen=jam_jaga.dep_id "
+                    + " where jam_jaga.shift='" + Shift.getSelectedItem().
+                            toString() + "' and pegawai.id='" + Idpresensi.
+                            getText() + "'", jamdatang);
+            Sequel.cariIsi(
+                    "select jam_jaga.jam_pulang from jam_jaga inner join pegawai on pegawai.departemen=jam_jaga.dep_id "
+                    + " where jam_jaga.shift='" + Shift.getSelectedItem().
+                            toString() + "' and pegawai.id='" + Idpresensi.
+                            getText() + "'", jampulang);
+            String jam = "now()";
+            if (!jamdatang.getText().isEmpty()) {
+                jam = "'" + Valid.SetTgl(tglMasuk.getSelectedItem() + "") + " " + jamdatang.
+                        getText() + "'";
             }
 
-            String jam2="now()";
-            if(!jampulang.getText().isEmpty()){
-                jam2="'"+Valid.SetTgl(tglPulang.getSelectedItem()+"")+" "+jampulang.getText()+"'";
+            String jam2 = "now()";
+            if (!jampulang.getText().isEmpty()) {
+                jam2 = "'" + Valid.SetTgl(tglPulang.getSelectedItem() + "") + " " + jampulang.
+                        getText() + "'";
             }
 
-            masuk=Valid.SetTgl(tglMasuk.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem();
-            pulang=Valid.SetTgl(tglPulang.getSelectedItem()+"")+" "+Jam2.getSelectedItem()+":"+Menit2.getSelectedItem()+":"+Detik2.getSelectedItem();
+            masuk = Valid.SetTgl(tglMasuk.getSelectedItem() + "") + " " + Jam.
+                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                    getSelectedItem();
+            pulang = Valid.SetTgl(tglPulang.getSelectedItem() + "") + " " + Jam2.
+                    getSelectedItem() + ":" + Menit2.getSelectedItem() + ":" + Detik2.
+                    getSelectedItem();
 
-            if (Cari.isEnabled()==true) {
+            if (Cari.isEnabled() == true) {
                 //----------------simpan-------------------------------------------
-                Sequel.menyimpan("rekap_presensi", "'" + Idpresensi.getText()+"',"+
-                    "'"+Shift.getSelectedItem()+"',"+
-                    "'"+masuk+"',"+
-                    "'"+pulang+"',"+
-                    "if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(toleransi*60)+",if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(terlambat1*60)+",if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(terlambat2*60)+",concat('Terlambat II',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' ')),concat('Terlambat I',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),concat('Terlambat Toleransi',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),concat('Tepat Waktu',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),"+
-                    "if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(toleransi*60)+",SEC_TO_TIME(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")),''),"+
-                    "(SEC_TO_TIME(unix_timestamp('"+pulang+"') - unix_timestamp('"+masuk+"'))),"+
-                    "'"+catatan.getText()+"',''", "ID/Presensi");
-            } else if (Cari.isEnabled()==false) {
-                Valid.editTable(tabMode, "rekap_presensi", "jam_datang='"+masuk+"' and id", Idpresensi,"jam_pulang='" +pulang
-                    + "',durasi=(SEC_TO_TIME(unix_timestamp('"+pulang+ "') - unix_timestamp('"+masuk+"'))),"
-                    +"keterangan='"+catatan.getText()+"',"
-                    +"shift='"+Shift.getSelectedItem()+"',"
-                    +"status=if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(toleransi*60)+",if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(terlambat1*60)+",if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(terlambat2*60)+",concat('Terlambat II',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' ')),concat('Terlambat I',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),concat('Terlambat Toleransi',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),concat('Tepat Waktu',if(TIME_TO_SEC('"+pulang+"')-TIME_TO_SEC("+jam2+")<0,' & PSW',' '))),"
-                    +"keterlambatan=if(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")>"+(toleransi*60)+",SEC_TO_TIME(TIME_TO_SEC('"+masuk+"')-TIME_TO_SEC("+jam+")),'')");
+                Sequel.menyimpan("rekap_presensi",
+                        "'" + Idpresensi.getText() + "',"
+                        + "'" + Shift.getSelectedItem() + "',"
+                        + "'" + masuk + "',"
+                        + "'" + pulang + "',"
+                        + "if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (toleransi * 60) + ",if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (terlambat1 * 60) + ",if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (terlambat2 * 60) + ",concat('Terlambat II',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' ')),concat('Terlambat I',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),concat('Terlambat Toleransi',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),concat('Tepat Waktu',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),"
+                        + "if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (toleransi * 60) + ",SEC_TO_TIME(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")),''),"
+                        + "(SEC_TO_TIME(unix_timestamp('" + pulang + "') - unix_timestamp('" + masuk + "'))),"
+                        + "'" + catatan.getText() + "',''", "ID/Presensi");
+            } else if (Cari.isEnabled() == false) {
+                Valid.editTable(tabMode, "rekap_presensi",
+                        "jam_datang='" + masuk + "' and id", Idpresensi,
+                        "jam_pulang='" + pulang
+                        + "',durasi=(SEC_TO_TIME(unix_timestamp('" + pulang + "') - unix_timestamp('" + masuk + "'))),"
+                        + "keterangan='" + catatan.getText() + "',"
+                        + "shift='" + Shift.getSelectedItem() + "',"
+                        + "status=if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (toleransi * 60) + ",if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (terlambat1 * 60) + ",if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (terlambat2 * 60) + ",concat('Terlambat II',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' ')),concat('Terlambat I',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),concat('Terlambat Toleransi',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),concat('Tepat Waktu',if(TIME_TO_SEC('" + pulang + "')-TIME_TO_SEC(" + jam2 + ")<0,' & PSW',' '))),"
+                        + "keterlambatan=if(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")>" + (toleransi * 60) + ",SEC_TO_TIME(TIME_TO_SEC('" + masuk + "')-TIME_TO_SEC(" + jam + ")),'')");
                 DlgInput.dispose();
             }
             tampil();
@@ -762,26 +827,28 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnSimpanActionPerformed(null);
-        }else{
+        } else {
             //  Valid.pindah(evt,Pas,BtnBatal);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
-        if(tglMasuk.isEditable()==true){
+        if (tglMasuk.isEditable() == true) {
             emptTeks();
-        }else if(tglMasuk.isEditable()==false){
+        } else if (tglMasuk.isEditable() == false) {
             emptTeks();
             DlgInput.dispose();
         }
     }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnClose);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnClose);
+        }
     }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyPressed
@@ -792,7 +859,8 @@ public class DlgBulanan extends javax.swing.JDialog {
         bar.emptTeks();
         bar.tampil();
         bar.isCek();
-        bar.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+        bar.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         bar.setLocationRelativeTo(internalFrame1);
         bar.setVisible(true);
     }//GEN-LAST:event_CariActionPerformed
@@ -815,59 +883,63 @@ public class DlgBulanan extends javax.swing.JDialog {
         Idpresensi.setText("");
         Nik.setText("");
         Nm.setText("");
-        DlgInput.setSize(744,185);
+        DlgInput.setSize(744, 185);
         DlgInput.setLocationRelativeTo(internalFrame1);
         DlgInput.setVisible(true);
 
     }//GEN-LAST:event_BtnTambahActionPerformed
 
     private void BtnTambahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnTambahKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnTambahActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnEdit);
         }
     }//GEN-LAST:event_BtnTambahKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
+        if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
             tbBangsal.requestFocus();
-        }else{
-            Valid.hapusTable(tabMode,Idpresensi,"rekap_presensi","jam_datang='"+tgl[no]+"' and  id");
+        } else {
+            Valid.hapusTable(tabMode, Idpresensi, "rekap_presensi",
+                    "jam_datang='" + tgl[no] + "' and  id");
             tampil();
             emptTeks();
         }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnTambah, BtnEdit);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(tbBangsal.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, Tabel kosong. Tidak ada data yang bisa Anda edit..!!!!");
+        if (tbBangsal.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Tabel kosong. Tidak ada data yang bisa Anda edit..!!!!");
             BtnTambah.requestFocus();
-        }else if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda edit dengan menklik data pada tabel...!!!");
+        } else if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda edit dengan menklik data pada tabel...!!!");
             tbBangsal.requestFocus();
-        }else if(! Nm.getText().trim().isEmpty()){
+        } else if (!Nm.getText().trim().isEmpty()) {
             Cari.setEnabled(false);
             Nm.requestFocus();
-            DlgInput.setSize(744,185);
+            DlgInput.setSize(744, 185);
             DlgInput.setLocationRelativeTo(null);
             DlgInput.setVisible(true);
         }
     }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnTambah, BtnAll);
         }
     }//GEN-LAST:event_BtnEditKeyPressed
@@ -878,9 +950,9 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -890,210 +962,482 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tbBangsal.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tbBangsal.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tbBangsal.getRowCount()!=0){            
-            Map<String, Object> param = new HashMap<>();   
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                String say=" rekap_presensi.jam_datang like '%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%' ";
-                try{
-                      param.put("keterlambatan",Sequel.cariIsi("select concat(round((sum(TIME_TO_SEC(`keterlambatan`))-mod(sum(TIME_TO_SEC(`keterlambatan`)),3600))/3600),':',round((mod(sum(TIME_TO_SEC(`keterlambatan`)),3600)-mod(mod(sum(TIME_TO_SEC(`keterlambatan`)),3600),60))/60),':',round(mod(mod(sum(TIME_TO_SEC(`keterlambatan`)),3600),60)))"+
-                            " from pegawai inner join rekap_presensi inner join departemen on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                            " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say)); 
-                      param.put("durasi",Sequel.cariIsi("select concat(round((sum(TIME_TO_SEC(`durasi`))-mod(sum(TIME_TO_SEC(`durasi`)),3600))/3600),':',round((mod(sum(TIME_TO_SEC(`durasi`)),3600)-mod(mod(sum(TIME_TO_SEC(`durasi`)),3600),60))/60),':',round(mod(mod(sum(TIME_TO_SEC(`durasi`)),3600),60)))"+
-                            " from pegawai inner join rekap_presensi inner join departemen on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                            " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.durasi like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                            "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say)); 
-                      pilih = (String)JOptionPane.showInputDialog(null,"Urutkan berdasakan","Laporan",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"NIP","Nama","Shift","Jam Datang","Jam Pulang","Status","Keterlambatan","Durasi","Catatan"},"NIP");
-                      switch (pilih) {
-                            case "NIP":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by pegawai.nik  ",param);            
-                                 this.setCursor(Cursor.getDefaultCursor()); break;
-                            case "Nama":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by pegawai.nama  ",param);            
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Shift":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.shift  ",param);            
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Jam Datang":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.jam_datang  ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Jam Pulang":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.jam_pulang  ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Status":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.status  ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Keterlambatan":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.keterlambatan ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Durasi":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.durasi ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                            case "Catatan":
-                                  this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                  Valid.MyReportqry("rptHarian.jasper","report","::[ Rekap Harian ]::",
-                                        "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "+
-                                        "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "+
-                                        "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "+
-                                        "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "+
-                                        " departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nik like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and pegawai.nama like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.shift like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.status like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.keterlambatan like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_datang like '%"+TCari.getText().trim()+"%' and "+say+
-                                        "or departemen.nama like '%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%' and rekap_presensi.jam_pulang like '%"+TCari.getText().trim()+"%' and "+say+" order by rekap_presensi.keterangan ",param); 
-                                  this.setCursor(Cursor.getDefaultCursor());
-                                  break;
-                      }
-                }catch(Exception e){
-                      System.out.println(e);
-                }                   
-        }        
+        } else if (tbBangsal.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            String say = " rekap_presensi.jam_datang like '%" + ThnCari.
+                    getSelectedItem() + "-" + BlnCari.getSelectedItem() + "%' ";
+            try {
+                param.put("keterlambatan", Sequel.cariIsi(
+                        "select concat(round((sum(TIME_TO_SEC(`keterlambatan`))-mod(sum(TIME_TO_SEC(`keterlambatan`)),3600))/3600),':',round((mod(sum(TIME_TO_SEC(`keterlambatan`)),3600)-mod(mod(sum(TIME_TO_SEC(`keterlambatan`)),3600),60))/60),':',round(mod(mod(sum(TIME_TO_SEC(`keterlambatan`)),3600),60)))"
+                        + " from pegawai inner join rekap_presensi inner join departemen on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                        + " departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and pegawai.nik like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and pegawai.nama like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.status like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                getText().trim() + "%' and " + say));
+                param.put("durasi", Sequel.cariIsi(
+                        "select concat(round((sum(TIME_TO_SEC(`durasi`))-mod(sum(TIME_TO_SEC(`durasi`)),3600))/3600),':',round((mod(sum(TIME_TO_SEC(`durasi`)),3600)-mod(mod(sum(TIME_TO_SEC(`durasi`)),3600),60))/60),':',round(mod(mod(sum(TIME_TO_SEC(`durasi`)),3600),60)))"
+                        + " from pegawai inner join rekap_presensi inner join departemen on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                        + " departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and pegawai.nik like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and pegawai.nama like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.status like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.durasi like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                getText().trim() + "%' and " + say
+                        + "or departemen.nama like '%" + Departemen.
+                                getSelectedItem().toString().replaceAll("Semua",
+                                        "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                getText().trim() + "%' and " + say));
+                pilih = (String) JOptionPane.showInputDialog(null,
+                        "Urutkan berdasakan", "Laporan",
+                        JOptionPane.QUESTION_MESSAGE, null, new Object[]{"NIP",
+                            "Nama", "Shift", "Jam Datang", "Jam Pulang",
+                            "Status", "Keterlambatan", "Durasi", "Catatan"},
+                        "NIP");
+                switch (pilih) {
+                    case "NIP":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by pegawai.nik  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Nama":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by pegawai.nama  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Shift":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.shift  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Jam Datang":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.jam_datang  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Jam Pulang":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.jam_pulang  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Status":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.status  ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Keterlambatan":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.keterlambatan ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Durasi":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.durasi ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                    case "Catatan":
+                        this.setCursor(Cursor.getPredefinedCursor(
+                                Cursor.WAIT_CURSOR));
+                        Valid.MyReportqry("rptHarian.jasper", "report",
+                                "::[ Rekap Harian ]::",
+                                "select  pegawai.id, pegawai.nik, pegawai.nama, rekap_presensi.shift, rekap_presensi.jam_datang, "
+                                + "rekap_presensi.jam_pulang, rekap_presensi.status, rekap_presensi.keterlambatan, rekap_presensi.durasi, "
+                                + "rekap_presensi.keterangan from pegawai inner join rekap_presensi inner join departemen "
+                                + "on pegawai.departemen=departemen.dep_id and pegawai.id=rekap_presensi.id  where "
+                                + " departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nik like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and pegawai.nama like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.shift like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.status like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.keterlambatan like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_datang like '%" + TCari.
+                                        getText().trim() + "%' and " + say
+                                + "or departemen.nama like '%" + Departemen.
+                                        getSelectedItem().toString().replaceAll(
+                                                "Semua", "") + "%' and rekap_presensi.jam_pulang like '%" + TCari.
+                                        getText().trim() + "%' and " + say + " order by rekap_presensi.keterangan ",
+                                param);
+                        this.setCursor(Cursor.getDefaultCursor());
+                        break;
+                }
+            } catch (HeadlessException e) {
+                System.out.println(e);
+            }
+        }
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnEdit,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnAll);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1103,7 +1447,7 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_tbBangsalKeyPressed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1112,8 +1456,8 @@ public class DlgBulanan extends javax.swing.JDialog {
     }//GEN-LAST:event_tbBangsalMouseClicked
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgBulanan dialog = new DlgBulanan(new javax.swing.JFrame(), true);
@@ -1122,6 +1466,7 @@ public class DlgBulanan extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1184,56 +1529,70 @@ public class DlgBulanan extends javax.swing.JDialog {
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{  
-            ps.setString(1,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(2,"%"+TCari.getText().trim()+"%");
-            ps.setString(3,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(4,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(5,"%"+TCari.getText().trim()+"%");
-            ps.setString(6,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(7,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(8,"%"+TCari.getText().trim()+"%");
-            ps.setString(9,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(10,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(11,"%"+TCari.getText().trim()+"%");
-            ps.setString(12,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(13,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(14,"%"+TCari.getText().trim()+"%");
-            ps.setString(15,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(16,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(17,"%"+TCari.getText().trim()+"%");
-            ps.setString(18,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            ps.setString(19,"%"+Departemen.getSelectedItem().toString().replaceAll("Semua","")+"%");
-            ps.setString(20,"%"+TCari.getText().trim()+"%");
-            ps.setString(21,"%"+ThnCari.getSelectedItem()+"-"+BlnCari.getSelectedItem()+"%");
-            rs=ps.executeQuery();            
-            rs.last();            
-            id=new String[rs.getRow()];
-            tgl=new String[rs.getRow()];            
-            rs.beforeFirst();            
-            i=0;            
-            while(rs.next()){
+        try {
+            ps.setString(1, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(2, "%" + TCari.getText().trim() + "%");
+            ps.setString(3, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(4, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(5, "%" + TCari.getText().trim() + "%");
+            ps.setString(6, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(7, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(8, "%" + TCari.getText().trim() + "%");
+            ps.setString(9, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(10, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(11, "%" + TCari.getText().trim() + "%");
+            ps.setString(12, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(13, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(14, "%" + TCari.getText().trim() + "%");
+            ps.setString(15, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(16, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(17, "%" + TCari.getText().trim() + "%");
+            ps.setString(18, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            ps.setString(19, "%" + Departemen.getSelectedItem().toString().
+                    replaceAll("Semua", "") + "%");
+            ps.setString(20, "%" + TCari.getText().trim() + "%");
+            ps.setString(21, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
+                    getSelectedItem() + "%");
+            rs = ps.executeQuery();
+            rs.last();
+            id = new String[rs.getRow()];
+            tgl = new String[rs.getRow()];
+            rs.beforeFirst();
+            i = 0;
+            while (rs.next()) {
                 tabMode.addRow(new String[]{rs.getString(2),
-                               rs.getString(3),
-                               rs.getString(4),
-                               rs.getString(5),
-                               rs.getString(6),
-                               rs.getString(7),
-                               rs.getString(8),
-                               rs.getString(9),
-                               rs.getString(10)});
-                id[i]=rs.getString(1);
-                tgl[i]=rs.getString(5);
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),
+                    rs.getString(9),
+                    rs.getString(10)});
+                id[i] = rs.getString(1);
+                tgl[i] = rs.getString(5);
                 i++;
-             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
 
     }
 
-    public void emptTeks() {       
+    public void emptTeks() {
         Jam.setSelectedItem("00");
         Jam2.setSelectedItem("00");
         Menit.setSelectedItem("00");
@@ -1242,68 +1601,83 @@ public class DlgBulanan extends javax.swing.JDialog {
         Detik2.setSelectedItem("00");
         catatan.setText("");
     }
-   
+
     private void getData() {
-        int row=tbBangsal.getSelectedRow();
-        if(row!= -1){
-            no=row;
+        int row = tbBangsal.getSelectedRow();
+        if (row != -1) {
+            no = row;
             Idpresensi.setText(id[no]);
-            Nik.setText(tbBangsal.getValueAt(row,0).toString());
-            Nm.setText(tbBangsal.getValueAt(row,1).toString());
-            Shift.setSelectedItem(tbBangsal.getValueAt(row,2).toString());
-            if(!tbBangsal.getValueAt(row,3).toString().isEmpty()){
-                Jam.setSelectedItem(tbBangsal.getValueAt(row,3).toString().substring(11,13));
-                Menit.setSelectedItem(tbBangsal.getValueAt(row,3).toString().substring(14,16));
-                Detik.setSelectedItem(tbBangsal.getValueAt(row,3).toString().substring(17,19));
-            }else if(tbBangsal.getValueAt(row,3).toString().isEmpty()){
+            Nik.setText(tbBangsal.getValueAt(row, 0).toString());
+            Nm.setText(tbBangsal.getValueAt(row, 1).toString());
+            Shift.setSelectedItem(tbBangsal.getValueAt(row, 2).toString());
+            if (!tbBangsal.getValueAt(row, 3).toString().isEmpty()) {
+                Jam.setSelectedItem(tbBangsal.getValueAt(row, 3).toString().
+                        substring(11, 13));
+                Menit.setSelectedItem(tbBangsal.getValueAt(row, 3).toString().
+                        substring(14, 16));
+                Detik.setSelectedItem(tbBangsal.getValueAt(row, 3).toString().
+                        substring(17, 19));
+            } else if (tbBangsal.getValueAt(row, 3).toString().isEmpty()) {
                 Jam.setSelectedItem("00");
                 Menit.setSelectedItem("00");
                 Detik.setSelectedItem("00");
-            }            
-                        
-            if(!tbBangsal.getValueAt(row,4).toString().isEmpty()){
-                Jam2.setSelectedItem(tbBangsal.getValueAt(row,4).toString().substring(11,13));
-                Menit2.setSelectedItem(tbBangsal.getValueAt(row,4).toString().substring(14,16));
-                Detik2.setSelectedItem(tbBangsal.getValueAt(row,4).toString().substring(17,19));
-            }else if(tbBangsal.getValueAt(row,4).toString().isEmpty()){
+            }
+
+            if (!tbBangsal.getValueAt(row, 4).toString().isEmpty()) {
+                Jam2.setSelectedItem(tbBangsal.getValueAt(row, 4).toString().
+                        substring(11, 13));
+                Menit2.setSelectedItem(tbBangsal.getValueAt(row, 4).toString().
+                        substring(14, 16));
+                Detik2.setSelectedItem(tbBangsal.getValueAt(row, 4).toString().
+                        substring(17, 19));
+            } else if (tbBangsal.getValueAt(row, 4).toString().isEmpty()) {
                 Jam2.setSelectedItem("00");
                 Menit2.setSelectedItem("00");
                 Detik2.setSelectedItem("00");
             }
-            catatan.setText(tbBangsal.getValueAt(row,8).toString());
-            
+            catatan.setText(tbBangsal.getValueAt(row, 8).toString());
+
             try {
                 tglMasuk.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(
-                                tbBangsal.getValueAt(row,3).toString().substring(0,4)+"-"+
-                                tbBangsal.getValueAt(row,3).toString().substring(5,7)+"-"+
-                                tbBangsal.getValueAt(row,3).toString().substring(8,10)));
+                        tbBangsal.getValueAt(row, 3).toString().substring(0, 4) + "-"
+                        + tbBangsal.getValueAt(row, 3).toString().
+                                substring(5, 7) + "-"
+                        + tbBangsal.getValueAt(row, 3).toString().substring(8,
+                                10)));
             } catch (ParseException ex) {
-                Logger.getLogger(DlgHarian.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DlgHarian.class.getName()).log(Level.SEVERE,
+                        null, ex);
             }
-            
+
             try {
                 tglPulang.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(
-                                tbBangsal.getValueAt(row,4).toString().substring(0,4)+"-"+
-                                tbBangsal.getValueAt(row,4).toString().substring(5,7)+"-"+
-                                tbBangsal.getValueAt(row,4).toString().substring(8,10)));
+                        tbBangsal.getValueAt(row, 4).toString().substring(0, 4) + "-"
+                        + tbBangsal.getValueAt(row, 4).toString().
+                                substring(5, 7) + "-"
+                        + tbBangsal.getValueAt(row, 4).toString().substring(8,
+                                10)));
             } catch (ParseException ex) {
-                Logger.getLogger(DlgHarian.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        }        
+                Logger.getLogger(DlgHarian.class.getName()).log(Level.SEVERE,
+                        null, ex);
+            }
+        }
     }
-    
-    private  void loadTahun(){
+
+    private void loadTahun() {
         Valid.LoadTahun(ThnCari);
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getpresensi_bulanan());
         BtnHapus.setEnabled(akses.getpresensi_bulanan());
         BtnEdit.setEnabled(akses.getpresensi_bulanan());
         BtnPrint.setEnabled(akses.getpresensi_bulanan());
-     }
+    }
+
+    private static final Logger LOG = Logger.getLogger(DlgBulanan.class.
+            getName());
 
 }

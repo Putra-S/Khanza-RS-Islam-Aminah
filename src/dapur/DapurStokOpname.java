@@ -9,120 +9,146 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package dapur;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DapurStokOpname extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();  
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement pstampil;
     private ResultSet rstampil;
-    /** Creates new form DlgPenyakit
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DapurStokOpname(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        Object[] row={"Kode Barang","Nama Barang","Harga Beli","Satuan","Tanggal","Stok","Real",
-                      "Selisih","Lebih","Total Real","Nominal Hilang(Rp)","Nominal Lebih(Rp)","Keterangan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Barang", "Nama Barang", "Harga Beli", "Satuan",
+            "Tanggal", "Stok", "Real",
+            "Selisih", "Lebih", "Total Real", "Nominal Hilang(Rp)",
+            "Nominal Lebih(Rp)", "Keterangan"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 13; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(80);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(170);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(90);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(50);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(35);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(35);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(40);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(40);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(110);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(110);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(120);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        Kdbar.setDocument(new batasInput((byte)15).getKata(Kdbar));
-        Stok.setDocument(new batasInput((byte)10).getKata(Stok));
-        Real.setDocument(new batasInput((byte)10).getOnlyAngka(Real));
-        Keterangan.setDocument(new batasInput((byte)60).getKata(Keterangan));
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        Kdbar.setDocument(new batasInput((byte) 15).getKata(Kdbar));
+        Stok.setDocument(new batasInput((byte) 10).getKata(Stok));
+        Real.setDocument(new batasInput((byte) 10).getOnlyAngka(Real));
+        Keterangan.setDocument(new batasInput((byte) 60).getKata(Keterangan));
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
-    } 
+
+    }
+
     private DecimalFormat df2 = new DecimalFormat("###,###,###,###,###,###,###");
-    double total=0,totalreal=0,totallebih=0;
+    double total = 0, totalreal = 0, totallebih = 0;
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -570,15 +596,16 @@ public class DapurStokOpname extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,Kdbar,"dapuropname","tanggal='"+Tanggal.getSelectedItem()+"' and kode_brng");
+        Valid.hapusTable(tabMode, Kdbar, "dapuropname", "tanggal='" + Tanggal.
+                getSelectedItem() + "' and kode_brng");
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -588,52 +615,65 @@ public class DapurStokOpname extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         BtnCariActionPerformed(evt);
-        if(tbKamar.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tbKamar.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tbKamar.getRowCount()!=0){   
-            Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptOpnameDapur.jasper","report","::[ Stok Opname Barang Dapur Kering & Basah ]::","select dapuropname.kode_brng, dapurbarang.nama_brng,dapuropname.h_beli, dapurbarang.kode_sat, dapuropname.tanggal, dapuropname.stok, "+
-                  "dapuropname.real, dapuropname.selisih,dapuropname.lebih, (dapuropname.real*dapuropname.h_beli) as totalreal,dapuropname.nomihilang,dapuropname.nomilebih,dapuropname.keterangan "+
-                  "from dapuropname inner join dapurbarang on dapuropname.kode_brng=dapurbarang.kode_brng "+
-                  "where dapurbarang.jenis like '%"+Jenis.getSelectedItem().toString().replaceAll("Semua","")+"%' and dapuropname.tanggal between '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"' and "+
-                  "(dapuropname.kode_brng like '%"+TCari.getText().trim()+"%' or dapurbarang.nama_brng like '%"+TCari.getText().trim()+"%' or dapuropname.kode_brng like '%"+TCari.getText().trim()+"%' or dapurbarang.kode_sat like '%"+TCari.getText().trim()+"%' or "+ 
-                  "dapuropname.keterangan like '%"+TCari.getText().trim()+"%') order by dapuropname.tanggal",param);
+        } else if (tbKamar.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptOpnameDapur.jasper", "report",
+                    "::[ Stok Opname Barang Dapur Kering & Basah ]::",
+                    "select dapuropname.kode_brng, dapurbarang.nama_brng,dapuropname.h_beli, dapurbarang.kode_sat, dapuropname.tanggal, dapuropname.stok, "
+                    + "dapuropname.real, dapuropname.selisih,dapuropname.lebih, (dapuropname.real*dapuropname.h_beli) as totalreal,dapuropname.nomihilang,dapuropname.nomilebih,dapuropname.keterangan "
+                    + "from dapuropname inner join dapurbarang on dapuropname.kode_brng=dapurbarang.kode_brng "
+                    + "where dapurbarang.jenis like '%" + Jenis.
+                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and dapuropname.tanggal between '" + Valid.
+                    SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tgl2.getSelectedItem() + "") + "' and "
+                    + "(dapuropname.kode_brng like '%" + TCari.getText().trim() + "%' or dapurbarang.nama_brng like '%" + TCari.
+                    getText().trim() + "%' or dapuropname.kode_brng like '%" + TCari.
+                            getText().trim() + "%' or dapurbarang.kode_sat like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "dapuropname.keterangan like '%" + TCari.getText().trim() + "%') order by dapuropname.tanggal",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -643,15 +683,15 @@ public class DapurStokOpname extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tbKamar.getRowCount()!=0){
+        if (tbKamar.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -660,8 +700,9 @@ public class DapurStokOpname extends javax.swing.JDialog {
 }//GEN-LAST:event_tbKamarMouseClicked
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tbKamar.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tbKamar.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -675,9 +716,9 @@ public class DapurStokOpname extends javax.swing.JDialog {
     }//GEN-LAST:event_Kd2KeyPressed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -690,23 +731,23 @@ public class DapurStokOpname extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
 private void KeteranganKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganKeyPressed
-        Valid.pindah(evt,Real,Tanggal);
+    Valid.pindah(evt, Real, Tanggal);
 }//GEN-LAST:event_KeteranganKeyPressed
 
 private void NominalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NominalKeyPressed
-        // TODO add your handling code here:
+    // TODO add your handling code here:
 }//GEN-LAST:event_NominalKeyPressed
 
 private void RealKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RealKeyPressed
-        Valid.pindah(evt,Kdbar,Keterangan);
+    Valid.pindah(evt, Kdbar, Keterangan);
 }//GEN-LAST:event_RealKeyPressed
 
 private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StokKeyPressed
-        Valid.pindah(evt,TCari,Tanggal);
+    Valid.pindah(evt, TCari, Tanggal);
 }//GEN-LAST:event_StokKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       tampil();
+        tampil();
     }//GEN-LAST:event_formWindowOpened
 
     private void kdjenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdjenisKeyPressed
@@ -714,16 +755,18 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
     }//GEN-LAST:event_kdjenisKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DapurStokOpname dialog = new DapurStokOpname(new javax.swing.JFrame(), true);
+            DapurStokOpname dialog = new DapurStokOpname(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -781,51 +824,57 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        total=0;
-        totalreal=0;
-        totallebih=0;
-        try{     
-            pstampil=koneksi.prepareStatement("select dapuropname.kode_brng, dapurbarang.nama_brng,dapuropname.h_beli, dapurbarang.kode_sat, dapuropname.tanggal, dapuropname.stok, "+
-                     "dapuropname.real, dapuropname.selisih,dapuropname.lebih, (dapuropname.real*dapuropname.h_beli) as totalreal,dapuropname.nomihilang,dapuropname.nomilebih,dapuropname.keterangan "+
-                     "from dapuropname inner join dapurbarang on dapuropname.kode_brng=dapurbarang.kode_brng where dapurbarang.jenis like ? and dapuropname.tanggal between ? and ? and "+
-                     "(dapuropname.kode_brng like ? or dapurbarang.nama_brng like ? or dapuropname.kode_brng like ? or dapurbarang.kode_sat like ? or dapuropname.keterangan like ?) order by dapuropname.tanggal");
-            try {                
-                pstampil.setString(1,"%"+Jenis.getSelectedItem().toString().replaceAll("Semua","")+"%");
-                pstampil.setString(2,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                pstampil.setString(3,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                pstampil.setString(4,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(5,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(6,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(7,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(8,"%"+TCari.getText().trim()+"%");
-                rstampil=pstampil.executeQuery();
-                total=0;
-                while(rstampil.next()){                
-                    totalreal += rstampil.getDouble(10); 
+        total = 0;
+        totalreal = 0;
+        totallebih = 0;
+        try {
+            pstampil = koneksi.prepareStatement(
+                    "select dapuropname.kode_brng, dapurbarang.nama_brng,dapuropname.h_beli, dapurbarang.kode_sat, dapuropname.tanggal, dapuropname.stok, "
+                    + "dapuropname.real, dapuropname.selisih,dapuropname.lebih, (dapuropname.real*dapuropname.h_beli) as totalreal,dapuropname.nomihilang,dapuropname.nomilebih,dapuropname.keterangan "
+                    + "from dapuropname inner join dapurbarang on dapuropname.kode_brng=dapurbarang.kode_brng where dapurbarang.jenis like ? and dapuropname.tanggal between ? and ? and "
+                    + "(dapuropname.kode_brng like ? or dapurbarang.nama_brng like ? or dapuropname.kode_brng like ? or dapurbarang.kode_sat like ? or dapuropname.keterangan like ?) order by dapuropname.tanggal");
+            try {
+                pstampil.setString(1, "%" + Jenis.getSelectedItem().toString().
+                        replaceAll("Semua", "") + "%");
+                pstampil.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstampil.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pstampil.setString(4, "%" + TCari.getText().trim() + "%");
+                pstampil.setString(5, "%" + TCari.getText().trim() + "%");
+                pstampil.setString(6, "%" + TCari.getText().trim() + "%");
+                pstampil.setString(7, "%" + TCari.getText().trim() + "%");
+                pstampil.setString(8, "%" + TCari.getText().trim() + "%");
+                rstampil = pstampil.executeQuery();
+                total = 0;
+                while (rstampil.next()) {
+                    totalreal += rstampil.getDouble(10);
                     total += rstampil.getDouble(11);
                     totallebih += rstampil.getDouble(12);
                     tabMode.addRow(new Object[]{rstampil.getString(1),
-                       rstampil.getString(2),df2.format(rstampil.getDouble(3)),
-                       rstampil.getString(4),rstampil.getString(5),rstampil.getString(6),
-                       rstampil.getString(7),rstampil.getString(8),rstampil.getString(9),
-                       df2.format(rstampil.getDouble(10)),df2.format(rstampil.getDouble(11)),
-                       df2.format(rstampil.getDouble(12)),rstampil.getString(13)
+                        rstampil.getString(2), df2.format(rstampil.getDouble(3)),
+                        rstampil.getString(4), rstampil.getString(5), rstampil.
+                        getString(6),
+                        rstampil.getString(7), rstampil.getString(8), rstampil.
+                        getString(9),
+                        df2.format(rstampil.getDouble(10)), df2.format(rstampil.
+                        getDouble(11)),
+                        df2.format(rstampil.getDouble(12)), rstampil.getString(
+                        13)
                     });
                 }
             } catch (Exception e) {
-               System.out.println("Notif Opname : "+e);
-            }finally{
-                if(rstampil!=null){
+                System.out.println("Notif Opname : " + e);
+            } finally {
+                if (rstampil != null) {
                     rstampil.close();
                 }
-                if(pstampil!=null){
+                if (pstampil != null) {
                     pstampil.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
         LTotalBeli.setText(df2.format(totalreal));
         LTotal.setText(df2.format(total));
         LTotal2.setText(df2.format(totallebih));
@@ -837,7 +886,7 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
         Stok.setText("0");
         Harga.setText("0");
         Real.setText("0");
-        Selisih.setText("0");        
+        Selisih.setText("0");
         Keterangan.setText("");
         Tanggal.setDate(new Date());
         Nominal.setText("0");
@@ -845,17 +894,17 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
     }
 
     private void getData() {
-        int row=tbKamar.getSelectedRow();
-        if(row!= -1){
-            Kdbar.setText(tbKamar.getValueAt(row,0).toString());
-            Kd2.setText(tbKamar.getValueAt(row,0).toString());
-            Nmbar.setText(tbKamar.getValueAt(row,1).toString());
-            Stok.setText(tbKamar.getValueAt(row,5).toString());
-            Real.setText(tbKamar.getValueAt(row,6).toString());            
-            Selisih.setText(tbKamar.getValueAt(row,7).toString());        
-            Nominal.setText(tbKamar.getValueAt(row,8).toString());      
-            Keterangan.setText(tbKamar.getValueAt(row,9).toString());      
-            Valid.SetTgl(Tanggal,tbKamar.getValueAt(row,4).toString());
+        int row = tbKamar.getSelectedRow();
+        if (row != -1) {
+            Kdbar.setText(tbKamar.getValueAt(row, 0).toString());
+            Kd2.setText(tbKamar.getValueAt(row, 0).toString());
+            Nmbar.setText(tbKamar.getValueAt(row, 1).toString());
+            Stok.setText(tbKamar.getValueAt(row, 5).toString());
+            Real.setText(tbKamar.getValueAt(row, 6).toString());
+            Selisih.setText(tbKamar.getValueAt(row, 7).toString());
+            Nominal.setText(tbKamar.getValueAt(row, 8).toString());
+            Keterangan.setText(tbKamar.getValueAt(row, 9).toString());
+            Valid.SetTgl(Tanggal, tbKamar.getValueAt(row, 4).toString());
         }
     }
 
@@ -863,19 +912,22 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
      *
      * @return
      */
-    public JTextField getTextField(){
+    public JTextField getTextField() {
         return Stok;
     }
 
-    public JButton getButton(){
+    public JButton getButton() {
         return BtnKeluar;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnHapus.setEnabled(akses.getdapur_opname());
-        BtnPrint.setEnabled(akses.getdapur_opname()); 
+        BtnPrint.setEnabled(akses.getdapur_opname());
     }
+
+    private static final Logger LOG = Logger.getLogger(DapurStokOpname.class.
+            getName());
 }

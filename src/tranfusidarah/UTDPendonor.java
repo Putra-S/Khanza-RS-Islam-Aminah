@@ -1,227 +1,318 @@
 package tranfusidarah;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import simrskhanza.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import simrskhanza.DlgKabupaten;
+import simrskhanza.DlgKecamatan;
+import simrskhanza.DlgKelurahan;
+import simrskhanza.DlgPropinsi;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class UTDPendonor extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i;
-    private String kdkel="",kdkec="",kdkab="",kdprop="",sql="";
-    private DlgKabupaten kab=new DlgKabupaten(null,false);
-    private DlgKecamatan kec=new DlgKecamatan(null,false);
-    private DlgKelurahan kel=new DlgKelurahan(null,false);
-    private DlgPropinsi prop=new DlgPropinsi(null,false);
+    private String kdkel = "", kdkec = "", kdkab = "", kdprop = "", sql = "";
+    private DlgKabupaten kab = new DlgKabupaten(null, false);
+    private DlgKecamatan kec = new DlgKecamatan(null, false);
+    private DlgKelurahan kel = new DlgKelurahan(null, false);
+    private DlgPropinsi prop = new DlgPropinsi(null, false);
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public UTDPendonor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.ID","Nama Pendonor","No.KTP","J.K.","Tempat Lahir","Tgl.Lahir","Alamat","Kd.Kel","Kelurahan",
-                "Kd.Kec","Kecamatan","Kd.Kab","Kabupaten","Kd.Prop","Propinsi","G.D.","Resus","No.Telp"
-            }){
-                @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.ID", "Nama Pendonor", "No.KTP", "J.K.", "Tempat Lahir",
+            "Tgl.Lahir", "Alamat", "Kd.Kel", "Kelurahan",
+            "Kd.Kec", "Kecamatan", "Kd.Kab", "Kabupaten", "Kd.Prop", "Propinsi",
+            "G.D.", "Resus", "No.Telp"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 18; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(80);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(175);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(25);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(65);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(175);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(90);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(90);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(90);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(90);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(40);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(40);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(90);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoId.setDocument(new batasInput((byte)15).getKata(NoId));
-        Nama.setDocument(new batasInput((byte)40).getKata(Nama));
-        KTP.setDocument(new batasInput((byte)20).getKata(KTP));
-        Lahir.setDocument(new batasInput((byte)15).getKata(Lahir));
+        NoId.setDocument(new batasInput((byte) 15).getKata(NoId));
+        Nama.setDocument(new batasInput((byte) 40).getKata(Nama));
+        KTP.setDocument(new batasInput((byte) 20).getKata(KTP));
+        Lahir.setDocument(new batasInput((byte) 15).getKata(Lahir));
         Alamat.setDocument(new batasInput(100).getKata(Alamat));
-        Telp.setDocument(new batasInput((byte)40).getKata(Telp));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));  
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        Telp.setDocument(new batasInput((byte) 40).getKata(Telp));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }   
-        
+        }
+
         prop.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(prop.getTable().getSelectedRow()!= -1){
-                    Propinsi.setText(prop.getTable().getValueAt(prop.getTable().getSelectedRow(),0).toString());
-                    kdprop=prop.getTable().getValueAt(prop.getTable().getSelectedRow(),1).toString();
+                if (prop.getTable().getSelectedRow() != -1) {
+                    Propinsi.setText(prop.getTable().getValueAt(prop.getTable().
+                            getSelectedRow(), 0).toString());
+                    kdprop = prop.getTable().getValueAt(prop.getTable().
+                            getSelectedRow(), 1).toString();
                     BtnPropinsi.requestFocus();
-                }                
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         kab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kab.getTable().getSelectedRow()!= -1){
-                    Kabupaten.setText(kab.getTable().getValueAt(kab.getTable().getSelectedRow(),0).toString());
-                    kdkab=kab.getTable().getValueAt(kab.getTable().getSelectedRow(),1).toString();
+                if (kab.getTable().getSelectedRow() != -1) {
+                    Kabupaten.setText(kab.getTable().getValueAt(kab.getTable().
+                            getSelectedRow(), 0).toString());
+                    kdkab = kab.getTable().getValueAt(kab.getTable().
+                            getSelectedRow(), 1).toString();
                     BtnKabupaten.requestFocus();
-                }               
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         kec.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kec.getTable().getSelectedRow()!= -1){
-                    Kecamatan.setText(kec.getTable().getValueAt(kec.getTable().getSelectedRow(),0).toString());
-                    kdkec=kec.getTable().getValueAt(kec.getTable().getSelectedRow(),1).toString();
+                if (kec.getTable().getSelectedRow() != -1) {
+                    Kecamatan.setText(kec.getTable().getValueAt(kec.getTable().
+                            getSelectedRow(), 0).toString());
+                    kdkec = kec.getTable().getValueAt(kec.getTable().
+                            getSelectedRow(), 1).toString();
                     BtnKecamatan.requestFocus();
-                }    
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         kel.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kel.getTable().getSelectedRow()!= -1){
-                    Kelurahan.setText(kel.getTable().getValueAt(kel.getTable().getSelectedRow(),0).toString());
-                    kdkel=kel.getTable().getValueAt(kel.getTable().getSelectedRow(),1).toString();
+                if (kel.getTable().getSelectedRow() != -1) {
+                    Kelurahan.setText(kel.getTable().getValueAt(kel.getTable().
+                            getSelectedRow(), 0).toString());
+                    kdkel = kel.getTable().getValueAt(kel.getTable().
+                            getSelectedRow(), 1).toString();
                     BtnKeluar.requestFocus();
-                }     
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         ChkInput.setSelected(false);
-        isForm();           
+        isForm();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -913,13 +1004,13 @@ public class UTDPendonor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -929,15 +1020,15 @@ public class UTDPendonor extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbDokterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDokterMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -946,8 +1037,9 @@ public class UTDPendonor extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterMouseClicked
 
     private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDokterKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -957,135 +1049,182 @@ public class UTDPendonor extends javax.swing.JDialog {
 }//GEN-LAST:event_tbDokterKeyPressed
 
     private void NamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaKeyPressed
-       Valid.pindah(evt,Telp,KTP);
+        Valid.pindah(evt, Telp, KTP);
 }//GEN-LAST:event_NamaKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Nama.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
+        if (Nama.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
             tbDokter.requestFocus();
-        }else{
-            Valid.hapusTable(tabMode,NoId,"utd_pendonor","no_pendonor");
+        } else {
+            Valid.hapusTable(tabMode, NoId, "utd_pendonor", "no_pendonor");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(NoId.getText().trim().isEmpty()){
-            Valid.textKosong(NoId,"No.ID Pendonor");
-        }else if(Nama.getText().trim().isEmpty()){
-            Valid.textKosong(Nama,"Nama Pendonor");
-        }else if(KTP.getText().trim().isEmpty()){
-            Valid.textKosong(KTP,"No.KTP");
-        }else if(Telp.getText().trim().isEmpty()){
-            Valid.textKosong(Telp,"No.Telp");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat");
-        }else if(Kecamatan.getText().trim().isEmpty()||Kecamatan.getText().trim().equals("KECAMATAN")){
-            Valid.textKosong(Kecamatan,"Kecamatan");
-        }else if(Kelurahan.getText().trim().isEmpty()||Kelurahan.getText().trim().equals("KELURAHAN")){
-            Valid.textKosong(Kelurahan,"Kelurahan");
-        }else if(Kabupaten.getText().trim().isEmpty()||Kabupaten.getText().trim().equals("KABUPATEN")){
-            Valid.textKosong(Kabupaten,"Kabupaten");
-        }else if(Propinsi.getText().trim().isEmpty()||Propinsi.getText().trim().equals("PROPINSI")){
-            Valid.textKosong(Propinsi,"Propinsi");
-        }else if(Lahir.getText().trim().isEmpty()){
-            Valid.textKosong(Lahir,"Tempat Lahir");
-        }else{
-            if(tbDokter.getSelectedRow()!= -1){
-                Valid.editTable(tabMode,"utd_pendonor","no_pendonor","?","no_pendonor=?,nama=?,no_ktp=?,jk=?,tmp_lahir=?,tgl_lahir=?,alamat=?,kd_kel=?,kd_kec=?,kd_kab=?,kd_prop=?,golongan_darah=?,resus=?,no_telp=?",15,new String[]{
-                    NoId.getText(),Nama.getText(),KTP.getText(),JK.getSelectedItem().toString().substring(0,1),Lahir.getText(),Valid.SetTgl(DTPLahir.getSelectedItem()+""),
-                    Alamat.getText(),kdkel,kdkec,kdkab,kdprop,GD.getSelectedItem().toString(),Resus.getSelectedItem().toString(),Telp.getText(),tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString()
-                });
-                if(tabMode.getRowCount()!=0){tampil();}
+        if (NoId.getText().trim().isEmpty()) {
+            Valid.textKosong(NoId, "No.ID Pendonor");
+        } else if (Nama.getText().trim().isEmpty()) {
+            Valid.textKosong(Nama, "Nama Pendonor");
+        } else if (KTP.getText().trim().isEmpty()) {
+            Valid.textKosong(KTP, "No.KTP");
+        } else if (Telp.getText().trim().isEmpty()) {
+            Valid.textKosong(Telp, "No.Telp");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat");
+        } else if (Kecamatan.getText().trim().isEmpty() || Kecamatan.getText().
+                trim().equals("KECAMATAN")) {
+            Valid.textKosong(Kecamatan, "Kecamatan");
+        } else if (Kelurahan.getText().trim().isEmpty() || Kelurahan.getText().
+                trim().equals("KELURAHAN")) {
+            Valid.textKosong(Kelurahan, "Kelurahan");
+        } else if (Kabupaten.getText().trim().isEmpty() || Kabupaten.getText().
+                trim().equals("KABUPATEN")) {
+            Valid.textKosong(Kabupaten, "Kabupaten");
+        } else if (Propinsi.getText().trim().isEmpty() || Propinsi.getText().
+                trim().equals("PROPINSI")) {
+            Valid.textKosong(Propinsi, "Propinsi");
+        } else if (Lahir.getText().trim().isEmpty()) {
+            Valid.textKosong(Lahir, "Tempat Lahir");
+        } else {
+            if (tbDokter.getSelectedRow() != -1) {
+                Valid.editTable(tabMode, "utd_pendonor", "no_pendonor", "?",
+                        "no_pendonor=?,nama=?,no_ktp=?,jk=?,tmp_lahir=?,tgl_lahir=?,alamat=?,kd_kel=?,kd_kec=?,kd_kab=?,kd_prop=?,golongan_darah=?,resus=?,no_telp=?",
+                        15, new String[]{
+                            NoId.getText(), Nama.getText(), KTP.getText(), JK.
+                            getSelectedItem().toString().substring(0, 1), Lahir.
+                            getText(), Valid.SetTgl(
+                                    DTPLahir.getSelectedItem() + ""),
+                            Alamat.getText(), kdkel, kdkec, kdkab, kdprop, GD.
+                            getSelectedItem().toString(), Resus.
+                                    getSelectedItem().toString(), Telp.getText(),
+                            tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).
+                                    toString()
+                        });
+                if (tabMode.getRowCount() != 0) {
+                    tampil();
+                }
                 emptTeks();
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            sql="";
-            if(cmbHlm.getSelectedItem().toString().equals("Semua")){
-                if(TCari.getText().isEmpty()&&GDCari.getSelectedItem().toString().equals("Semua")&&ResusCari.getSelectedItem().toString().equals("Semua")){
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "order by utd_pendonor.no_pendonor desc";
-                }else{
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "where utd_pendonor.golongan_darah like '%"+GDCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and utd_pendonor.resus like '%"+ResusCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and "+
-                        "(utd_pendonor.no_pendonor like '%"+TCari.getText()+"%' or utd_pendonor.nama like '%"+TCari.getText()+"%' or utd_pendonor.no_ktp like '%"+TCari.getText()+"%' or "+
-                        "utd_pendonor.alamat like '%"+TCari.getText()+"%' or utd_pendonor.no_telp like '%"+TCari.getText()+"%' or kelurahan.nm_kel like '%"+TCari.getText()+"%' or "+
-                        "kecamatan.nm_kec like '%"+TCari.getText()+"%' or kabupaten.nm_kab like '%"+TCari.getText()+"%' or propinsi.nm_prop like '%"+TCari.getText()+"%') "+
-                        "order by utd_pendonor.no_pendonor desc";
-                }   
-            }else{
-                if(TCari.getText().isEmpty()&&GDCari.getSelectedItem().toString().equals("Semua")&&ResusCari.getSelectedItem().toString().equals("Semua")){
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "order by utd_pendonor.no_pendonor desc limit "+cmbHlm.getSelectedItem().toString();
-                }else{
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "where utd_pendonor.golongan_darah like '%"+GDCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and utd_pendonor.resus like '%"+ResusCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and "+
-                        "(utd_pendonor.no_pendonor like '%"+TCari.getText()+"%' or utd_pendonor.nama like '%"+TCari.getText()+"%' or utd_pendonor.no_ktp like '%"+TCari.getText()+"%' or "+
-                        "utd_pendonor.alamat like '%"+TCari.getText()+"%' or utd_pendonor.no_telp like '%"+TCari.getText()+"%' or kelurahan.nm_kel like '%"+TCari.getText()+"%' or "+
-                        "kecamatan.nm_kec like '%"+TCari.getText()+"%' or kabupaten.nm_kab like '%"+TCari.getText()+"%' or propinsi.nm_prop like '%"+TCari.getText()+"%') "+
-                        "order by utd_pendonor.no_pendonor desc limit "+cmbHlm.getSelectedItem().toString();
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            sql = "";
+            if (cmbHlm.getSelectedItem().toString().equals("Semua")) {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
+                        toString().equals("Semua") && ResusCari.
+                        getSelectedItem().toString().equals("Semua")) {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "order by utd_pendonor.no_pendonor desc";
+                } else {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
+                                    getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
+                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
+                                    getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
+                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
+                                    getText() + "%') "
+                            + "order by utd_pendonor.no_pendonor desc";
+                }
+            } else {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
+                        toString().equals("Semua") && ResusCari.
+                        getSelectedItem().toString().equals("Semua")) {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
+                                    getSelectedItem().toString();
+                } else {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
+                                    getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
+                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
+                                    getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
+                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
+                                    getText() + "%') "
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
+                                    getSelectedItem().toString();
                 }
             }
-            Valid.MyReportqry("rptDataPendonorDarah.jasper","report","::[ Data Pendonor Darah ]::",sql,param);            
+            Valid.MyReportqry("rptDataPendonorDarah.jasper", "report",
+                    "::[ Data Pendonor Darah ]::", sql, param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnEdit,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -1095,106 +1234,120 @@ public class UTDPendonor extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoId.getText().trim().isEmpty()){
-            Valid.textKosong(NoId,"No.ID Pendonor");
-        }else if(Nama.getText().trim().isEmpty()){
-            Valid.textKosong(Nama,"Nama Pendonor");
-        }else if(KTP.getText().trim().isEmpty()){
-            Valid.textKosong(KTP,"No.KTP");
-        }else if(Telp.getText().trim().isEmpty()){
-            Valid.textKosong(Telp,"No.Telp");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat");
-        }else if(Kecamatan.getText().trim().isEmpty()||Kecamatan.getText().trim().equals("KECAMATAN")){
-            Valid.textKosong(Kecamatan,"Kecamatan");
-        }else if(Kelurahan.getText().trim().isEmpty()||Kelurahan.getText().trim().equals("KELURAHAN")){
-            Valid.textKosong(Kelurahan,"Kelurahan");
-        }else if(Kabupaten.getText().trim().isEmpty()||Kabupaten.getText().trim().equals("KABUPATEN")){
-            Valid.textKosong(Kabupaten,"Kabupaten");
-        }else if(Propinsi.getText().trim().isEmpty()||Propinsi.getText().trim().equals("PROPINSI")){
-            Valid.textKosong(Propinsi,"Propinsi");
-        }else if(Lahir.getText().trim().isEmpty()){
-            Valid.textKosong(Lahir,"Tempat Lahir");
-        }else{
-            if(Sequel.menyimpantf("utd_pendonor","?,?,?,?,?,?,?,?,?,?,?,?,?,?","No.ID Pendonor",14,new String[]{
-                NoId.getText(),Nama.getText(),KTP.getText(),JK.getSelectedItem().toString().substring(0,1),Lahir.getText(),Valid.SetTgl(DTPLahir.getSelectedItem()+""),
-                Alamat.getText(),kdkel,kdkec,kdkab,kdprop,GD.getSelectedItem().toString(),Resus.getSelectedItem().toString(),Telp.getText()
-            })==true){
+        if (NoId.getText().trim().isEmpty()) {
+            Valid.textKosong(NoId, "No.ID Pendonor");
+        } else if (Nama.getText().trim().isEmpty()) {
+            Valid.textKosong(Nama, "Nama Pendonor");
+        } else if (KTP.getText().trim().isEmpty()) {
+            Valid.textKosong(KTP, "No.KTP");
+        } else if (Telp.getText().trim().isEmpty()) {
+            Valid.textKosong(Telp, "No.Telp");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat");
+        } else if (Kecamatan.getText().trim().isEmpty() || Kecamatan.getText().
+                trim().equals("KECAMATAN")) {
+            Valid.textKosong(Kecamatan, "Kecamatan");
+        } else if (Kelurahan.getText().trim().isEmpty() || Kelurahan.getText().
+                trim().equals("KELURAHAN")) {
+            Valid.textKosong(Kelurahan, "Kelurahan");
+        } else if (Kabupaten.getText().trim().isEmpty() || Kabupaten.getText().
+                trim().equals("KABUPATEN")) {
+            Valid.textKosong(Kabupaten, "Kabupaten");
+        } else if (Propinsi.getText().trim().isEmpty() || Propinsi.getText().
+                trim().equals("PROPINSI")) {
+            Valid.textKosong(Propinsi, "Propinsi");
+        } else if (Lahir.getText().trim().isEmpty()) {
+            Valid.textKosong(Lahir, "Tempat Lahir");
+        } else {
+            if (Sequel.
+                    menyimpantf("utd_pendonor", "?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                            "No.ID Pendonor", 14, new String[]{
+                        NoId.getText(), Nama.getText(), KTP.getText(), JK.
+                        getSelectedItem().toString().substring(0, 1), Lahir.
+                        getText(), Valid.SetTgl(DTPLahir.getSelectedItem() + ""),
+                        Alamat.getText(), kdkel, kdkec, kdkab, kdprop, GD.
+                        getSelectedItem().toString(), Resus.getSelectedItem().
+                                toString(), Telp.getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }               
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt,NoRek,BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void TelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TelpKeyPressed
-         Valid.pindah(evt,NoId,Nama);
+        Valid.pindah(evt, NoId, Nama);
     }//GEN-LAST:event_TelpKeyPressed
 
 private void KTPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KTPKeyPressed
-        Valid.pindah(evt,Nama,JK);
+    Valid.pindah(evt, Nama, JK);
 }//GEN-LAST:event_KTPKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void NoIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoIdKeyPressed
-        Valid.pindah(evt,Alamat,Telp,TCari);
+        Valid.pindah(evt, Alamat, Telp, TCari);
     }//GEN-LAST:event_NoIdKeyPressed
 
     private void TelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelpMouseExited
-        if(Telp.getText().isEmpty()){
+        if (Telp.getText().isEmpty()) {
             Telp.setText("0");
         }
     }//GEN-LAST:event_TelpMouseExited
 
     private void TelpMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelpMouseMoved
-        if(Telp.getText().equals("0")||Telp.getText().equals("0.0")){
+        if (Telp.getText().equals("0") || Telp.getText().equals("0.0")) {
             Telp.setText("");
         }
     }//GEN-LAST:event_TelpMouseMoved
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -1202,44 +1355,44 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_formWindowOpened
 
     private void JKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JKKeyPressed
-        Valid.pindah(evt,KTP,Lahir);
+        Valid.pindah(evt, KTP, Lahir);
     }//GEN-LAST:event_JKKeyPressed
 
     private void DTPLahirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DTPLahirKeyPressed
-        Valid.pindah(evt,Lahir,GD);
+        Valid.pindah(evt, Lahir, GD);
     }//GEN-LAST:event_DTPLahirKeyPressed
 
     private void LahirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LahirKeyPressed
-        Valid.pindah(evt,JK,DTPLahir);
+        Valid.pindah(evt, JK, DTPLahir);
     }//GEN-LAST:event_LahirKeyPressed
 
     private void ResusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResusKeyPressed
-        Valid.pindah(evt,GD,Alamat);
+        Valid.pindah(evt, GD, Alamat);
     }//GEN-LAST:event_ResusKeyPressed
 
     private void AlamatMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlamatMouseMoved
-        if(KTP.getText().equals("ALAMAT")){
+        if (KTP.getText().equals("ALAMAT")) {
             KTP.setText("");
         }
     }//GEN-LAST:event_AlamatMouseMoved
 
     private void AlamatMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlamatMouseExited
-        if(KTP.getText().isEmpty()){
+        if (KTP.getText().isEmpty()) {
             KTP.setText("ALAMAT");
         }
     }//GEN-LAST:event_AlamatMouseExited
 
     private void AlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlamatKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(KTP.getText().isEmpty()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (KTP.getText().isEmpty()) {
                 KTP.setText("ALAMAT");
             }
-            if(Kelurahan.getText().equals("KELURAHAN")){
+            if (Kelurahan.getText().equals("KELURAHAN")) {
                 Kelurahan.setText("");
             }
             BtnKelurahan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            if(KTP.getText().isEmpty()){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            if (KTP.getText().isEmpty()) {
                 KTP.setText("ALAMAT");
             }
             Resus.requestFocus();
@@ -1247,158 +1400,162 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_AlamatKeyPressed
 
     private void BtnKelurahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKelurahanActionPerformed
-        kel.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kel.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kel.setLocationRelativeTo(internalFrame1);
         kel.setVisible(true);
     }//GEN-LAST:event_BtnKelurahanActionPerformed
 
     private void KelurahanMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KelurahanMouseMoved
-        if(Kelurahan.getText().equals("KELURAHAN")){
+        if (Kelurahan.getText().equals("KELURAHAN")) {
             Kelurahan.setText("");
         }
     }//GEN-LAST:event_KelurahanMouseMoved
 
     private void KelurahanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KelurahanMouseExited
-        if(Kelurahan.getText().isEmpty()){
+        if (Kelurahan.getText().isEmpty()) {
             Kelurahan.setText("KELURAHAN");
         }
     }//GEN-LAST:event_KelurahanMouseExited
 
     private void KelurahanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KelurahanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(Kelurahan.getText().isEmpty()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (Kelurahan.getText().isEmpty()) {
                 Kelurahan.setText("KELURAHAN");
             }
-            if(Kecamatan.getText().equals("KECAMATAN")){
+            if (Kecamatan.getText().equals("KECAMATAN")) {
                 Kecamatan.setText("");
             }
             BtnKecamatan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            if(Kelurahan.getText().isEmpty()){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            if (Kelurahan.getText().isEmpty()) {
                 Kelurahan.setText("KELURAHAN");
             }
-            if(Alamat.getText().equals("ALAMAT")){
+            if (Alamat.getText().equals("ALAMAT")) {
                 Alamat.setText("");
             }
             Alamat.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnKelurahanActionPerformed(null);
         }
     }//GEN-LAST:event_KelurahanKeyPressed
 
     private void KecamatanMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KecamatanMouseMoved
-        if(Kecamatan.getText().equals("KECAMATAN")){
+        if (Kecamatan.getText().equals("KECAMATAN")) {
             Kecamatan.setText("");
         }
     }//GEN-LAST:event_KecamatanMouseMoved
 
     private void KecamatanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KecamatanMouseExited
-        if(Kecamatan.getText().isEmpty()){
+        if (Kecamatan.getText().isEmpty()) {
             Kecamatan.setText("KECAMATAN");
         }
     }//GEN-LAST:event_KecamatanMouseExited
 
     private void KecamatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KecamatanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(Kecamatan.getText().isEmpty()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (Kecamatan.getText().isEmpty()) {
                 Kecamatan.setText("KECAMATAN");
             }
-            if(Kabupaten.getText().equals("KABUPATEN")){
+            if (Kabupaten.getText().equals("KABUPATEN")) {
                 Kabupaten.setText("");
             }
             Kabupaten.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            if(Kecamatan.getText().isEmpty()){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            if (Kecamatan.getText().isEmpty()) {
                 Kecamatan.setText("KECAMATAN");
             }
-            if(Kelurahan.getText().equals("KELURAHAN")){
+            if (Kelurahan.getText().equals("KELURAHAN")) {
                 Kelurahan.setText("");
             }
             Kelurahan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnKecamatanActionPerformed(null);
         }
     }//GEN-LAST:event_KecamatanKeyPressed
 
     private void BtnKecamatanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKecamatanActionPerformed
-        kec.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kec.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kec.setLocationRelativeTo(internalFrame1);
         kec.setVisible(true);
     }//GEN-LAST:event_BtnKecamatanActionPerformed
 
     private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KabupatenMouseMoved
-        if(Kabupaten.getText().equals("KABUPATEN")){
+        if (Kabupaten.getText().equals("KABUPATEN")) {
             Kabupaten.setText("");
         }
     }//GEN-LAST:event_KabupatenMouseMoved
 
     private void KabupatenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KabupatenMouseExited
-        if(Kabupaten.getText().isEmpty()){
+        if (Kabupaten.getText().isEmpty()) {
             Kabupaten.setText("KABUPATEN");
         }
     }//GEN-LAST:event_KabupatenMouseExited
 
     private void KabupatenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KabupatenKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(Kabupaten.getText().isEmpty()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (Kabupaten.getText().isEmpty()) {
                 Kabupaten.setText("KABUPATEN");
             }
-            if(Propinsi.getText().equals("PROPINSI")){
+            if (Propinsi.getText().equals("PROPINSI")) {
                 Propinsi.setText("");
             }
             Propinsi.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            if(Kabupaten.getText().isEmpty()){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            if (Kabupaten.getText().isEmpty()) {
                 Kabupaten.setText("KABUPATEN");
             }
-            if(Kecamatan.getText().equals("KECAMATAN")){
+            if (Kecamatan.getText().equals("KECAMATAN")) {
                 Kecamatan.setText("");
             }
             Kecamatan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnKabupatenActionPerformed(null);
         }
     }//GEN-LAST:event_KabupatenKeyPressed
 
     private void BtnKabupatenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKabupatenActionPerformed
-        kab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kab.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         kab.setLocationRelativeTo(internalFrame1);
         kab.setVisible(true);
     }//GEN-LAST:event_BtnKabupatenActionPerformed
 
     private void PropinsiMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PropinsiMouseMoved
-        if(Propinsi.getText().equals("PROPINSI")){
+        if (Propinsi.getText().equals("PROPINSI")) {
             Propinsi.setText("");
         }
     }//GEN-LAST:event_PropinsiMouseMoved
 
     private void PropinsiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PropinsiMouseExited
-        if(Propinsi.getText().isEmpty()){
+        if (Propinsi.getText().isEmpty()) {
             Propinsi.setText("PROPINSI");
         }
     }//GEN-LAST:event_PropinsiMouseExited
 
     private void PropinsiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PropinsiKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(Propinsi.getText().isEmpty()){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (Propinsi.getText().isEmpty()) {
                 Propinsi.setText("PROPINSI");
             }
             BtnSimpan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            if(Propinsi.getText().isEmpty()){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            if (Propinsi.getText().isEmpty()) {
                 Propinsi.setText("PROPINSI");
             }
-            if(Kabupaten.getText().equals("KABUPATEN")){
+            if (Kabupaten.getText().equals("KABUPATEN")) {
                 Kabupaten.setText("");
             }
             Kabupaten.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnPropinsiActionPerformed(null);
         }
     }//GEN-LAST:event_PropinsiKeyPressed
 
     private void BtnPropinsiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPropinsiActionPerformed
-        prop.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        prop.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         prop.setLocationRelativeTo(internalFrame1);
         prop.setVisible(true);
     }//GEN-LAST:event_BtnPropinsiActionPerformed
@@ -1408,38 +1565,42 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_ResusCariKeyPressed
 
     private void GDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GDKeyPressed
-        Valid.pindah(evt,Lahir,Resus);
+        Valid.pindah(evt, Lahir, Resus);
     }//GEN-LAST:event_GDKeyPressed
 
     private void MnKartu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKartu1ActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data pasien sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data pasien sudah habis...!!!!");
             NoId.requestFocus();
-        }else if(Nama.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
+        } else if (Nama.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan anda pilih dulu data pasien dengan menklik data pada table...!!!");
             tbDokter.requestFocus();
-        }else{
+        } else {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());
-            Valid.MyReportqry("rptKartuDonorDarah.jasper","report","::[ Kartu Donor Darah ]::",
-                    "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                    "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                    "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                    "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                    "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop where utd_pendonor.no_pendonor='"+NoId.getText()+"' ",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            Valid.MyReportqry("rptKartuDonorDarah.jasper", "report",
+                    "::[ Kartu Donor Darah ]::",
+                    "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                    + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                    + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                    + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                    + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop where utd_pendonor.no_pendonor='" + NoId.
+                            getText() + "' ", param);
             this.setCursor(Cursor.getDefaultCursor());
         }
     }//GEN-LAST:event_MnKartu1ActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             UTDPendonor dialog = new UTDPendonor(new javax.swing.JFrame(), true);
@@ -1448,6 +1609,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1514,75 +1676,107 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            sql="";
-            if(cmbHlm.getSelectedItem().toString().equals("Semua")){
-                if(TCari.getText().isEmpty()&&GDCari.getSelectedItem().toString().equals("Semua")&&ResusCari.getSelectedItem().toString().equals("Semua")){
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "order by utd_pendonor.no_pendonor desc";
-                }else{
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "where utd_pendonor.golongan_darah like '%"+GDCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and utd_pendonor.resus like '%"+ResusCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and "+
-                        "(utd_pendonor.no_pendonor like '%"+TCari.getText()+"%' or utd_pendonor.nama like '%"+TCari.getText()+"%' or utd_pendonor.no_ktp like '%"+TCari.getText()+"%' or "+
-                        "utd_pendonor.alamat like '%"+TCari.getText()+"%' or utd_pendonor.no_telp like '%"+TCari.getText()+"%' or kelurahan.nm_kel like '%"+TCari.getText()+"%' or "+
-                        "kecamatan.nm_kec like '%"+TCari.getText()+"%' or kabupaten.nm_kab like '%"+TCari.getText()+"%' or propinsi.nm_prop like '%"+TCari.getText()+"%') "+
-                        "order by utd_pendonor.no_pendonor desc";
-                }   
-            }else{
-                if(TCari.getText().isEmpty()&&GDCari.getSelectedItem().toString().equals("Semua")&&ResusCari.getSelectedItem().toString().equals("Semua")){
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "order by utd_pendonor.no_pendonor desc limit "+cmbHlm.getSelectedItem().toString();
-                }else{
-                    sql="select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"+
-                        "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"+
-                        "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "+
-                        "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                        "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                        "where utd_pendonor.golongan_darah like '%"+GDCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and utd_pendonor.resus like '%"+ResusCari.getSelectedItem().toString().replaceAll("Semua","")+"%' and "+
-                        "(utd_pendonor.no_pendonor like '%"+TCari.getText()+"%' or utd_pendonor.nama like '%"+TCari.getText()+"%' or utd_pendonor.no_ktp like '%"+TCari.getText()+"%' or "+
-                        "utd_pendonor.alamat like '%"+TCari.getText()+"%' or utd_pendonor.no_telp like '%"+TCari.getText()+"%' or kelurahan.nm_kel like '%"+TCari.getText()+"%' or "+
-                        "kecamatan.nm_kec like '%"+TCari.getText()+"%' or kabupaten.nm_kab like '%"+TCari.getText()+"%' or propinsi.nm_prop like '%"+TCari.getText()+"%') "+
-                        "order by utd_pendonor.no_pendonor desc limit "+cmbHlm.getSelectedItem().toString();
+        try {
+            sql = "";
+            if (cmbHlm.getSelectedItem().toString().equals("Semua")) {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
+                        toString().equals("Semua") && ResusCari.
+                        getSelectedItem().toString().equals("Semua")) {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "order by utd_pendonor.no_pendonor desc";
+                } else {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
+                                    getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
+                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
+                                    getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
+                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
+                                    getText() + "%') "
+                            + "order by utd_pendonor.no_pendonor desc";
+                }
+            } else {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
+                        toString().equals("Semua") && ResusCari.
+                        getSelectedItem().toString().equals("Semua")) {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
+                                    getSelectedItem().toString();
+                } else {
+                    sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
+                            + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
+                            + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
+                            + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                            + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
+                                    getSelectedItem().toString().replaceAll(
+                                            "Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
+                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
+                                    getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
+                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
+                                    getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
+                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
+                                    getText() + "%') "
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
+                                    getSelectedItem().toString();
                 }
             }
-            ps=koneksi.prepareStatement(sql);
+            ps = koneksi.prepareStatement(sql);
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_pendonor"),rs.getString("nama"),rs.getString("no_ktp"),rs.getString("jk"),
-                        rs.getString("tmp_lahir"),rs.getString("tgl_lahir"),rs.getString("alamat"),rs.getString("kd_kel"),
-                        rs.getString("nm_kel"),rs.getString("kd_kec"),rs.getString("nm_kec"),rs.getString("kd_kab"),
-                        rs.getString("nm_kab"),rs.getString("kd_prop"),rs.getString("nm_prop"),rs.getString("golongan_darah"),
-                        rs.getString("resus"),rs.getString("no_telp")
+                        rs.getString("no_pendonor"), rs.getString("nama"), rs.
+                        getString("no_ktp"), rs.getString("jk"),
+                        rs.getString("tmp_lahir"), rs.getString("tgl_lahir"),
+                        rs.getString("alamat"), rs.getString("kd_kel"),
+                        rs.getString("nm_kel"), rs.getString("kd_kec"), rs.
+                        getString("nm_kec"), rs.getString("kd_kab"),
+                        rs.getString("nm_kab"), rs.getString("kd_prop"), rs.
+                        getString("nm_prop"), rs.getString("golongan_darah"),
+                        rs.getString("resus"), rs.getString("no_telp")
                     });
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -1598,55 +1792,76 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Propinsi.setText("PROPINSI");
         DTPLahir.setDate(new Date());
         NoId.requestFocus();
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(utd_pendonor.no_pendonor,6),signed)),0) from utd_pendonor","UTD",6,NoId);
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(utd_pendonor.no_pendonor,6),signed)),0) from utd_pendonor",
+                "UTD", 6, NoId);
     }
 
     private void getData() {
-        if(tbDokter.getSelectedRow()!= -1){
-            NoId.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),0).toString());
-            Nama.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),1).toString());
-            KTP.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),2).toString());
-            JK.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(),3).toString().replaceAll("P","PEREMPUAN").replaceAll("L","LAKI-LAKI"));
-            Lahir.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),4).toString());
-            Valid.SetTgl(DTPLahir,tbDokter.getValueAt(tbDokter.getSelectedRow(),5).toString());
-            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),6).toString());
-            kdkel=tabMode.getValueAt(tbDokter.getSelectedRow(),7).toString();
-            Kelurahan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),8).toString());
-            kdkec=tabMode.getValueAt(tbDokter.getSelectedRow(),9).toString();
-            Kecamatan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),10).toString());
-            kdkab=tabMode.getValueAt(tbDokter.getSelectedRow(),11).toString();
-            Kabupaten.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),12).toString());
-            kdprop=tabMode.getValueAt(tbDokter.getSelectedRow(),13).toString();
-            Propinsi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),14).toString());
-            GD.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(),15).toString());
-            Resus.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(),16).toString());
-            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),17).toString());
+        if (tbDokter.getSelectedRow() != -1) {
+            NoId.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
+                    toString());
+            Nama.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 1).
+                    toString());
+            KTP.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 2).
+                    toString());
+            JK.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(), 3).
+                    toString().replaceAll("P", "PEREMPUAN").replaceAll("L",
+                    "LAKI-LAKI"));
+            Lahir.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 4).
+                    toString());
+            Valid.SetTgl(DTPLahir, tbDokter.
+                    getValueAt(tbDokter.getSelectedRow(), 5).toString());
+            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 6).
+                    toString());
+            kdkel = tabMode.getValueAt(tbDokter.getSelectedRow(), 7).toString();
+            Kelurahan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 8).
+                    toString());
+            kdkec = tabMode.getValueAt(tbDokter.getSelectedRow(), 9).toString();
+            Kecamatan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 10).
+                    toString());
+            kdkab = tabMode.getValueAt(tbDokter.getSelectedRow(), 11).toString();
+            Kabupaten.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 12).
+                    toString());
+            kdprop = tabMode.getValueAt(tbDokter.getSelectedRow(), 13).
+                    toString();
+            Propinsi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 14).
+                    toString());
+            GD.setSelectedItem(
+                    tabMode.getValueAt(tbDokter.getSelectedRow(), 15).toString());
+            Resus.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(),
+                    16).toString());
+            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 17).
+                    toString());
         }
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbDokter;
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getutd_pendonor());
         BtnHapus.setEnabled(akses.getutd_pendonor());
         BtnEdit.setEnabled(akses.getutd_pendonor());
         BtnPrint.setEnabled(akses.getutd_pendonor());
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,155));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 155));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
-    }    
- 
+    }
+
+    private static final Logger LOG = Logger.getLogger(UTDPendonor.class.
+            getName());
+
 }

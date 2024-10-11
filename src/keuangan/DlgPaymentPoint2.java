@@ -3,132 +3,161 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgLhtBiaya.java
  *
  * Created on 12 Jul 10, 16:21:34
  */
-
 package keuangan;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgPaymentPoint2 extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i;
-    private String nonota="",petugas="";
-    private double all=0;
+    private String nonota = "", petugas = "";
+    private double all = 0;
 
-    /** Creates new form DlgLhtBiaya
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgPaymentPoint2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] rowRwJlDr={"No.","Tanggal","No.Rawat/No.Nota","Nama Pasien","Pembayaran","Petugas"};
-        tabMode=new DefaultTableModel(null,rowRwJlDr){
-             Class[] types = new Class[] {
-                java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                java.lang.String.class,java.lang.Double.class,java.lang.String.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+        Object[] rowRwJlDr = {"No.", "Tanggal", "No.Rawat/No.Nota",
+            "Nama Pasien", "Pembayaran", "Petugas"};
+        tabMode = new DefaultTableModel(null, rowRwJlDr) {
+            Class[] types = new Class[]{
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class,
+                java.lang.String.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         Tabel.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        Tabel.setPreferredScrollableViewportSize(new Dimension(500,500));
+        Tabel.setPreferredScrollableViewportSize(new Dimension(500, 500));
         Tabel.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 6; i++) {
             TableColumn column = Tabel.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(30);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(130);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(125);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(330);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(120);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
             }
         }
         Tabel.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        User.setDocument(new batasInput((byte)100).getKata(User));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        User.setDocument(new batasInput((byte) 100).getKata(User));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-            User.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(User.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(User.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(User.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        }  
-    }    
-    
-     
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if (TCari.getText().length() > 2) {
+                        tampil();
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if (TCari.getText().length() > 2) {
+                        tampil();
+                    }
+                }
+
+            });
+            User.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if (User.getText().length() > 2) {
+                        tampil();
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if (User.getText().length() > 2) {
+                        tampil();
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if (User.getText().length() > 2) {
+                        tampil();
+                    }
+                }
+
+            });
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -395,40 +424,52 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            
+        } else if (tabMode.getRowCount() != 0) {
+
             Sequel.queryu("delete from temporary_payment");
-            for(int r=0;r<tabMode.getRowCount();r++){  
-                Sequel.menyimpan("temporary_payment","'0',?,?,?,?,?,?,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''",6,new String[]{
-                    tabMode.getValueAt(r,0).toString(),tabMode.getValueAt(r,1).toString(),
-                    tabMode.getValueAt(r,2).toString(),tabMode.getValueAt(r,3).toString(),
-                    Valid.SetAngka(Double.parseDouble(tabMode.getValueAt(r,4).toString())),
-                    tabMode.getValueAt(r,5).toString()                    
-                });
+            for (int r = 0; r < tabMode.getRowCount(); r++) {
+                Sequel.menyimpan("temporary_payment",
+                        "'0',?,?,?,?,?,?,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''",
+                        6, new String[]{
+                            tabMode.getValueAt(r, 0).toString(), tabMode.
+                            getValueAt(r, 1).toString(),
+                            tabMode.getValueAt(r, 2).toString(), tabMode.
+                            getValueAt(r, 3).toString(),
+                            Valid.SetAngka(Double.parseDouble(tabMode.
+                                    getValueAt(r, 4).toString())),
+                            tabMode.getValueAt(r, 5).toString()
+                        });
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());  
-            param.put("periode",Tgl1.getSelectedItem()+" "+CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem()+" s.d. "+Tgl2.getSelectedItem()+" "+CmbJam2.getSelectedItem()+":"+CmbMenit2.getSelectedItem()+":"+CmbDetik2.getSelectedItem());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReport("rptPaymentPoint2.jasper","report","::[ Payment Point ]::",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("periode", Tgl1.getSelectedItem() + " " + CmbJam.
+                    getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                    getSelectedItem() + " s.d. " + Tgl2.getSelectedItem() + " " + CmbJam2.
+                    getSelectedItem() + ":" + CmbMenit2.getSelectedItem() + ":" + CmbDetik2.
+                    getSelectedItem());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReport("rptPaymentPoint2.jasper", "report",
+                    "::[ Payment Point ]::", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt, Tgl1,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Tgl1, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -437,9 +478,11 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,TCari);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
@@ -449,20 +492,20 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             tampil();
             this.setCursor(Cursor.getDefaultCursor());
-        }else{
-            Valid.pindah(evt,TCari, BtnPrint);
+        } else {
+            Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
@@ -471,35 +514,35 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     private void UserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UserKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TCari.requestFocus();
         }
     }//GEN-LAST:event_UserKeyPressed
 
     private void CmbJamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CmbJamKeyPressed
-        Valid.pindah(evt,Tgl1,CmbMenit);
+        Valid.pindah(evt, Tgl1, CmbMenit);
     }//GEN-LAST:event_CmbJamKeyPressed
 
     private void CmbMenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CmbMenitKeyPressed
-        Valid.pindah(evt,CmbJam,CmbDetik);
+        Valid.pindah(evt, CmbJam, CmbDetik);
     }//GEN-LAST:event_CmbMenitKeyPressed
 
     private void CmbDetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CmbDetikKeyPressed
-        Valid.pindah(evt,CmbMenit,Tgl2);
+        Valid.pindah(evt, CmbMenit, Tgl2);
     }//GEN-LAST:event_CmbDetikKeyPressed
 
     private void CmbJam2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CmbJam2KeyPressed
@@ -515,16 +558,18 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
     }//GEN-LAST:event_CmbDetik2KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPaymentPoint2 dialog = new DlgPaymentPoint2(new javax.swing.JFrame(), true);
+            DlgPaymentPoint2 dialog = new DlgPaymentPoint2(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -562,61 +607,85 @@ public class DlgPaymentPoint2 extends javax.swing.JDialog {
     /**
      *
      */
-    public void tampil(){
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+    public void tampil() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Valid.tabelKosong(tabMode);
-        try{        
-            ps= koneksi.prepareStatement(
-                "select no_nota,tgl_bayar,nama_pasien,jumlah_bayar,petugas from tagihan_sadewa "+
-                "where tgl_bayar between ? and ? and nama_pasien like ? or "+
-                "tgl_bayar between ? and ? and no_nota like ? order by tgl_bayar,no_nota");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select no_nota,tgl_bayar,nama_pasien,jumlah_bayar,petugas from tagihan_sadewa "
+                    + "where tgl_bayar between ? and ? and nama_pasien like ? and no_nota not like '%/PD%' or "
+                    + "tgl_bayar between ? and ? and no_nota like ? and no_nota not like '%/PD%' order by tgl_bayar,no_nota");
             try {
-                ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+"")+" "+CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem());
-                ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+"")+" "+CmbJam2.getSelectedItem()+":"+CmbMenit2.getSelectedItem()+":"+CmbDetik2.getSelectedItem());
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(Tgl1.getSelectedItem()+"")+" "+CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem());
-                ps.setString(5,Valid.SetTgl(Tgl2.getSelectedItem()+"")+" "+CmbJam2.getSelectedItem()+":"+CmbMenit2.getSelectedItem()+":"+CmbDetik2.getSelectedItem());
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                all=0;
-                i=1;
-                while(rs.next()){
-                    petugas=rs.getString("petugas")+" "+Sequel.cariIsi("select pegawai.nama from pegawai where pegawai.nik=?",rs.getString("petugas"));
-                    if(petugas.toLowerCase().trim().contains(User.getText().toLowerCase().trim())){
-                        nonota=Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",rs.getString("no_nota"));
-                        if(nonota.isEmpty()){
-                            nonota=Sequel.cariIsi("select no_nota from nota_jalan where no_rawat=?",rs.getString("no_nota"));
-                            if(nonota.isEmpty()){
-                                nonota=rs.getString("no_nota");
+                ps.setString(1,
+                        Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + CmbJam.
+                        getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                        getSelectedItem());
+                ps.setString(2,
+                        Valid.SetTgl(Tgl2.getSelectedItem() + "") + " " + CmbJam2.
+                        getSelectedItem() + ":" + CmbMenit2.getSelectedItem() + ":" + CmbDetik2.
+                        getSelectedItem());
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4,
+                        Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + CmbJam.
+                        getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                        getSelectedItem());
+                ps.setString(5,
+                        Valid.SetTgl(Tgl2.getSelectedItem() + "") + " " + CmbJam2.
+                        getSelectedItem() + ":" + CmbMenit2.getSelectedItem() + ":" + CmbDetik2.
+                        getSelectedItem());
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                all = 0;
+                i = 1;
+                while (rs.next()) {
+                    petugas = rs.getString("petugas") + " " + Sequel.cariIsi(
+                            "select pegawai.nama from pegawai where pegawai.nik=?",
+                            rs.getString("petugas"));
+                    if (petugas.toLowerCase().trim().contains(User.getText().
+                            toLowerCase().trim())) {
+                        nonota = Sequel.cariIsi(
+                                "select no_nota from nota_inap where no_rawat=?",
+                                rs.getString("no_nota"));
+                        if (nonota.isEmpty()) {
+                            nonota = Sequel.cariIsi(
+                                    "select no_nota from nota_jalan where no_rawat=?",
+                                    rs.getString("no_nota"));
+                            if (nonota.isEmpty()) {
+                                nonota = rs.getString("no_nota");
                             }
                         }
 
                         all += Math.round(rs.getDouble("jumlah_bayar"));
                         tabMode.addRow(new Object[]{
-                            i,rs.getString("tgl_bayar"),nonota,rs.getString("nama_pasien"),Math.round(rs.getDouble("jumlah_bayar")),petugas
+                            i, rs.getString("tgl_bayar"), nonota, rs.getString(
+                            "nama_pasien"), Math.round(rs.getDouble(
+                            "jumlah_bayar")), petugas
                         });
                         i++;
-                    }                        
+                    }
                 }
-                if(all>0){
+                if (all > 0) {
                     tabMode.addRow(new Object[]{
-                        "","Total :","","",all,""
+                        "", "Total :", "", "", all, ""
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                       
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
         this.setCursor(Cursor.getDefaultCursor());
-    }    
+    }
+
+    private static final Logger LOG = Logger.getLogger(DlgPaymentPoint2.class.
+            getName());
 
 }

@@ -5,45 +5,54 @@
  */
 package bridging;
 
-import AESsecurity.*;
-import com.mysql.jdbc.jdbc2.optional.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
+import AESsecurity.EnkripsiAES;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
- *
  * @author khanzasoft
  */
 public class koneksiDBELIMS {
-    private static Connection connection=null;
-    private static final Properties prop = new Properties();  
-    private static final MysqlDataSource dataSource=new MysqlDataSource();
-    
-    /**
-     *
-     * @return
-     */
-    public static Connection condb(){ 
-        if(connection == null){
-            try{
-                prop.loadFromXML(new FileInputStream("setting/database.xml"));
-                dataSource.setURL("jdbc:mysql://"+EnkripsiAES.decrypt(prop.getProperty("HOSTELIMS"))+":"+EnkripsiAES.decrypt(prop.getProperty("PORTELIMS"))+"/"+EnkripsiAES.decrypt(prop.getProperty("DATABASEELIMS"))+"?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
-                dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERELIMS")));
-                dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASELIMS")));
-                connection=dataSource.getConnection();       
-                System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging ELIMS...!!!");
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Koneksi ke server bridging ELIMS terputus : "+e);
-            }
-        }
-        return connection;        
-    }
 
-    /**
-     *
-     */
-    public koneksiDBELIMS(){}
-    
+  private static Connection connection = null;
+
+  private static final Properties prop = new Properties();
+
+  private static final MysqlDataSource dataSource = new MysqlDataSource();
+
+  // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
+  /**
+   * @return
+   */
+  public static Connection condb() {
+    if (connection == null) {
+      try {
+        prop.loadFromXML(new FileInputStream("setting/database.xml"));
+        dataSource.setURL(
+            "jdbc:mysql://"
+                + EnkripsiAES.decrypt(prop.getProperty("HOSTELIMS"))
+                + ":"
+                + EnkripsiAES.decrypt(prop.getProperty("PORTELIMS"))
+                + "/"
+                + EnkripsiAES.decrypt(prop.getProperty("DATABASEELIMS"))
+                + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
+        dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERELIMS")));
+        dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASELIMS")));
+        connection = dataSource.getConnection();
+        System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging ELIMS...!!!");
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Koneksi ke server bridging ELIMS terputus : " + e);
+      }
+    }
+    return connection;
+  }
+
+  /** */
+  public koneksiDBELIMS() {}
+
+  private static final Logger LOG = Logger.getLogger(koneksiDBELIMS.class.getName());
 }

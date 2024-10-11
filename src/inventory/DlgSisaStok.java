@@ -1,82 +1,104 @@
 package inventory;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
+
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class DlgSisaStok extends javax.swing.JDialog {
-    private final validasi Valid=new validasi();
-    private final Connection koneksi=koneksiDB.condb();
-    private final sekuel Sequel=new sekuel();
+
+    private final validasi Valid = new validasi();
+    private final Connection koneksi = koneksiDB.condb();
+    private final sekuel Sequel = new sekuel();
     private PreparedStatement ps;
     private ResultSet rs;
     private StringBuilder htmlContent;
     private String[] posisigudang;
-    private int i=0,kolom=0,no=0;
-    private double total=0,stok=0,totalaset=0;
-    private String qrystok="",aktifkanbatch="no",hppfarmasi="";
+    private int i = 0, kolom = 0, no = 0;
+    private double total = 0, stok = 0, totalaset = 0;
+    private String qrystok = "", aktifkanbatch = "no", hppfarmasi = "";
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
-    
-    /** Creates new form DlgProgramStudi
+
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSisaStok(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         try {
             aktifkanbatch = koneksiDB.AKTIFKANBATCHOBAT();
         } catch (Exception e) {
             aktifkanbatch = "no";
         }
-        
+
         LoadHTML.setEditable(false);
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
             });
-        } 
-        
+        }
+
         jenis.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -89,7 +111,8 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
+                            getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -109,8 +132,9 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
+
         });
-        
+
         golongan.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -123,9 +147,10 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
+                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
+                            getTable().getSelectedRow(), 1).toString());
                 }
-                
+
                 TCari.requestFocus();
             }
 
@@ -145,8 +170,9 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
+
         });
-        
+
         kategori.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -159,7 +185,8 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
+                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
+                            getTable().getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -180,19 +207,18 @@ public class DlgSisaStok extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
+
         });
-        
+
         try {
-            hppfarmasi=koneksiDB.HPPFARMASI();
+            hppfarmasi = koneksiDB.HPPFARMASI();
         } catch (Exception e) {
-            hppfarmasi="dasar";
+            hppfarmasi = "dasar";
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -419,19 +445,19 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 */
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -443,9 +469,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -461,9 +487,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
@@ -471,10 +499,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,BtnKeluar);
+        } else {
+            Valid.pindah(evt, TCari, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -483,34 +511,36 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         try {
 
             File g = new File("file2.css");
-            BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-            bg.write(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-            );
-            bg.close();
+            try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                bg.write(
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                );
+            }
 
             File f = new File("sisastok.html");
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-            bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                "<tr class='isi2'>"+
-                "<td valign='top' align='center'>"+
-                "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                "<font size='2' face='Tahoma'>DATA SISA STOK TERAKHIR</font>"+
-                "</td>"+
-                "</tr>"+
-                "</table>")
-        );
-        bw.close();
-        Desktop.getDesktop().browse(f.toURI());
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                        + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.
+                        getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.
+                        getemailrs() + "<br><br>"
+                        + "<font size='2' face='Tahoma'>DATA SISA STOK TERAKHIR</font>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+            }
+            Desktop.getDesktop().browse(f.toURI());
         } catch (Exception e) {
-            System.out.println("Notifikasi : "+e);
+            System.out.println("Notifikasi : " + e);
         }
 
         this.setCursor(Cursor.getDefaultCursor());
@@ -518,7 +548,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void BtnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJenisActionPerformed
         jenis.isCek();
-        jenis.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        jenis.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         jenis.setLocationRelativeTo(internalFrame1);
         jenis.setAlwaysOnTop(false);
         jenis.setVisible(true);
@@ -526,7 +557,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void BtnKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKategoriActionPerformed
         kategori.isCek();
-        kategori.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        kategori.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         kategori.setLocationRelativeTo(internalFrame1);
         kategori.setAlwaysOnTop(false);
         kategori.setVisible(true);
@@ -534,15 +566,16 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void BtnGolonganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGolonganActionPerformed
         golongan.isCek();
-        golongan.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        golongan.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         golongan.setLocationRelativeTo(internalFrame1);
         golongan.setAlwaysOnTop(false);
         golongan.setVisible(true);
     }//GEN-LAST:event_BtnGolonganActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgSisaStok dialog = new DlgSisaStok(new javax.swing.JFrame(), true);
@@ -551,6 +584,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -584,132 +618,150 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void prosesCari() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            i=Sequel.cariInteger("select count(nm_bangsal) from bangsal where status='1' and kd_bangsal<>'-' ");
-            posisigudang=new String[i];
+            i = Sequel.cariInteger(
+                    "select count(nm_bangsal) from bangsal where status='1' and kd_bangsal<>'-' ");
+            posisigudang = new String[i];
             htmlContent = new StringBuilder();
-            htmlContent.append(                             
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='27px'>No.</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='70px'>Kode Barang</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='150px'>Nama Barang</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='50px'>Satuan</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='75px'>Harga Satuan</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='"+(i+2)+"'>Sisa Stok</td>"+
-                "</tr>"
+            htmlContent.append(
+                    "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='27px'>No.</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='70px'>Kode Barang</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='150px'>Nama Barang</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='50px'>Satuan</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='75px'>Harga Satuan</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='" + (i + 2) + "'>Sisa Stok</td>"
+                    + "</tr>"
             );
-            
-            htmlContent.append(                             
-                "<tr class='isi'>");
-            kolom=0;
-            ps=koneksi.prepareStatement("select kd_bangsal,nm_bangsal from bangsal where status='1' and kd_bangsal<>'-' ");
+
+            htmlContent.append(
+                    "<tr class='isi'>");
+            kolom = 0;
+            ps = koneksi.prepareStatement(
+                    "select kd_bangsal,nm_bangsal from bangsal where status='1' and kd_bangsal<>'-' ");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    posisigudang[kolom]=rs.getString("kd_bangsal");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    posisigudang[kolom] = rs.getString("kd_bangsal");
                     kolom++;
-                    htmlContent.append("<td valign='middle' bgcolor='#FFFAFA' align='center' width='75px'>"+rs.getString("nm_bangsal")+"</td>");
+                    htmlContent.append(
+                            "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75px'>" + rs.
+                                    getString("nm_bangsal") + "</td>");
                 }
             } catch (Exception e) {
-                System.out.println("Akun Bayar : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Akun Bayar : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }         
-            htmlContent.append(
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75px'>Total</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='85px'>Nilai Aset</td>"+
-                "</tr>"
-            );  
-            
-            no=1;
-            totalaset=0;
-            
-            if(aktifkanbatch.equals("yes")){
-                qrystok="select sum(stok) from gudangbarang where kode_brng=? and kd_bangsal=? and no_batch<>'' and no_faktur<>''";
-            }else{
-                qrystok="select sum(stok) from gudangbarang where kode_brng=? and kd_bangsal=? and no_batch='' and no_faktur=''";
             }
-            
-            ps= koneksi.prepareStatement(
-                    "select kode_brng,nama_brng,kode_sat,"+hppfarmasi+" as dasar from databarang "+
-                    "inner join jenis on databarang.kdjns=jenis.kdjns "+
-                    "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "+
-                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where "+
-                    "jenis.nama like ? and kategori_barang.nama like ? and golongan_barang.nama like ? and (kode_brng like ? or nama_brng like ?) order by kode_brng");
+            htmlContent.append(
+                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75px'>Total</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='85px'>Nilai Aset</td>"
+                    + "</tr>"
+            );
+
+            no = 1;
+            totalaset = 0;
+
+            if (aktifkanbatch.equals("yes")) {
+                qrystok = "select sum(stok) from gudangbarang where kode_brng=? and kd_bangsal=? and no_batch<>'' and no_faktur<>''";
+            } else {
+                qrystok = "select sum(stok) from gudangbarang where kode_brng=? and kd_bangsal=? and no_batch='' and no_faktur=''";
+            }
+
+            ps = koneksi.prepareStatement(
+                    "select kode_brng,nama_brng,kode_sat," + hppfarmasi + " as dasar from databarang "
+                    + "inner join jenis on databarang.kdjns=jenis.kdjns "
+                    + "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "
+                    + "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where "
+                    + "jenis.nama like ? and kategori_barang.nama like ? and golongan_barang.nama like ? and (kode_brng like ? or nama_brng like ?) order by kode_brng");
             try {
-                ps.setString(1,"%"+nmjns.getText().trim()+"%");
-                ps.setString(2,"%"+nmkategori.getText().trim()+"%");
-                ps.setString(3,"%"+nmgolongan.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    total=0;
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' align='center'>"+no+"</td>"+
-                            "<td valign='middle' align='left'>"+rs.getString("kode_brng")+"</td>"+
-                            "<td valign='middle' align='left'>"+rs.getString("nama_brng")+"</td>"+
-                            "<td valign='middle' align='left'>"+rs.getString("kode_sat")+"</td>"+
-                            "<td valign='middle' align='right'>"+Valid.SetAngka(rs.getDouble("dasar"))+"</td>");
-                    for(i=0;i<kolom;i++){
-                        stok=Sequel.cariIsiAngka2(qrystok,rs.getString("kode_brng"),posisigudang[i]);
-                        htmlContent.append("<td valign='middle' align='right'>"+Valid.SetAngka(stok)+"</td>");
+                ps.setString(1, "%" + nmjns.getText().trim() + "%");
+                ps.setString(2, "%" + nmkategori.getText().trim() + "%");
+                ps.setString(3, "%" + nmgolongan.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    total = 0;
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' align='center'>" + no + "</td>"
+                            + "<td valign='middle' align='left'>" + rs.
+                                    getString("kode_brng") + "</td>"
+                            + "<td valign='middle' align='left'>" + rs.
+                                    getString("nama_brng") + "</td>"
+                            + "<td valign='middle' align='left'>" + rs.
+                                    getString("kode_sat") + "</td>"
+                            + "<td valign='middle' align='right'>" + Valid.
+                                    SetAngka(rs.getDouble("dasar")) + "</td>");
+                    for (i = 0; i < kolom; i++) {
+                        stok = Sequel.cariIsiAngka2(qrystok, rs.getString(
+                                "kode_brng"), posisigudang[i]);
+                        htmlContent.append(
+                                "<td valign='middle' align='right'>" + Valid.
+                                        SetAngka(stok) + "</td>");
                         total += stok;
                     }
-                    totalaset += (rs.getDouble("dasar")*total);
-                    htmlContent.append( 
-                            "<td valign='middle' align='right'>"+Valid.SetAngka(total)+"</td>"+
-                            "<td valign='middle' align='right'>"+Valid.SetAngka(rs.getDouble("dasar")*total)+"</td>"+
-                        "</tr>"
-                    );     
-                    no++;  
+                    totalaset += (rs.getDouble("dasar") * total);
+                    htmlContent.append(
+                            "<td valign='middle' align='right'>" + Valid.
+                                    SetAngka(total) + "</td>"
+                            + "<td valign='middle' align='right'>" + Valid.
+                                    SetAngka(rs.getDouble("dasar") * total) + "</td>"
+                            + "</tr>"
+                    );
+                    no++;
                 }
-                htmlContent.append(                             
-                    "<tr class='isi'>"+
-                        "<td valign='middle' align='center'></td>"+
-                        "<td valign='middle' align='left' colspan='"+(kolom+5)+"'>Total Nilai Aset Obat, Alkes & BHP Medis</td>"+
-                        "<td valign='middle' align='right'>"+Valid.SetAngka(totalaset)+"</td>"+
-                    "</tr>"
-                ); 
+                htmlContent.append(
+                        "<tr class='isi'>"
+                        + "<td valign='middle' align='center'></td>"
+                        + "<td valign='middle' align='left' colspan='" + (kolom + 5) + "'>Total Nilai Aset Obat, Alkes & BHP Medis</td>"
+                        + "<td valign='middle' align='right'>" + Valid.SetAngka(
+                                totalaset) + "</td>"
+                        + "</tr>"
+                );
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            if(kolom==0){
+            if (kolom == 0) {
                 LoadHTML.setText(
-                        "<html>"+
-                          "<table width='100%' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>");
-            }else if(kolom>0){
+                        "<html>"
+                        + "<table width='100%' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + htmlContent.toString()
+                        + "</table>"
+                        + "</html>");
+            } else if (kolom > 0) {
                 LoadHTML.setText(
-                        "<html>"+
-                          "<table width='"+Integer.toString(480+(kolom*75))+"px' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>");
-            } 
+                        "<html>"
+                        + "<table width='" + Integer.
+                                toString(480 + (kolom * 75)) + "px' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + htmlContent.toString()
+                        + "</table>"
+                        + "</html>");
+            }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        } 
+            System.out.println("Notif : " + e);
+        }
         this.setCursor(Cursor.getDefaultCursor());
-        
+
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnPrint.setEnabled(akses.getsisa_stok());
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(DlgSisaStok.class.
+            getName());
+
 }

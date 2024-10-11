@@ -9,135 +9,175 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class PCareCariKegiatanKelompok extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
+
     private final Properties prop = new Properties();
-    private validasi Valid=new validasi();
-    private sekuel Sequel=new sekuel();
-    private int i=0;
-    private ApiPcare api=new ApiPcare();
-    private String URL="",link="",otorisasi,utc="";
+
+    private validasi Valid = new validasi();
+
+    private sekuel Sequel = new sekuel();
+
+    private int i = 0;
+
+    private ApiPcare api = new ApiPcare();
+
+    private String URL = "", link = "", otorisasi, utc = "";
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
-    /** Creates new form DlgKamar
+
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public PCareCariKegiatanKelompok(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{
-                "No.","Club ID","Kode","Nama Program","Tgl.Mulai","Tgl.Akhir",
-                "Alamat Club","Nama Club","No.HP Ketua","Nama Ketua Club",
-                "Edu Id","Pelayanan","Kegiatan","Kelompok","Materi","Pembicara",
-                "Lokasi","Keterangan","Biaya"
-            }){
-              Class[] types = new Class[] {
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.Double.class
-             };  
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             } 
+        tabMode = new DefaultTableModel(null,
+                new String[]{"No.", "Club ID", "Kode", "Nama Program",
+                    "Tgl.Mulai", "Tgl.Akhir", "Alamat Club",
+                    "Nama Club", "No.HP Ketua", "Nama Ketua Club", "Edu Id",
+                    "Pelayanan", "Kegiatan", "Kelompok",
+                    "Materi", "Pembicara", "Lokasi", "Keterangan", "Biaya"}) {
+            Class[] types = new Class[]{java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 19; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(30);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(65);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(55);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(160);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(70);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(70);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(160);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(160);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(80);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(160);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(70);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(70);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(140);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(110);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(150);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(150);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(150);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(150);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(80);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        try {
-            prop.loadFromXML(new FileInputStream("setting/database.xml"));  
-            link=prop.getProperty("URLAPIPCARE");
-            otorisasi=koneksiDB.USERPCARE()+":"+koneksiDB.PASSPCARE()+":095";
-        } catch (Exception e) {
-            System.out.println("E : "+e);
-        }
-              
-    }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            link = prop.getProperty("URLAPIPCARE");
+            otorisasi = koneksiDB.USERPCARE() + ":" + koneksiDB.PASSPCARE() + ":095";
+        } catch (Exception e) {
+            System.out.println("E : " + e);
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -264,23 +304,25 @@ public class PCareCariKegiatanKelompok extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,Tanggal,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, Tanggal, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Tanggal,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Tanggal, BtnKeluar);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         tampil(Tanggal.getSelectedItem().toString());
-        this.setCursor(Cursor.getDefaultCursor());        
+        this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
@@ -288,38 +330,49 @@ public class PCareCariKegiatanKelompok extends javax.swing.JDialog {
     }//GEN-LAST:event_TanggalKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(tbKamar.getRowCount()>0){
-            for(i=0;i<tbKamar.getRowCount();i++){ 
-                Sequel.menyimpan2("pcare_kegiatan_kelompok","?,?,?,?,?,?,?,?,?,?,?","Edu ID",11,new String[]{
-                    tbKamar.getValueAt(i,10).toString(),tbKamar.getValueAt(i,1).toString(),tbKamar.getValueAt(i,7).toString(),
-                    Valid.SetTgl(tbKamar.getValueAt(i,11)+""),tbKamar.getValueAt(i,12).toString(),
-                    tbKamar.getValueAt(i,13).toString(),tbKamar.getValueAt(i,14).toString(),
-                    tbKamar.getValueAt(i,15).toString(),tbKamar.getValueAt(i,16).toString(),
-                    tbKamar.getValueAt(i,17).toString(),tbKamar.getValueAt(i,18).toString()
-                });
+        if (tbKamar.getRowCount() > 0) {
+            for (i = 0; i < tbKamar.getRowCount(); i++) {
+                Sequel.menyimpan2("pcare_kegiatan_kelompok",
+                        "?,?,?,?,?,?,?,?,?,?,?", "Edu ID", 11, new String[]{
+                            tbKamar.getValueAt(i, 10).toString(), tbKamar.
+                            getValueAt(i, 1).toString(), tbKamar.
+                            getValueAt(i, 7).toString(),
+                            Valid.SetTgl(tbKamar.getValueAt(i, 11) + ""),
+                            tbKamar.getValueAt(i, 12).toString(),
+                            tbKamar.getValueAt(i, 13).toString(), tbKamar.
+                            getValueAt(i, 14).toString(),
+                            tbKamar.getValueAt(i, 15).toString(), tbKamar.
+                            getValueAt(i, 16).toString(),
+                            tbKamar.getValueAt(i, 17).toString(), tbKamar.
+                            getValueAt(i, 18).toString()
+                        });
             }
-            JOptionPane.showMessageDialog(rootPane,"Proses simpan selesai...!");
+            JOptionPane.showMessageDialog(rootPane, "Proses simpan selesai...!");
             dispose();
-        }            
+        }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{Valid.pindah(evt,Tanggal,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, Tanggal, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PCareCariKegiatanKelompok dialog = new PCareCariKegiatanKelompok(new javax.swing.JFrame(), true);
+            PCareCariKegiatanKelompok dialog = new PCareCariKegiatanKelompok(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -339,83 +392,102 @@ public class PCareCariKegiatanKelompok extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param tanggal
      */
-    public void tampil(String tanggal) {        
+    public void tampil(String tanggal) {
         try {
-            URL = link+"/kelompok/kegiatan/"+tanggal;
+            URL = link + "/kelompok/kegiatan/" + tanggal;
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("X-cons-id",koneksiDB.CONSIDAPIPCARE());
-            utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-timestamp",utc);            
-	    headers.add("X-signature",api.getHmac());
-            headers.add("X-authorization","Basic "+Base64.encodeBase64String(otorisasi.getBytes()));
-            headers.add("user_key",koneksiDB.USERKEYAPIPCARE());
-	    requestEntity = new HttpEntity(headers);
-            System.out.println("URL : "+URL);
-	    //System.out.println(rest.exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-timestamp", utc);
+            headers.add("X-signature", api.getHmac());
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
+                    otorisasi.getBytes()));
+            headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
+            requestEntity = new HttpEntity(headers);
+            System.out.println("URL : " + URL);
+            // System.out.println(rest.exchange(URL, HttpMethod.GET, requestEntity,
+            // String.class).getBody());
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
-            //System.out.println("code : "+nameNode.path("code").asText());
-            //System.out.println("message : "+nameNode.path("message").asText());
-            if(nameNode.path("message").asText().equals("OK")){
+            // System.out.println("code : "+nameNode.path("code").asText());
+            // System.out.println("message : "+nameNode.path("message").asText());
+            if (nameNode.path("message").asText().equals("OK")) {
                 Valid.tabelKosong(tabMode);
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                if(response.path("list").isArray()){
-                    i=1;
-                    for(JsonNode list:response.path("list")){
-                        tabMode.addRow(new Object[]{
-                            i+".",list.path("clubProl").path("clubId").asText(),
-                            list.path("clubProl").path("jnsKelompok").path("kdProgram").asText(),
-                            list.path("clubProl").path("jnsKelompok").path("nmProgram").asText(),
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc));
+                if (response.path("list").isArray()) {
+                    i = 1;
+                    for (JsonNode list : response.path("list")) {
+                        tabMode.addRow(new Object[]{i + ".", list.path(
+                            "clubProl").path("clubId").asText(),
+                            list.path("clubProl").path("jnsKelompok").path(
+                            "kdProgram").asText(),
+                            list.path("clubProl").path("jnsKelompok").path(
+                            "nmProgram").asText(),
                             list.path("clubProl").path("tglMulai").asText(),
                             list.path("clubProl").path("tglAkhir").asText(),
                             list.path("clubProl").path("alamat").asText(),
                             list.path("clubProl").path("nama").asText(),
                             list.path("clubProl").path("ketua_noHP").asText(),
                             list.path("clubProl").path("ketua_nama").asText(),
-                            list.path("eduId").asText(),list.path("tglPelayanan").asText(),
-                            list.path("kegiatan").path("kode").asText()+" "+
-                            list.path("kegiatan").path("nama").asText(),
-                            list.path("kelompok").path("kode").asText()+" "+
-                            list.path("kelompok").path("nama").asText(),
-                            list.path("materi").asText(),list.path("pembicara").asText(),
-                            list.path("lokasi").asText(),list.path("keterangan").asText(),
-                            list.path("biaya").asDouble()
-                        });
+                            list.path("eduId").asText(),
+                            list.path("tglPelayanan").asText(),
+                            list.path("kegiatan").path("kode").asText() + " "
+                            + list.path("kegiatan").path("nama").asText(),
+                            list.path("kelompok").path("kode").asText() + " "
+                            + list.path("kelompok").path("nama").asText(),
+                            list.path("materi").asText(),
+                            list.path("pembicara").asText(),
+                            list.path("lokasi").asText(), list.
+                            path("keterangan").asText(),
+                            list.path("biaya").asDouble()});
                         i++;
                     }
                 }
-            }else {
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-            }  
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(null,"Koneksi ke server PCare terputus...!");
-            }else if(ex.toString().contains("500")){
-                JOptionPane.showMessageDialog(null,"Server PCare baru ngambek broooh...!");
-            }else if(ex.toString().contains("401")){
-                JOptionPane.showMessageDialog(null,"Username/Password salah. Lupa password? Wani piro...!");
-            }else if(ex.toString().contains("408")){
-                JOptionPane.showMessageDialog(null,"Time out, hayati lelah baaaang...!");
-            }else if(ex.toString().contains("424")){
-                JOptionPane.showMessageDialog(null,"Ambil data masternya yang bener dong coy...!");
-            }else if(ex.toString().contains("412")){
-                JOptionPane.showMessageDialog(null,"Tidak sesuai kondisi. Aku, kamu end...!");
-            }else if(ex.toString().contains("204")){
-                JOptionPane.showMessageDialog(null,"Data tidak ditemukan...!");
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(null,
+                        "Koneksi ke server PCare terputus...!");
+            } else if (ex.toString().contains("500")) {
+                JOptionPane.showMessageDialog(null,
+                        "Server PCare baru ngambek broooh...!");
+            } else if (ex.toString().contains("401")) {
+                JOptionPane.showMessageDialog(null,
+                        "Username/Password salah. Lupa password? Wani piro...!");
+            } else if (ex.toString().contains("408")) {
+                JOptionPane.showMessageDialog(null,
+                        "Time out, hayati lelah baaaang...!");
+            } else if (ex.toString().contains("424")) {
+                JOptionPane.showMessageDialog(null,
+                        "Ambil data masternya yang bener dong coy...!");
+            } else if (ex.toString().contains("412")) {
+                JOptionPane.showMessageDialog(null,
+                        "Tidak sesuai kondisi. Aku, kamu end...!");
+            } else if (ex.toString().contains("204")) {
+                JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             }
         }
-    } 
+    }
 
     /**
-     *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            PCareCariKegiatanKelompok.class.getName());
+
 }

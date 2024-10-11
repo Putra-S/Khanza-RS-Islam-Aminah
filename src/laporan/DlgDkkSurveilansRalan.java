@@ -3,88 +3,110 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgLhtBiaya.java
  *
  * Created on 12 Jul 10, 16:21:34
  */
-
 package laporan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgDkkSurveilansRalan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,ps2;
-    private ResultSet rs,rs2;
-    private int i=0,hr0s7=0,hr8s28=0,kr1th=0,th1s4=0,th5s9=0,th10s14=0,th15s19=0,th20s44=0,th45s54=0,th55s59=0,
-                th60s69=0,th70plus=0,laki=0,per=0,jml=0,ttl=0,jmltotal;
-    /** Creates new form DlgLhtBiaya
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private PreparedStatement ps, ps2;
+    private ResultSet rs, rs2;
+    private int i = 0, hr0s7 = 0, hr8s28 = 0, kr1th = 0, th1s4 = 0, th5s9 = 0, th10s14 = 0, th15s19 = 0, th20s44 = 0, th45s54 = 0, th55s59 = 0,
+            th60s69 = 0, th70plus = 0, laki = 0, per = 0, jml = 0, ttl = 0, jmltotal;
+
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgDkkSurveilansRalan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] rowRwJlDr={"No.","Kode ICD 10","Jenis Penyakit","0-7 Hr","8-28 Hr","< 1","1-4","5-9","10-14","15-19",
-                            "20-44","45-54","55-59","60-69","70+","Laki","Perp","Jumlah","Ttl.Kunjungan"};
-        tabMode=new DefaultTableModel(null,rowRwJlDr){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] rowRwJlDr = {"No.", "Kode ICD 10", "Jenis Penyakit", "0-7 Hr",
+            "8-28 Hr", "< 1", "1-4", "5-9", "10-14", "15-19",
+            "20-44", "45-54", "55-59", "60-69", "70+", "Laki", "Perp", "Jumlah",
+            "Ttl.Kunjungan"};
+        tabMode = new DefaultTableModel(null, rowRwJlDr) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbBangsal.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 19; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(30);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(100);
-            }else{
+            } else {
                 column.setPreferredWidth(45);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)20).getKata(TKd));
+        TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         try {
-            ps=koneksi.prepareStatement("select diagnosa_pasien.kd_penyakit,SUBSTRING(penyakit.nm_penyakit,1,80) as nm_penyakit from diagnosa_pasien inner join penyakit "+
-                    "inner join reg_periksa on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit and reg_periksa.no_rawat=diagnosa_pasien.no_rawat "+
-                    "where diagnosa_pasien.status='Ralan' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit<>'-' group by diagnosa_pasien.kd_penyakit ");
-            ps2=koneksi.prepareStatement("select concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur) as umur,pasien.jk,pasien.no_rkm_medis from pasien inner join reg_periksa inner join diagnosa_pasien "+
-                    "on pasien.no_rkm_medis=reg_periksa.no_rkm_medis and reg_periksa.no_rawat=diagnosa_pasien.no_rawat where "+
-                    "diagnosa_pasien.status='Ralan' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "+
-                    "group by diagnosa_pasien.no_rawat");
+            ps = koneksi.prepareStatement(
+                    "select diagnosa_pasien.kd_penyakit,SUBSTRING(penyakit.nm_penyakit,1,80) as nm_penyakit from diagnosa_pasien inner join penyakit "
+                    + "inner join reg_periksa on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit and reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                    + "where diagnosa_pasien.status='Ralan' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit<>'-' group by diagnosa_pasien.kd_penyakit ");
+            ps2 = koneksi.prepareStatement(
+                    "select concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur) as umur,pasien.jk,pasien.no_rkm_medis from pasien inner join reg_periksa inner join diagnosa_pasien "
+                    + "on pasien.no_rkm_medis=reg_periksa.no_rkm_medis and reg_periksa.no_rawat=diagnosa_pasien.no_rawat where "
+                    + "diagnosa_pasien.status='Ralan' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "
+                    + "group by diagnosa_pasien.no_rawat");
         } catch (Exception e) {
             System.out.println(e);
         }
-    }    
+    }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -219,51 +241,76 @@ public class DlgDkkSurveilansRalan extends javax.swing.JDialog {
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
+        } else if (tabMode.getRowCount() != 0) {
+
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
             Map<String, Object> param = new HashMap<>();
-            param.put("tanggal",Tgl2.getDate());
-            param.put("jmltotal",jmltotal+"");
-            for(int r=0;r<tabMode.getRowCount();r++){  
-                    Sequel.menyimpan("temporary","'"+r+"','"+
-                                    tabMode.getValueAt(r,0).toString().replaceAll("'","`") +"','"+
-                                    tabMode.getValueAt(r,1).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,2).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,3).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,4).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,5).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,6).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,7).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,8).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,9).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,10).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,11).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,12).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,13).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,14).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,15).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,16).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,17).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,18).toString().replaceAll("'","`")+"','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Nota Pembayaran");
+            param.put("tanggal", Tgl2.getDate());
+            param.put("jmltotal", jmltotal + "");
+            for (int r = 0; r < tabMode.getRowCount(); r++) {
+                Sequel.menyimpan("temporary", "'" + r + "','"
+                        + tabMode.getValueAt(r, 0).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 1).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 2).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 3).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 4).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 5).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 6).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 7).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 8).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 9).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 10).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 11).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 12).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 13).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 14).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 15).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 16).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 17).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 18).toString().replaceAll("'",
+                                "`") + "','','','','','','','','','','','','','','','','','','" + akses.
+                                getalamatip() + "'", "Rekap Nota Pembayaran");
             }
-              
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-            Valid.MyReportqry("rptSurveilansRalan.jasper","report","::[ Surveilans PD3I ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            Valid.MyReportqry("rptSurveilansRalan.jasper", "report",
+                    "::[ Surveilans PD3I ]::",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -273,24 +320,26 @@ public class DlgDkkSurveilansRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,TKd);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, TKd);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
 private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
-        
-        tampil();
+
+    tampil();
 }//GEN-LAST:event_BtnCari1ActionPerformed
 
 private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            tampil();
-            this.setCursor(Cursor.getDefaultCursor());
-        }else{
-            Valid.pindah(evt, TKd, BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tampil();
+        this.setCursor(Cursor.getDefaultCursor());
+    } else {
+        Valid.pindah(evt, TKd, BtnPrint);
+    }
 }//GEN-LAST:event_BtnCari1KeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -298,16 +347,18 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDkkSurveilansRalan dialog = new DlgDkkSurveilansRalan(new javax.swing.JFrame(), true);
+            DlgDkkSurveilansRalan dialog = new DlgDkkSurveilansRalan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -332,80 +383,126 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     /**
      *
      */
-    public void tampil(){        
-        try{   
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            Valid.tabelKosong(tabMode);    
-            ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-            ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-            rs=ps.executeQuery();
-            i=1;
-            jmltotal=0;
-            while(rs.next()){
-                hr0s7=0;hr8s28=0;kr1th=0;th1s4=0;th5s9=0;th10s14=0;th15s19=0;th20s44=0;th45s54=0;th55s59=0;th60s69=0;th70plus=0;laki=0;per=0;jml=0;ttl=0;
-                ps2.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps2.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps2.setString(3,rs.getString("kd_penyakit"));
-                rs2=ps2.executeQuery();
-                while(rs2.next()){            
+    public void tampil() {
+        try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Valid.tabelKosong(tabMode);
+            ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+            ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+            rs = ps.executeQuery();
+            i = 1;
+            jmltotal = 0;
+            while (rs.next()) {
+                hr0s7 = 0;
+                hr8s28 = 0;
+                kr1th = 0;
+                th1s4 = 0;
+                th5s9 = 0;
+                th10s14 = 0;
+                th15s19 = 0;
+                th20s44 = 0;
+                th45s54 = 0;
+                th55s59 = 0;
+                th60s69 = 0;
+                th70plus = 0;
+                laki = 0;
+                per = 0;
+                jml = 0;
+                ttl = 0;
+                ps2.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps2.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                ps2.setString(3, rs.getString("kd_penyakit"));
+                rs2 = ps2.executeQuery();
+                while (rs2.next()) {
                     ttl += 1;
                     jmltotal += 1;
-                    if(Sequel.cariInteger("select count(diagnosa_pasien.no_rawat) from reg_periksa inner join diagnosa_pasien "+
-                        "on reg_periksa.no_rawat=diagnosa_pasien.no_rawat where "+
-                        "diagnosa_pasien.status='Ralan' and reg_periksa.tgl_registrasi between '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' and "+
-                        "'"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"' and diagnosa_pasien.kd_penyakit='"+rs.getString("kd_penyakit")+"' "+
-                        "and reg_periksa.no_rkm_medis='"+rs2.getString("no_rkm_medis")+"'")==1){
-                            switch (rs2.getString("jk")) {
-                                case "L":
-                                    laki += 1;
-                                    break;
-                                case "P":
-                                    per += 1;
-                                    break;
+                    if (Sequel.cariInteger(
+                            "select count(diagnosa_pasien.no_rawat) from reg_periksa inner join diagnosa_pasien "
+                            + "on reg_periksa.no_rawat=diagnosa_pasien.no_rawat where "
+                            + "diagnosa_pasien.status='Ralan' and reg_periksa.tgl_registrasi between '" + Valid.
+                                    SetTgl(Tgl1.getSelectedItem() + "") + "' and "
+                            + "'" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and diagnosa_pasien.kd_penyakit='" + rs.
+                            getString("kd_penyakit") + "' "
+                            + "and reg_periksa.no_rkm_medis='" + rs2.getString(
+                                    "no_rkm_medis") + "'") == 1) {
+                        switch (rs2.getString("jk")) {
+                            case "L":
+                                laki += 1;
+                                break;
+                            case "P":
+                                per += 1;
+                                break;
+                        }
+                        if (rs2.getString("umur").contains("Hr")) {
+                            if (Valid.SetAngka(rs2.getString("umur").replaceAll(
+                                    " Hr", "").replaceAll("Hr", "").replaceAll(
+                                    " ", "")) <= 7) {
+                                hr0s7 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Hr", "").replaceAll("Hr", "").
+                                    replaceAll(" ", "")) <= 28) {
+                                hr8s28 += 1;
                             }
-                            if(rs2.getString("umur").contains("Hr")){
-                                if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Hr","").replaceAll("Hr","").replaceAll(" ",""))<=7){
-                                    hr0s7 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Hr","").replaceAll("Hr","").replaceAll(" ",""))<=28){
-                                    hr8s28 += 1;
-                                }
-                            }else if(rs2.getString("umur").contains("Bl")){
-                                kr1th += 1;
-                            }else if(rs2.getString("umur").contains("Th")){
-                                if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=4){
-                                    th1s4 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=9){
-                                    th5s9 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=14){
-                                    th10s14 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=19){
-                                    th15s19 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=44){
-                                    th20s44 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=54){
-                                    th45s54 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=59){
-                                    th55s59 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))<=69){
-                                    th60s69 += 1;
-                                }else if(Valid.SetAngka(rs2.getString("umur").replaceAll(" Th","").replaceAll("Th","").replaceAll(" ",""))>=70){
-                                    th70plus += 1;
-                                }
+                        } else if (rs2.getString("umur").contains("Bl")) {
+                            kr1th += 1;
+                        } else if (rs2.getString("umur").contains("Th")) {
+                            if (Valid.SetAngka(rs2.getString("umur").replaceAll(
+                                    " Th", "").replaceAll("Th", "").replaceAll(
+                                    " ", "")) <= 4) {
+                                th1s4 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 9) {
+                                th5s9 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 14) {
+                                th10s14 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 19) {
+                                th15s19 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 44) {
+                                th20s44 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 54) {
+                                th45s54 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 59) {
+                                th55s59 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) <= 69) {
+                                th60s69 += 1;
+                            } else if (Valid.SetAngka(rs2.getString("umur").
+                                    replaceAll(" Th", "").replaceAll("Th", "").
+                                    replaceAll(" ", "")) >= 70) {
+                                th70plus += 1;
                             }
-                    }                                       
+                        }
+                    }
                 }
-                jml=per+laki;
+                jml = per + laki;
                 tabMode.addRow(new Object[]{
-                   i,rs.getString("kd_penyakit"),rs.getString("nm_penyakit"),hr0s7,hr8s28,kr1th,th1s4,th5s9,th10s14,th15s19,th20s44,th45s54,th55s59,th60s69,th70plus,laki,per,jml,ttl
+                    i, rs.getString("kd_penyakit"), rs.getString("nm_penyakit"),
+                    hr0s7, hr8s28, kr1th, th1s4, th5s9, th10s14, th15s19,
+                    th20s44, th45s54, th55s59, th60s69, th70plus, laki, per, jml,
+                    ttl
                 });
                 i++;
             }
-                
+
             this.setCursor(Cursor.getDefaultCursor());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
+    private static final Logger LOG = Logger.getLogger(
+            DlgDkkSurveilansRalan.class.getName());
 
 }

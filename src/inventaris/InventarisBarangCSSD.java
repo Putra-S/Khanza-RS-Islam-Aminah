@@ -1,139 +1,187 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgSpesialis.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package inventaris;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class InventarisBarangCSSD extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi(); 
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private InventarisKoleksi inventaris=new InventarisKoleksi(null,false);
+    private InventarisKoleksi inventaris = new InventarisKoleksi(null, false);
 
-    /** Creates new form DlgSpesialis
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public InventarisBarangCSSD(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,10);
-        setSize(459,539);
+        this.setLocation(10, 10);
+        setSize(459, 539);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.Inventaris","Kode Barang","Nama Barang","Ruang","Kategori"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Inventaris", "Kode Barang", "Nama Barang", "Ruang", "Kategori"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbSpesialis.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 5; i++) {
             TableColumn column = tbSpesialis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(110);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(300);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(120);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
             }
         }
         tbSpesialis.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         inventaris.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(inventaris.getTable().getSelectedRow()!= -1){                   
-                    no_inventaris.setText(inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(),0).toString());
-                    nama_barang.setText(inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(),1).toString()+", "+inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(),2).toString());
-                }                
+                if (inventaris.getTable().getSelectedRow() != -1) {
+                    no_inventaris.setText(inventaris.getTable().getValueAt(
+                            inventaris.getTable().getSelectedRow(), 0).
+                            toString());
+                    nama_barang.setText(inventaris.getTable().getValueAt(
+                            inventaris.getTable().getSelectedRow(), 1).
+                            toString() + ", " + inventaris.getTable().
+                                    getValueAt(inventaris.getTable().
+                                            getSelectedRow(), 2).toString());
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         inventaris.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     inventaris.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -456,20 +504,23 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(no_inventaris.getText().trim().isEmpty()||nama_barang.getText().trim().isEmpty()){
-            Valid.textKosong(no_inventaris,"Barang");
-        }else{
-            Sequel.menyimpan("cssd_barang","'"+no_inventaris.getText()+"','"+KategoriBarang.getSelectedItem().toString()+"'","Barang");
+        if (no_inventaris.getText().trim().isEmpty() || nama_barang.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(no_inventaris, "Barang");
+        } else {
+            Sequel.menyimpan("cssd_barang",
+                    "'" + no_inventaris.getText() + "','" + KategoriBarang.
+                    getSelectedItem().toString() + "'", "Barang");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,KategoriBarang,BtnBatal);
+        } else {
+            Valid.pindah(evt, KategoriBarang, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -478,41 +529,49 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,no_inventaris,"cssd_barang","no_inventaris");
+        Valid.hapusTable(tabMode, no_inventaris, "cssd_barang", "no_inventaris");
         tampil();
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(no_inventaris.getText().trim().isEmpty()||nama_barang.getText().trim().isEmpty()){
-            Valid.textKosong(no_inventaris,"Barang");
-        }else{
-            Sequel.mengedit("cssd_barang","no_inventaris=?","no_inventaris=?,jenis_barang=?",3,new String[]{
-                no_inventaris.getText(),KategoriBarang.getSelectedItem().toString(),tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (no_inventaris.getText().trim().isEmpty() || nama_barang.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(no_inventaris, "Barang");
+        } else {
+            Sequel.mengedit("cssd_barang", "no_inventaris=?",
+                    "no_inventaris=?,jenis_barang=?", 3, new String[]{
+                        no_inventaris.getText(), KategoriBarang.
+                        getSelectedItem().toString(), tbSpesialis.getValueAt(
+                                tbSpesialis.getSelectedRow(), 0).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -522,19 +581,21 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbSpesialis.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -544,9 +605,9 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -556,21 +617,21 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariKeyReleased
 
     private void tbSpesialisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSpesialisMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
-            }            
+            }
         }
 }//GEN-LAST:event_tbSpesialisMouseClicked
 
     private void tbSpesialisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
-            
+
         }
 }//GEN-LAST:event_tbSpesialisKeyPressed
 
@@ -583,45 +644,49 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowActivated
 
     private void no_inventarisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_no_inventarisKeyPressed
-        
+
     }//GEN-LAST:event_no_inventarisKeyPressed
 
     private void btnInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvActionPerformed
         inventaris.isCek();
-        inventaris.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        inventaris.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         inventaris.setLocationRelativeTo(internalFrame1);
         inventaris.setAlwaysOnTop(false);
         inventaris.setVisible(true);
     }//GEN-LAST:event_btnInvActionPerformed
 
     private void KategoriBarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KategoriBarangKeyPressed
-        Valid.pindah(evt,btnInv,BtnSimpan);
+        Valid.pindah(evt, btnInv, BtnSimpan);
     }//GEN-LAST:event_KategoriBarangKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-            param.put("parameter","%"+TCari.getText()+"%"); 
-            Valid.MyReport("rptBarangCSSD.jasper","report","::[ Barang CSSD ]::",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            param.put("parameter", "%" + TCari.getText() + "%");
+            Valid.MyReport("rptBarangCSSD.jasper", "report",
+                    "::[ Barang CSSD ]::", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnAll);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
@@ -636,8 +701,9 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbSpesialisKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -647,16 +713,18 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
     }//GEN-LAST:event_tbSpesialisKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisBarangCSSD dialog = new InventarisBarangCSSD(new javax.swing.JFrame(), true);
+            InventarisBarangCSSD dialog = new InventarisBarangCSSD(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -695,37 +763,40 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select inventaris.no_inventaris,inventaris_barang.kode_barang, inventaris_barang.nama_barang,"+
-                    "inventaris_ruang.nama_ruang,cssd_barang.jenis_barang from inventaris inner join inventaris_barang "+
-                    "inner join inventaris_ruang inner join cssd_barang on inventaris_barang.kode_barang=inventaris.kode_barang "+
-                    "and inventaris.id_ruang=inventaris_ruang.id_ruang and inventaris.no_inventaris=cssd_barang.no_inventaris where "+
-                    "inventaris.no_inventaris like ? or inventaris_barang.nama_barang like ? or inventaris_ruang.nama_ruang like ? or "+
-                    "cssd_barang.jenis_barang like ? order by cssd_barang.jenis_barang");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select inventaris.no_inventaris,inventaris_barang.kode_barang, inventaris_barang.nama_barang,"
+                    + "inventaris_ruang.nama_ruang,cssd_barang.jenis_barang from inventaris inner join inventaris_barang "
+                    + "inner join inventaris_ruang inner join cssd_barang on inventaris_barang.kode_barang=inventaris.kode_barang "
+                    + "and inventaris.id_ruang=inventaris_ruang.id_ruang and inventaris.no_inventaris=cssd_barang.no_inventaris where "
+                    + "inventaris.no_inventaris like ? or inventaris_barang.nama_barang like ? or inventaris_ruang.nama_ruang like ? or "
+                    + "cssd_barang.jenis_barang like ? order by cssd_barang.jenis_barang");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new String[]{rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)});
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new String[]{rs.getString(1), rs.getString(2),
+                                rs.getString(3), rs.getString(4), rs.
+                                getString(5)});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }            
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -736,10 +807,13 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
     }
 
     private void getData() {
-        if(tbSpesialis.getSelectedRow()!= -1){
-            no_inventaris.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString());
-            nama_barang.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),2).toString());
-            KategoriBarang.setSelectedItem(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),4).toString());
+        if (tbSpesialis.getSelectedRow() != -1) {
+            no_inventaris.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 0).toString());
+            nama_barang.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 2).toString());
+            KategoriBarang.setSelectedItem(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 4).toString());
         }
     }
 
@@ -747,13 +821,16 @@ public class InventarisBarangCSSD extends javax.swing.JDialog {
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbSpesialis;
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getbarang_cssd());
         BtnHapus.setEnabled(akses.getbarang_cssd());
         BtnEdit.setEnabled(akses.getbarang_cssd());
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            InventarisBarangCSSD.class.getName());
 }

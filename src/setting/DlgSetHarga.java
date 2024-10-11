@@ -9,229 +9,321 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package setting;
 
-import fungsi.*;
-import inventory.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import inventory.DlgBarang;
+import inventory.DlgCariJenis;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgSetHarga extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabModePengaturanUmum,tabModePengaturanHargaUmum,tabModePengaturanHargaPerBarang;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private final DefaultTableModel tabMode, tabModePengaturanUmum, tabModePengaturanHargaUmum, tabModePengaturanHargaPerBarang;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     public DlgCariJenis jenis = new DlgCariJenis(null, false);
     private PreparedStatement ps;
     private ResultSet rs;
-    private DlgBarang barang=new DlgBarang(null,false);
+    private DlgBarang barang = new DlgBarang(null, false);
 
-    /** Creates new form DlgAdmin 
-     *@param parent
-     *@param modal*/
+    /**
+     * Creates new form DlgAdmin
+     *
+     * @param parent
+     * @param modal
+     */
     public DlgSetHarga(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tabMode=new DefaultTableModel(null,new Object[]{
-              "Ralan(%)","Ranap K1(%)","Ranap K2(%)","Ranap K3(%)","Kelas Utama(%)",
-              "Ranap VIP(%)","Ranap VVIP(%)","Beli Luar(%)","Jual Bebas(%)","Karyawan(%)",
-              "Kode Jenis","Nama Jenis"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
+            "Kelas Utama(%)",
+            "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)",
+            "Karyawan(%)",
+            "Kode Jenis", "Nama Jenis"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin.setModel(tabMode);
-        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 12; i++) {
             TableColumn column = tbAdmin.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else{
+            } else {
                 column.setPreferredWidth(90);
             }
         }
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePengaturanUmum=new DefaultTableModel(null,new Object[]{
-              "Harga obat yang digunakan","Asal harga jual obat","Sertakan PPN Pembelian"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabModePengaturanUmum = new DefaultTableModel(null, new Object[]{
+            "Harga obat yang digunakan", "Asal harga jual obat",
+            "Sertakan PPN Pembelian"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbPengaturanUmum.setModel(tabModePengaturanUmum);
-        tbPengaturanUmum.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbPengaturanUmum.setPreferredScrollableViewportSize(new Dimension(500,
+                500));
         tbPengaturanUmum.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 3; i++) {
             TableColumn column = tbPengaturanUmum.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(250);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(250);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(170);
             }
         }
 
         tbPengaturanUmum.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModePengaturanHargaUmum=new DefaultTableModel(null,new Object[]{
-              "Ralan(%)","Ranap K1(%)","Ranap K2(%)","Ranap K3(%)","Kelas Utama(%)",
-              "Ranap VIP(%)","Ranap VVIP(%)","Beli Luar(%)","Jual Bebas(%)","Karyawan(%)",
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabModePengaturanHargaUmum = new DefaultTableModel(null, new Object[]{
+            "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
+            "Kelas Utama(%)",
+            "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)",
+            "Karyawan(%)",}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbPengaturanHargaUmum.setModel(tabModePengaturanHargaUmum);
-        tbPengaturanHargaUmum.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbPengaturanHargaUmum.setPreferredScrollableViewportSize(new Dimension(
+                500, 500));
         tbPengaturanHargaUmum.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 10; i++) {
-            TableColumn column = tbPengaturanHargaUmum.getColumnModel().getColumn(i);
-            if(i==0){
+            TableColumn column = tbPengaturanHargaUmum.getColumnModel().
+                    getColumn(i);
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else{
+            } else {
                 column.setPreferredWidth(90);
             }
         }
 
         tbPengaturanHargaUmum.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePengaturanHargaPerBarang=new DefaultTableModel(null,new Object[]{
-              "Ralan(%)","Ranap K1(%)","Ranap K2(%)","Ranap K3(%)","Kelas Utama(%)",
-              "Ranap VIP(%)","Ranap VVIP(%)","Beli Luar(%)","Jual Bebas(%)","Karyawan(%)",
-              "Kode Barang","Nama Barang"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabModePengaturanHargaPerBarang = new DefaultTableModel(null,
+                new Object[]{
+                    "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
+                    "Kelas Utama(%)",
+                    "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)",
+                    "Jual Bebas(%)", "Karyawan(%)",
+                    "Kode Barang", "Nama Barang"
+                }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbPengaturanHargaPerBarang.setModel(tabModePengaturanHargaPerBarang);
-        tbPengaturanHargaPerBarang.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbPengaturanHargaPerBarang.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbPengaturanHargaPerBarang.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 12; i++) {
-            TableColumn column = tbPengaturanHargaPerBarang.getColumnModel().getColumn(i);
-            if(i==0){
+            TableColumn column = tbPengaturanHargaPerBarang.getColumnModel().
+                    getColumn(i);
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(90);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(200);
-            }else{
+            } else {
                 column.setPreferredWidth(90);
             }
         }
 
-        tbPengaturanHargaPerBarang.setDefaultRenderer(Object.class, new WarnaTable());
-        ralan.setDocument(new batasInput((byte)10).getKata(ralan));
-        ranapk1.setDocument(new batasInput((byte)10).getKata(ranapk1));
-        ranapk2.setDocument(new batasInput((byte)10).getKata(ranapk2));
-        ranapk3.setDocument(new batasInput((byte)10).getKata(ranapk3));
-        ranaputama.setDocument(new batasInput((byte)10).getKata(ranaputama));
-        ranapvip.setDocument(new batasInput((byte)10).getKata(ranapvip));
-        ranapvvip.setDocument(new batasInput((byte)10).getKata(ranapvvip));
-        beliluar.setDocument(new batasInput((byte)10).getKata(beliluar));
-        jualbebas.setDocument(new batasInput((byte)10).getKata(jualbebas));
-        karyawan.setDocument(new batasInput((byte)10).getKata(karyawan));
-        kdjns.setDocument(new batasInput((byte)4).getKata(kdjns));
+        tbPengaturanHargaPerBarang.setDefaultRenderer(Object.class,
+                new WarnaTable());
+        ralan.setDocument(new batasInput((byte) 10).getKata(ralan));
+        ranapk1.setDocument(new batasInput((byte) 10).getKata(ranapk1));
+        ranapk2.setDocument(new batasInput((byte) 10).getKata(ranapk2));
+        ranapk3.setDocument(new batasInput((byte) 10).getKata(ranapk3));
+        ranaputama.setDocument(new batasInput((byte) 10).getKata(ranaputama));
+        ranapvip.setDocument(new batasInput((byte) 10).getKata(ranapvip));
+        ranapvvip.setDocument(new batasInput((byte) 10).getKata(ranapvvip));
+        beliluar.setDocument(new batasInput((byte) 10).getKata(beliluar));
+        jualbebas.setDocument(new batasInput((byte) 10).getKata(jualbebas));
+        karyawan.setDocument(new batasInput((byte) 10).getKata(karyawan));
+        kdjns.setDocument(new batasInput((byte) 4).getKata(kdjns));
         TCari.setDocument(new batasInput(100).getKata(TCari));
         TCari1.setDocument(new batasInput(100).getKata(TCari1));
-        ralanumum.setDocument(new batasInput((byte)10).getKata(ralanumum));
-        ranapk1umum.setDocument(new batasInput((byte)10).getKata(ranapk1umum));
-        ranapk2umum.setDocument(new batasInput((byte)10).getKata(ranapk2umum));
-        ranapk3umum.setDocument(new batasInput((byte)10).getKata(ranapk3umum));
-        ranaputamaumum.setDocument(new batasInput((byte)10).getKata(ranaputamaumum));
-        ranapvipumum.setDocument(new batasInput((byte)10).getKata(ranapvipumum));
-        ranapvvipumum.setDocument(new batasInput((byte)10).getKata(ranapvvipumum));
-        beliluarumum.setDocument(new batasInput((byte)10).getKata(beliluarumum));
-        jualbebasumum.setDocument(new batasInput((byte)10).getKata(jualbebasumum));
-        ralanperbarang.setDocument(new batasInput((byte)10).getKata(ralanperbarang));
-        ranapk1perbarang.setDocument(new batasInput((byte)10).getKata(ranapk1perbarang));
-        ranapk2perbarang.setDocument(new batasInput((byte)10).getKata(ranapk2perbarang));
-        ranapk3perbarang.setDocument(new batasInput((byte)10).getKata(ranapk3perbarang));
-        ranaputamaperbarang.setDocument(new batasInput((byte)10).getKata(ranaputamaperbarang));
-        ranapvipperbarang.setDocument(new batasInput((byte)10).getKata(ranapvipperbarang));
-        ranapvvipperbarang.setDocument(new batasInput((byte)10).getKata(ranapvvipperbarang));
-        beliluarperbarang.setDocument(new batasInput((byte)10).getKata(beliluarperbarang));
-        jualbebasperbarang.setDocument(new batasInput((byte)10).getKata(jualbebasperbarang));        
-        
+        ralanumum.setDocument(new batasInput((byte) 10).getKata(ralanumum));
+        ranapk1umum.setDocument(new batasInput((byte) 10).getKata(ranapk1umum));
+        ranapk2umum.setDocument(new batasInput((byte) 10).getKata(ranapk2umum));
+        ranapk3umum.setDocument(new batasInput((byte) 10).getKata(ranapk3umum));
+        ranaputamaumum.setDocument(new batasInput((byte) 10).getKata(
+                ranaputamaumum));
+        ranapvipumum.
+                setDocument(new batasInput((byte) 10).getKata(ranapvipumum));
+        ranapvvipumum.setDocument(new batasInput((byte) 10).getKata(
+                ranapvvipumum));
+        beliluarumum.
+                setDocument(new batasInput((byte) 10).getKata(beliluarumum));
+        jualbebasumum.setDocument(new batasInput((byte) 10).getKata(
+                jualbebasumum));
+        ralanperbarang.setDocument(new batasInput((byte) 10).getKata(
+                ralanperbarang));
+        ranapk1perbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranapk1perbarang));
+        ranapk2perbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranapk2perbarang));
+        ranapk3perbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranapk3perbarang));
+        ranaputamaperbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranaputamaperbarang));
+        ranapvipperbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranapvipperbarang));
+        ranapvvipperbarang.setDocument(new batasInput((byte) 10).getKata(
+                ranapvvipperbarang));
+        beliluarperbarang.setDocument(new batasInput((byte) 10).getKata(
+                beliluarperbarang));
+        jualbebasperbarang.setDocument(new batasInput((byte) 10).getKata(
+                jualbebasperbarang));
+
         jenis.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
+                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().
+                            getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
+                            getSelectedRow(), 1).toString());
                 }
                 kdjns.requestFocus();
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         barang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(barang.getTable().getSelectedRow()!= -1){                   
-                    kdbarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());                    
-                    nmbarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),2).toString());
-                }     
+                if (barang.getTable().getSelectedRow() != -1) {
+                    kdbarang.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 1).toString());
+                    nmbarang.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 2).toString());
+                }
                 kdbarang.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         barang.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     barang.dispose();
-                }  
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1710,20 +1802,21 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ranapvipKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvipKeyPressed
-        Valid.pindah(evt,ranaputama,ranapvvip);
+        Valid.pindah(evt, ranaputama, ranapvvip);
 }//GEN-LAST:event_ranapvipKeyPressed
 
     private void ranapvvipKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvvipKeyPressed
-        Valid.pindah(evt,ranapvip,beliluar);
+        Valid.pindah(evt, ranapvip, beliluar);
 }//GEN-LAST:event_ranapvvipKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
-            if(tabModePengaturanUmum.getRowCount()>0){
-                JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu pengaturan ...!!!!");
+        if (TabSetting.getSelectedIndex() == 0) {
+            if (tabModePengaturanUmum.getRowCount() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Hanya diijinkan satu pengaturan ...!!!!");
                 cmbPengaturan.requestFocus();
-            }else{
-                Sequel.menyimpan("set_harga_obat","?,?,?",3,new String[]{
+            } else {
+                Sequel.menyimpan("set_harga_obat", "?,?,?", 3, new String[]{
                     cmbPengaturan.getSelectedItem().toString(),
                     cmbHargaDasar.getSelectedItem().toString(),
                     cmbPPN.getSelectedItem().toString()
@@ -1731,118 +1824,154 @@ public class DlgSetHarga extends javax.swing.JDialog {
                 tampilpengaturanumum();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==1){
-            if(tabModePengaturanHargaUmum.getRowCount()>0){
-                JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu pengaturan ...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (tabModePengaturanHargaUmum.getRowCount() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Hanya diijinkan satu pengaturan ...!!!!");
                 ralanumum.requestFocus();
-            }else{
-                if(ralanumum.getText().trim().isEmpty()){
-                    Valid.textKosong(ralanumum,"Keuntungan di Rawat Jalan");
-                }else if(ranapk1umum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranapk1umum,"Keuntungan di Ranap Kelas 1");
-                }else if(ranapk2umum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranapk2umum,"Keuntungan di Ranap Kelas 2");
-                }else if(ranapk3umum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranapk3umum,"Keuntungan di Ranap Kelas 3");
-                }else if(ranaputamaumum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranaputamaumum,"Keuntungan di Ranap Kelas Utama");
-                }else if(ranapvipumum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranapvipumum,"Keuntungan di Ranap Kelas VIP");
-                }else if(ranapvvipumum.getText().trim().isEmpty()){
-                    Valid.textKosong(ranapvvipumum,"Keuntungan di Ranap Kelas VVIP");
-                }else if(beliluarumum.getText().trim().isEmpty()){
-                    Valid.textKosong(beliluarumum,"Keuntungan Jika Beli dari Apotek Lain");
-                }else if(jualbebasumum.getText().trim().isEmpty()){
-                    Valid.textKosong(jualbebasumum,"Keuntungan di Penjualan Bebas");
-                }else if(karyawanumum.getText().trim().isEmpty()){
-                    Valid.textKosong(karyawanumum,"Keuntungan Jika Pasien/Pembeli Karyawan");
-                }else{  
-                    Sequel.menyimpan("setpenjualanumum","'"+ralanumum.getText()+"','"+ranapk1umum.getText()+"','"+
-                            ranapk2umum.getText()+"','"+ranapk3umum.getText()+"','"+ranaputamaumum.getText()+"','"+
-                            ranapvipumum.getText()+"','"+ranapvvipumum.getText()+"','"+beliluarumum.getText()+"','"+
-                            jualbebasumum.getText()+"','"+karyawanumum.getText()+"'","Set Harga");
+            } else {
+                if (ralanumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ralanumum, "Keuntungan di Rawat Jalan");
+                } else if (ranapk1umum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranapk1umum, "Keuntungan di Ranap Kelas 1");
+                } else if (ranapk2umum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranapk2umum, "Keuntungan di Ranap Kelas 2");
+                } else if (ranapk3umum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranapk3umum, "Keuntungan di Ranap Kelas 3");
+                } else if (ranaputamaumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranaputamaumum,
+                            "Keuntungan di Ranap Kelas Utama");
+                } else if (ranapvipumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranapvipumum,
+                            "Keuntungan di Ranap Kelas VIP");
+                } else if (ranapvvipumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(ranapvvipumum,
+                            "Keuntungan di Ranap Kelas VVIP");
+                } else if (beliluarumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(beliluarumum,
+                            "Keuntungan Jika Beli dari Apotek Lain");
+                } else if (jualbebasumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(jualbebasumum,
+                            "Keuntungan di Penjualan Bebas");
+                } else if (karyawanumum.getText().trim().isEmpty()) {
+                    Valid.textKosong(karyawanumum,
+                            "Keuntungan Jika Pasien/Pembeli Karyawan");
+                } else {
+                    Sequel.menyimpan("setpenjualanumum", "'" + ralanumum.
+                            getText() + "','" + ranapk1umum.getText() + "','"
+                            + ranapk2umum.getText() + "','" + ranapk3umum.
+                            getText() + "','" + ranaputamaumum.getText() + "','"
+                            + ranapvipumum.getText() + "','" + ranapvvipumum.
+                            getText() + "','" + beliluarumum.getText() + "','"
+                            + jualbebasumum.getText() + "','" + karyawanumum.
+                            getText() + "'", "Set Harga");
                     tampilpengaturanhargaumum();
                     emptTeks();
-                }                
+                }
             }
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(ralan.getText().trim().isEmpty()){
-                Valid.textKosong(ralan,"Keuntungan di Rawat Jalan");
-            }else if(ranapk1.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk1,"Keuntungan di Ranap Kelas 1");
-            }else if(ranapk2.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk2,"Keuntungan di Ranap Kelas 2");
-            }else if(ranapk3.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk3,"Keuntungan di Ranap Kelas 3");
-            }else if(ranaputama.getText().trim().isEmpty()){
-                Valid.textKosong(ranaputama,"Keuntungan di Ranap Kelas Utama");
-            }else if(ranapvip.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvip,"Keuntungan di Ranap Kelas VIP");
-            }else if(ranapvvip.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvvip,"Keuntungan di Ranap Kelas VVIP");
-            }else if(beliluar.getText().trim().isEmpty()){
-                Valid.textKosong(beliluar,"Keuntungan Jika Beli dari Apotek Lain");
-            }else if(jualbebas.getText().trim().isEmpty()){
-                Valid.textKosong(jualbebas,"Keuntungan di Penjualan Bebas");
-            }else if(karyawan.getText().trim().isEmpty()){
-                Valid.textKosong(karyawan,"Keuntungan Jika Pasien/Pembeli Karyawan");
-            }else if(kdjns.getText().trim().isEmpty()||nmjns.getText().trim().isEmpty()){
-                Valid.textKosong(kdjns,"Jenis Barang");
-            }else{            
-                Sequel.menyimpan("setpenjualan","'"+ralan.getText()+"','"+ranapk1.getText()+"','"+
-                        ranapk2.getText()+"','"+ranapk3.getText()+"','"+ranaputama.getText()+"','"+
-                        ranapvip.getText()+"','"+ranapvvip.getText()+"','"+beliluar.getText()+"','"+
-                        jualbebas.getText()+"','"+karyawan.getText()+"','"+kdjns.getText()+"'","Set Harga");
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (ralan.getText().trim().isEmpty()) {
+                Valid.textKosong(ralan, "Keuntungan di Rawat Jalan");
+            } else if (ranapk1.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk1, "Keuntungan di Ranap Kelas 1");
+            } else if (ranapk2.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk2, "Keuntungan di Ranap Kelas 2");
+            } else if (ranapk3.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk3, "Keuntungan di Ranap Kelas 3");
+            } else if (ranaputama.getText().trim().isEmpty()) {
+                Valid.textKosong(ranaputama, "Keuntungan di Ranap Kelas Utama");
+            } else if (ranapvip.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvip, "Keuntungan di Ranap Kelas VIP");
+            } else if (ranapvvip.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvvip, "Keuntungan di Ranap Kelas VVIP");
+            } else if (beliluar.getText().trim().isEmpty()) {
+                Valid.textKosong(beliluar,
+                        "Keuntungan Jika Beli dari Apotek Lain");
+            } else if (jualbebas.getText().trim().isEmpty()) {
+                Valid.textKosong(jualbebas, "Keuntungan di Penjualan Bebas");
+            } else if (karyawan.getText().trim().isEmpty()) {
+                Valid.textKosong(karyawan,
+                        "Keuntungan Jika Pasien/Pembeli Karyawan");
+            } else if (kdjns.getText().trim().isEmpty() || nmjns.getText().
+                    trim().isEmpty()) {
+                Valid.textKosong(kdjns, "Jenis Barang");
+            } else {
+                Sequel.menyimpan("setpenjualan",
+                        "'" + ralan.getText() + "','" + ranapk1.getText() + "','"
+                        + ranapk2.getText() + "','" + ranapk3.getText() + "','" + ranaputama.
+                        getText() + "','"
+                        + ranapvip.getText() + "','" + ranapvvip.getText() + "','" + beliluar.
+                        getText() + "','"
+                        + jualbebas.getText() + "','" + karyawan.getText() + "','" + kdjns.
+                        getText() + "'", "Set Harga");
                 tampil();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==3){
-            if(ralanperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ralanperbarang,"Keuntungan di Rawat Jalan");
-            }else if(ranapk1perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk1perbarang,"Keuntungan di Ranap Kelas 1");
-            }else if(ranapk2perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk2perbarang,"Keuntungan di Ranap Kelas 2");
-            }else if(ranapk3perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk3perbarang,"Keuntungan di Ranap Kelas 3");
-            }else if(ranaputamaperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranaputamaperbarang,"Keuntungan di Ranap Kelas Utama");
-            }else if(ranapvipperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvipperbarang,"Keuntungan di Ranap Kelas VIP");
-            }else if(ranapvvipperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvvipperbarang,"Keuntungan di Ranap Kelas VVIP");
-            }else if(beliluarperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(beliluarperbarang,"Keuntungan Jika Beli dari Apotek Lain");
-            }else if(jualbebasperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(jualbebasperbarang,"Keuntungan di Penjualan Bebas");
-            }else if(karyawanperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(karyawanperbarang,"Keuntungan Jika Pasien/Pembeli Karyawan");
-            }else if(kdbarang.getText().trim().isEmpty()||nmbarang.getText().trim().isEmpty()){
-                Valid.textKosong(kdbarang,"Barang/Alkes/BHP");
-            }else{            
-                Sequel.menyimpan("setpenjualanperbarang","'"+ralanperbarang.getText()+"','"+ranapk1perbarang.getText()+"','"+
-                        ranapk2perbarang.getText()+"','"+ranapk3perbarang.getText()+"','"+ranaputamaperbarang.getText()+"','"+
-                        ranapvipperbarang.getText()+"','"+ranapvvipperbarang.getText()+"','"+beliluarperbarang.getText()+"','"+
-                        jualbebasperbarang.getText()+"','"+karyawanperbarang.getText()+"','"+kdbarang.getText()+"'","Set Harga");
+        } else if (TabSetting.getSelectedIndex() == 3) {
+            if (ralanperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ralanperbarang, "Keuntungan di Rawat Jalan");
+            } else if (ranapk1perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk1perbarang,
+                                "Keuntungan di Ranap Kelas 1");
+            } else if (ranapk2perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk2perbarang,
+                                "Keuntungan di Ranap Kelas 2");
+            } else if (ranapk3perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk3perbarang,
+                                "Keuntungan di Ranap Kelas 3");
+            } else if (ranaputamaperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranaputamaperbarang,
+                        "Keuntungan di Ranap Kelas Utama");
+            } else if (ranapvipperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvipperbarang,
+                        "Keuntungan di Ranap Kelas VIP");
+            } else if (ranapvvipperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvvipperbarang,
+                        "Keuntungan di Ranap Kelas VVIP");
+            } else if (beliluarperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(beliluarperbarang,
+                        "Keuntungan Jika Beli dari Apotek Lain");
+            } else if (jualbebasperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(jualbebasperbarang,
+                        "Keuntungan di Penjualan Bebas");
+            } else if (karyawanperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(karyawanperbarang,
+                        "Keuntungan Jika Pasien/Pembeli Karyawan");
+            } else if (kdbarang.getText().trim().isEmpty() || nmbarang.getText().
+                    trim().isEmpty()) {
+                Valid.textKosong(kdbarang, "Barang/Alkes/BHP");
+            } else {
+                Sequel.menyimpan("setpenjualanperbarang", "'" + ralanperbarang.
+                        getText() + "','" + ranapk1perbarang.getText() + "','"
+                        + ranapk2perbarang.getText() + "','" + ranapk3perbarang.
+                        getText() + "','" + ranaputamaperbarang.getText() + "','"
+                        + ranapvipperbarang.getText() + "','" + ranapvvipperbarang.
+                        getText() + "','" + beliluarperbarang.getText() + "','"
+                        + jualbebasperbarang.getText() + "','" + karyawanperbarang.
+                        getText() + "','" + kdbarang.getText() + "'",
+                        "Set Harga");
                 tampilpengaturanhargaperbarang();
                 emptTeks();
             }
-        }            
+        }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            if(TabSetting.getSelectedIndex()==0){
-                Valid.pindah(evt,cmbPPN,BtnBatal);
-            }else if(TabSetting.getSelectedIndex()==1){
-                Valid.pindah(evt,karyawanumum,BtnBatal);
-            }else if(TabSetting.getSelectedIndex()==2){
-                Valid.pindah(evt,karyawan,BtnBatal);
-            }else if(TabSetting.getSelectedIndex()==3){
-                Valid.pindah(evt,ralanperbarang,BtnBatal);
-            }                
+        } else {
+            if (TabSetting.getSelectedIndex() == 0) {
+                Valid.pindah(evt, cmbPPN, BtnBatal);
+            } else if (TabSetting.getSelectedIndex() == 1) {
+                Valid.pindah(evt, karyawanumum, BtnBatal);
+            } else if (TabSetting.getSelectedIndex() == 2) {
+                Valid.pindah(evt, karyawan, BtnBatal);
+            } else if (TabSetting.getSelectedIndex() == 3) {
+                Valid.pindah(evt, ralanperbarang, BtnBatal);
+            }
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -1851,78 +1980,92 @@ public class DlgSetHarga extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             Sequel.queryu("delete from set_harga_obat");
             tampilpengaturanumum();
             emptTeks();
-        }else if(TabSetting.getSelectedIndex()==1){
-            if(tabModePengaturanHargaUmum.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (tabModePengaturanHargaUmum.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 ranapvipumum.requestFocus();
-            }else if(ranapvvipumum.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(! ranapvvipumum.getText().trim().isEmpty()){
+            } else if (ranapvvipumum.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!ranapvvipumum.getText().trim().isEmpty()) {
                 Sequel.queryu("delete from setpenjualanumum");
                 tampilpengaturanhargaumum();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(tabMode.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (tabMode.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 ranapvip.requestFocus();
-            }else if(ranapvvip.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(! ranapvvip.getText().trim().isEmpty()){
-                Sequel.queryu("delete from setpenjualan where kdjns='"+kdjns.getText()+"'");
+            } else if (ranapvvip.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!ranapvvip.getText().trim().isEmpty()) {
+                Sequel.queryu("delete from setpenjualan where kdjns='" + kdjns.
+                        getText() + "'");
                 tampil();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==3){
-            if(tabModePengaturanHargaPerBarang.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 3) {
+            if (tabModePengaturanHargaPerBarang.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 ranapvipperbarang.requestFocus();
-            }else if(ranapvvipperbarang.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(! ranapvvipperbarang.getText().trim().isEmpty()){
-                Sequel.queryu("delete from setpenjualanperbarang where kode_brng='"+kdbarang.getText()+"'");
+            } else if (ranapvvipperbarang.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!ranapvvipperbarang.getText().trim().isEmpty()) {
+                Sequel.queryu(
+                        "delete from setpenjualanperbarang where kode_brng='" + kdbarang.
+                                getText() + "'");
                 tampilpengaturanhargaperbarang();
                 emptTeks();
             }
-        }             
+        }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnHapus);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        if(tabModePengaturanUmum.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, pengaturan harga tidak boleh kosong ...!!!!");
+        if (tabModePengaturanUmum.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, pengaturan harga tidak boleh kosong ...!!!!");
             TabSetting.setSelectedIndex(0);
             cmbPengaturan.requestFocus();
-        }else if(! (tabModePengaturanUmum.getRowCount()==0)) {
+        } else if (!(tabModePengaturanUmum.getRowCount() == 0)) {
             dispose();
         }
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnHapus,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnHapus, BtnKeluar);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void tbAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdminMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1931,8 +2074,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminMouseClicked
 
     private void tbAdminKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdminKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1942,41 +2086,41 @@ public class DlgSetHarga extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminKeyPressed
 
     private void beliluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_beliluarKeyPressed
-        Valid.pindah(evt,ranapvvip,jualbebas);
+        Valid.pindah(evt, ranapvvip, jualbebas);
     }//GEN-LAST:event_beliluarKeyPressed
 
     private void ranapvipMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipMouseExited
-        if(ranapvip.getText().isEmpty()){
+        if (ranapvip.getText().isEmpty()) {
             ranapvip.setText("0");
         }
     }//GEN-LAST:event_ranapvipMouseExited
 
     private void ranapvvipMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipMouseExited
-        if(ranapvvip.getText().isEmpty()){
+        if (ranapvvip.getText().isEmpty()) {
             ranapvvip.setText("0");
         }
     }//GEN-LAST:event_ranapvvipMouseExited
 
     private void beliluarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarMouseExited
-        if(beliluar.getText().isEmpty()){
+        if (beliluar.getText().isEmpty()) {
             beliluar.setText("0");
         }
     }//GEN-LAST:event_beliluarMouseExited
 
     private void ranapvipMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipMouseMoved
-        if(ranapvip.getText().equals("0")||ranapvip.getText().equals("0.0")){
+        if (ranapvip.getText().equals("0") || ranapvip.getText().equals("0.0")) {
             ranapvip.setText("");
         }
     }//GEN-LAST:event_ranapvipMouseMoved
 
     private void ranapvvipMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipMouseMoved
-        if(ranapvvip.getText().equals("0")||ranapvvip.getText().equals("0.0")){
+        if (ranapvvip.getText().equals("0") || ranapvvip.getText().equals("0.0")) {
             ranapvvip.setText("");
         }
     }//GEN-LAST:event_ranapvvipMouseMoved
 
     private void beliluarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarMouseMoved
-        if(beliluar.getText().equals("0")||beliluar.getText().equals("0.0")){
+        if (beliluar.getText().equals("0") || beliluar.getText().equals("0.0")) {
             beliluar.setText("");
         }
     }//GEN-LAST:event_beliluarMouseMoved
@@ -1986,258 +2130,311 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             Sequel.queryu("delete from set_harga_obat");
-            Sequel.menyimpan("set_harga_obat","?,?,?",3,new String[]{
+            Sequel.menyimpan("set_harga_obat", "?,?,?", 3, new String[]{
                 cmbPengaturan.getSelectedItem().toString(),
                 cmbHargaDasar.getSelectedItem().toString(),
                 cmbPPN.getSelectedItem().toString()
             });
             tampilpengaturanumum();
             emptTeks();
-        }else if(TabSetting.getSelectedIndex()==1){            
-            if(ralanumum.getText().trim().isEmpty()){
-                Valid.textKosong(ralanumum,"Keuntungan di Rawat Jalan");
-            }else if(ranapk1umum.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk1umum,"Keuntungan di Ranap Kelas 1");
-            }else if(ranapk2umum.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk2umum,"Keuntungan di Ranap Kelas 2");
-            }else if(ranapk3umum.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk3umum,"Keuntungan di Ranap Kelas 3");
-            }else if(ranaputamaumum.getText().trim().isEmpty()){
-                Valid.textKosong(ranaputamaumum,"Keuntungan di Ranap Kelas Utama");
-            }else if(ranapvipumum.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvipumum,"Keuntungan di Ranap Kelas VIP");
-            }else if(ranapvvipumum.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvvipumum,"Keuntungan di Ranap Kelas VVIP");
-            }else if(beliluarumum.getText().trim().isEmpty()){
-                Valid.textKosong(beliluarumum,"Keuntungan Jika Beli dari Apotek Lain");
-            }else if(jualbebasumum.getText().trim().isEmpty()){
-                Valid.textKosong(jualbebasumum,"Keuntungan di Penjualan Bebas");
-            }else if(karyawanumum.getText().trim().isEmpty()){
-                Valid.textKosong(karyawanumum,"Keuntungan Jika Pasien/Pembeli Karyawan");
-            }else{ 
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (ralanumum.getText().trim().isEmpty()) {
+                Valid.textKosong(ralanumum, "Keuntungan di Rawat Jalan");
+            } else if (ranapk1umum.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk1umum, "Keuntungan di Ranap Kelas 1");
+            } else if (ranapk2umum.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk2umum, "Keuntungan di Ranap Kelas 2");
+            } else if (ranapk3umum.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk3umum, "Keuntungan di Ranap Kelas 3");
+            } else if (ranaputamaumum.getText().trim().isEmpty()) {
+                Valid.textKosong(ranaputamaumum,
+                        "Keuntungan di Ranap Kelas Utama");
+            } else if (ranapvipumum.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvipumum, "Keuntungan di Ranap Kelas VIP");
+            } else if (ranapvvipumum.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapvvipumum,
+                                "Keuntungan di Ranap Kelas VVIP");
+            } else if (beliluarumum.getText().trim().isEmpty()) {
+                Valid.textKosong(beliluarumum,
+                        "Keuntungan Jika Beli dari Apotek Lain");
+            } else if (jualbebasumum.getText().trim().isEmpty()) {
+                Valid.textKosong(jualbebasumum, "Keuntungan di Penjualan Bebas");
+            } else if (karyawanumum.getText().trim().isEmpty()) {
+                Valid.textKosong(karyawanumum,
+                        "Keuntungan Jika Pasien/Pembeli Karyawan");
+            } else {
                 Sequel.queryu("delete from setpenjualanumum");
-                Sequel.menyimpan("setpenjualanumum","'"+ralanumum.getText()+"','"+ranapk1umum.getText()+"','"+
-                        ranapk2umum.getText()+"','"+ranapk3umum.getText()+"','"+ranaputamaumum.getText()+"','"+
-                        ranapvipumum.getText()+"','"+ranapvvipumum.getText()+"','"+beliluarumum.getText()+"','"+
-                        jualbebasumum.getText()+"','"+karyawanumum.getText()+"'","Set Harga");
+                Sequel.menyimpan("setpenjualanumum",
+                        "'" + ralanumum.getText() + "','" + ranapk1umum.
+                        getText() + "','"
+                        + ranapk2umum.getText() + "','" + ranapk3umum.getText() + "','" + ranaputamaumum.
+                        getText() + "','"
+                        + ranapvipumum.getText() + "','" + ranapvvipumum.
+                        getText() + "','" + beliluarumum.getText() + "','"
+                        + jualbebasumum.getText() + "','" + karyawanumum.
+                        getText() + "'", "Set Harga");
                 tampilpengaturanhargaumum();
                 emptTeks();
-            }   
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(ralan.getText().trim().isEmpty()){
-                Valid.textKosong(ralan,"Keuntungan di Rawat Jalan");
-            }else if(ranapk1.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk1,"Keuntungan di Ranap Kelas 1");
-            }else if(ranapk2.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk2,"Keuntungan di Ranap Kelas 2");
-            }else if(ranapk3.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk3,"Keuntungan di Ranap Kelas 3");
-            }else if(ranaputama.getText().trim().isEmpty()){
-                Valid.textKosong(ranaputama,"Keuntungan di Ranap Kelas Utama");
-            }else if(ranapvip.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvip,"Keuntungan di Ranap Kelas VIP");
-            }else if(ranapvvip.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvvip,"Keuntungan di Ranap Kelas VVIP");
-            }else if(beliluar.getText().trim().isEmpty()){
-                Valid.textKosong(beliluar,"Keuntungan Jika Beli dari Apotek Lain");
-            }else if(jualbebas.getText().trim().isEmpty()){
-                Valid.textKosong(jualbebas,"Keuntungan di Penjualan Bebas");
-            }else if(karyawan.getText().trim().isEmpty()){
-                Valid.textKosong(karyawan,"Keuntungan Jika Pasien/Pembeli Karyawan");
-            }else if(kdjns.getText().trim().isEmpty()||nmjns.getText().trim().isEmpty()){
-                Valid.textKosong(kdjns,"Jenis Barang");
-            }else{
-                Sequel.queryu("delete from setpenjualan where kdjns='"+kdjns.getText()+"'");
-                Sequel.menyimpan("setpenjualan","'"+ralan.getText()+"','"+ranapk1.getText()+"','"+
-                        ranapk2.getText()+"','"+ranapk3.getText()+"','"+ranaputama.getText()+"','"+
-                        ranapvip.getText()+"','"+ranapvvip.getText()+"','"+beliluar.getText()+"','"+
-                        jualbebas.getText()+"','"+karyawan.getText()+"','"+kdjns.getText()+"'","Set Harga");
+            }
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (ralan.getText().trim().isEmpty()) {
+                Valid.textKosong(ralan, "Keuntungan di Rawat Jalan");
+            } else if (ranapk1.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk1, "Keuntungan di Ranap Kelas 1");
+            } else if (ranapk2.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk2, "Keuntungan di Ranap Kelas 2");
+            } else if (ranapk3.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapk3, "Keuntungan di Ranap Kelas 3");
+            } else if (ranaputama.getText().trim().isEmpty()) {
+                Valid.textKosong(ranaputama, "Keuntungan di Ranap Kelas Utama");
+            } else if (ranapvip.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvip, "Keuntungan di Ranap Kelas VIP");
+            } else if (ranapvvip.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvvip, "Keuntungan di Ranap Kelas VVIP");
+            } else if (beliluar.getText().trim().isEmpty()) {
+                Valid.textKosong(beliluar,
+                        "Keuntungan Jika Beli dari Apotek Lain");
+            } else if (jualbebas.getText().trim().isEmpty()) {
+                Valid.textKosong(jualbebas, "Keuntungan di Penjualan Bebas");
+            } else if (karyawan.getText().trim().isEmpty()) {
+                Valid.textKosong(karyawan,
+                        "Keuntungan Jika Pasien/Pembeli Karyawan");
+            } else if (kdjns.getText().trim().isEmpty() || nmjns.getText().
+                    trim().isEmpty()) {
+                Valid.textKosong(kdjns, "Jenis Barang");
+            } else {
+                Sequel.queryu("delete from setpenjualan where kdjns='" + kdjns.
+                        getText() + "'");
+                Sequel.menyimpan("setpenjualan",
+                        "'" + ralan.getText() + "','" + ranapk1.getText() + "','"
+                        + ranapk2.getText() + "','" + ranapk3.getText() + "','" + ranaputama.
+                        getText() + "','"
+                        + ranapvip.getText() + "','" + ranapvvip.getText() + "','" + beliluar.
+                        getText() + "','"
+                        + jualbebas.getText() + "','" + karyawan.getText() + "','" + kdjns.
+                        getText() + "'", "Set Harga");
                 tampil();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==3){
-            if(ralanperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ralanperbarang,"Keuntungan di Rawat Jalan");
-            }else if(ranapk1perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk1perbarang,"Keuntungan di Ranap Kelas 1");
-            }else if(ranapk2perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk2perbarang,"Keuntungan di Ranap Kelas 2");
-            }else if(ranapk3perbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapk3perbarang,"Keuntungan di Ranap Kelas 3");
-            }else if(ranaputamaperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranaputamaperbarang,"Keuntungan di Ranap Kelas Utama");
-            }else if(ranapvipperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvipperbarang,"Keuntungan di Ranap Kelas VIP");
-            }else if(ranapvvipperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(ranapvvipperbarang,"Keuntungan di Ranap Kelas VVIP");
-            }else if(beliluarperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(beliluarperbarang,"Keuntungan Jika Beli dari Apotek Lain");
-            }else if(jualbebasperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(jualbebasperbarang,"Keuntungan di Penjualan Bebas");
-            }else if(karyawanperbarang.getText().trim().isEmpty()){
-                Valid.textKosong(karyawanperbarang,"Keuntungan Jika Pasien/Pembeli Karyawan");
-            }else if(kdbarang.getText().trim().isEmpty()||nmbarang.getText().trim().isEmpty()){
-                Valid.textKosong(kdbarang,"Barang/Alkes/BHP");
-            }else{            
-                Sequel.queryu("delete from setpenjualanperbarang where kode_brng='"+kdbarang.getText()+"'");
-                Sequel.menyimpan("setpenjualanperbarang","'"+ralanperbarang.getText()+"','"+ranapk1perbarang.getText()+"','"+
-                        ranapk2perbarang.getText()+"','"+ranapk3perbarang.getText()+"','"+ranaputamaperbarang.getText()+"','"+
-                        ranapvipperbarang.getText()+"','"+ranapvvipperbarang.getText()+"','"+beliluarperbarang.getText()+"','"+
-                        jualbebasperbarang.getText()+"','"+karyawanperbarang.getText()+"','"+kdbarang.getText()+"'","Set Harga");
+        } else if (TabSetting.getSelectedIndex() == 3) {
+            if (ralanperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ralanperbarang, "Keuntungan di Rawat Jalan");
+            } else if (ranapk1perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk1perbarang,
+                                "Keuntungan di Ranap Kelas 1");
+            } else if (ranapk2perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk2perbarang,
+                                "Keuntungan di Ranap Kelas 2");
+            } else if (ranapk3perbarang.getText().trim().isEmpty()) {
+                Valid.
+                        textKosong(ranapk3perbarang,
+                                "Keuntungan di Ranap Kelas 3");
+            } else if (ranaputamaperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranaputamaperbarang,
+                        "Keuntungan di Ranap Kelas Utama");
+            } else if (ranapvipperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvipperbarang,
+                        "Keuntungan di Ranap Kelas VIP");
+            } else if (ranapvvipperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(ranapvvipperbarang,
+                        "Keuntungan di Ranap Kelas VVIP");
+            } else if (beliluarperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(beliluarperbarang,
+                        "Keuntungan Jika Beli dari Apotek Lain");
+            } else if (jualbebasperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(jualbebasperbarang,
+                        "Keuntungan di Penjualan Bebas");
+            } else if (karyawanperbarang.getText().trim().isEmpty()) {
+                Valid.textKosong(karyawanperbarang,
+                        "Keuntungan Jika Pasien/Pembeli Karyawan");
+            } else if (kdbarang.getText().trim().isEmpty() || nmbarang.getText().
+                    trim().isEmpty()) {
+                Valid.textKosong(kdbarang, "Barang/Alkes/BHP");
+            } else {
+                Sequel.queryu(
+                        "delete from setpenjualanperbarang where kode_brng='" + kdbarang.
+                                getText() + "'");
+                Sequel.menyimpan("setpenjualanperbarang", "'" + ralanperbarang.
+                        getText() + "','" + ranapk1perbarang.getText() + "','"
+                        + ranapk2perbarang.getText() + "','" + ranapk3perbarang.
+                        getText() + "','" + ranaputamaperbarang.getText() + "','"
+                        + ranapvipperbarang.getText() + "','" + ranapvvipperbarang.
+                        getText() + "','" + beliluarperbarang.getText() + "','"
+                        + jualbebasperbarang.getText() + "','" + karyawanperbarang.
+                        getText() + "','" + kdbarang.getText() + "'",
+                        "Set Harga");
                 tampilpengaturanhargaperbarang();
                 emptTeks();
             }
-        }              
+        }
     }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
     }//GEN-LAST:event_BtnEditKeyPressed
 
     private void jualbebasMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasMouseMoved
-        if(jualbebas.getText().equals("0")||jualbebas.getText().equals("0.0")){
+        if (jualbebas.getText().equals("0") || jualbebas.getText().equals("0.0")) {
             jualbebas.setText("");
         }
     }//GEN-LAST:event_jualbebasMouseMoved
 
     private void jualbebasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasMouseExited
-        if(jualbebas.getText().isEmpty()){
+        if (jualbebas.getText().isEmpty()) {
             jualbebas.setText("0");
         }
     }//GEN-LAST:event_jualbebasMouseExited
 
     private void jualbebasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jualbebasKeyPressed
-        Valid.pindah(evt,beliluar,karyawan);
+        Valid.pindah(evt, beliluar, karyawan);
     }//GEN-LAST:event_jualbebasKeyPressed
 
     private void karyawanMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanMouseMoved
-        if(karyawan.getText().equals("0")||karyawan.getText().equals("0.0")){
+        if (karyawan.getText().equals("0") || karyawan.getText().equals("0.0")) {
             karyawan.setText("");
         }
     }//GEN-LAST:event_karyawanMouseMoved
 
     private void karyawanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanMouseExited
-        if(karyawan.getText().isEmpty()){
+        if (karyawan.getText().isEmpty()) {
             karyawan.setText("0");
         }
     }//GEN-LAST:event_karyawanMouseExited
 
     private void karyawanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_karyawanKeyPressed
-        Valid.pindah(evt,jualbebas,kdjns);
+        Valid.pindah(evt, jualbebas, kdjns);
     }//GEN-LAST:event_karyawanKeyPressed
 
     private void ralanMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanMouseMoved
-        if(ralan.getText().equals("0")||ralan.getText().equals("0.0")){
+        if (ralan.getText().equals("0") || ralan.getText().equals("0.0")) {
             ralan.setText("");
         }
     }//GEN-LAST:event_ralanMouseMoved
 
     private void ralanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanMouseExited
-        if(ralan.getText().isEmpty()){
+        if (ralan.getText().isEmpty()) {
             ralan.setText("0");
         }
     }//GEN-LAST:event_ralanMouseExited
 
     private void ralanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ralanKeyPressed
-        Valid.pindah(evt,BtnSimpan,ranapk1);
+        Valid.pindah(evt, BtnSimpan, ranapk1);
     }//GEN-LAST:event_ralanKeyPressed
 
     private void ranapk1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1MouseMoved
-        if(ranapk1.getText().equals("0")||ranapk1.getText().equals("0.0")){
+        if (ranapk1.getText().equals("0") || ranapk1.getText().equals("0.0")) {
             ranapk1.setText("");
         }
     }//GEN-LAST:event_ranapk1MouseMoved
 
     private void ranapk1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1MouseExited
-        if(ranapk1.getText().isEmpty()){
+        if (ranapk1.getText().isEmpty()) {
             ranapk1.setText("0");
         }
     }//GEN-LAST:event_ranapk1MouseExited
 
     private void ranapk1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk1KeyPressed
-        Valid.pindah(evt,ralan,ranapk2);
+        Valid.pindah(evt, ralan, ranapk2);
     }//GEN-LAST:event_ranapk1KeyPressed
 
     private void ranapk2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2MouseMoved
-        if(ranapk2.getText().equals("0")||ranapk2.getText().equals("0.0")){
+        if (ranapk2.getText().equals("0") || ranapk2.getText().equals("0.0")) {
             ranapk2.setText("");
         }
     }//GEN-LAST:event_ranapk2MouseMoved
 
     private void ranapk2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2MouseExited
-        if(ranapk2.getText().isEmpty()){
+        if (ranapk2.getText().isEmpty()) {
             ranapk2.setText("0");
         }
     }//GEN-LAST:event_ranapk2MouseExited
 
     private void ranapk2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk2KeyPressed
-        Valid.pindah(evt,ranapk1,ranapk3);
+        Valid.pindah(evt, ranapk1, ranapk3);
     }//GEN-LAST:event_ranapk2KeyPressed
 
     private void ranapk3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3MouseMoved
-        if(ranapk3.getText().equals("0")||ranapk3.getText().equals("0.0")){
+        if (ranapk3.getText().equals("0") || ranapk3.getText().equals("0.0")) {
             ranapk3.setText("");
         }
     }//GEN-LAST:event_ranapk3MouseMoved
 
     private void ranapk3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3MouseExited
-        if(ranapk3.getText().isEmpty()){
+        if (ranapk3.getText().isEmpty()) {
             ranapk3.setText("0");
         }
     }//GEN-LAST:event_ranapk3MouseExited
 
     private void ranapk3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk3KeyPressed
-        Valid.pindah(evt,ranapk2,ranaputama);
+        Valid.pindah(evt, ranapk2, ranaputama);
     }//GEN-LAST:event_ranapk3KeyPressed
 
     private void ranaputamaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaMouseMoved
-        if(ranaputama.getText().equals("0")||ranaputama.getText().equals("0.0")){
+        if (ranaputama.getText().equals("0") || ranaputama.getText().equals(
+                "0.0")) {
             ranaputama.setText("");
         }
     }//GEN-LAST:event_ranaputamaMouseMoved
 
     private void ranaputamaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaMouseExited
-        if(ranaputama.getText().isEmpty()){
+        if (ranaputama.getText().isEmpty()) {
             ranaputama.setText("0");
         }
     }//GEN-LAST:event_ranaputamaMouseExited
 
     private void ranaputamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranaputamaKeyPressed
-        Valid.pindah(evt,ranapk3,ranapvip);
+        Valid.pindah(evt, ranapk3, ranapvip);
     }//GEN-LAST:event_ranaputamaKeyPressed
 
     private void ppUPdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppUPdateActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        for (int i = 0; i < tbAdmin.getRowCount(); i++) {             
-            Sequel.queryu2("update databarang set ralan=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,0).toString()+"/100))),"+
-                "kelas1=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,1).toString()+"/100))),"+
-                "kelas2=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,2).toString()+"/100))),"+
-                "kelas3=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,3).toString()+"/100))),"+
-                "utama=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,4).toString()+"/100))),"+
-                "vip=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,5).toString()+"/100))),"+
-                "vvip=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,6).toString()+"/100))),"+
-                "beliluar=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,7).toString()+"/100))),"+
-                "jualbebas=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,8).toString()+"/100))),"+
-                "karyawan=round(h_beli+(h_beli*("+tbAdmin.getValueAt(i,9).toString()+"/100))) where "+
-                "kdjns='"+tbAdmin.getValueAt(i,10).toString()+"'");                           
-        }            
+        for (int i = 0; i < tbAdmin.getRowCount(); i++) {
+            Sequel.queryu2(
+                    "update databarang set ralan=round(h_beli+(h_beli*(" + tbAdmin.
+                            getValueAt(i, 0).toString() + "/100))),"
+                    + "kelas1=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 1).
+                            toString() + "/100))),"
+                    + "kelas2=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 2).
+                            toString() + "/100))),"
+                    + "kelas3=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 3).
+                            toString() + "/100))),"
+                    + "utama=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 4).
+                            toString() + "/100))),"
+                    + "vip=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 5).
+                            toString() + "/100))),"
+                    + "vvip=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i, 6).
+                            toString() + "/100))),"
+                    + "beliluar=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i,
+                            7).toString() + "/100))),"
+                    + "jualbebas=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i,
+                            8).toString() + "/100))),"
+                    + "karyawan=round(h_beli+(h_beli*(" + tbAdmin.getValueAt(i,
+                            9).toString() + "/100))) where "
+                    + "kdjns='" + tbAdmin.getValueAt(i, 10).toString() + "'");
+        }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_ppUPdateActionPerformed
 
     private void kdjnsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdjnsKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.
+                    getText());
         } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.
+                    getText());
             karyawan.requestFocus();
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmjns, kdjns.
+                    getText());
             BtnSimpan.requestFocus();
         } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnJenisActionPerformed(null);
@@ -2246,26 +2443,27 @@ public class DlgSetHarga extends javax.swing.JDialog {
 
     private void BtnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJenisActionPerformed
         jenis.isCek();
-        jenis.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+        jenis.setSize(internalFrame1.getWidth() - 40,
+                internalFrame1.getHeight() - 40);
         jenis.setLocationRelativeTo(internalFrame1);
         jenis.setAlwaysOnTop(false);
         jenis.setVisible(true);
     }//GEN-LAST:event_BtnJenisActionPerformed
 
     private void TabSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabSettingMouseClicked
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             tampilpengaturanumum();
-        }else if(TabSetting.getSelectedIndex()==1){
+        } else if (TabSetting.getSelectedIndex() == 1) {
             tampilpengaturanhargaumum();
-        }else if(TabSetting.getSelectedIndex()==2){
+        } else if (TabSetting.getSelectedIndex() == 2) {
             tampil();
-        }else if(TabSetting.getSelectedIndex()==3){
+        } else if (TabSetting.getSelectedIndex() == 3) {
             tampilpengaturanhargaperbarang();
         }
     }//GEN-LAST:event_TabSettingMouseClicked
 
     private void tbPengaturanUmumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPengaturanUmumMouseClicked
-        if(tabModePengaturanUmum.getRowCount()!=0){
+        if (tabModePengaturanUmum.getRowCount() != 0) {
             try {
                 getDataPengaturanUmum();
             } catch (java.lang.NullPointerException e) {
@@ -2274,8 +2472,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanUmumMouseClicked
 
     private void tbPengaturanUmumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPengaturanUmumKeyPressed
-        if(tabModePengaturanUmum.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabModePengaturanUmum.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getDataPengaturanUmum();
                 } catch (java.lang.NullPointerException e) {
@@ -2285,171 +2484,180 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanUmumKeyPressed
 
     private void cmbPengaturanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPengaturanKeyPressed
-        Valid.pindah(evt,BtnSimpan,cmbHargaDasar);
+        Valid.pindah(evt, BtnSimpan, cmbHargaDasar);
     }//GEN-LAST:event_cmbPengaturanKeyPressed
 
     private void ranapvipumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipumumMouseMoved
-        if(ranapvipumum.getText().equals("0")||ranapvipumum.getText().equals("0.0")){
+        if (ranapvipumum.getText().equals("0") || ranapvipumum.getText().equals(
+                "0.0")) {
             ranapvipumum.setText("");
         }
     }//GEN-LAST:event_ranapvipumumMouseMoved
 
     private void ranapvipumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipumumMouseExited
-        if(ranapvipumum.getText().isEmpty()){
+        if (ranapvipumum.getText().isEmpty()) {
             ranapvipumum.setText("0");
         }
     }//GEN-LAST:event_ranapvipumumMouseExited
 
     private void ranapvipumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvipumumKeyPressed
-        Valid.pindah(evt,ranaputamaumum,ranapvvipumum);
+        Valid.pindah(evt, ranaputamaumum, ranapvvipumum);
     }//GEN-LAST:event_ranapvipumumKeyPressed
 
     private void ranapvvipumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipumumMouseMoved
-        if(ranapvvipumum.getText().equals("0")||ranapvvipumum.getText().equals("0.0")){
+        if (ranapvvipumum.getText().equals("0") || ranapvvipumum.getText().
+                equals("0.0")) {
             ranapvvipumum.setText("");
         }
     }//GEN-LAST:event_ranapvvipumumMouseMoved
 
     private void ranapvvipumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipumumMouseExited
-        if(ranapvvipumum.getText().isEmpty()){
+        if (ranapvvipumum.getText().isEmpty()) {
             ranapvvipumum.setText("0");
         }
     }//GEN-LAST:event_ranapvvipumumMouseExited
 
     private void ranapvvipumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvvipumumKeyPressed
-        Valid.pindah(evt,ranapvipumum,beliluarumum);
+        Valid.pindah(evt, ranapvipumum, beliluarumum);
     }//GEN-LAST:event_ranapvvipumumKeyPressed
 
     private void beliluarumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarumumMouseMoved
-        if(beliluarumum.getText().equals("0")||beliluarumum.getText().equals("0.0")){
+        if (beliluarumum.getText().equals("0") || beliluarumum.getText().equals(
+                "0.0")) {
             beliluarumum.setText("");
         }
     }//GEN-LAST:event_beliluarumumMouseMoved
 
     private void beliluarumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarumumMouseExited
-        if(beliluarumum.getText().isEmpty()){
+        if (beliluarumum.getText().isEmpty()) {
             beliluarumum.setText("0");
         }
     }//GEN-LAST:event_beliluarumumMouseExited
 
     private void beliluarumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_beliluarumumKeyPressed
-        Valid.pindah(evt,ranapvvipumum,jualbebasumum);
+        Valid.pindah(evt, ranapvvipumum, jualbebasumum);
     }//GEN-LAST:event_beliluarumumKeyPressed
 
     private void jualbebasumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasumumMouseMoved
-        if(jualbebasumum.getText().equals("0")||jualbebasumum.getText().equals("0.0")){
+        if (jualbebasumum.getText().equals("0") || jualbebasumum.getText().
+                equals("0.0")) {
             jualbebasumum.setText("");
         }
     }//GEN-LAST:event_jualbebasumumMouseMoved
 
     private void jualbebasumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasumumMouseExited
-        if(jualbebasumum.getText().isEmpty()){
+        if (jualbebasumum.getText().isEmpty()) {
             jualbebasumum.setText("0");
         }
     }//GEN-LAST:event_jualbebasumumMouseExited
 
     private void jualbebasumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jualbebasumumKeyPressed
-        Valid.pindah(evt,beliluarumum,karyawanumum);
+        Valid.pindah(evt, beliluarumum, karyawanumum);
     }//GEN-LAST:event_jualbebasumumKeyPressed
 
     private void karyawanumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanumumMouseMoved
-        if(karyawanumum.getText().equals("0")||karyawanumum.getText().equals("0.0")){
+        if (karyawanumum.getText().equals("0") || karyawanumum.getText().equals(
+                "0.0")) {
             karyawanumum.setText("");
         }
     }//GEN-LAST:event_karyawanumumMouseMoved
 
     private void karyawanumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanumumMouseExited
-        if(karyawanumum.getText().isEmpty()){
+        if (karyawanumum.getText().isEmpty()) {
             karyawanumum.setText("0");
         }
     }//GEN-LAST:event_karyawanumumMouseExited
 
     private void karyawanumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_karyawanumumKeyPressed
-        Valid.pindah(evt,jualbebasumum,BtnSimpan);
+        Valid.pindah(evt, jualbebasumum, BtnSimpan);
     }//GEN-LAST:event_karyawanumumKeyPressed
 
     private void ralanumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanumumMouseMoved
-        if(ralanumum.getText().equals("0")||ralanumum.getText().equals("0.0")){
+        if (ralanumum.getText().equals("0") || ralanumum.getText().equals("0.0")) {
             ralanumum.setText("");
         }
     }//GEN-LAST:event_ralanumumMouseMoved
 
     private void ralanumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanumumMouseExited
-        if(ralanumum.getText().isEmpty()){
+        if (ralanumum.getText().isEmpty()) {
             ralanumum.setText("0");
         }
     }//GEN-LAST:event_ralanumumMouseExited
 
     private void ralanumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ralanumumKeyPressed
-        Valid.pindah(evt,BtnSimpan,ranapk1umum);
+        Valid.pindah(evt, BtnSimpan, ranapk1umum);
     }//GEN-LAST:event_ralanumumKeyPressed
 
     private void ranapk1umumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1umumMouseMoved
-        if(ranapk1umum.getText().equals("0")||ranapk1umum.getText().equals("0.0")){
+        if (ranapk1umum.getText().equals("0") || ranapk1umum.getText().equals(
+                "0.0")) {
             ranapk1umum.setText("");
         }
     }//GEN-LAST:event_ranapk1umumMouseMoved
 
     private void ranapk1umumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1umumMouseExited
-        if(ranapk1umum.getText().isEmpty()){
+        if (ranapk1umum.getText().isEmpty()) {
             ranapk1umum.setText("0");
         }
     }//GEN-LAST:event_ranapk1umumMouseExited
 
     private void ranapk1umumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk1umumKeyPressed
-        Valid.pindah(evt,ralanumum,ranapk2umum);
+        Valid.pindah(evt, ralanumum, ranapk2umum);
     }//GEN-LAST:event_ranapk1umumKeyPressed
 
     private void ranapk2umumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2umumMouseMoved
-        if(ranapk2umum.getText().equals("0")||ranapk2umum.getText().equals("0.0")){
+        if (ranapk2umum.getText().equals("0") || ranapk2umum.getText().equals(
+                "0.0")) {
             ranapk2umum.setText("");
         }
     }//GEN-LAST:event_ranapk2umumMouseMoved
 
     private void ranapk2umumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2umumMouseExited
-        if(ranapk2umum.getText().isEmpty()){
+        if (ranapk2umum.getText().isEmpty()) {
             ranapk2umum.setText("0");
         }
     }//GEN-LAST:event_ranapk2umumMouseExited
 
     private void ranapk2umumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk2umumKeyPressed
-        Valid.pindah(evt,ranapk1umum,ranapk3umum);
+        Valid.pindah(evt, ranapk1umum, ranapk3umum);
     }//GEN-LAST:event_ranapk2umumKeyPressed
 
     private void ranapk3umumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3umumMouseMoved
-        if(ranapk3umum.getText().equals("0")||ranapk3umum.getText().equals("0.0")){
+        if (ranapk3umum.getText().equals("0") || ranapk3umum.getText().equals(
+                "0.0")) {
             ranapk3umum.setText("");
         }
     }//GEN-LAST:event_ranapk3umumMouseMoved
 
     private void ranapk3umumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3umumMouseExited
-        if(ranapk3umum.getText().isEmpty()){
+        if (ranapk3umum.getText().isEmpty()) {
             ranapk3umum.setText("0");
         }
     }//GEN-LAST:event_ranapk3umumMouseExited
 
     private void ranapk3umumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk3umumKeyPressed
-        Valid.pindah(evt,ranapk2umum,ranaputamaumum);
+        Valid.pindah(evt, ranapk2umum, ranaputamaumum);
     }//GEN-LAST:event_ranapk3umumKeyPressed
 
     private void ranaputamaumumMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaumumMouseMoved
-        if(ranaputamaumum.getText().equals("0")||ranaputamaumum.getText().equals("0.0")){
+        if (ranaputamaumum.getText().equals("0") || ranaputamaumum.getText().
+                equals("0.0")) {
             ranaputamaumum.setText("");
         }
     }//GEN-LAST:event_ranaputamaumumMouseMoved
 
     private void ranaputamaumumMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaumumMouseExited
-        if(ranaputamaumum.getText().isEmpty()){
+        if (ranaputamaumum.getText().isEmpty()) {
             ranaputamaumum.setText("0");
         }
     }//GEN-LAST:event_ranaputamaumumMouseExited
 
     private void ranaputamaumumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranaputamaumumKeyPressed
-        Valid.pindah(evt,ranapk3umum,ranapvipumum);
+        Valid.pindah(evt, ranapk3umum, ranapvipumum);
     }//GEN-LAST:event_ranaputamaumumKeyPressed
 
     private void tbPengaturanHargaUmumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPengaturanHargaUmumMouseClicked
-        if(tabModePengaturanHargaUmum.getRowCount()!=0){
+        if (tabModePengaturanHargaUmum.getRowCount() != 0) {
             try {
                 getDataPengaturanHargaUmum();
             } catch (java.lang.NullPointerException e) {
@@ -2458,8 +2666,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanHargaUmumMouseClicked
 
     private void tbPengaturanHargaUmumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPengaturanHargaUmumKeyPressed
-        if(tabModePengaturanHargaUmum.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabModePengaturanHargaUmum.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getDataPengaturanHargaUmum();
                 } catch (java.lang.NullPointerException e) {
@@ -2469,173 +2678,186 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanHargaUmumKeyPressed
 
     private void ranapvipperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipperbarangMouseMoved
-        if(ranapvipperbarang.getText().equals("0")||ranapvipperbarang.getText().equals("0.0")){
+        if (ranapvipperbarang.getText().equals("0") || ranapvipperbarang.
+                getText().equals("0.0")) {
             ranapvipperbarang.setText("");
         }
     }//GEN-LAST:event_ranapvipperbarangMouseMoved
 
     private void ranapvipperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvipperbarangMouseExited
-        if(ranapvipperbarang.getText().isEmpty()){
+        if (ranapvipperbarang.getText().isEmpty()) {
             ranapvipperbarang.setText("0");
         }
     }//GEN-LAST:event_ranapvipperbarangMouseExited
 
     private void ranapvipperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvipperbarangKeyPressed
-        Valid.pindah(evt,ranaputamaperbarang,ranapvvipperbarang);
+        Valid.pindah(evt, ranaputamaperbarang, ranapvvipperbarang);
     }//GEN-LAST:event_ranapvipperbarangKeyPressed
 
     private void ranapvvipperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipperbarangMouseMoved
-        if(ranapvvipperbarang.getText().equals("0")||ranapvvipperbarang.getText().equals("0.0")){
+        if (ranapvvipperbarang.getText().equals("0") || ranapvvipperbarang.
+                getText().equals("0.0")) {
             ranapvvipperbarang.setText("");
         }
     }//GEN-LAST:event_ranapvvipperbarangMouseMoved
 
     private void ranapvvipperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapvvipperbarangMouseExited
-        if(ranapvvipperbarang.getText().isEmpty()){
+        if (ranapvvipperbarang.getText().isEmpty()) {
             ranapvvipperbarang.setText("0");
         }
     }//GEN-LAST:event_ranapvvipperbarangMouseExited
 
     private void ranapvvipperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapvvipperbarangKeyPressed
-        Valid.pindah(evt,ranapvipperbarang,beliluarperbarang);
+        Valid.pindah(evt, ranapvipperbarang, beliluarperbarang);
     }//GEN-LAST:event_ranapvvipperbarangKeyPressed
 
     private void beliluarperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarperbarangMouseMoved
-        if(beliluarperbarang.getText().equals("0")||beliluarperbarang.getText().equals("0.0")){
+        if (beliluarperbarang.getText().equals("0") || beliluarperbarang.
+                getText().equals("0.0")) {
             beliluarperbarang.setText("");
         }
     }//GEN-LAST:event_beliluarperbarangMouseMoved
 
     private void beliluarperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beliluarperbarangMouseExited
-        if(beliluarperbarang.getText().isEmpty()){
+        if (beliluarperbarang.getText().isEmpty()) {
             beliluarperbarang.setText("0");
         }
     }//GEN-LAST:event_beliluarperbarangMouseExited
 
     private void beliluarperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_beliluarperbarangKeyPressed
-        Valid.pindah(evt,ranapvvipperbarang,jualbebasperbarang);
+        Valid.pindah(evt, ranapvvipperbarang, jualbebasperbarang);
     }//GEN-LAST:event_beliluarperbarangKeyPressed
 
     private void jualbebasperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasperbarangMouseMoved
-        if(jualbebasperbarang.getText().equals("0")||jualbebasperbarang.getText().equals("0.0")){
+        if (jualbebasperbarang.getText().equals("0") || jualbebasperbarang.
+                getText().equals("0.0")) {
             jualbebasperbarang.setText("");
         }
     }//GEN-LAST:event_jualbebasperbarangMouseMoved
 
     private void jualbebasperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jualbebasperbarangMouseExited
-        if(jualbebasperbarang.getText().isEmpty()){
+        if (jualbebasperbarang.getText().isEmpty()) {
             jualbebasperbarang.setText("0");
         }
     }//GEN-LAST:event_jualbebasperbarangMouseExited
 
     private void jualbebasperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jualbebasperbarangKeyPressed
-        Valid.pindah(evt,beliluarperbarang,karyawanperbarang);
+        Valid.pindah(evt, beliluarperbarang, karyawanperbarang);
     }//GEN-LAST:event_jualbebasperbarangKeyPressed
 
     private void karyawanperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanperbarangMouseMoved
-        if(karyawanperbarang.getText().equals("0")||karyawanperbarang.getText().equals("0.0")){
+        if (karyawanperbarang.getText().equals("0") || karyawanperbarang.
+                getText().equals("0.0")) {
             karyawanperbarang.setText("");
         }
     }//GEN-LAST:event_karyawanperbarangMouseMoved
 
     private void karyawanperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karyawanperbarangMouseExited
-        if(karyawanperbarang.getText().isEmpty()){
+        if (karyawanperbarang.getText().isEmpty()) {
             karyawanperbarang.setText("0");
         }
     }//GEN-LAST:event_karyawanperbarangMouseExited
 
     private void karyawanperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_karyawanperbarangKeyPressed
-        Valid.pindah(evt,jualbebasperbarang,kdbarang);
+        Valid.pindah(evt, jualbebasperbarang, kdbarang);
     }//GEN-LAST:event_karyawanperbarangKeyPressed
 
     private void ralanperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanperbarangMouseMoved
-        if(ralanperbarang.getText().equals("0")||ralanperbarang.getText().equals("0.0")){
+        if (ralanperbarang.getText().equals("0") || ralanperbarang.getText().
+                equals("0.0")) {
             ralanperbarang.setText("");
         }
     }//GEN-LAST:event_ralanperbarangMouseMoved
 
     private void ralanperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ralanperbarangMouseExited
-        if(ralanperbarang.getText().isEmpty()){
+        if (ralanperbarang.getText().isEmpty()) {
             ralanperbarang.setText("0");
         }
     }//GEN-LAST:event_ralanperbarangMouseExited
 
     private void ralanperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ralanperbarangKeyPressed
-        Valid.pindah(evt,BtnSimpan,ranapk1perbarang);
+        Valid.pindah(evt, BtnSimpan, ranapk1perbarang);
     }//GEN-LAST:event_ralanperbarangKeyPressed
 
     private void ranapk1perbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1perbarangMouseMoved
-        if(ranapk1perbarang.getText().equals("0")||ranapk1perbarang.getText().equals("0.0")){
+        if (ranapk1perbarang.getText().equals("0") || ranapk1perbarang.getText().
+                equals("0.0")) {
             ranapk1perbarang.setText("");
         }
     }//GEN-LAST:event_ranapk1perbarangMouseMoved
 
     private void ranapk1perbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk1perbarangMouseExited
-        if(ranapk1perbarang.getText().isEmpty()){
+        if (ranapk1perbarang.getText().isEmpty()) {
             ranapk1perbarang.setText("0");
         }
     }//GEN-LAST:event_ranapk1perbarangMouseExited
 
     private void ranapk1perbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk1perbarangKeyPressed
-        Valid.pindah(evt,ralanperbarang,ranapk2perbarang);
+        Valid.pindah(evt, ralanperbarang, ranapk2perbarang);
     }//GEN-LAST:event_ranapk1perbarangKeyPressed
 
     private void ranapk2perbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2perbarangMouseMoved
-        if(ranapk2perbarang.getText().equals("0")||ranapk2perbarang.getText().equals("0.0")){
+        if (ranapk2perbarang.getText().equals("0") || ranapk2perbarang.getText().
+                equals("0.0")) {
             ranapk2perbarang.setText("");
         }
     }//GEN-LAST:event_ranapk2perbarangMouseMoved
 
     private void ranapk2perbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk2perbarangMouseExited
-        if(ranapk2perbarang.getText().isEmpty()){
+        if (ranapk2perbarang.getText().isEmpty()) {
             ranapk2perbarang.setText("0");
         }
     }//GEN-LAST:event_ranapk2perbarangMouseExited
 
     private void ranapk2perbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk2perbarangKeyPressed
-        Valid.pindah(evt,ranapk1perbarang,ranapk3perbarang);
+        Valid.pindah(evt, ranapk1perbarang, ranapk3perbarang);
     }//GEN-LAST:event_ranapk2perbarangKeyPressed
 
     private void ranapk3perbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3perbarangMouseMoved
-        if(ranapk3perbarang.getText().equals("0")||ranapk3perbarang.getText().equals("0.0")){
+        if (ranapk3perbarang.getText().equals("0") || ranapk3perbarang.getText().
+                equals("0.0")) {
             ranapk3perbarang.setText("");
         }
     }//GEN-LAST:event_ranapk3perbarangMouseMoved
 
     private void ranapk3perbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranapk3perbarangMouseExited
-        if(ranapk3perbarang.getText().isEmpty()){
+        if (ranapk3perbarang.getText().isEmpty()) {
             ranapk3perbarang.setText("0");
         }
     }//GEN-LAST:event_ranapk3perbarangMouseExited
 
     private void ranapk3perbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranapk3perbarangKeyPressed
-        Valid.pindah(evt,ranapk2perbarang,ranaputamaperbarang);
+        Valid.pindah(evt, ranapk2perbarang, ranaputamaperbarang);
     }//GEN-LAST:event_ranapk3perbarangKeyPressed
 
     private void ranaputamaperbarangMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaperbarangMouseMoved
-        if(ranaputamaperbarang.getText().equals("0")||ranaputamaperbarang.getText().equals("0.0")){
+        if (ranaputamaperbarang.getText().equals("0") || ranaputamaperbarang.
+                getText().equals("0.0")) {
             ranaputamaperbarang.setText("");
         }
     }//GEN-LAST:event_ranaputamaperbarangMouseMoved
 
     private void ranaputamaperbarangMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ranaputamaperbarangMouseExited
-        if(ranaputamaperbarang.getText().isEmpty()){
+        if (ranaputamaperbarang.getText().isEmpty()) {
             ranaputamaperbarang.setText("0");
         }
     }//GEN-LAST:event_ranaputamaperbarangMouseExited
 
     private void ranaputamaperbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ranaputamaperbarangKeyPressed
-        Valid.pindah(evt,ranapk3perbarang,ranapvipperbarang);
+        Valid.pindah(evt, ranapk3perbarang, ranapvipperbarang);
     }//GEN-LAST:event_ranaputamaperbarangKeyPressed
 
     private void kdbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdbarangKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang, kdbarang.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang,
+                    kdbarang.getText());
         } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang, kdbarang.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang,
+                    kdbarang.getText());
             karyawanperbarang.requestFocus();
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang, kdbarang.getText());
+            Sequel.cariIsi("select nama from jenis where kdjns=?", nmbarang,
+                    kdbarang.getText());
             BtnSimpan.requestFocus();
         } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnJenisActionPerformed(null);
@@ -2645,14 +2867,15 @@ public class DlgSetHarga extends javax.swing.JDialog {
     private void BtnbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnbarangActionPerformed
         barang.emptTeks();
         barang.isCek();
-        barang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        barang.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         barang.setLocationRelativeTo(internalFrame1);
         barang.setAlwaysOnTop(false);
         barang.setVisible(true);
     }//GEN-LAST:event_BtnbarangActionPerformed
 
     private void tbPengaturanHargaPerBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPengaturanHargaPerBarangMouseClicked
-        if(tabModePengaturanHargaPerBarang.getRowCount()!=0){
+        if (tabModePengaturanHargaPerBarang.getRowCount() != 0) {
             try {
                 getDataPengaturanHargaPerBarang();
             } catch (java.lang.NullPointerException e) {
@@ -2661,8 +2884,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanHargaPerBarangMouseClicked
 
     private void tbPengaturanHargaPerBarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPengaturanHargaPerBarangKeyPressed
-        if(tabModePengaturanHargaPerBarang.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabModePengaturanHargaPerBarang.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getDataPengaturanHargaPerBarang();
                 } catch (java.lang.NullPointerException e) {
@@ -2672,11 +2896,11 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_tbPengaturanHargaPerBarangKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -2686,9 +2910,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -2699,19 +2923,19 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari1ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari1.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCari1KeyPressed
@@ -2721,9 +2945,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCari1ActionPerformed
 
     private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCari1KeyPressed
@@ -2734,59 +2958,82 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAll1ActionPerformed
 
     private void BtnAll1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAll1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
     }//GEN-LAST:event_BtnAll1KeyPressed
 
     private void ppUPdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppUPdate1ActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        for (int i = 0; i < tbPengaturanHargaUmum.getRowCount(); i++) {             
-            Sequel.queryu2("update databarang set ralan=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,0).toString()+"/100))),"+
-                "kelas1=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,1).toString()+"/100))),"+
-                "kelas2=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,2).toString()+"/100))),"+
-                "kelas3=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,3).toString()+"/100))),"+
-                "utama=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,4).toString()+"/100))),"+
-                "vip=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,5).toString()+"/100))),"+
-                "vvip=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,6).toString()+"/100))),"+
-                "beliluar=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,7).toString()+"/100))),"+
-                "jualbebas=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,8).toString()+"/100))),"+
-                "karyawan=round(h_beli+(h_beli*("+tbPengaturanHargaUmum.getValueAt(i,9).toString()+"/100)))");                           
-        }            
+        for (int i = 0; i < tbPengaturanHargaUmum.getRowCount(); i++) {
+            Sequel.queryu2(
+                    "update databarang set ralan=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 0).toString() + "/100))),"
+                    + "kelas1=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 1).toString() + "/100))),"
+                    + "kelas2=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 2).toString() + "/100))),"
+                    + "kelas3=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 3).toString() + "/100))),"
+                    + "utama=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 4).toString() + "/100))),"
+                    + "vip=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 5).toString() + "/100))),"
+                    + "vvip=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 6).toString() + "/100))),"
+                    + "beliluar=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 7).toString() + "/100))),"
+                    + "jualbebas=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 8).toString() + "/100))),"
+                    + "karyawan=round(h_beli+(h_beli*(" + tbPengaturanHargaUmum.
+                            getValueAt(i, 9).toString() + "/100)))");
+        }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_ppUPdate1ActionPerformed
 
     private void ppUPdate2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppUPdate2ActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        for (int i = 0; i < tbPengaturanHargaPerBarang.getRowCount(); i++) {             
-            Sequel.queryu2("update databarang set ralan=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,0).toString()+"/100))),"+
-                "kelas1=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,1).toString()+"/100))),"+
-                "kelas2=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,2).toString()+"/100))),"+
-                "kelas3=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,3).toString()+"/100))),"+
-                "utama=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,4).toString()+"/100))),"+
-                "vip=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,5).toString()+"/100))),"+
-                "vvip=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,6).toString()+"/100))),"+
-                "beliluar=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,7).toString()+"/100))),"+
-                "jualbebas=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,8).toString()+"/100))),"+
-                "karyawan=round(h_beli+(h_beli*("+tbPengaturanHargaPerBarang.getValueAt(i,9).toString()+"/100))) where "+
-                "kode_brng='"+tbPengaturanHargaPerBarang.getValueAt(i,10).toString()+"'");                           
-        }            
+        for (int i = 0; i < tbPengaturanHargaPerBarang.getRowCount(); i++) {
+            Sequel.queryu2(
+                    "update databarang set ralan=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 0).toString() + "/100))),"
+                    + "kelas1=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 1).toString() + "/100))),"
+                    + "kelas2=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 2).toString() + "/100))),"
+                    + "kelas3=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 3).toString() + "/100))),"
+                    + "utama=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 4).toString() + "/100))),"
+                    + "vip=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 5).toString() + "/100))),"
+                    + "vvip=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 6).toString() + "/100))),"
+                    + "beliluar=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 7).toString() + "/100))),"
+                    + "jualbebas=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 8).toString() + "/100))),"
+                    + "karyawan=round(h_beli+(h_beli*(" + tbPengaturanHargaPerBarang.
+                            getValueAt(i, 9).toString() + "/100))) where "
+                    + "kode_brng='" + tbPengaturanHargaPerBarang.getValueAt(i,
+                            10).toString() + "'");
+        }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_ppUPdate2ActionPerformed
 
     private void cmbHargaDasarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbHargaDasarKeyPressed
-        Valid.pindah(evt,cmbPengaturan,cmbPPN);
+        Valid.pindah(evt, cmbPengaturan, cmbPPN);
     }//GEN-LAST:event_cmbHargaDasarKeyPressed
 
     private void cmbPPNKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPPNKeyPressed
-        Valid.pindah(evt,cmbHargaDasar,BtnSimpan);
+        Valid.pindah(evt, cmbHargaDasar, BtnSimpan);
     }//GEN-LAST:event_cmbPPNKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgSetHarga dialog = new DlgSetHarga(new javax.swing.JFrame(), true);
@@ -2795,6 +3042,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2923,198 +3171,229 @@ public class DlgSetHarga extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select setpenjualan.ralan, setpenjualan.kelas1, setpenjualan.kelas2, "+
-                   "setpenjualan.kelas3, setpenjualan.utama, setpenjualan.vip, setpenjualan.vvip, "+
-                   "setpenjualan.beliluar, setpenjualan.jualbebas, setpenjualan.karyawan, "+
-                   "setpenjualan.kdjns,jenis.nama from setpenjualan inner join jenis on "+
-                   "setpenjualan.kdjns=jenis.kdjns where jenis.nama like ? order by jenis.nama");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select setpenjualan.ralan, setpenjualan.kelas1, setpenjualan.kelas2, "
+                    + "setpenjualan.kelas3, setpenjualan.utama, setpenjualan.vip, setpenjualan.vvip, "
+                    + "setpenjualan.beliluar, setpenjualan.jualbebas, setpenjualan.karyawan, "
+                    + "setpenjualan.kdjns,jenis.nama from setpenjualan inner join jenis on "
+                    + "setpenjualan.kdjns=jenis.kdjns where jenis.nama like ? order by jenis.nama");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
-                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),
-                        rs.getString(11),rs.getString(12)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
+                        getString(9), rs.getString(10),
+                        rs.getString(11), rs.getString(12)
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount.setText(""+tabMode.getRowCount());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            LCount.setText("" + tabMode.getRowCount());
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     private void tampilpengaturanumum() {
         Valid.tabelKosong(tabModePengaturanUmum);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select * from set_harga_obat");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select * from set_harga_obat");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabModePengaturanUmum.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3)
+                        rs.getString(1), rs.getString(2), rs.getString(3)
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     private void tampilpengaturanhargaumum() {
         Valid.tabelKosong(tabModePengaturanHargaUmum);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select setpenjualanumum.ralan, setpenjualanumum.kelas1, setpenjualanumum.kelas2, "+
-                   "setpenjualanumum.kelas3, setpenjualanumum.utama, setpenjualanumum.vip, setpenjualanumum.vvip, "+
-                   "setpenjualanumum.beliluar, setpenjualanumum.jualbebas, setpenjualanumum.karyawan from setpenjualanumum");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select setpenjualanumum.ralan, setpenjualanumum.kelas1, setpenjualanumum.kelas2, "
+                    + "setpenjualanumum.kelas3, setpenjualanumum.utama, setpenjualanumum.vip, setpenjualanumum.vvip, "
+                    + "setpenjualanumum.beliluar, setpenjualanumum.jualbebas, setpenjualanumum.karyawan from setpenjualanumum");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabModePengaturanHargaUmum.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
-                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),
-                    });
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
+                        getString(9), rs.getString(10),});
                 }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void tampilpengaturanhargaperbarang() {
         Valid.tabelKosong(tabModePengaturanHargaPerBarang);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select setpenjualanperbarang.ralan, setpenjualanperbarang.kelas1, setpenjualanperbarang.kelas2, "+
-                   "setpenjualanperbarang.kelas3, setpenjualanperbarang.utama, setpenjualanperbarang.vip, setpenjualanperbarang.vvip, "+
-                   "setpenjualanperbarang.beliluar, setpenjualanperbarang.jualbebas, setpenjualanperbarang.karyawan, "+
-                   "setpenjualanperbarang.kode_brng,databarang.nama_brng from setpenjualanperbarang inner join databarang on "+
-                   "setpenjualanperbarang.kode_brng=databarang.kode_brng where databarang.status='1' and databarang.nama_brng like ? order by databarang.nama_brng");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select setpenjualanperbarang.ralan, setpenjualanperbarang.kelas1, setpenjualanperbarang.kelas2, "
+                    + "setpenjualanperbarang.kelas3, setpenjualanperbarang.utama, setpenjualanperbarang.vip, setpenjualanperbarang.vvip, "
+                    + "setpenjualanperbarang.beliluar, setpenjualanperbarang.jualbebas, setpenjualanperbarang.karyawan, "
+                    + "setpenjualanperbarang.kode_brng,databarang.nama_brng from setpenjualanperbarang inner join databarang on "
+                    + "setpenjualanperbarang.kode_brng=databarang.kode_brng where databarang.status='1' and databarang.nama_brng like ? order by databarang.nama_brng");
             try {
-                ps.setString(1,"%"+TCari1.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari1.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabModePengaturanHargaPerBarang.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
-                        rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),
-                        rs.getString(11),rs.getString(12)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
+                        getString(9), rs.getString(10),
+                        rs.getString(11), rs.getString(12)
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount1.setText(""+tabModePengaturanHargaPerBarang.getRowCount());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            LCount1.setText("" + tabModePengaturanHargaPerBarang.getRowCount());
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     private void getData() {
-        int row=tbAdmin.getSelectedRow();
-        if(row!= -1){
-            ralan.setText(tabMode.getValueAt(row,0).toString());
-            ranapk1.setText(tabMode.getValueAt(row,1).toString());
-            ranapk2.setText(tabMode.getValueAt(row,2).toString());
-            ranapk3.setText(tabMode.getValueAt(row,3).toString());
-            ranaputama.setText(tabMode.getValueAt(row,4).toString());
-            ranapvip.setText(tabMode.getValueAt(row,5).toString());
-            ranapvvip.setText(tabMode.getValueAt(row,6).toString());
-            beliluar.setText(tabMode.getValueAt(row,7).toString());
-            jualbebas.setText(tabMode.getValueAt(row,8).toString());
-            karyawan.setText(tabMode.getValueAt(row,9).toString());
-            kdjns.setText(tabMode.getValueAt(row,10).toString());
-            nmjns.setText(tabMode.getValueAt(row,11).toString());
+        int row = tbAdmin.getSelectedRow();
+        if (row != -1) {
+            ralan.setText(tabMode.getValueAt(row, 0).toString());
+            ranapk1.setText(tabMode.getValueAt(row, 1).toString());
+            ranapk2.setText(tabMode.getValueAt(row, 2).toString());
+            ranapk3.setText(tabMode.getValueAt(row, 3).toString());
+            ranaputama.setText(tabMode.getValueAt(row, 4).toString());
+            ranapvip.setText(tabMode.getValueAt(row, 5).toString());
+            ranapvvip.setText(tabMode.getValueAt(row, 6).toString());
+            beliluar.setText(tabMode.getValueAt(row, 7).toString());
+            jualbebas.setText(tabMode.getValueAt(row, 8).toString());
+            karyawan.setText(tabMode.getValueAt(row, 9).toString());
+            kdjns.setText(tabMode.getValueAt(row, 10).toString());
+            nmjns.setText(tabMode.getValueAt(row, 11).toString());
         }
     }
-    
+
     private void getDataPengaturanHargaUmum() {
-        int row=tbPengaturanHargaUmum.getSelectedRow();
-        if(row!= -1){
-            ralanumum.setText(tabModePengaturanHargaUmum.getValueAt(row,0).toString());
-            ranapk1umum.setText(tabModePengaturanHargaUmum.getValueAt(row,1).toString());
-            ranapk2umum.setText(tabModePengaturanHargaUmum.getValueAt(row,2).toString());
-            ranapk3umum.setText(tabModePengaturanHargaUmum.getValueAt(row,3).toString());
-            ranaputamaumum.setText(tabModePengaturanHargaUmum.getValueAt(row,4).toString());
-            ranapvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row,5).toString());
-            ranapvvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row,6).toString());
-            beliluarumum.setText(tabModePengaturanHargaUmum.getValueAt(row,7).toString());
-            jualbebasumum.setText(tabModePengaturanHargaUmum.getValueAt(row,8).toString());
-            karyawanumum.setText(tabModePengaturanHargaUmum.getValueAt(row,9).toString());
+        int row = tbPengaturanHargaUmum.getSelectedRow();
+        if (row != -1) {
+            ralanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 0).
+                    toString());
+            ranapk1umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 1).
+                    toString());
+            ranapk2umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 2).
+                    toString());
+            ranapk3umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 3).
+                    toString());
+            ranaputamaumum.setText(
+                    tabModePengaturanHargaUmum.getValueAt(row, 4).toString());
+            ranapvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 5).
+                    toString());
+            ranapvvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 6).
+                    toString());
+            beliluarumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 7).
+                    toString());
+            jualbebasumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 8).
+                    toString());
+            karyawanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 9).
+                    toString());
         }
     }
-    
+
     private void getDataPengaturanUmum() {
-        int row=tbPengaturanUmum.getSelectedRow();
-        if(row!= -1){
-            cmbPengaturan.setSelectedItem(tabModePengaturanUmum.getValueAt(row,0).toString());
-            cmbHargaDasar.setSelectedItem(tabModePengaturanUmum.getValueAt(row,1).toString());
+        int row = tbPengaturanUmum.getSelectedRow();
+        if (row != -1) {
+            cmbPengaturan.setSelectedItem(tabModePengaturanUmum.getValueAt(row,
+                    0).toString());
+            cmbHargaDasar.setSelectedItem(tabModePengaturanUmum.getValueAt(row,
+                    1).toString());
         }
     }
 
     private void getDataPengaturanHargaPerBarang() {
-        int row=tbPengaturanHargaPerBarang.getSelectedRow();
-        if(row!= -1){
-            ralanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,0).toString());
-            ranapk1perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,1).toString());
-            ranapk2perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,2).toString());
-            ranapk3perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,3).toString());
-            ranaputamaperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,4).toString());
-            ranapvipperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,5).toString());
-            ranapvvipperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,6).toString());
-            beliluarperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,7).toString());
-            jualbebasperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,8).toString());
-            karyawanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,9).toString());
-            kdbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,10).toString());
-            nmbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row,11).toString());
+        int row = tbPengaturanHargaPerBarang.getSelectedRow();
+        if (row != -1) {
+            ralanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
+                    row, 0).toString());
+            ranapk1perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
+                    row, 1).toString());
+            ranapk2perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
+                    row, 2).toString());
+            ranapk3perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
+                    row, 3).toString());
+            ranaputamaperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 4).toString());
+            ranapvipperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 5).toString());
+            ranapvvipperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 6).toString());
+            beliluarperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 7).toString());
+            jualbebasperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 8).toString());
+            karyawanperbarang.setText(tabModePengaturanHargaPerBarang.
+                    getValueAt(row, 9).toString());
+            kdbarang.setText(
+                    tabModePengaturanHargaPerBarang.getValueAt(row, 10).
+                            toString());
+            nmbarang.setText(
+                    tabModePengaturanHargaPerBarang.getValueAt(row, 11).
+                            toString());
         }
     }
-    
+
     public void emptTeks() {
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             cmbHargaDasar.setSelectedIndex(0);
             cmbPengaturan.setSelectedIndex(0);
             cmbPPN.setSelectedIndex(0);
             cmbPengaturan.requestFocus();
-        }else if(TabSetting.getSelectedIndex()==1){
+        } else if (TabSetting.getSelectedIndex() == 1) {
             ralanumum.setText("0");
             ranapk1umum.setText("0");
             ranapk2umum.setText("0");
@@ -3126,7 +3405,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
             jualbebasumum.setText("0");
             karyawanumum.setText("0");
             ralanumum.requestFocus();
-        }else if(TabSetting.getSelectedIndex()==2){
+        } else if (TabSetting.getSelectedIndex() == 2) {
             ralan.setText("0");
             ranapk1.setText("0");
             ranapk2.setText("0");
@@ -3140,7 +3419,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
             kdjns.setText("");
             nmjns.setText("");
             ralan.requestFocus();
-        }else if(TabSetting.getSelectedIndex()==3){
+        } else if (TabSetting.getSelectedIndex() == 3) {
             ralanperbarang.setText("0");
             ranapk1perbarang.setText("0");
             ranapk2perbarang.setText("0");
@@ -3154,6 +3433,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
             kdbarang.setText("");
             nmbarang.setText("");
             ralanperbarang.requestFocus();
-        }            
+        }
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgSetHarga.class.
+            getName());
 }

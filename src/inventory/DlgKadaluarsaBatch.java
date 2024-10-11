@@ -1,112 +1,139 @@
 package inventory;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import keuangan.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import keuangan.Jurnal;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class DlgKadaluarsaBatch extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Jurnal jur=new Jurnal();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Jurnal jur = new Jurnal();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
 
-    /** 
+    /**
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgKadaluarsaBatch(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row={
-            "No.Batch","Kode Barang","Nama Barang","Satuan","Tgl.Datang",
-            "Kadaluarsa","Asal","No.Faktur","Harga Beli","Jml.Beli","Sisa"
+        Object[] row = {
+            "No.Batch", "Kode Barang", "Nama Barang", "Satuan", "Tgl.Datang",
+            "Kadaluarsa", "Asal", "No.Faktur", "Harga Beli", "Jml.Beli", "Sisa"
         };
-        tabMode=new DefaultTableModel(null,row){
+        tabMode = new DefaultTableModel(null, row) {
             Class[] types = new Class[]{
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Double.class,java.lang.Double.class,java.lang.Double.class
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class
             };
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 11; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(180);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(50);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(80);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(80);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(100);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(80);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(50);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(50);
             }
         }
-        tbDokter.setDefaultRenderer(Object.class, new WarnaTable());         
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         prosesCari();
                     }
                 }
+
             });
-        }   
-     
-    }    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -289,40 +316,58 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         BtnCariActionPerformed(evt);
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptKadaluarsaBatch.jasper","report","::[ Kadaluarsa Batch ]::",
-               "select data_batch.no_batch,data_batch.kode_brng,databarang.nama_brng,"+
-               "kodesatuan.satuan,data_batch.tgl_beli,data_batch.tgl_kadaluarsa,"+
-               "data_batch.asal,data_batch.no_faktur,data_batch.h_beli,data_batch.jumlahbeli,"+
-               "data_batch.sisa from data_batch inner join databarang inner join kodesatuan "+
-               "on data_batch.kode_brng=databarang.kode_brng and "+
-               "kodesatuan.kode_sat=databarang.kode_sat where "+
-               "data_batch.tgl_kadaluarsa between '"+Valid.SetTgl(tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(tanggal2.getSelectedItem()+"")+"' and data_batch.no_batch like '%"+TCari.getText().trim()+"%' or "+
-               "data_batch.tgl_kadaluarsa between '"+Valid.SetTgl(tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(tanggal2.getSelectedItem()+"")+"' and data_batch.kode_brng like '%"+TCari.getText().trim()+"%' or "+
-               "data_batch.tgl_kadaluarsa between '"+Valid.SetTgl(tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(tanggal2.getSelectedItem()+"")+"' and databarang.nama_brng like '%"+TCari.getText().trim()+"%' or "+
-               "data_batch.tgl_kadaluarsa between '"+Valid.SetTgl(tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(tanggal2.getSelectedItem()+"")+"' and data_batch.asal like '%"+TCari.getText().trim()+"%' or "+
-               "data_batch.tgl_kadaluarsa between '"+Valid.SetTgl(tanggal1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(tanggal2.getSelectedItem()+"")+"' and data_batch.no_faktur like '%"+TCari.getText().trim()+"%' "+
-               "order by data_batch.tgl_kadaluarsa",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptKadaluarsaBatch.jasper", "report",
+                    "::[ Kadaluarsa Batch ]::",
+                    "select data_batch.no_batch,data_batch.kode_brng,databarang.nama_brng,"
+                    + "kodesatuan.satuan,data_batch.tgl_beli,data_batch.tgl_kadaluarsa,"
+                    + "data_batch.asal,data_batch.no_faktur,data_batch.h_beli,data_batch.jumlahbeli,"
+                    + "data_batch.sisa from data_batch inner join databarang inner join kodesatuan "
+                    + "on data_batch.kode_brng=databarang.kode_brng and "
+                    + "kodesatuan.kode_sat=databarang.kode_sat where "
+                    + "data_batch.tgl_kadaluarsa between '" + Valid.SetTgl(
+                            tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(tanggal2.getSelectedItem() + "") + "' and data_batch.no_batch like '%" + TCari.
+                    getText().trim() + "%' or "
+                    + "data_batch.tgl_kadaluarsa between '" + Valid.SetTgl(
+                            tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(tanggal2.getSelectedItem() + "") + "' and data_batch.kode_brng like '%" + TCari.
+                    getText().trim() + "%' or "
+                    + "data_batch.tgl_kadaluarsa between '" + Valid.SetTgl(
+                            tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(tanggal2.getSelectedItem() + "") + "' and databarang.nama_brng like '%" + TCari.
+                    getText().trim() + "%' or "
+                    + "data_batch.tgl_kadaluarsa between '" + Valid.SetTgl(
+                            tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(tanggal2.getSelectedItem() + "") + "' and data_batch.asal like '%" + TCari.
+                    getText().trim() + "%' or "
+                    + "data_batch.tgl_kadaluarsa between '" + Valid.SetTgl(
+                            tanggal1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(tanggal2.getSelectedItem() + "") + "' and data_batch.no_faktur like '%" + TCari.
+                    getText().trim() + "%' "
+                    + "order by data_batch.tgl_kadaluarsa", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,BtnKeluar);
+        } else {
+            Valid.pindah(evt, TCari, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -331,46 +376,48 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         prosesCari();
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         prosesCari();
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -380,16 +427,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgKadaluarsaBatch dialog = new DlgKadaluarsaBatch(new javax.swing.JFrame(), true);
+            DlgKadaluarsaBatch dialog = new DlgKadaluarsaBatch(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -416,63 +465,68 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void prosesCari() {
         Valid.tabelKosong(tabMode);
         try {
-            ps=koneksi.prepareStatement(
-               "select data_batch.no_batch,data_batch.kode_brng,databarang.nama_brng,"+
-               "kodesatuan.satuan,data_batch.tgl_beli,data_batch.tgl_kadaluarsa,"+
-               "data_batch.asal,data_batch.no_faktur,data_batch.h_beli,data_batch.jumlahbeli,"+
-               "data_batch.sisa from data_batch inner join databarang inner join kodesatuan "+
-               "on data_batch.kode_brng=databarang.kode_brng and "+
-               "kodesatuan.kode_sat=databarang.kode_sat where "+
-               "data_batch.tgl_kadaluarsa between ? and ? and data_batch.no_batch like ? or "+
-               "data_batch.tgl_kadaluarsa between ? and ? and data_batch.kode_brng like ? or "+
-               "data_batch.tgl_kadaluarsa between ? and ? and databarang.nama_brng like ? or "+
-               "data_batch.tgl_kadaluarsa between ? and ? and data_batch.asal like ? or "+
-               "data_batch.tgl_kadaluarsa between ? and ? and data_batch.no_faktur like ? "+
-               "order by data_batch.tgl_kadaluarsa");
+            ps = koneksi.prepareStatement(
+                    "select data_batch.no_batch,data_batch.kode_brng,databarang.nama_brng,"
+                    + "kodesatuan.satuan,data_batch.tgl_beli,data_batch.tgl_kadaluarsa,"
+                    + "data_batch.asal,data_batch.no_faktur,data_batch.h_beli,data_batch.jumlahbeli,"
+                    + "data_batch.sisa from data_batch inner join databarang inner join kodesatuan "
+                    + "on data_batch.kode_brng=databarang.kode_brng and "
+                    + "kodesatuan.kode_sat=databarang.kode_sat where "
+                    + "data_batch.tgl_kadaluarsa between ? and ? and data_batch.no_batch like ? or "
+                    + "data_batch.tgl_kadaluarsa between ? and ? and data_batch.kode_brng like ? or "
+                    + "data_batch.tgl_kadaluarsa between ? and ? and databarang.nama_brng like ? or "
+                    + "data_batch.tgl_kadaluarsa between ? and ? and data_batch.asal like ? or "
+                    + "data_batch.tgl_kadaluarsa between ? and ? and data_batch.no_faktur like ? "
+                    + "order by data_batch.tgl_kadaluarsa");
             try {
-                ps.setString(1,Valid.SetTgl(tanggal1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(tanggal2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(tanggal1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(tanggal2.getSelectedItem()+""));
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,Valid.SetTgl(tanggal1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(tanggal2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText().trim()+"%");
-                ps.setString(10,Valid.SetTgl(tanggal1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(tanggal2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText().trim()+"%");
-                ps.setString(13,Valid.SetTgl(tanggal1.getSelectedItem()+""));
-                ps.setString(14,Valid.SetTgl(tanggal2.getSelectedItem()+""));
-                ps.setString(15,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, Valid.SetTgl(tanggal1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(tanggal2.getSelectedItem() + ""));
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, Valid.SetTgl(tanggal1.getSelectedItem() + ""));
+                ps.setString(5, Valid.SetTgl(tanggal2.getSelectedItem() + ""));
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                ps.setString(7, Valid.SetTgl(tanggal1.getSelectedItem() + ""));
+                ps.setString(8, Valid.SetTgl(tanggal2.getSelectedItem() + ""));
+                ps.setString(9, "%" + TCari.getText().trim() + "%");
+                ps.setString(10, Valid.SetTgl(tanggal1.getSelectedItem() + ""));
+                ps.setString(11, Valid.SetTgl(tanggal2.getSelectedItem() + ""));
+                ps.setString(12, "%" + TCari.getText().trim() + "%");
+                ps.setString(13, Valid.SetTgl(tanggal1.getSelectedItem() + ""));
+                ps.setString(14, Valid.SetTgl(tanggal2.getSelectedItem() + ""));
+                ps.setString(15, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),
-                        rs.getDouble(9),rs.getDouble(10),rs.getDouble(11)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.
+                        getString(8),
+                        rs.getDouble(9), rs.getDouble(10), rs.getDouble(11)
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }   
+            }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
-         BtnPrint.setEnabled(akses.getkadaluarsa_batch());
+    public void isCek() {
+        BtnPrint.setEnabled(akses.getkadaluarsa_batch());
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(DlgKadaluarsaBatch.class.
+            getName());
+
 }

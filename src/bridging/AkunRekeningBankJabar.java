@@ -4,32 +4,50 @@
  */
 
  /*
- * DlgSpesialis.java
- *
- * Created on May 23, 2010, 1:25:13 AM
+* DlgSpesialis.java
+*
+* Created on May 23, 2010, 1:25:13 AM
  */
 package bridging;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import keuangan.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import keuangan.DlgRekeningTahun;
 
 /**
- *
  * @author dosen
  */
 public class AkunRekeningBankJabar extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgRekeningTahun rekening = new DlgRekeningTahun(null, false);
 
     /**
@@ -44,9 +62,8 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
 
         Object[] row = {"Kode Akun", "Akun Rekening", "Kode Instansi"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -57,11 +74,13 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
         };
 
         tbSpesialis.setModel(tabMode);
-        //tampil();
-        //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
+        // tampil();
+        // tbJabatan.setDefaultRenderer(Object.class, new
+        // WarnaTable(Scroll.getBackground(),Color.GREEN));
         tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -94,12 +113,27 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("AkunRekeningBankJabar")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
-                        if (rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 3).toString().equals("N")
-                                && rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 4).toString().equals("D")) {
-                            kdrek.setText(rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
-                            nmrek.setText(rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
+                        if (rekening.getTabel()
+                                .getValueAt(rekening.getTabel().getSelectedRow(),
+                                        3)
+                                .toString()
+                                .equals("N")
+                                && rekening.getTabel()
+                                        .getValueAt(rekening.getTabel().
+                                                getSelectedRow(), 4)
+                                        .toString()
+                                        .equals("D")) {
+                            kdrek.setText(
+                                    rekening.getTabel().getValueAt(rekening.
+                                            getTabel().getSelectedRow(), 1).
+                                            toString());
+                            nmrek.setText(
+                                    rekening.getTabel().getValueAt(rekening.
+                                            getTabel().getSelectedRow(), 2).
+                                            toString());
                         } else {
-                            JOptionPane.showMessageDialog(rootPane, "Rekening harus Tipe N dan Balance D..!!");
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Rekening harus Tipe N dan Balance D..!!");
                         }
 
                         kdrek.requestFocus();
@@ -122,6 +156,7 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
+
         });
 
         rekening.getTabel().addKeyListener(new KeyListener() {
@@ -141,14 +176,13 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
             @Override
             public void keyReleased(KeyEvent e) {
             }
+
         });
 
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -374,7 +408,8 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
         rekening.emptTeks();
         rekening.tampil();
         rekening.isCek();
-        rekening.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        rekening.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         rekening.setLocationRelativeTo(internalFrame1);
         rekening.setVisible(true);
     }//GEN-LAST:event_BtnPenjabActionPerformed
@@ -411,9 +446,10 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
         } else {
             if (tbSpesialis.getSelectedRow() > -1) {
                 Sequel.queryu("delete from set_akun_bankjabar");
-                if (Sequel.menyimpantf("set_akun_bankjabar", "?,?", "Akun Rekening", 2, new String[]{
-                    kdrek.getText(), TKd.getText()
-                }) == true) {
+                if (Sequel.menyimpantf("set_akun_bankjabar", "?,?",
+                        "Akun Rekening", 2, new String[]{
+                            kdrek.getText(), TKd.getText()
+                        }) == true) {
                     tampil();
                     emptTeks();
                 }
@@ -461,14 +497,16 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
         } else if (TKd.getText().trim().isEmpty()) {
             Valid.textKosong(TKd, "Kode Instansi");
         } else if (tabMode.getRowCount() == 0) {
-            if (Sequel.menyimpantf("set_akun_bankjabar", "?,?", "Akun Rekening", 2, new String[]{
-                kdrek.getText(), TKd.getText()
-            }) == true) {
+            if (Sequel.menyimpantf("set_akun_bankjabar", "?,?", "Akun Rekening",
+                    2, new String[]{
+                        kdrek.getText(), TKd.getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
             }
         } else if (tabMode.getRowCount() > 0) {
-            JOptionPane.showMessageDialog(null, "Maaf, Hanya diijinkan satu akun pengaturan ...!!!!");
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Hanya diijinkan satu akun pengaturan ...!!!!");
             TKd.requestFocus();
         }
 
@@ -476,7 +514,8 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
 
     private void tbSpesialisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyPressed
         if (tabMode.getRowCount() != 0) {
-            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.getKeyCode() == KeyEvent.VK_DOWN)) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -507,12 +546,14 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            AkunRekeningBankJabar dialog = new AkunRekeningBankJabar(new javax.swing.JFrame(), true);
+            AkunRekeningBankJabar dialog = new AkunRekeningBankJabar(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -540,15 +581,16 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_akun_bankjabar.kd_rek,rekening.nm_rek,set_akun_bankjabar.kode_bank "
-                    + "from set_akun_bankjabar inner join rekening on set_akun_bankjabar.kd_rek=rekening.kd_rek");
+            ps = koneksi
+                    .prepareStatement(
+                            "select set_akun_bankjabar.kd_rek,rekening.nm_rek,set_akun_bankjabar.kode_bank "
+                            + "from set_akun_bankjabar inner join rekening on set_akun_bankjabar.kd_rek=rekening.kd_rek");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3)
-                    });
+                    tabMode.addRow(
+                            new Object[]{rs.getString(1), rs.getString(2),
+                                rs.getString(3)});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -583,4 +625,8 @@ public class AkunRekeningBankJabar extends javax.swing.JDialog {
             TKd.setText(tabMode.getValueAt(row, 2).toString());
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            AkunRekeningBankJabar.class.getName());
+
 }

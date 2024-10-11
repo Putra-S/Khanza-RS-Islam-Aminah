@@ -3,104 +3,123 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPenyakit.java
  *
  * Created on May 23, 2010, 12:57:16 AM
  */
-
 package inventory;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgKonversi extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    /** Creates new form DlgPenyakit 
-     *@param parent
-     *@param modal */
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+
+    /**
+     * Creates new form DlgPenyakit
+     *
+     * @param parent
+     * @param modal
+     */
     public DlgKonversi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        Object[] row={"Nilai 1",
-                      "Satuan 1 ",
-                      "=",
-                      "Nilai 2 ",
-                      "Satuan 2 "};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Nilai 1",
+            "Satuan 1 ",
+            "=",
+            "Nilai 2 ",
+            "Satuan 2 "};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 5; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(20);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(200);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        n1.setDocument(new batasInput((byte)13).getKata(n1));
-        n2.setDocument(new batasInput((byte)13).getKata(n2));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        n1.setDocument(new batasInput((byte) 13).getKata(n1));
+        n2.setDocument(new batasInput((byte) 13).getKata(n2));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil("");
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil("");
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil("");
                     }
                 }
+
             });
         }
-        Valid.loadCombo(kdsat1,"kode_sat","kodesatuan");
-        Valid.loadCombo(kdsat2,"kode_sat","kodesatuan");
-        
+        Valid.loadCombo(kdsat1, "kode_sat", "kodesatuan");
+        Valid.loadCombo(kdsat2, "kode_sat", "kodesatuan");
+
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -474,34 +493,35 @@ public class DlgKonversi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void n1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_n1KeyPressed
-        Valid.pindah(evt,TCari,nmsat1);
+        Valid.pindah(evt, TCari, nmsat1);
 }//GEN-LAST:event_n1KeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(n1.getText().trim().isEmpty()){
-            Valid.textKosong(n1,"Nilai Satuan Ke 1");
-        }else if(n2.getText().trim().isEmpty()){
-            Valid.textKosong(n2,"Nilai Satuan Ke 2");
-        }else if(nmsat1.getText().trim().isEmpty()){
-            Valid.textKosong(kdsat1,"Satuan Ke 1");
-        }else if(nmsat2.getText().trim().isEmpty()){
-            Valid.textKosong(kdsat2,"Satuan Ke 2");
-        }else if(kdsat1.getSelectedItem().toString().equals(kdsat2.getSelectedItem().toString())){
-            Valid.textKosong(kdsat1,"Satuan Ke 1 dan 2");
-        }else{
-            Sequel.menyimpan("konver_sat","'"+n1.getText()+"','"+
-                    kdsat1.getSelectedItem()+"','"+n2.getText()+"','"+
-                    kdsat2.getSelectedItem()+"'","Konversi yang sama");
+        if (n1.getText().trim().isEmpty()) {
+            Valid.textKosong(n1, "Nilai Satuan Ke 1");
+        } else if (n2.getText().trim().isEmpty()) {
+            Valid.textKosong(n2, "Nilai Satuan Ke 2");
+        } else if (nmsat1.getText().trim().isEmpty()) {
+            Valid.textKosong(kdsat1, "Satuan Ke 1");
+        } else if (nmsat2.getText().trim().isEmpty()) {
+            Valid.textKosong(kdsat2, "Satuan Ke 2");
+        } else if (kdsat1.getSelectedItem().toString().equals(kdsat2.
+                getSelectedItem().toString())) {
+            Valid.textKosong(kdsat1, "Satuan Ke 1 dan 2");
+        } else {
+            Sequel.menyimpan("konver_sat", "'" + n1.getText() + "','"
+                    + kdsat1.getSelectedItem() + "','" + n2.getText() + "','"
+                    + kdsat2.getSelectedItem() + "'", "Konversi yang sama");
             BtnCariActionPerformed(evt);
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,nmsat1,BtnBatal);
+        } else {
+            Valid.pindah(evt, nmsat1, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -510,21 +530,24 @@ public class DlgKonversi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,kdsat1,"konver_sat","sat_konversi='"+kdsat2.getSelectedItem()+"' and kode_sat");
+        Valid.hapusTable(tabMode, kdsat1, "konver_sat",
+                "sat_konversi='" + kdsat2.getSelectedItem() + "' and kode_sat");
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnPrint);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -534,49 +557,57 @@ public class DlgKonversi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         BtnCariActionPerformed(evt);
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){         
-                Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptKonversi.jasper","report","::[ Konversi Satuan ]::","select nilai, kode_sat, nilai_konversi, sat_konversi  "+
-                " from konver_sat where  kode_sat like '%"+TCari.getText().trim()+"%' or "+
-                " sat_konversi like '%"+TCari.getText().trim()+"%' order by kode_sat",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptKonversi.jasper", "report",
+                    "::[ Konversi Satuan ]::",
+                    "select nilai, kode_sat, nilai_konversi, sat_konversi  "
+                    + " from konver_sat where  kode_sat like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + " sat_konversi like '%" + TCari.getText().trim() + "%' order by kode_sat",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -586,9 +617,9 @@ public class DlgKonversi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -599,15 +630,15 @@ public class DlgKonversi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -616,8 +647,8 @@ public class DlgKonversi extends javax.swing.JDialog {
 }//GEN-LAST:event_tbKamarMouseClicked
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -629,11 +660,15 @@ public class DlgKonversi extends javax.swing.JDialog {
     }//GEN-LAST:event_n2KeyPressed
 
     private void kdsat1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_kdsat1ItemStateChanged
-        Sequel.cariIsi("select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?", nmsat1,kdsat1.getSelectedItem().toString());
+        Sequel.cariIsi(
+                "select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?",
+                nmsat1, kdsat1.getSelectedItem().toString());
     }//GEN-LAST:event_kdsat1ItemStateChanged
 
     private void kdsat2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_kdsat2ItemStateChanged
-       Sequel.cariIsi("select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?", nmsat2,kdsat2.getSelectedItem().toString());
+        Sequel.cariIsi(
+                "select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?",
+                nmsat2, kdsat2.getSelectedItem().toString());
     }//GEN-LAST:event_kdsat2ItemStateChanged
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -641,8 +676,9 @@ public class DlgKonversi extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tbKamarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -652,8 +688,8 @@ public class DlgKonversi extends javax.swing.JDialog {
     }//GEN-LAST:event_tbKamarKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgKonversi dialog = new DlgKonversi(new javax.swing.JFrame(), true);
@@ -662,6 +698,7 @@ public class DlgKonversi extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -701,35 +738,36 @@ public class DlgKonversi extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void tampil(String order) {
-        String sql="";
-        if(TCari.getText().isEmpty()){
-            sql="select nilai, kode_sat, nilai_konversi, sat_konversi "+
-                   "from konver_sat "+order;
-        }else if(!TCari.getText().isEmpty()){
-            sql="select nilai, kode_sat, nilai_konversi, sat_konversi  "+
-                " from konver_sat where  kode_sat like '%"+TCari.getText().trim()+"%' or "+
-                " sat_konversi like '%"+TCari.getText().trim()+"%' "+order;
-        } 
+        String sql = "";
+        if (TCari.getText().isEmpty()) {
+            sql = "select nilai, kode_sat, nilai_konversi, sat_konversi "
+                    + "from konver_sat " + order;
+        } else if (!TCari.getText().isEmpty()) {
+            sql = "select nilai, kode_sat, nilai_konversi, sat_konversi  "
+                    + " from konver_sat where  kode_sat like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + " sat_konversi like '%" + TCari.getText().trim() + "%' " + order;
+        }
         prosesCari(sql);
     }
 
     private void prosesCari(String sql) {
         Valid.tabelKosong(tabMode);
-        try{
-            java.sql.Statement stat=koneksiDB.condb().createStatement();
-            ResultSet rs=stat.executeQuery(sql);
-            while(rs.next()){
-                String[] data={rs.getString(1),
-                               rs.getString(2),
-                               " =",rs.getString(3),
-                               rs.getString(4)};
+        try {
+            java.sql.Statement stat = koneksiDB.condb().createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            while (rs.next()) {
+                String[] data = {rs.getString(1),
+                    rs.getString(2),
+                    " =", rs.getString(3),
+                    rs.getString(4)};
                 tabMode.addRow(data);
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        int b=tabMode.getRowCount();
-        LCount.setText(""+b);
+        int b = tabMode.getRowCount();
+        LCount.setText("" + b);
     }
 
     public void emptTeks() {
@@ -737,28 +775,30 @@ public class DlgKonversi extends javax.swing.JDialog {
         n2.setText("");
         kdsat1.setSelectedItem("");
         kdsat2.setSelectedItem("");
-        n1.requestFocus();        
+        n1.requestFocus();
     }
 
     private void getData() {
-        int row=tbKamar.getSelectedRow();
-        if(row!= -1){
-            n1.setText(tabMode.getValueAt(row,0).toString());
-            kdsat1.setSelectedItem(tabMode.getValueAt(row,1).toString());
-            n2.setText(tabMode.getValueAt(row,3).toString());
-            kdsat2.setSelectedItem(tabMode.getValueAt(row,4).toString());
+        int row = tbKamar.getSelectedRow();
+        if (row != -1) {
+            n1.setText(tabMode.getValueAt(row, 0).toString());
+            kdsat1.setSelectedItem(tabMode.getValueAt(row, 1).toString());
+            n2.setText(tabMode.getValueAt(row, 3).toString());
+            kdsat2.setSelectedItem(tabMode.getValueAt(row, 4).toString());
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getkonversi_satuan());
         BtnHapus.setEnabled(akses.getkonversi_satuan());
         BtnPrint.setEnabled(akses.getkonversi_satuan());
-               
+
         ppHapus.setEnabled(akses.getkonversi_satuan());
         ppCetak.setEnabled(akses.getkonversi_satuan());
         ppSimpan.setEnabled(akses.getkonversi_satuan());
     }
 
+    private static final Logger LOG = Logger.getLogger(DlgKonversi.class.
+            getName());
 
 }

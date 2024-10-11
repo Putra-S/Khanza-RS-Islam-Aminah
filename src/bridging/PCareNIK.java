@@ -3,88 +3,126 @@
  * and open the template in the editor.
  */
 
-/*
- * DlgKamar.java
- *
- * Created on May 23, 2010, 12:07:21 AM
+ /*
+* DlgKamar.java
+*
+* Created on May 23, 2010, 12:07:21 AM
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class PCareNIK extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
+
     private final Properties prop = new Properties();
-    private validasi Valid=new validasi();
-    private sekuel Sequel=new sekuel();
-    private ApiPcare api=new ApiPcare();
-    private String URL = "",otorisasi,utc="";
+
+    private validasi Valid = new validasi();
+
+    private sekuel Sequel = new sekuel();
+
+    private ApiPcare api = new ApiPcare();
+
+    private String URL = "", otorisasi, utc = "";
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
 
-    /** Creates new form DlgKamar
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public PCareNIK(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        Object[] row={"",""};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"", ""};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(160);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(420);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
+
         try {
-            prop.loadFromXML(new FileInputStream("setting/database.xml"));  
-            otorisasi=koneksiDB.USERPCARE()+":"+koneksiDB.PASSPCARE()+":095";
-            URL=prop.getProperty("URLAPIPCARE")+"/peserta/nik/";
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            otorisasi = koneksiDB.USERPCARE() + ":" + koneksiDB.PASSPCARE() + ":095";
+            URL = prop.getProperty("URLAPIPCARE") + "/peserta/nik/";
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -164,41 +202,50 @@ public class PCareNIK extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            int row=tabMode.getRowCount();
-            for(int r=0;r<row;r++){  
-                Sequel.menyimpan("temporary","'"+r+"','"+
-                                tabMode.getValueAt(r,0).toString()+"','"+
-                                tabMode.getValueAt(r,1).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Harian Pengadaan Ipsrs"); 
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            int row = tabMode.getRowCount();
+            for (int r = 0; r < row; r++) {
+                Sequel.menyimpan("temporary", "'" + r + "','"
+                        + tabMode.getValueAt(r, 0).toString() + "','"
+                        + tabMode.getValueAt(r, 1).toString() + "','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                        getalamatip() + "'", "Rekap Harian Pengadaan Ipsrs");
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptCariBPJSNik.jasper","report","[ Pencarian Peserta BPJS Berdasarkan NIK/No.KTP ]","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptCariBPJSNik.jasper", "report",
+                    "[ Pencarian Peserta BPJS Berdasarkan NIK/No.KTP ]",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             PCareNIK dialog = new PCareNIK(new javax.swing.JFrame(), true);
@@ -207,6 +254,7 @@ public class PCareNIK extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -222,137 +270,127 @@ public class PCareNIK extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param nopeserta
      */
-    public void tampil(String nopeserta) {        
+    public void tampil(String nopeserta) {
         try {
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("X-cons-id",koneksiDB.CONSIDAPIPCARE());
-            utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-timestamp",utc);            
-	    headers.add("X-signature",api.getHmac());
-            headers.add("X-authorization","Basic "+Base64.encodeBase64String(otorisasi.getBytes()));
-            headers.add("user_key",koneksiDB.USERKEYAPIPCARE());
-	    requestEntity = new HttpEntity(headers);
-            System.out.println("URL : "+URL);
-	    //System.out.println(rest.exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-            root = mapper.readTree(api.getRest().exchange(URL+nopeserta, HttpMethod.GET, requestEntity, String.class).getBody());
+            headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-timestamp", utc);
+            headers.add("X-signature", api.getHmac());
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
+                    otorisasi.getBytes()));
+            headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
+            requestEntity = new HttpEntity(headers);
+            System.out.println("URL : " + URL);
+            // System.out.println(rest.exchange(URL, HttpMethod.GET, requestEntity,
+            // String.class).getBody());
+            root = mapper.readTree(
+                    api.getRest().exchange(URL + nopeserta, HttpMethod.GET,
+                            requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
-            //System.out.println("code : "+nameNode.path("code").asText());
-            //System.out.println("message : "+nameNode.path("message").asText());
-            if(nameNode.path("message").asText().equals("OK")){
+            // System.out.println("code : "+nameNode.path("code").asText());
+            // System.out.println("message : "+nameNode.path("message").asText());
+            if (nameNode.path("message").asText().equals("OK")) {
                 Valid.tabelKosong(tabMode);
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                tabMode.addRow(new Object[]{
-                    "No.Kartu",": "+response.path("noKartu").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Nama",": "+response.path("nama").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Hubungan Keluarga",": "+response.path("hubunganKeluarga").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Jenis Kelamin",": "+response.path("sex").asText().replaceAll("L","Laki-Laki").replaceAll("P","Perempuan")
-                });
-                tabMode.addRow(new Object[]{
-                    "Tanggal Lahir",": "+response.path("tglLahir").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Mulai Aktif",": "+response.path("tglMulaiAktif").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Akhir Berlaku",": "+response.path("tglAkhirBerlaku").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Provider Umum",":"
-                });
-                tabMode.addRow(new Object[]{
-                    "       Kode Provider",": "+response.path("kdProviderPst").path("kdProvider").asText()
-                });                
-                tabMode.addRow(new Object[]{
-                    "       Nama Provider",": "+response.path("kdProviderPst").path("nmProvider").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Provider Gigi",":"
-                });
-                tabMode.addRow(new Object[]{
-                    "       Kode Provider",": "+response.path("kdProviderGigi").path("kdProvider").asText()
-                });                
-                tabMode.addRow(new Object[]{
-                    "       Nama Provider",": "+response.path("kdProviderGigi").path("nmProvider").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Kelas Tanggungan",":"
-                });
-                tabMode.addRow(new Object[]{
-                    "       Kode Kelas",": "+response.path("jnsKelas").path("kode").asText()
-                });                
-                tabMode.addRow(new Object[]{
-                    "       Nama Kelas",": "+response.path("jnsKelas").path("nama").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Jenis Peserta",":"
-                });
-                tabMode.addRow(new Object[]{
-                    "       Kode Jenis",": "+response.path("jnsPeserta").path("kode").asText()
-                });                
-                tabMode.addRow(new Object[]{
-                    "       Nama Jenis",": "+response.path("jnsPeserta").path("nama").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Golongan Darah",": "+response.path("golDarah").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Nomor HP",": "+response.path("noHP").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Nomor KTP",": "+response.path("noKTP").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Status",": "+response.path("ketAktif").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Asuransi/COB",":"
-                });
-                tabMode.addRow(new Object[]{
-                    "       Kode Asuransi",": "+response.path("asuransi").path("kdAsuransi").asText()
-                });                
-                tabMode.addRow(new Object[]{
-                    "       Nama Asuransi",": "+response.path("asuransi").path("nmAsuransi").asText()
-                });              
-                tabMode.addRow(new Object[]{
-                    "       Nomer Asuransi",": "+response.path("asuransi").path("noAsuransi").asText()
-                });              
-                tabMode.addRow(new Object[]{
-                    "       COB",": "+response.path("asuransi").path("cob").asText()
-                });
-                tabMode.addRow(new Object[]{
-                    "Tunggakan",": "+response.path("tunggakan").asText()
-                });
-            }else {
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-            }  
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(null,"Koneksi ke server PCare terputus...!");
-            }else if(ex.toString().contains("500")){
-                JOptionPane.showMessageDialog(null,"Server PCare baru ngambek broooh...!");
-            }else if(ex.toString().contains("401")){
-                JOptionPane.showMessageDialog(null,"Username/Password salah. Lupa password? Wani piro...!");
-            }else if(ex.toString().contains("408")){
-                JOptionPane.showMessageDialog(null,"Time out, hayati lelah baaaang...!");
-            }else if(ex.toString().contains("424")){
-                JOptionPane.showMessageDialog(null,"Ambil data masternya yang bener dong coy...!");
-            }else if(ex.toString().contains("412")){
-                JOptionPane.showMessageDialog(null,"Tidak sesuai kondisi. Aku, kamu end...!");
-            }else if(ex.toString().contains("204")){
-                JOptionPane.showMessageDialog(null,"Data tidak ditemukan...!");
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc));
+                tabMode.addRow(new Object[]{"No.Kartu", ": " + response.path(
+                    "noKartu").asText()});
+                tabMode.addRow(new Object[]{"Nama",
+                    ": " + response.path("nama").asText()});
+                tabMode.addRow(new Object[]{"Hubungan Keluarga",
+                    ": " + response.path("hubunganKeluarga").asText()});
+                tabMode.addRow(new Object[]{"Jenis Kelamin", ": "
+                    + response.path("sex").asText().replaceAll("L", "Laki-Laki").
+                    replaceAll("P", "Perempuan")});
+                tabMode.addRow(new Object[]{"Tanggal Lahir", ": " + response.
+                    path("tglLahir").asText()});
+                tabMode.addRow(new Object[]{"Mulai Aktif", ": " + response.path(
+                    "tglMulaiAktif").asText()});
+                tabMode.addRow(new Object[]{"Akhir Berlaku", ": " + response.
+                    path("tglAkhirBerlaku").asText()});
+                tabMode.addRow(new Object[]{"Provider Umum", ":"});
+                tabMode.addRow(new Object[]{"       Kode Provider",
+                    ": " + response.path("kdProviderPst").path("kdProvider").
+                    asText()});
+                tabMode.addRow(new Object[]{"       Nama Provider",
+                    ": " + response.path("kdProviderPst").path("nmProvider").
+                    asText()});
+                tabMode.addRow(new Object[]{"Provider Gigi", ":"});
+                tabMode.addRow(new Object[]{"       Kode Provider",
+                    ": " + response.path("kdProviderGigi").path("kdProvider").
+                    asText()});
+                tabMode.addRow(new Object[]{"       Nama Provider",
+                    ": " + response.path("kdProviderGigi").path("nmProvider").
+                    asText()});
+                tabMode.addRow(new Object[]{"Kelas Tanggungan", ":"});
+                tabMode.addRow(
+                        new Object[]{"       Kode Kelas", ": " + response.path(
+                                    "jnsKelas").path("kode").asText()});
+                tabMode.addRow(
+                        new Object[]{"       Nama Kelas", ": " + response.path(
+                                    "jnsKelas").path("nama").asText()});
+                tabMode.addRow(new Object[]{"Jenis Peserta", ":"});
+                tabMode.addRow(
+                        new Object[]{"       Kode Jenis", ": " + response.path(
+                                    "jnsPeserta").path("kode").asText()});
+                tabMode.addRow(
+                        new Object[]{"       Nama Jenis", ": " + response.path(
+                                    "jnsPeserta").path("nama").asText()});
+                tabMode.addRow(new Object[]{"Golongan Darah", ": " + response.
+                    path("golDarah").asText()});
+                tabMode.addRow(new Object[]{"Nomor HP", ": " + response.path(
+                    "noHP").asText()});
+                tabMode.addRow(new Object[]{"Nomor KTP", ": " + response.path(
+                    "noKTP").asText()});
+                tabMode.addRow(new Object[]{"Status", ": " + response.path(
+                    "ketAktif").asText()});
+                tabMode.addRow(new Object[]{"Asuransi/COB", ":"});
+                tabMode.addRow(new Object[]{"       Kode Asuransi",
+                    ": " + response.path("asuransi").path("kdAsuransi").asText()});
+                tabMode.addRow(new Object[]{"       Nama Asuransi",
+                    ": " + response.path("asuransi").path("nmAsuransi").asText()});
+                tabMode.addRow(new Object[]{"       Nomer Asuransi",
+                    ": " + response.path("asuransi").path("noAsuransi").asText()});
+                tabMode.addRow(new Object[]{"       COB", ": " + response.path(
+                    "asuransi").path("cob").asText()});
+                tabMode.addRow(new Object[]{"Tunggakan", ": " + response.path(
+                    "tunggakan").asText()});
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(null,
+                        "Koneksi ke server PCare terputus...!");
+            } else if (ex.toString().contains("500")) {
+                JOptionPane.showMessageDialog(null,
+                        "Server PCare baru ngambek broooh...!");
+            } else if (ex.toString().contains("401")) {
+                JOptionPane.showMessageDialog(null,
+                        "Username/Password salah. Lupa password? Wani piro...!");
+            } else if (ex.toString().contains("408")) {
+                JOptionPane.showMessageDialog(null,
+                        "Time out, hayati lelah baaaang...!");
+            } else if (ex.toString().contains("424")) {
+                JOptionPane.showMessageDialog(null,
+                        "Ambil data masternya yang bener dong coy...!");
+            } else if (ex.toString().contains("412")) {
+                JOptionPane.showMessageDialog(null,
+                        "Tidak sesuai kondisi. Aku, kamu end...!");
+            } else if (ex.toString().contains("204")) {
+                JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             }
         }
-    }   
- 
+    }
+
+    private static final Logger LOG = Logger.getLogger(PCareNIK.class.getName());
+
 }

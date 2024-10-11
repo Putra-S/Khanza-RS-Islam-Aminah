@@ -3,101 +3,124 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgObatPenyakit.java
  *
  * Created on May 23, 2010, 12:40:35 AM
  */
-
 package setting;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import simrskhanza.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import simrskhanza.DlgCariCaraBayar;
 
 /**
  *
  * @author dosen
  */
 public class DlgSetHargaObatRalan extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
 
-    /** Creates new form DlgObatPenyakit
+    private final DefaultTableModel tabMode;
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+
+    /**
+     * Creates new form DlgObatPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSetHargaObatRalan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] row={"Kode Bayar",
-                "Nama Bayar",
-                "Harga Obat(%)"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Bayar",
+            "Nama Bayar",
+            "Harga Obat(%)"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObatPenyakit.setModel(tabMode);
 
         //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
-        tbObatPenyakit.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbObatPenyakit.setPreferredScrollableViewportSize(
+                new Dimension(800, 800));
         tbObatPenyakit.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-         for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             TableColumn column = tbObatPenyakit.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(300);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(100);
             }
         }
         tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable());
 
-        harga.setDocument(new batasInput((byte)4).getOnlyAngka(harga));
-        kdpj.setDocument(new batasInput((byte)8).getKata(kdpj));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        harga.setDocument(new batasInput((byte) 4).getOnlyAngka(harga));
+        kdpj.setDocument(new batasInput((byte) 8).getKata(kdpj));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
-            });
-        }  
-        
-    }
-    
-    private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+    }
+
+    private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -398,20 +421,22 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_nmpjKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(nmpj.getText().trim().isEmpty()){
-            Valid.textKosong(nmpj,"Jenis Bayar");
-        }else{
-            Sequel.menyimpan("set_harga_obat_ralan","'"+kdpj.getText()+"','"+harga.getText()+"'","Jenis Bayar");
+        if (nmpj.getText().trim().isEmpty()) {
+            Valid.textKosong(nmpj, "Jenis Bayar");
+        } else {
+            Sequel.menyimpan("set_harga_obat_ralan",
+                    "'" + kdpj.getText() + "','" + harga.getText() + "'",
+                    "Jenis Bayar");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,harga,BtnBatal);
+        } else {
+            Valid.pindah(evt, harga, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -420,28 +445,31 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             kdpj.requestFocus();
-        }else if(nmpj.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-        }else if(!(nmpj.getText().trim().isEmpty())){
-            Valid.hapusTable(tabMode,kdpj,"set_harga_obat_ralan","kd_pj");
+        } else if (nmpj.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+        } else if (!(nmpj.getText().trim().isEmpty())) {
+            Valid.hapusTable(tabMode, kdpj, "set_harga_obat_ralan", "kd_pj");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnKeluar);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -451,9 +479,11 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,BtnSimpan);}
+        } else {
+            Valid.pindah(evt, BtnAll, BtnSimpan);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
@@ -462,19 +492,19 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -484,9 +514,9 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -494,17 +524,18 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
     private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeekActionPerformed
         penjab.isCek();
         penjab.emptTeks();
-        penjab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
         penjab.setVisible(true);
 }//GEN-LAST:event_BtnSeekActionPerformed
 
     private void BtnSeekKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSeekKeyPressed
-        Valid.pindah(evt,kdpj,harga);
+        Valid.pindah(evt, kdpj, harga);
 }//GEN-LAST:event_BtnSeekKeyPressed
 
     private void tbObatPenyakitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatPenyakitMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -513,8 +544,9 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatPenyakitMouseClicked
 
     private void tbObatPenyakitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatPenyakitKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -524,52 +556,74 @@ public class DlgSetHargaObatRalan extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatPenyakitKeyPressed
 
 private void kdpjKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpjKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-             Sequel.cariIsi("select penjab.png_jawab from penjab where penjab.kd_pj='"+kdpj.getText()+"'", nmpj);
-        }else{
-             Valid.pindah(evt,TCari,harga);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+        Sequel.cariIsi(
+                "select penjab.png_jawab from penjab where penjab.kd_pj='" + kdpj.
+                        getText() + "'", nmpj);
+    } else {
+        Valid.pindah(evt, TCari, harga);
+    }
 }//GEN-LAST:event_kdpjKeyPressed
 
 private void hargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hargaKeyPressed
-       Valid.pindah(evt,kdpj,BtnSimpan);
+    Valid.pindah(evt, kdpj, BtnSimpan);
 }//GEN-LAST:event_hargaKeyPressed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         penjab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(penjab.getTable().getSelectedRow()!= -1){
-                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),1).toString());
-                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),2).toString());
-                }  
+                if (penjab.getTable().getSelectedRow() != -1) {
+                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().
+                            getSelectedRow(), 1).toString());
+                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().
+                            getSelectedRow(), 2).toString());
+                }
                 kdpj.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         penjab.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     penjab.dispose();
-                }                
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
     }//GEN-LAST:event_formWindowActivated
 
@@ -584,16 +638,18 @@ private void hargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_har
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetHargaObatRalan dialog = new DlgSetHargaObatRalan(new javax.swing.JFrame(), true);
+            DlgSetHargaObatRalan dialog = new DlgSetHargaObatRalan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -626,32 +682,33 @@ private void hargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_har
     private widget.Table tbObatPenyakit;
     // End of variables declaration//GEN-END:variables
 
-
     private void tampil() {
-        String sql="select set_harga_obat_ralan.kd_pj,penjab.png_jawab, set_harga_obat_ralan.hargajual "+
-                   "from set_harga_obat_ralan inner join penjab on set_harga_obat_ralan.kd_pj=penjab.kd_pj "+
-                   "where set_harga_obat_ralan.kd_pj like '%"+TCari.getText().trim()+"%' or "+
-                   "penjab.png_jawab like '%"+TCari.getText().trim()+"%' or "+
-                   "set_harga_obat_ralan.hargajual like '%"+TCari.getText().trim()+"%' order by penjab.png_jawab";
+        String sql = "select set_harga_obat_ralan.kd_pj,penjab.png_jawab, set_harga_obat_ralan.hargajual "
+                + "from set_harga_obat_ralan inner join penjab on set_harga_obat_ralan.kd_pj=penjab.kd_pj "
+                + "where set_harga_obat_ralan.kd_pj like '%" + TCari.getText().
+                        trim() + "%' or "
+                + "penjab.png_jawab like '%" + TCari.getText().trim() + "%' or "
+                + "set_harga_obat_ralan.hargajual like '%" + TCari.getText().
+                        trim() + "%' order by penjab.png_jawab";
         prosesCari(sql);
     }
 
     private void prosesCari(String sql) {
         Valid.tabelKosong(tabMode);
-        try{
-            PreparedStatement ps=koneksi.prepareStatement(sql);
-            ResultSet rs=ps.executeQuery();
-            while(rs.next()){
-                String[] data={rs.getString(1),
-                               rs.getString(2),
-                               rs.getString(3)};
+        try {
+            PreparedStatement ps = koneksi.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String[] data = {rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3)};
                 tabMode.addRow(data);
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        int b=tabMode.getRowCount();
-        LCount.setText(""+b);
+        int b = tabMode.getRowCount();
+        LCount.setText("" + b);
     }
 
     private void emptTeks() {
@@ -662,12 +719,15 @@ private void hargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_har
     }
 
     private void getData() {
-        int row=tbObatPenyakit.getSelectedRow();
-        if(row!= -1){
-            kdpj.setText(tbObatPenyakit.getValueAt(row,0).toString());
-            nmpj.setText(tbObatPenyakit.getValueAt(row,1).toString());
-            harga.setText(tbObatPenyakit.getValueAt(row,2).toString());
+        int row = tbObatPenyakit.getSelectedRow();
+        if (row != -1) {
+            kdpj.setText(tbObatPenyakit.getValueAt(row, 0).toString());
+            nmpj.setText(tbObatPenyakit.getValueAt(row, 1).toString());
+            harga.setText(tbObatPenyakit.getValueAt(row, 2).toString());
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgSetHargaObatRalan.class.getName());
 
 }

@@ -1,242 +1,310 @@
 /*
  * by MAs ElKhanza
  */
-
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author perpustakaan
  */
 public class RMPerencanaanPemulangan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
-    private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
+    private int i = 0;
+    private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
     private StringBuilder htmlContent;
-    private String pilihan="";
-    
-    /** Creates new form DlgRujuk
+    private String pilihan = "";
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMPerencanaanPemulangan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","J.K.","Masuk Dirawat","Rencana Pulang","Diagnosa Medis","Alasan Masuk / Dirawat",
-            "Pengaruh RI Pasien & Keluarga","Keterangan Pengaruh RI Pasien & Keluarga","Pengaruh RI Pekerjaan/Sekolah","Keterangan Pengaruh RI Pekerjaan/Sekolah",
-            "Pengaruh RI Keuangan","Keterangan Pengaruh RI Keuangan","Antisipasi Masalah","Keterangan Antisipasi Masalah","Bantuan Diperlukan","Keterangan Bantuan Diperlukan", 
-            "Membantu Keperluan","Keterangan Yang Membantu Keperluan","Tinggal Sendiri","Keterangan Pasien Tinggal Sendiri","Peralatan Medis","Keterangan Peralatan Medis",
-            "Alat Bantu","Keterangan Memerlukan Alat Bantu","Perawatan Khusus","Keterangan Perawatan Khusus","Memenuhi Kebutuhan","Keterangan Memenuhi Kebutuhan",
-            "Nyeri Kronis","Keterangan Nyeri Kronis","Edukasi Kesehatan","Keterangan Edukasi Kesehatan","Keterampilkan Khusus","Keterangan Keterampilkan Khusus",
-            "Pasien/Keluarga","NIP","Nama Petugas"
-        }){
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Masuk Dirawat", "Rencana Pulang", "Diagnosa Medis",
+            "Alasan Masuk / Dirawat",
+            "Pengaruh RI Pasien & Keluarga",
+            "Keterangan Pengaruh RI Pasien & Keluarga",
+            "Pengaruh RI Pekerjaan/Sekolah",
+            "Keterangan Pengaruh RI Pekerjaan/Sekolah",
+            "Pengaruh RI Keuangan", "Keterangan Pengaruh RI Keuangan",
+            "Antisipasi Masalah", "Keterangan Antisipasi Masalah",
+            "Bantuan Diperlukan", "Keterangan Bantuan Diperlukan",
+            "Membantu Keperluan", "Keterangan Yang Membantu Keperluan",
+            "Tinggal Sendiri", "Keterangan Pasien Tinggal Sendiri",
+            "Peralatan Medis", "Keterangan Peralatan Medis",
+            "Alat Bantu", "Keterangan Memerlukan Alat Bantu", "Perawatan Khusus",
+            "Keterangan Perawatan Khusus", "Memenuhi Kebutuhan",
+            "Keterangan Memenuhi Kebutuhan",
+            "Nyeri Kronis", "Keterangan Nyeri Kronis", "Edukasi Kesehatan",
+            "Keterangan Edukasi Kesehatan", "Keterampilkan Khusus",
+            "Keterangan Keterampilkan Khusus",
+            "Pasien/Keluarga", "NIP", "Nama Petugas"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
-        
+
         tbObat.setModel(tabMode);
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 40; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(105);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(70);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(25);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(87);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(180);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(180);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(160);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(220);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(160);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(220);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(119);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(178);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(99);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(158);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(108);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(163);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(110);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(195);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(80);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(175);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(87);
-            }else if(i==24){
+            } else if (i == 24) {
                 column.setPreferredWidth(145);
-            }else if(i==25){
+            } else if (i == 25) {
                 column.setPreferredWidth(61);
-            }else if(i==26){
+            } else if (i == 26) {
                 column.setPreferredWidth(181);
-            }else if(i==27){
+            } else if (i == 27) {
                 column.setPreferredWidth(98);
-            }else if(i==28){
+            } else if (i == 28) {
                 column.setPreferredWidth(156);
-            }else if(i==29){
+            } else if (i == 29) {
                 column.setPreferredWidth(112);
-            }else if(i==30){
+            } else if (i == 30) {
                 column.setPreferredWidth(173);
-            }else if(i==31){
+            } else if (i == 31) {
                 column.setPreferredWidth(67);
-            }else if(i==32){
+            } else if (i == 32) {
                 column.setPreferredWidth(126);
-            }else if(i==33){
+            } else if (i == 33) {
                 column.setPreferredWidth(98);
-            }else if(i==34){
+            } else if (i == 34) {
                 column.setPreferredWidth(157);
-            }else if(i==35){
+            } else if (i == 35) {
                 column.setPreferredWidth(116);
-            }else if(i==36){
+            } else if (i == 36) {
                 column.setPreferredWidth(175);
-            }else if(i==37){
+            } else if (i == 37) {
                 column.setPreferredWidth(150);
-            }else if(i==38){
+            } else if (i == 38) {
                 column.setPreferredWidth(90);
-            }else if(i==39){
+            } else if (i == 39) {
                 column.setPreferredWidth(150);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         DiagnosaMedis.setDocument(new batasInput(50).getKata(DiagnosaMedis));
         AlasanMasuk.setDocument(new batasInput(150).getKata(AlasanMasuk));
-        KeteranganPengaruhRIKeluarga.setDocument(new batasInput(100).getKata(KeteranganPengaruhRIKeluarga));
-        KeteranganPengaruhRIPekerjaanSekolah.setDocument(new batasInput(100).getKata(KeteranganPengaruhRIPekerjaanSekolah));
-        KeteranganPengaruhRIKeuangan.setDocument(new batasInput(100).getKata(KeteranganPengaruhRIKeuangan));
-        KeteranganAntisipasiMasalah.setDocument(new batasInput(100).getKata(KeteranganAntisipasiMasalah));
-        KeteranganBantuanDiperlukan.setDocument(new batasInput(100).getKata(KeteranganBantuanDiperlukan));
-        KeteranganYangMembantuKeperluan.setDocument(new batasInput(100).getKata(KeteranganYangMembantuKeperluan));
-        KeteranganTinggalSendiri.setDocument(new batasInput(100).getKata(KeteranganTinggalSendiri));
-        KeteranganPeralatanMedis.setDocument(new batasInput(100).getKata(KeteranganPeralatanMedis));
-        KeteranganAlatBantu.setDocument(new batasInput(100).getKata(KeteranganAlatBantu));
-        KeteranganPerawatanKhusus.setDocument(new batasInput(100).getKata(KeteranganPerawatanKhusus));
-        KeteranganMemenuhiKebutuhan.setDocument(new batasInput(100).getKata(KeteranganMemenuhiKebutuhan));
-        KeteranganNyeriKronis.setDocument(new batasInput(100).getKata(KeteranganNyeriKronis));
-        KeteranganEdukasiPasien.setDocument(new batasInput(100).getKata(KeteranganEdukasiPasien));
-        KeteranganKeterampilanKhusus.setDocument(new batasInput(100).getKata(KeteranganKeterampilanKhusus));
+        KeteranganPengaruhRIKeluarga.setDocument(new batasInput(100).getKata(
+                KeteranganPengaruhRIKeluarga));
+        KeteranganPengaruhRIPekerjaanSekolah.setDocument(new batasInput(100).
+                getKata(KeteranganPengaruhRIPekerjaanSekolah));
+        KeteranganPengaruhRIKeuangan.setDocument(new batasInput(100).getKata(
+                KeteranganPengaruhRIKeuangan));
+        KeteranganAntisipasiMasalah.setDocument(new batasInput(100).getKata(
+                KeteranganAntisipasiMasalah));
+        KeteranganBantuanDiperlukan.setDocument(new batasInput(100).getKata(
+                KeteranganBantuanDiperlukan));
+        KeteranganYangMembantuKeperluan.setDocument(new batasInput(100).getKata(
+                KeteranganYangMembantuKeperluan));
+        KeteranganTinggalSendiri.setDocument(new batasInput(100).getKata(
+                KeteranganTinggalSendiri));
+        KeteranganPeralatanMedis.setDocument(new batasInput(100).getKata(
+                KeteranganPeralatanMedis));
+        KeteranganAlatBantu.setDocument(new batasInput(100).getKata(
+                KeteranganAlatBantu));
+        KeteranganPerawatanKhusus.setDocument(new batasInput(100).getKata(
+                KeteranganPerawatanKhusus));
+        KeteranganMemenuhiKebutuhan.setDocument(new batasInput(100).getKata(
+                KeteranganMemenuhiKebutuhan));
+        KeteranganNyeriKronis.setDocument(new batasInput(100).getKata(
+                KeteranganNyeriKronis));
+        KeteranganEdukasiPasien.setDocument(new batasInput(100).getKata(
+                KeteranganEdukasiPasien));
+        KeteranganKeterampilanKhusus.setDocument(new batasInput(100).getKata(
+                KeteranganKeterampilanKhusus));
         SaksiKeluarga.setDocument(new batasInput(50).getKata(SaksiKeluarga));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
+
         ChkAccor.setSelected(false);
         isPhoto();
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
                     KdPetugas.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML2.setEditable(true);
         LoadHTML2.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML2.setDocument(doc);
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1257,28 +1325,53 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Petugas");
-        }else if(DiagnosaMedis.getText().trim().isEmpty()){
-            Valid.textKosong(DiagnosaMedis,"Diagnosa Medis");
-        }else if(AlasanMasuk.getText().trim().isEmpty()){
-            Valid.textKosong(AlasanMasuk,"Alasan Masuk / Dirawat");
-        }else if(SaksiKeluarga.getText().trim().isEmpty()){
-            Valid.textKosong(SaksiKeluarga,"Pasien/Keluarga");
-        }else{
-            if(Sequel.menyimpantf("perencanaan_pemulangan","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","No.Pernyataan",34,new String[]{
-                    TNoRw.getText(),Valid.SetTgl(RencanaPemulangan.getSelectedItem()+""),AlasanMasuk.getText(),DiagnosaMedis.getText(),PengaruhRIKeluarga.getSelectedItem().toString(),
-                    KeteranganPengaruhRIKeluarga.getText(),PengaruhRIPekerjaanSekolah.getSelectedItem().toString(),KeteranganPengaruhRIPekerjaanSekolah.getText(),
-                    PengaruhRIKeuangan.getSelectedItem().toString(),KeteranganPengaruhRIKeuangan.getText(),AntisipasiMasalah.getSelectedItem().toString(),KeteranganAntisipasiMasalah.getText(),
-                    BantuanDiperlukan.getSelectedItem().toString(),KeteranganBantuanDiperlukan.getText(),YangMembantuKeperluan.getSelectedItem().toString(),KeteranganYangMembantuKeperluan.getText(),
-                    TinggalSendiri.getSelectedItem().toString(),KeteranganTinggalSendiri.getText(),PeralatanMedis.getSelectedItem().toString(),KeteranganPeralatanMedis.getText(),
-                    AlatBantu.getSelectedItem().toString(),KeteranganAlatBantu.getText(),PerawatanKhusus.getSelectedItem().toString(),KeteranganPerawatanKhusus.getText(),
-                    MemenuhiKebutuhan.getSelectedItem().toString(),KeteranganMemenuhiKebutuhan.getText(),NyeriKronis.getSelectedItem().toString(),KeteranganNyeriKronis.getText(),
-                    EdukasiPasien.getSelectedItem().toString(),KeteranganEdukasiPasien.getText(),KeterampilanKhusus.getSelectedItem().toString(),KeteranganKeterampilanKhusus.getText(),
-                    SaksiKeluarga.getText(),KdPetugas.getText()
-                })==true){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmPetugas.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Petugas");
+        } else if (DiagnosaMedis.getText().trim().isEmpty()) {
+            Valid.textKosong(DiagnosaMedis, "Diagnosa Medis");
+        } else if (AlasanMasuk.getText().trim().isEmpty()) {
+            Valid.textKosong(AlasanMasuk, "Alasan Masuk / Dirawat");
+        } else if (SaksiKeluarga.getText().trim().isEmpty()) {
+            Valid.textKosong(SaksiKeluarga, "Pasien/Keluarga");
+        } else {
+            if (Sequel.menyimpantf("perencanaan_pemulangan",
+                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                    "No.Pernyataan", 34, new String[]{
+                        TNoRw.getText(), Valid.SetTgl(RencanaPemulangan.
+                        getSelectedItem() + ""), AlasanMasuk.getText(),
+                        DiagnosaMedis.getText(), PengaruhRIKeluarga.
+                        getSelectedItem().toString(),
+                        KeteranganPengaruhRIKeluarga.getText(),
+                        PengaruhRIPekerjaanSekolah.getSelectedItem().toString(),
+                        KeteranganPengaruhRIPekerjaanSekolah.getText(),
+                        PengaruhRIKeuangan.getSelectedItem().toString(),
+                        KeteranganPengaruhRIKeuangan.getText(),
+                        AntisipasiMasalah.getSelectedItem().toString(),
+                        KeteranganAntisipasiMasalah.getText(),
+                        BantuanDiperlukan.getSelectedItem().toString(),
+                        KeteranganBantuanDiperlukan.getText(),
+                        YangMembantuKeperluan.getSelectedItem().toString(),
+                        KeteranganYangMembantuKeperluan.getText(),
+                        TinggalSendiri.getSelectedItem().toString(),
+                        KeteranganTinggalSendiri.getText(), PeralatanMedis.
+                        getSelectedItem().toString(), KeteranganPeralatanMedis.
+                                getText(),
+                        AlatBantu.getSelectedItem().toString(),
+                        KeteranganAlatBantu.getText(), PerawatanKhusus.
+                        getSelectedItem().toString(), KeteranganPerawatanKhusus.
+                                getText(),
+                        MemenuhiKebutuhan.getSelectedItem().toString(),
+                        KeteranganMemenuhiKebutuhan.getText(), NyeriKronis.
+                        getSelectedItem().toString(), KeteranganNyeriKronis.
+                                getText(),
+                        EdukasiPasien.getSelectedItem().toString(),
+                        KeteranganEdukasiPasien.getText(), KeterampilanKhusus.
+                        getSelectedItem().toString(),
+                        KeteranganKeterampilanKhusus.getText(),
+                        SaksiKeluarga.getText(), KdPetugas.getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
             }
@@ -1286,10 +1379,10 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,SaksiKeluarga,BtnBatal);
+        } else {
+            Valid.pindah(evt, SaksiKeluarga, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -1298,68 +1391,76 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else{
-                if(KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString())){
+            } else {
+                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 38).toString())) {
                     hapus();
-                }else{
-                    JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }              
-            
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Petugas");
-        }else if(DiagnosaMedis.getText().trim().isEmpty()){
-            Valid.textKosong(DiagnosaMedis,"Diagnosa Medis");
-        }else if(AlasanMasuk.getText().trim().isEmpty()){
-            Valid.textKosong(AlasanMasuk,"Alasan Masuk / Dirawat");
-        }else if(SaksiKeluarga.getText().trim().isEmpty()){
-            Valid.textKosong(SaksiKeluarga,"Pasien/Keluarga");
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmPetugas.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Petugas");
+        } else if (DiagnosaMedis.getText().trim().isEmpty()) {
+            Valid.textKosong(DiagnosaMedis, "Diagnosa Medis");
+        } else if (AlasanMasuk.getText().trim().isEmpty()) {
+            Valid.textKosong(AlasanMasuk, "Alasan Masuk / Dirawat");
+        } else if (SaksiKeluarga.getText().trim().isEmpty()) {
+            Valid.textKosong(SaksiKeluarga, "Pasien/Keluarga");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else{
-                    if(KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString())){
+                } else {
+                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 38).toString())) {
                         ganti();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh dokter yang bersangkutan..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Hanya bisa diganti oleh dokter yang bersangkutan..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1369,261 +1470,561 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
-                File g = new File("file2.css");            
+        } else if (tabMode.getRowCount() != 0) {
+            try {
+                File g = new File("file2.css");
                 try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                     bg.write(
-                            ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                    ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"+
-                                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                     );
                 }
 
-                File f;            
-                BufferedWriter bw; 
-                
-                if(TCari.getText().trim().isEmpty()){
-                    ps=koneksi.prepareStatement(
-                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
-                            "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"+
-                            "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"+
-                            "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"+
-                            "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"+
-                            "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"+
-                            "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"+
-                            "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"+
-                            "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"+
-                            "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"+
-                            "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"+
-                            "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "+
-                            "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "+
-                            "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                            "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "+
-                            "reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi");
-                }else{
-                    ps=koneksi.prepareStatement(
-                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
-                            "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"+
-                            "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"+
-                            "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"+
-                            "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"+
-                            "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"+
-                            "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"+
-                            "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"+
-                            "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"+
-                            "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"+
-                            "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"+
-                            "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "+
-                            "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "+
-                            "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                            "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "+
-                            "reg_periksa.tgl_registrasi between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                            "perencanaan_pemulangan.nip like ? or petugas.nama like ?) order by reg_periksa.tgl_registrasi");
+                File f;
+                BufferedWriter bw;
+
+                if (TCari.getText().trim().isEmpty()) {
+                    ps = koneksi.prepareStatement(
+                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
+                            + "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"
+                            + "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"
+                            + "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"
+                            + "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"
+                            + "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"
+                            + "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"
+                            + "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"
+                            + "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"
+                            + "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"
+                            + "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"
+                            + "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "
+                            + "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "
+                            + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                            + "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "
+                            + "reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi");
+                } else {
+                    ps = koneksi.prepareStatement(
+                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
+                            + "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"
+                            + "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"
+                            + "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"
+                            + "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"
+                            + "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"
+                            + "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"
+                            + "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"
+                            + "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"
+                            + "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"
+                            + "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"
+                            + "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "
+                            + "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "
+                            + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                            + "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "
+                            + "reg_periksa.tgl_registrasi between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                            + "perencanaan_pemulangan.nip like ? or petugas.nama like ?) order by reg_periksa.tgl_registrasi");
                 }
 
                 try {
-                    if(TCari.getText().trim().isEmpty()){
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    }else{
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                        ps.setString(3,"%"+TCari.getText()+"%");
-                        ps.setString(4,"%"+TCari.getText()+"%");
-                        ps.setString(5,"%"+TCari.getText()+"%");
-                        ps.setString(6,"%"+TCari.getText()+"%");
-                        ps.setString(7,"%"+TCari.getText()+"%");
-                    } 
-                    rs=ps.executeQuery();
-                    pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih laporan..!","Pilihan Cetak",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Laporan 1 (HTML)","Laporan 2 (WPS)","Laporan 3 (CSV)"},"Laporan 1 (HTML)");
+                    if (TCari.getText().trim().isEmpty()) {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + ""));
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + ""));
+                    } else {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + ""));
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + ""));
+                        ps.setString(3, "%" + TCari.getText() + "%");
+                        ps.setString(4, "%" + TCari.getText() + "%");
+                        ps.setString(5, "%" + TCari.getText() + "%");
+                        ps.setString(6, "%" + TCari.getText() + "%");
+                        ps.setString(7, "%" + TCari.getText() + "%");
+                    }
+                    rs = ps.executeQuery();
+                    pilihan = (String) JOptionPane.showInputDialog(null,
+                            "Silahkan pilih laporan..!", "Pilihan Cetak",
+                            JOptionPane.QUESTION_MESSAGE, null, new Object[]{
+                                "Laporan 1 (HTML)", "Laporan 2 (WPS)",
+                                "Laporan 3 (CSV)"}, "Laporan 1 (HTML)");
                     switch (pilihan) {
                         case "Laporan 1 (HTML)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
-                                    "<tr class='isi'>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Masuk Dirawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Rencana Pulang</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Masuk / Dirawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pasien & Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pasien & Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pekerjaan/Sekolah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pekerjaan/Sekolah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Keuangan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Keuangan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Antisipasi Masalah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Antisipasi Masalah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Bantuan Diperlukan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Bantuan Diperlukan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Membantu Keperluan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Yang Membantu Keperluan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tinggal Sendiri</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pasien Tinggal Sendiri</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Peralatan Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Peralatan Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alat Bantu</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memerlukan Alat Bantu</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Perawatan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Perawatan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Memenuhi Kebutuhan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memenuhi Kebutuhan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nyeri Kronis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Nyeri Kronis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Edukasi Kesehatan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Edukasi Kesehatan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterampilkan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Keterampilkan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pasien/Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>NIP</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Petugas</td>"+
-                                    "</tr>"
-                                );
-                                while(rs.next()){
-                                    htmlContent.append("<tr class='isi'><td valign='top'>").append(rs.getString("no_rawat")).append("</td><td valign='top'>").append(rs.getString("no_rkm_medis")).append("</td><td valign='top'>").append(rs.getString("nm_pasien")).append("</td><td valign='top'>").append(rs.getString("tgl_lahir")).append("</td><td valign='top'>").append(rs.getString("jk")).append("</td><td valign='top'>").append(rs.getString("tgl_registrasi")).append(" ").append(rs.getString("jam_reg")).append("</td><td valign='top'>").append(rs.getString("rencana_pulang")).append("</td><td valign='top'>").append(rs.getString("diagnosa_medis")).append("</td><td valign='top'>").append(rs.getString("alasan_masuk")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_pasien_dan_keluarga")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_pasien_dan_keluarga")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_pekerjaan_sekolah")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_pekerjaan_sekolah")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_keuangan")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_keuangan")).append("</td><td valign='top'>").append(rs.getString("antisipasi_masalah_saat_pulang")).append("</td><td valign='top'>").append(rs.getString("keterangan_antisipasi_masalah_saat_pulang")).append("</td><td valign='top'>").append(rs.getString("bantuan_diperlukan_dalam")).append("</td><td valign='top'>").append(rs.getString("keterangan_bantuan_diperlukan_dalam")).append("</td><td valign='top'>").append(rs.getString("adakah_yang_membantu_keperluan")).append("</td><td valign='top'>").append(rs.getString("keterangan_adakah_yang_membantu_keperluan")).append("</td><td valign='top'>").append(rs.getString("pasien_tinggal_sendiri")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_tinggal_sendiri")).append("</td><td valign='top'>").append(rs.getString("pasien_menggunakan_peralatan_medis")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_menggunakan_peralatan_medis")).append("</td><td valign='top'>").append(rs.getString("pasien_memerlukan_alat_bantu")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_memerlukan_alat_bantu")).append("</td><td valign='top'>").append(rs.getString("memerlukan_perawatan_khusus")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_perawatan_khusus")).append("</td><td valign='top'>").append(rs.getString("bermasalah_memenuhi_kebutuhan")).append("</td><td valign='top'>").append(rs.getString("keterangan_bermasalah_memenuhi_kebutuhan")).append("</td><td valign='top'>").append(rs.getString("memiliki_nyeri_kronis")).append("</td><td valign='top'>").append(rs.getString("keterangan_memiliki_nyeri_kronis")).append("</td><td valign='top'>").append(rs.getString("memerlukan_edukasi_kesehatan")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_edukasi_kesehatan")).append("</td><td valign='top'>").append(rs.getString("memerlukan_keterampilkan_khusus")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_keterampilkan_khusus")).append("</td><td valign='top'>").append(rs.getString("nama_pasien_keluarga")).append("</td><td valign='top'>").append(rs.getString("nip")).append("</td><td valign='top'>").append(rs.getString("nama")).append("</td></tr>");
-                                }
-                                f = new File("RencanaPemulangan.html");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write("<html>"+
-                                            "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                            "<body>"+
-                                                "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                    htmlContent.toString()+
-                                                "</table>"+
-                                            "</body>"+                   
-                                         "</html>"
-                                );
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
+                                    "<tr class='isi'>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Masuk Dirawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Rencana Pulang</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Masuk / Dirawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pasien & Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pasien & Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pekerjaan/Sekolah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pekerjaan/Sekolah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Keuangan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Keuangan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Antisipasi Masalah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Antisipasi Masalah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Bantuan Diperlukan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Bantuan Diperlukan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Membantu Keperluan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Yang Membantu Keperluan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tinggal Sendiri</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pasien Tinggal Sendiri</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Peralatan Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Peralatan Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alat Bantu</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memerlukan Alat Bantu</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Perawatan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Perawatan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Memenuhi Kebutuhan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memenuhi Kebutuhan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nyeri Kronis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Nyeri Kronis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Edukasi Kesehatan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Edukasi Kesehatan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterampilkan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Keterampilkan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pasien/Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>NIP</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Petugas</td>"
+                                    + "</tr>"
+                            );
+                            while (rs.next()) {
+                                htmlContent.append(
+                                        "<tr class='isi'><td valign='top'>").
+                                        append(rs.getString("no_rawat")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("no_rkm_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nm_pasien")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("tgl_lahir")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("jk")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("tgl_registrasi")).
+                                        append(" ").append(rs.getString(
+                                        "jam_reg")).append(
+                                                "</td><td valign='top'>").
+                                        append(rs.getString("rencana_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("diagnosa_medis")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("alasan_masuk")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pengaruh_ri_pasien_dan_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_pasien_dan_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pengaruh_ri_pekerjaan_sekolah")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_pekerjaan_sekolah")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("pengaruh_ri_keuangan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_keuangan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "antisipasi_masalah_saat_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_antisipasi_masalah_saat_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("bantuan_diperlukan_dalam")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_bantuan_diperlukan_dalam")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "adakah_yang_membantu_keperluan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_adakah_yang_membantu_keperluan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("pasien_tinggal_sendiri")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_tinggal_sendiri")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pasien_menggunakan_peralatan_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_menggunakan_peralatan_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pasien_memerlukan_alat_bantu")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_memerlukan_alat_bantu")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_perawatan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_perawatan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "bermasalah_memenuhi_kebutuhan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_bermasalah_memenuhi_kebutuhan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("memiliki_nyeri_kronis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memiliki_nyeri_kronis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_edukasi_kesehatan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_edukasi_kesehatan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_keterampilkan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_keterampilkan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nama_pasien_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nip")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("nama")).append(
+                                        "</td></tr>");
+                            }
+                            f = new File("RencanaPemulangan.html");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write("<html>"
+                                    + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                    + "<body>"
+                                    + "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                    + htmlContent.toString()
+                                    + "</table>"
+                                    + "</body>"
+                                    + "</html>"
+                            );
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
                             break;
                         case "Laporan 2 (WPS)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
-                                    "<tr class='isi'>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Masuk Dirawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Rencana Pulang</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Masuk / Dirawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pasien & Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pasien & Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pekerjaan/Sekolah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pekerjaan/Sekolah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Keuangan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Keuangan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Antisipasi Masalah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Antisipasi Masalah</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Bantuan Diperlukan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Bantuan Diperlukan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Membantu Keperluan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Yang Membantu Keperluan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tinggal Sendiri</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pasien Tinggal Sendiri</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Peralatan Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Peralatan Medis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alat Bantu</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memerlukan Alat Bantu</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Perawatan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Perawatan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Memenuhi Kebutuhan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memenuhi Kebutuhan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nyeri Kronis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Nyeri Kronis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Edukasi Kesehatan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Edukasi Kesehatan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterampilkan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Keterampilkan Khusus</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pasien/Keluarga</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>NIP</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Petugas</td>"+
-                                    "</tr>"
-                                );
-                                while(rs.next()){
-                                    htmlContent.append("<tr class='isi'><td valign='top'>").append(rs.getString("no_rawat")).append("</td><td valign='top'>").append(rs.getString("no_rkm_medis")).append("</td><td valign='top'>").append(rs.getString("nm_pasien")).append("</td><td valign='top'>").append(rs.getString("tgl_lahir")).append("</td><td valign='top'>").append(rs.getString("jk")).append("</td><td valign='top'>").append(rs.getString("tgl_registrasi")).append(" ").append(rs.getString("jam_reg")).append("</td><td valign='top'>").append(rs.getString("rencana_pulang")).append("</td><td valign='top'>").append(rs.getString("diagnosa_medis")).append("</td><td valign='top'>").append(rs.getString("alasan_masuk")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_pasien_dan_keluarga")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_pasien_dan_keluarga")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_pekerjaan_sekolah")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_pekerjaan_sekolah")).append("</td><td valign='top'>").append(rs.getString("pengaruh_ri_keuangan")).append("</td><td valign='top'>").append(rs.getString("keterangan_pengaruh_ri_keuangan")).append("</td><td valign='top'>").append(rs.getString("antisipasi_masalah_saat_pulang")).append("</td><td valign='top'>").append(rs.getString("keterangan_antisipasi_masalah_saat_pulang")).append("</td><td valign='top'>").append(rs.getString("bantuan_diperlukan_dalam")).append("</td><td valign='top'>").append(rs.getString("keterangan_bantuan_diperlukan_dalam")).append("</td><td valign='top'>").append(rs.getString("adakah_yang_membantu_keperluan")).append("</td><td valign='top'>").append(rs.getString("keterangan_adakah_yang_membantu_keperluan")).append("</td><td valign='top'>").append(rs.getString("pasien_tinggal_sendiri")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_tinggal_sendiri")).append("</td><td valign='top'>").append(rs.getString("pasien_menggunakan_peralatan_medis")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_menggunakan_peralatan_medis")).append("</td><td valign='top'>").append(rs.getString("pasien_memerlukan_alat_bantu")).append("</td><td valign='top'>").append(rs.getString("keterangan_pasien_memerlukan_alat_bantu")).append("</td><td valign='top'>").append(rs.getString("memerlukan_perawatan_khusus")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_perawatan_khusus")).append("</td><td valign='top'>").append(rs.getString("bermasalah_memenuhi_kebutuhan")).append("</td><td valign='top'>").append(rs.getString("keterangan_bermasalah_memenuhi_kebutuhan")).append("</td><td valign='top'>").append(rs.getString("memiliki_nyeri_kronis")).append("</td><td valign='top'>").append(rs.getString("keterangan_memiliki_nyeri_kronis")).append("</td><td valign='top'>").append(rs.getString("memerlukan_edukasi_kesehatan")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_edukasi_kesehatan")).append("</td><td valign='top'>").append(rs.getString("memerlukan_keterampilkan_khusus")).append("</td><td valign='top'>").append(rs.getString("keterangan_memerlukan_keterampilkan_khusus")).append("</td><td valign='top'>").append(rs.getString("nama_pasien_keluarga")).append("</td><td valign='top'>").append(rs.getString("nip")).append("</td><td valign='top'>").append(rs.getString("nama")).append("</td></tr>");
-                                }
-                                f = new File("RencanaPemulangan.wps");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write("<html>"+
-                                            "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                            "<body>"+
-                                                "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                    htmlContent.toString()+
-                                                "</table>"+
-                                            "</body>"+                   
-                                         "</html>"
-                                );
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
+                                    "<tr class='isi'>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Masuk Dirawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Rencana Pulang</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Masuk / Dirawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pasien & Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pasien & Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Pekerjaan/Sekolah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Pekerjaan/Sekolah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pengaruh RI Keuangan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pengaruh RI Keuangan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Antisipasi Masalah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Antisipasi Masalah</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Bantuan Diperlukan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Bantuan Diperlukan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Membantu Keperluan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Yang Membantu Keperluan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tinggal Sendiri</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Pasien Tinggal Sendiri</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Peralatan Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Peralatan Medis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alat Bantu</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memerlukan Alat Bantu</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Perawatan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Perawatan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Memenuhi Kebutuhan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Memenuhi Kebutuhan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nyeri Kronis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Nyeri Kronis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Edukasi Kesehatan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Edukasi Kesehatan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterampilkan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Keterangan Keterampilkan Khusus</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pasien/Keluarga</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>NIP</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Petugas</td>"
+                                    + "</tr>"
+                            );
+                            while (rs.next()) {
+                                htmlContent.append(
+                                        "<tr class='isi'><td valign='top'>").
+                                        append(rs.getString("no_rawat")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("no_rkm_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nm_pasien")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("tgl_lahir")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("jk")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("tgl_registrasi")).
+                                        append(" ").append(rs.getString(
+                                        "jam_reg")).append(
+                                                "</td><td valign='top'>").
+                                        append(rs.getString("rencana_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("diagnosa_medis")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("alasan_masuk")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pengaruh_ri_pasien_dan_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_pasien_dan_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pengaruh_ri_pekerjaan_sekolah")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_pekerjaan_sekolah")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("pengaruh_ri_keuangan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pengaruh_ri_keuangan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "antisipasi_masalah_saat_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_antisipasi_masalah_saat_pulang")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("bantuan_diperlukan_dalam")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_bantuan_diperlukan_dalam")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "adakah_yang_membantu_keperluan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_adakah_yang_membantu_keperluan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("pasien_tinggal_sendiri")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_tinggal_sendiri")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pasien_menggunakan_peralatan_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_menggunakan_peralatan_medis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "pasien_memerlukan_alat_bantu")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_pasien_memerlukan_alat_bantu")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_perawatan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_perawatan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "bermasalah_memenuhi_kebutuhan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_bermasalah_memenuhi_kebutuhan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("memiliki_nyeri_kronis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memiliki_nyeri_kronis")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_edukasi_kesehatan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_edukasi_kesehatan")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "memerlukan_keterampilkan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString(
+                                                "keterangan_memerlukan_keterampilkan_khusus")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nama_pasien_keluarga")).
+                                        append("</td><td valign='top'>").append(
+                                        rs.getString("nip")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                                getString("nama")).append(
+                                        "</td></tr>");
+                            }
+                            f = new File("RencanaPemulangan.wps");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write("<html>"
+                                    + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                    + "<body>"
+                                    + "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                    + htmlContent.toString()
+                                    + "</table>"
+                                    + "</body>"
+                                    + "</html>"
+                            );
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
                             break;
                         case "Laporan 3 (CSV)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
                                     "\"No.Rawat\";\"No.RM\";\"Nama Pasien\";\"Tgl.Lahir\";\"J.K.\";\"Masuk Dirawat\";\"Rencana Pulang\";\"Diagnosa Medis\";\"Alasan Masuk / Dirawat\";\"Pengaruh RI Pasien & Keluarga\";\"Keterangan Pengaruh RI Pasien & Keluarga\";\"Pengaruh RI Pekerjaan/Sekolah\";\"Keterangan Pengaruh RI Pekerjaan/Sekolah\";\"Pengaruh RI Keuangan\";\"Keterangan Pengaruh RI Keuangan\";\"Antisipasi Masalah\";\"Keterangan Antisipasi Masalah\";\"Bantuan Diperlukan\";\"Keterangan Bantuan Diperlukan\";\"Membantu Keperluan\";\"Keterangan Yang Membantu Keperluan\";\"Tinggal Sendiri\";\"Keterangan Pasien Tinggal Sendiri\";\"Peralatan Medis\";\"Keterangan Peralatan Medis\";\"Alat Bantu\";\"Keterangan Memerlukan Alat Bantu\";\"Perawatan Khusus\";\"Keterangan Perawatan Khusus\";\"Memenuhi Kebutuhan\";\"Keterangan Memenuhi Kebutuhan\";\"Nyeri Kronis\";\"Keterangan Nyeri Kronis\";\"Edukasi Kesehatan\";\"Keterangan Edukasi Kesehatan\";\"Keterampilkan Khusus\";\"Keterangan Keterampilkan Khusus\";\"Pasien/Keluarga\";\"NIP\";\"Nama Petugas\"\n"
-                                ); 
-                                while(rs.next()){
-                                    htmlContent.append("\"").append(rs.getString("no_rawat")).append("\";\"").append(rs.getString("no_rkm_medis")).append("\";\"").append(rs.getString("nm_pasien")).append("\";\"").append(rs.getString("tgl_lahir")).append("\";\"").append(rs.getString("jk")).append("\";\"").append(rs.getString("tgl_registrasi")).append(" ").append(rs.getString("jam_reg")).append("\";\"").append(rs.getString("rencana_pulang")).append("\";\"").append(rs.getString("diagnosa_medis")).append("\";\"").append(rs.getString("alasan_masuk")).append("\";\"").append(rs.getString("pengaruh_ri_pasien_dan_keluarga")).append("\";\"").append(rs.getString("keterangan_pengaruh_ri_pasien_dan_keluarga")).append("\";\"").append(rs.getString("pengaruh_ri_pekerjaan_sekolah")).append("\";\"").append(rs.getString("keterangan_pengaruh_ri_pekerjaan_sekolah")).append("\";\"").append(rs.getString("pengaruh_ri_keuangan")).append("\";\"").append(rs.getString("keterangan_pengaruh_ri_keuangan")).append("\";\"").append(rs.getString("antisipasi_masalah_saat_pulang")).append("\";\"").append(rs.getString("keterangan_antisipasi_masalah_saat_pulang")).append("\";\"").append(rs.getString("bantuan_diperlukan_dalam")).append("\";\"").append(rs.getString("keterangan_bantuan_diperlukan_dalam")).append("\";\"").append(rs.getString("adakah_yang_membantu_keperluan")).append("\";\"").append(rs.getString("keterangan_adakah_yang_membantu_keperluan")).append("\";\"").append(rs.getString("pasien_tinggal_sendiri")).append("\";\"").append(rs.getString("keterangan_pasien_tinggal_sendiri")).append("\";\"").append(rs.getString("pasien_menggunakan_peralatan_medis")).append("\";\"").append(rs.getString("keterangan_pasien_menggunakan_peralatan_medis")).append("\";\"").append(rs.getString("pasien_memerlukan_alat_bantu")).append("\";\"").append(rs.getString("keterangan_pasien_memerlukan_alat_bantu")).append("\";\"").append(rs.getString("memerlukan_perawatan_khusus")).append("\";\"").append(rs.getString("keterangan_memerlukan_perawatan_khusus")).append("\";\"").append(rs.getString("bermasalah_memenuhi_kebutuhan")).append("\";\"").append(rs.getString("keterangan_bermasalah_memenuhi_kebutuhan")).append("\";\"").append(rs.getString("memiliki_nyeri_kronis")).append("\";\"").append(rs.getString("keterangan_memiliki_nyeri_kronis")).append("\";\"").append(rs.getString("memerlukan_edukasi_kesehatan")).append("\";\"").append(rs.getString("keterangan_memerlukan_edukasi_kesehatan")).append("\";\"").append(rs.getString("memerlukan_keterampilkan_khusus")).append("\";\"").append(rs.getString("keterangan_memerlukan_keterampilkan_khusus")).append("\";\"").append(rs.getString("nama_pasien_keluarga")).append("\";\"").append(rs.getString("nip")).append("\";\"").append(rs.getString("nama")).append("\"\n");
-                                }
-                                f = new File("RencanaPemulangan.csv");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write(htmlContent.toString());
+                            );
+                            while (rs.next()) {
+                                htmlContent.append("\"").append(rs.getString(
+                                        "no_rawat")).append("\";\"").append(rs.
+                                        getString("no_rkm_medis")).append(
+                                        "\";\"").append(rs.
+                                                getString("nm_pasien")).append(
+                                        "\";\"").append(rs.
+                                                getString("tgl_lahir")).append(
+                                        "\";\"").append(rs.getString("jk")).
+                                        append("\";\"").append(rs.getString(
+                                        "tgl_registrasi")).append(" ").append(
+                                        rs.getString("jam_reg")).append("\";\"").
+                                        append(rs.getString("rencana_pulang")).
+                                        append("\";\"").append(rs.getString(
+                                        "diagnosa_medis")).append("\";\"").
+                                        append(rs.getString("alasan_masuk")).
+                                        append("\";\"").append(rs.getString(
+                                        "pengaruh_ri_pasien_dan_keluarga")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_pengaruh_ri_pasien_dan_keluarga")).
+                                        append("\";\"").append(rs.getString(
+                                        "pengaruh_ri_pekerjaan_sekolah")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_pengaruh_ri_pekerjaan_sekolah")).
+                                        append("\";\"").append(rs.getString(
+                                        "pengaruh_ri_keuangan")).append("\";\"").
+                                        append(rs.getString(
+                                                "keterangan_pengaruh_ri_keuangan")).
+                                        append("\";\"").append(rs.getString(
+                                        "antisipasi_masalah_saat_pulang")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_antisipasi_masalah_saat_pulang")).
+                                        append("\";\"").append(rs.getString(
+                                        "bantuan_diperlukan_dalam")).append(
+                                                "\";\"").append(rs.getString(
+                                                "keterangan_bantuan_diperlukan_dalam")).
+                                        append("\";\"").append(rs.getString(
+                                        "adakah_yang_membantu_keperluan")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_adakah_yang_membantu_keperluan")).
+                                        append("\";\"").append(rs.getString(
+                                        "pasien_tinggal_sendiri")).append(
+                                                "\";\"").append(rs.getString(
+                                                "keterangan_pasien_tinggal_sendiri")).
+                                        append("\";\"").append(rs.getString(
+                                        "pasien_menggunakan_peralatan_medis")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_pasien_menggunakan_peralatan_medis")).
+                                        append("\";\"").append(rs.getString(
+                                        "pasien_memerlukan_alat_bantu")).append(
+                                                "\";\"").append(rs.getString(
+                                                "keterangan_pasien_memerlukan_alat_bantu")).
+                                        append("\";\"").append(rs.getString(
+                                        "memerlukan_perawatan_khusus")).append(
+                                                "\";\"").append(rs.getString(
+                                                "keterangan_memerlukan_perawatan_khusus")).
+                                        append("\";\"").append(rs.getString(
+                                        "bermasalah_memenuhi_kebutuhan")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_bermasalah_memenuhi_kebutuhan")).
+                                        append("\";\"").append(rs.getString(
+                                        "memiliki_nyeri_kronis")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_memiliki_nyeri_kronis")).
+                                        append("\";\"").append(rs.getString(
+                                        "memerlukan_edukasi_kesehatan")).append(
+                                                "\";\"").append(rs.getString(
+                                                "keterangan_memerlukan_edukasi_kesehatan")).
+                                        append("\";\"").append(rs.getString(
+                                        "memerlukan_keterampilkan_khusus")).
+                                        append("\";\"").append(rs.getString(
+                                        "keterangan_memerlukan_keterampilkan_khusus")).
+                                        append("\";\"").append(rs.getString(
+                                        "nama_pasien_keluarga")).append("\";\"").
+                                        append(rs.getString("nip")).append(
+                                        "\";\"").append(rs.getString("nama")).
+                                        append("\"\n");
+                            }
+                            f = new File("RencanaPemulangan.csv");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write(htmlContent.toString());
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
-                            break; 
-                    }           
-                } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
+                            break;
+                    }
+                } catch (HeadlessException | IOException | SQLException e) {
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (IOException | SQLException e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1633,9 +2034,9 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1646,35 +2047,36 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 isPhoto();
                 panggilPhoto();
             } catch (java.lang.NullPointerException e) {
             }
-            if((evt.getClickCount()==2)&&(tbObat.getSelectedColumn()==0)){
+            if ((evt.getClickCount() == 2) && (tbObat.getSelectedColumn() == 0)) {
                 TabRawat.setSelectedIndex(0);
             }
         }
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     getData();
                     TabRawat.setSelectedIndex(0);
@@ -1685,203 +2087,221 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==1){
+        if (TabRawat.getSelectedIndex() == 1) {
             tampil();
         }
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
-        }else{
+        } else {
             //Valid.pindah(evt,TCari,BtnDokter);
         }
     }//GEN-LAST:event_TNoRwKeyPressed
 
     private void RencanaPemulanganKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RencanaPemulanganKeyPressed
-        Valid.pindah(evt,SaksiKeluarga,DiagnosaMedis);
+        Valid.pindah(evt, SaksiKeluarga, DiagnosaMedis);
     }//GEN-LAST:event_RencanaPemulanganKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setAlwaysOnTop(false);
         petugas.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void BtnDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnDokterKeyPressed
-        Valid.pindah(evt,KeteranganKeterampilanKhusus,SaksiKeluarga);
+        Valid.pindah(evt, KeteranganKeterampilanKhusus, SaksiKeluarga);
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void SaksiKeluargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SaksiKeluargaKeyPressed
-        Valid.pindah(evt,KeteranganKeterampilanKhusus,BtnSimpan);
+        Valid.pindah(evt, KeteranganKeterampilanKhusus, BtnSimpan);
     }//GEN-LAST:event_SaksiKeluargaKeyPressed
 
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
+        if (tbObat.getSelectedRow() != -1) {
             isPhoto();
             panggilPhoto();
-        }else{
+        } else {
             ChkAccor.setSelected(false);
-            JOptionPane.showMessageDialog(null,"Silahkan pilih No.Pernyataan..!!!");
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan pilih No.Pernyataan..!!!");
         }
     }//GEN-LAST:event_ChkAccorActionPerformed
 
     private void btnAmbilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAmbilActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else{
-            if(tbObat.getSelectedRow()>-1){
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
                 Sequel.queryu("delete from antripemulangan");
-                Sequel.queryu("insert into antripemulangan values('"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"')");
-                Sequel.queryu("delete from bukti_perencanaan_pemulangan_saksikeluarga where no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'");
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
-            }   
+                Sequel.queryu("insert into antripemulangan values('" + tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 0).toString() + "')");
+                Sequel.queryu(
+                        "delete from bukti_perencanaan_pemulangan_saksikeluarga where no_rawat='" + tbObat.
+                                getValueAt(tbObat.getSelectedRow(), 0).
+                                toString() + "'");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
+            }
         }
     }//GEN-LAST:event_btnAmbilActionPerformed
 
     private void BtnRefreshPhoto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRefreshPhoto1ActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             panggilPhoto();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
 
     private void KeteranganTinggalSendiriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganTinggalSendiriKeyPressed
-        Valid.pindah(evt,TinggalSendiri,PeralatanMedis);
+        Valid.pindah(evt, TinggalSendiri, PeralatanMedis);
     }//GEN-LAST:event_KeteranganTinggalSendiriKeyPressed
 
     private void TinggalSendiriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TinggalSendiriKeyPressed
-        Valid.pindah(evt,KeteranganYangMembantuKeperluan,KeteranganTinggalSendiri);
+        Valid.pindah(evt, KeteranganYangMembantuKeperluan,
+                KeteranganTinggalSendiri);
     }//GEN-LAST:event_TinggalSendiriKeyPressed
 
     private void DiagnosaMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaMedisKeyPressed
-        Valid.pindah(evt,RencanaPemulangan,AlasanMasuk);
+        Valid.pindah(evt, RencanaPemulangan, AlasanMasuk);
     }//GEN-LAST:event_DiagnosaMedisKeyPressed
 
     private void AlasanMasukKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlasanMasukKeyPressed
-        Valid.pindah(evt,DiagnosaMedis,PengaruhRIKeluarga);
+        Valid.pindah(evt, DiagnosaMedis, PengaruhRIKeluarga);
     }//GEN-LAST:event_AlasanMasukKeyPressed
 
     private void KeteranganPengaruhRIKeluargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganPengaruhRIKeluargaKeyPressed
-        Valid.pindah(evt,PengaruhRIKeluarga,PengaruhRIPekerjaanSekolah);
+        Valid.pindah(evt, PengaruhRIKeluarga, PengaruhRIPekerjaanSekolah);
     }//GEN-LAST:event_KeteranganPengaruhRIKeluargaKeyPressed
 
     private void PengaruhRIKeluargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengaruhRIKeluargaKeyPressed
-        Valid.pindah(evt,AlasanMasuk,KeteranganPengaruhRIKeluarga);
+        Valid.pindah(evt, AlasanMasuk, KeteranganPengaruhRIKeluarga);
     }//GEN-LAST:event_PengaruhRIKeluargaKeyPressed
 
     private void PengaruhRIPekerjaanSekolahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengaruhRIPekerjaanSekolahKeyPressed
-        Valid.pindah(evt,KeteranganPengaruhRIKeluarga,KeteranganPengaruhRIPekerjaanSekolah);
+        Valid.pindah(evt, KeteranganPengaruhRIKeluarga,
+                KeteranganPengaruhRIPekerjaanSekolah);
     }//GEN-LAST:event_PengaruhRIPekerjaanSekolahKeyPressed
 
     private void KeteranganPengaruhRIPekerjaanSekolahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganPengaruhRIPekerjaanSekolahKeyPressed
-        Valid.pindah(evt,PengaruhRIPekerjaanSekolah,PengaruhRIKeuangan);
+        Valid.pindah(evt, PengaruhRIPekerjaanSekolah, PengaruhRIKeuangan);
     }//GEN-LAST:event_KeteranganPengaruhRIPekerjaanSekolahKeyPressed
 
     private void PengaruhRIKeuanganKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengaruhRIKeuanganKeyPressed
-        Valid.pindah(evt,KeteranganPengaruhRIPekerjaanSekolah,KeteranganPengaruhRIKeuangan);
+        Valid.pindah(evt, KeteranganPengaruhRIPekerjaanSekolah,
+                KeteranganPengaruhRIKeuangan);
     }//GEN-LAST:event_PengaruhRIKeuanganKeyPressed
 
     private void KeteranganPengaruhRIKeuanganKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganPengaruhRIKeuanganKeyPressed
-        Valid.pindah(evt,PengaruhRIKeuangan,AntisipasiMasalah);
+        Valid.pindah(evt, PengaruhRIKeuangan, AntisipasiMasalah);
     }//GEN-LAST:event_KeteranganPengaruhRIKeuanganKeyPressed
 
     private void AntisipasiMasalahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AntisipasiMasalahKeyPressed
-        Valid.pindah(evt,KeteranganPengaruhRIKeuangan,KeteranganAntisipasiMasalah);
+        Valid.pindah(evt, KeteranganPengaruhRIKeuangan,
+                KeteranganAntisipasiMasalah);
     }//GEN-LAST:event_AntisipasiMasalahKeyPressed
 
     private void KeteranganAntisipasiMasalahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganAntisipasiMasalahKeyPressed
-        Valid.pindah(evt,AntisipasiMasalah,BantuanDiperlukan);
+        Valid.pindah(evt, AntisipasiMasalah, BantuanDiperlukan);
     }//GEN-LAST:event_KeteranganAntisipasiMasalahKeyPressed
 
     private void BantuanDiperlukanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BantuanDiperlukanKeyPressed
-        Valid.pindah(evt,KeteranganAntisipasiMasalah,KeteranganBantuanDiperlukan);
+        Valid.pindah(evt, KeteranganAntisipasiMasalah,
+                KeteranganBantuanDiperlukan);
     }//GEN-LAST:event_BantuanDiperlukanKeyPressed
 
     private void KeteranganBantuanDiperlukanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganBantuanDiperlukanKeyPressed
-        Valid.pindah(evt,BantuanDiperlukan,YangMembantuKeperluan);
+        Valid.pindah(evt, BantuanDiperlukan, YangMembantuKeperluan);
     }//GEN-LAST:event_KeteranganBantuanDiperlukanKeyPressed
 
     private void YangMembantuKeperluanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_YangMembantuKeperluanKeyPressed
-        Valid.pindah(evt,KeteranganBantuanDiperlukan,KeteranganYangMembantuKeperluan);
+        Valid.pindah(evt, KeteranganBantuanDiperlukan,
+                KeteranganYangMembantuKeperluan);
     }//GEN-LAST:event_YangMembantuKeperluanKeyPressed
 
     private void KeteranganYangMembantuKeperluanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganYangMembantuKeperluanKeyPressed
-        Valid.pindah(evt,YangMembantuKeperluan,TinggalSendiri);
+        Valid.pindah(evt, YangMembantuKeperluan, TinggalSendiri);
     }//GEN-LAST:event_KeteranganYangMembantuKeperluanKeyPressed
 
     private void PeralatanMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PeralatanMedisKeyPressed
-        Valid.pindah(evt,KeteranganTinggalSendiri,KeteranganPeralatanMedis);
+        Valid.pindah(evt, KeteranganTinggalSendiri, KeteranganPeralatanMedis);
     }//GEN-LAST:event_PeralatanMedisKeyPressed
 
     private void KeteranganPeralatanMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganPeralatanMedisKeyPressed
-        Valid.pindah(evt,PeralatanMedis,AlatBantu);
+        Valid.pindah(evt, PeralatanMedis, AlatBantu);
     }//GEN-LAST:event_KeteranganPeralatanMedisKeyPressed
 
     private void AlatBantuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlatBantuKeyPressed
-        Valid.pindah(evt,KeteranganPeralatanMedis,KeteranganAlatBantu);
+        Valid.pindah(evt, KeteranganPeralatanMedis, KeteranganAlatBantu);
     }//GEN-LAST:event_AlatBantuKeyPressed
 
     private void KeteranganAlatBantuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganAlatBantuKeyPressed
-        Valid.pindah(evt,AlatBantu,PerawatanKhusus);
+        Valid.pindah(evt, AlatBantu, PerawatanKhusus);
     }//GEN-LAST:event_KeteranganAlatBantuKeyPressed
 
     private void PerawatanKhususKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PerawatanKhususKeyPressed
-        Valid.pindah(evt,KeteranganAlatBantu,KeteranganPerawatanKhusus);
+        Valid.pindah(evt, KeteranganAlatBantu, KeteranganPerawatanKhusus);
     }//GEN-LAST:event_PerawatanKhususKeyPressed
 
     private void KeteranganPerawatanKhususKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganPerawatanKhususKeyPressed
-        Valid.pindah(evt,PerawatanKhusus,MemenuhiKebutuhan);
+        Valid.pindah(evt, PerawatanKhusus, MemenuhiKebutuhan);
     }//GEN-LAST:event_KeteranganPerawatanKhususKeyPressed
 
     private void MemenuhiKebutuhanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MemenuhiKebutuhanKeyPressed
-        Valid.pindah(evt,KeteranganPerawatanKhusus,KeteranganMemenuhiKebutuhan);
+        Valid.
+                pindah(evt, KeteranganPerawatanKhusus,
+                        KeteranganMemenuhiKebutuhan);
     }//GEN-LAST:event_MemenuhiKebutuhanKeyPressed
 
     private void KeteranganMemenuhiKebutuhanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganMemenuhiKebutuhanKeyPressed
-        Valid.pindah(evt,MemenuhiKebutuhan,NyeriKronis);
+        Valid.pindah(evt, MemenuhiKebutuhan, NyeriKronis);
     }//GEN-LAST:event_KeteranganMemenuhiKebutuhanKeyPressed
 
     private void NyeriKronisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NyeriKronisKeyPressed
-        Valid.pindah(evt,KeteranganMemenuhiKebutuhan,KeteranganNyeriKronis);
+        Valid.pindah(evt, KeteranganMemenuhiKebutuhan, KeteranganNyeriKronis);
     }//GEN-LAST:event_NyeriKronisKeyPressed
 
     private void KeteranganNyeriKronisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganNyeriKronisKeyPressed
-        Valid.pindah(evt,NyeriKronis,EdukasiPasien);
+        Valid.pindah(evt, NyeriKronis, EdukasiPasien);
     }//GEN-LAST:event_KeteranganNyeriKronisKeyPressed
 
     private void EdukasiPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EdukasiPasienKeyPressed
-        Valid.pindah(evt,KeteranganNyeriKronis,KeteranganEdukasiPasien);
+        Valid.pindah(evt, KeteranganNyeriKronis, KeteranganEdukasiPasien);
     }//GEN-LAST:event_EdukasiPasienKeyPressed
 
     private void KeteranganEdukasiPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganEdukasiPasienKeyPressed
-        Valid.pindah(evt,EdukasiPasien,KeterampilanKhusus);
+        Valid.pindah(evt, EdukasiPasien, KeterampilanKhusus);
     }//GEN-LAST:event_KeteranganEdukasiPasienKeyPressed
 
     private void KeterampilanKhususKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeterampilanKhususKeyPressed
-        Valid.pindah(evt,KeteranganEdukasiPasien,KeteranganKeterampilanKhusus);
+        Valid.pindah(evt, KeteranganEdukasiPasien, KeteranganKeterampilanKhusus);
     }//GEN-LAST:event_KeterampilanKhususKeyPressed
 
     private void KeteranganKeterampilanKhususKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganKeterampilanKhususKeyPressed
-        Valid.pindah(evt,KeterampilanKhusus,SaksiKeluarga);
+        Valid.pindah(evt, KeterampilanKhusus, SaksiKeluarga);
     }//GEN-LAST:event_KeteranganKeterampilanKhususKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPerencanaanPemulangan dialog = new RMPerencanaanPemulangan(new javax.swing.JFrame(), true);
+            RMPerencanaanPemulangan dialog = new RMPerencanaanPemulangan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1998,89 +2418,121 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
-                        "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"+
-                        "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"+
-                        "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"+
-                        "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"+
-                        "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"+
-                        "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"+
-                        "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"+
-                        "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"+
-                        "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"+
-                        "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"+
-                        "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "+
-                        "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                        "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "+
-                        "reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi");
-            }else{
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
-                        "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"+
-                        "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"+
-                        "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"+
-                        "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"+
-                        "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"+
-                        "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"+
-                        "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"+
-                        "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"+
-                        "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"+
-                        "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"+
-                        "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "+
-                        "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                        "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "+
-                        "reg_periksa.tgl_registrasi between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                        "perencanaan_pemulangan.nip like ? or petugas.nama like ?) order by reg_periksa.tgl_registrasi");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
+                        + "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"
+                        + "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"
+                        + "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"
+                        + "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"
+                        + "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"
+                        + "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"
+                        + "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"
+                        + "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"
+                        + "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"
+                        + "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"
+                        + "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "
+                        + "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                        + "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "
+                        + "reg_periksa.tgl_registrasi between ? and ? order by reg_periksa.tgl_registrasi");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"
+                        + "perencanaan_pemulangan.rencana_pulang,perencanaan_pemulangan.alasan_masuk,perencanaan_pemulangan.diagnosa_medis,perencanaan_pemulangan.pengaruh_ri_pasien_dan_keluarga,"
+                        + "perencanaan_pemulangan.keterangan_pengaruh_ri_pasien_dan_keluarga,perencanaan_pemulangan.pengaruh_ri_pekerjaan_sekolah,perencanaan_pemulangan.keterangan_pengaruh_ri_pekerjaan_sekolah,"
+                        + "perencanaan_pemulangan.pengaruh_ri_keuangan,perencanaan_pemulangan.keterangan_pengaruh_ri_keuangan,perencanaan_pemulangan.antisipasi_masalah_saat_pulang,"
+                        + "perencanaan_pemulangan.keterangan_antisipasi_masalah_saat_pulang,perencanaan_pemulangan.bantuan_diperlukan_dalam,perencanaan_pemulangan.keterangan_bantuan_diperlukan_dalam,"
+                        + "perencanaan_pemulangan.adakah_yang_membantu_keperluan,perencanaan_pemulangan.keterangan_adakah_yang_membantu_keperluan,perencanaan_pemulangan.pasien_tinggal_sendiri,"
+                        + "perencanaan_pemulangan.keterangan_pasien_tinggal_sendiri,perencanaan_pemulangan.pasien_menggunakan_peralatan_medis,perencanaan_pemulangan.keterangan_pasien_menggunakan_peralatan_medis,"
+                        + "perencanaan_pemulangan.pasien_memerlukan_alat_bantu,perencanaan_pemulangan.keterangan_pasien_memerlukan_alat_bantu,perencanaan_pemulangan.memerlukan_perawatan_khusus,"
+                        + "perencanaan_pemulangan.keterangan_memerlukan_perawatan_khusus,perencanaan_pemulangan.bermasalah_memenuhi_kebutuhan,perencanaan_pemulangan.keterangan_bermasalah_memenuhi_kebutuhan,"
+                        + "perencanaan_pemulangan.memiliki_nyeri_kronis,perencanaan_pemulangan.keterangan_memiliki_nyeri_kronis,perencanaan_pemulangan.memerlukan_edukasi_kesehatan,"
+                        + "perencanaan_pemulangan.keterangan_memerlukan_edukasi_kesehatan,perencanaan_pemulangan.memerlukan_keterampilkan_khusus,perencanaan_pemulangan.keterangan_memerlukan_keterampilkan_khusus,"
+                        + "perencanaan_pemulangan.nama_pasien_keluarga,perencanaan_pemulangan.nip,petugas.nama "
+                        + "from perencanaan_pemulangan inner join reg_periksa on perencanaan_pemulangan.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                        + "inner join petugas on petugas.nip=perencanaan_pemulangan.nip where "
+                        + "reg_periksa.tgl_registrasi between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                        + "perencanaan_pemulangan.nip like ? or petugas.nama like ?) order by reg_periksa.tgl_registrasi");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("tgl_lahir"),rs.getString("jk"),rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),
-                        rs.getString("rencana_pulang"),rs.getString("diagnosa_medis"),rs.getString("alasan_masuk"),rs.getString("pengaruh_ri_pasien_dan_keluarga"),rs.getString("keterangan_pengaruh_ri_pasien_dan_keluarga"),
-                        rs.getString("pengaruh_ri_pekerjaan_sekolah"),rs.getString("keterangan_pengaruh_ri_pekerjaan_sekolah"),rs.getString("pengaruh_ri_keuangan"),rs.getString("keterangan_pengaruh_ri_keuangan"),
-                        rs.getString("antisipasi_masalah_saat_pulang"),rs.getString("keterangan_antisipasi_masalah_saat_pulang"),rs.getString("bantuan_diperlukan_dalam"),rs.getString("keterangan_bantuan_diperlukan_dalam"),
-                        rs.getString("adakah_yang_membantu_keperluan"),rs.getString("keterangan_adakah_yang_membantu_keperluan"),rs.getString("pasien_tinggal_sendiri"),rs.getString("keterangan_pasien_tinggal_sendiri"),
-                        rs.getString("pasien_menggunakan_peralatan_medis"),rs.getString("keterangan_pasien_menggunakan_peralatan_medis"),rs.getString("pasien_memerlukan_alat_bantu"),
-                        rs.getString("keterangan_pasien_memerlukan_alat_bantu"),rs.getString("memerlukan_perawatan_khusus"),rs.getString("keterangan_memerlukan_perawatan_khusus"),rs.getString("bermasalah_memenuhi_kebutuhan"),
-                        rs.getString("keterangan_bermasalah_memenuhi_kebutuhan"),rs.getString("memiliki_nyeri_kronis"),rs.getString("keterangan_memiliki_nyeri_kronis"),rs.getString("memerlukan_edukasi_kesehatan"),
-                        rs.getString("keterangan_memerlukan_edukasi_kesehatan"),rs.getString("memerlukan_keterampilkan_khusus"),rs.getString("keterangan_memerlukan_keterampilkan_khusus"),rs.getString("nama_pasien_keluarga"),
-                        rs.getString("nip"),rs.getString("nama")             
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
+                        rs.getString("jk"),
+                        rs.getString("tgl_registrasi") + " " + rs.getString(
+                        "jam_reg"),
+                        rs.getString("rencana_pulang"), rs.getString(
+                        "diagnosa_medis"), rs.getString("alasan_masuk"), rs.
+                        getString("pengaruh_ri_pasien_dan_keluarga"), rs.
+                        getString("keterangan_pengaruh_ri_pasien_dan_keluarga"),
+                        rs.getString("pengaruh_ri_pekerjaan_sekolah"), rs.
+                        getString("keterangan_pengaruh_ri_pekerjaan_sekolah"),
+                        rs.getString("pengaruh_ri_keuangan"), rs.getString(
+                        "keterangan_pengaruh_ri_keuangan"),
+                        rs.getString("antisipasi_masalah_saat_pulang"), rs.
+                        getString("keterangan_antisipasi_masalah_saat_pulang"),
+                        rs.getString("bantuan_diperlukan_dalam"), rs.getString(
+                        "keterangan_bantuan_diperlukan_dalam"),
+                        rs.getString("adakah_yang_membantu_keperluan"), rs.
+                        getString("keterangan_adakah_yang_membantu_keperluan"),
+                        rs.getString("pasien_tinggal_sendiri"), rs.getString(
+                        "keterangan_pasien_tinggal_sendiri"),
+                        rs.getString("pasien_menggunakan_peralatan_medis"), rs.
+                        getString(
+                        "keterangan_pasien_menggunakan_peralatan_medis"), rs.
+                        getString("pasien_memerlukan_alat_bantu"),
+                        rs.getString("keterangan_pasien_memerlukan_alat_bantu"),
+                        rs.getString("memerlukan_perawatan_khusus"), rs.
+                        getString("keterangan_memerlukan_perawatan_khusus"), rs.
+                        getString("bermasalah_memenuhi_kebutuhan"),
+                        rs.getString("keterangan_bermasalah_memenuhi_kebutuhan"),
+                        rs.getString("memiliki_nyeri_kronis"), rs.getString(
+                        "keterangan_memiliki_nyeri_kronis"), rs.getString(
+                        "memerlukan_edukasi_kesehatan"),
+                        rs.getString("keterangan_memerlukan_edukasi_kesehatan"),
+                        rs.getString("memerlukan_keterampilkan_khusus"), rs.
+                        getString("keterangan_memerlukan_keterampilkan_khusus"),
+                        rs.getString("nama_pasien_keluarga"),
+                        rs.getString("nip"), rs.getString("nama")
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -2123,201 +2575,282 @@ public class RMPerencanaanPemulangan extends javax.swing.JDialog {
         SaksiKeluarga.setText("");
         TabRawat.setSelectedIndex(0);
         DiagnosaMedis.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()); 
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString().replaceAll("L","Laki-laki").replaceAll("P","Perempuan")); 
-            MasukDirawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-            DiagnosaMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            AlasanMasuk.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-            PengaruhRIKeluarga.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            KeteranganPengaruhRIKeluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-            PengaruhRIPekerjaanSekolah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            KeteranganPengaruhRIPekerjaanSekolah.setText(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-            PengaruhRIKeuangan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            KeteranganPengaruhRIKeuangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
-            AntisipasiMasalah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            KeteranganAntisipasiMasalah.setText(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
-            BantuanDiperlukan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            KeteranganBantuanDiperlukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
-            YangMembantuKeperluan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            KeteranganYangMembantuKeperluan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
-            TinggalSendiri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());
-            KeteranganTinggalSendiri.setText(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());
-            PeralatanMedis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString());
-            KeteranganPeralatanMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),24).toString());
-            AlatBantu.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString());
-            KeteranganAlatBantu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),26).toString());
-            PerawatanKhusus.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),27).toString());
-            KeteranganPerawatanKhusus.setText(tbObat.getValueAt(tbObat.getSelectedRow(),28).toString());
-            MemenuhiKebutuhan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString());
-            KeteranganMemenuhiKebutuhan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),30).toString());
-            NyeriKronis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());
-            KeteranganNyeriKronis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),32).toString());
-            EdukasiPasien.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),33).toString());
-            KeteranganEdukasiPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),34).toString());
-            KeterampilanKhusus.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),35).toString());
-            KeteranganKeterampilanKhusus.setText(tbObat.getValueAt(tbObat.getSelectedRow(),36).toString());
-            SaksiKeluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(),37).toString());
-            Valid.SetTgl(RencanaPemulangan,tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().
+                    replaceAll("L", "Laki-laki").replaceAll("P", "Perempuan"));
+            MasukDirawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                    toString());
+            DiagnosaMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
+                    toString());
+            AlasanMasuk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
+                    toString());
+            PengaruhRIKeluarga.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 9).toString());
+            KeteranganPengaruhRIKeluarga.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 10).toString());
+            PengaruhRIPekerjaanSekolah.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 11).toString());
+            KeteranganPengaruhRIPekerjaanSekolah.setText(tbObat.getValueAt(
+                    tbObat.getSelectedRow(), 12).toString());
+            PengaruhRIKeuangan.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 13).toString());
+            KeteranganPengaruhRIKeuangan.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 14).toString());
+            AntisipasiMasalah.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 15).toString());
+            KeteranganAntisipasiMasalah.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 16).toString());
+            BantuanDiperlukan.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 17).toString());
+            KeteranganBantuanDiperlukan.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 18).toString());
+            YangMembantuKeperluan.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 19).toString());
+            KeteranganYangMembantuKeperluan.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 20).toString());
+            TinggalSendiri.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 21).toString());
+            KeteranganTinggalSendiri.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 22).toString());
+            PeralatanMedis.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 23).toString());
+            KeteranganPeralatanMedis.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 24).toString());
+            AlatBantu.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    25).toString());
+            KeteranganAlatBantu.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 26).toString());
+            PerawatanKhusus.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 27).toString());
+            KeteranganPerawatanKhusus.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 28).toString());
+            MemenuhiKebutuhan.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 29).toString());
+            KeteranganMemenuhiKebutuhan.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 30).toString());
+            NyeriKronis.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 31).toString());
+            KeteranganNyeriKronis.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 32).toString());
+            EdukasiPasien.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 33).toString());
+            KeteranganEdukasiPasien.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 34).toString());
+            KeterampilanKhusus.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 35).toString());
+            KeteranganKeterampilanKhusus.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 36).toString());
+            SaksiKeluarga.setText(
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            Valid.SetTgl(RencanaPemulangan, tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 6).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','LAKI-LAKI','PEREMPUAN') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg, "+
-                    "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,"+
-                    "pasien.no_tlp,pasien.umur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                    "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                    "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                    "where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','LAKI-LAKI','PEREMPUAN') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi,reg_periksa.jam_reg, "
+                    + "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,"
+                    + "pasien.no_tlp,pasien.umur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                    + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                    + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                    + "where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
                     KeteranganTinggalSendiri.setText(rs.getString("asal"));
-                    MasukDirawat.setText(rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"));
+                    MasukDirawat.setText(
+                            rs.getString("tgl_registrasi") + " " + rs.getString(
+                            "jam_reg"));
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notif : " + e);
         }
     }
- 
-    public void setNoRm(String norwt,Date tgl2) {
+
+    public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        DTPCari2.setDate(tgl2);    
-        isRawat(); 
+        DTPCari2.setDate(tgl2);
+        isRawat();
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getperencanaan_pemulangan());
         BtnHapus.setEnabled(akses.getperencanaan_pemulangan());
         BtnEdit.setEnabled(akses.getperencanaan_pemulangan());
         BtnEdit.setEnabled(akses.getperencanaan_pemulangan());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KdPetugas.setEditable(false);
             BtnDokter.setEnabled(false);
             KdPetugas.setText(akses.getkode());
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
-            if(NmPetugas.getText().isEmpty()){
+            if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan petugas...!!");
             }
-        }            
+        }
     }
-    
+
     /**
      *
      */
-    public void setTampil(){
-       TabRawat.setSelectedIndex(1);
+    public void setTampil() {
+        TabRawat.setSelectedIndex(1);
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from perencanaan_pemulangan where no_rawat=?",1,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from perencanaan_pemulangan where no_rawat=?", 1,
+                new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("perencanaan_pemulangan","no_rawat=?","no_rawat=?,rencana_pulang=?,alasan_masuk=?,diagnosa_medis=?,pengaruh_ri_pasien_dan_keluarga=?,keterangan_pengaruh_ri_pasien_dan_keluarga=?,"+
-                "pengaruh_ri_pekerjaan_sekolah=?,keterangan_pengaruh_ri_pekerjaan_sekolah=?,pengaruh_ri_keuangan=?,keterangan_pengaruh_ri_keuangan=?,antisipasi_masalah_saat_pulang=?,"+
-                "keterangan_antisipasi_masalah_saat_pulang=?,bantuan_diperlukan_dalam=?,keterangan_bantuan_diperlukan_dalam=?,adakah_yang_membantu_keperluan=?,keterangan_adakah_yang_membantu_keperluan=?,"+
-                "pasien_tinggal_sendiri=?,keterangan_pasien_tinggal_sendiri=?,pasien_menggunakan_peralatan_medis=?,keterangan_pasien_menggunakan_peralatan_medis=?,pasien_memerlukan_alat_bantu=?,"+
-                "keterangan_pasien_memerlukan_alat_bantu=?,memerlukan_perawatan_khusus=?,keterangan_memerlukan_perawatan_khusus=?,bermasalah_memenuhi_kebutuhan=?,keterangan_bermasalah_memenuhi_kebutuhan=?,"+
-                "memiliki_nyeri_kronis=?,keterangan_memiliki_nyeri_kronis=?,memerlukan_edukasi_kesehatan=?,keterangan_memerlukan_edukasi_kesehatan=?,memerlukan_keterampilkan_khusus=?,"+
-                "keterangan_memerlukan_keterampilkan_khusus=?,nama_pasien_keluarga=?,nip=?",35,new String[]{
-                TNoRw.getText(),Valid.SetTgl(RencanaPemulangan.getSelectedItem()+""),AlasanMasuk.getText(),DiagnosaMedis.getText(),PengaruhRIKeluarga.getSelectedItem().toString(),
-                KeteranganPengaruhRIKeluarga.getText(),PengaruhRIPekerjaanSekolah.getSelectedItem().toString(),KeteranganPengaruhRIPekerjaanSekolah.getText(),
-                PengaruhRIKeuangan.getSelectedItem().toString(),KeteranganPengaruhRIKeuangan.getText(),AntisipasiMasalah.getSelectedItem().toString(),KeteranganAntisipasiMasalah.getText(),
-                BantuanDiperlukan.getSelectedItem().toString(),KeteranganBantuanDiperlukan.getText(),YangMembantuKeperluan.getSelectedItem().toString(),KeteranganYangMembantuKeperluan.getText(),
-                TinggalSendiri.getSelectedItem().toString(),KeteranganTinggalSendiri.getText(),PeralatanMedis.getSelectedItem().toString(),KeteranganPeralatanMedis.getText(),
-                AlatBantu.getSelectedItem().toString(),KeteranganAlatBantu.getText(),PerawatanKhusus.getSelectedItem().toString(),KeteranganPerawatanKhusus.getText(),
-                MemenuhiKebutuhan.getSelectedItem().toString(),KeteranganMemenuhiKebutuhan.getText(),NyeriKronis.getSelectedItem().toString(),KeteranganNyeriKronis.getText(),
-                EdukasiPasien.getSelectedItem().toString(),KeteranganEdukasiPasien.getText(),KeterampilanKhusus.getSelectedItem().toString(),KeteranganKeterampilanKhusus.getText(),
-                SaksiKeluarga.getText(),KdPetugas.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
-               tampil();
-               emptTeks();
-               TabRawat.setSelectedIndex(1);
+        if (Sequel.mengedittf("perencanaan_pemulangan", "no_rawat=?",
+                "no_rawat=?,rencana_pulang=?,alasan_masuk=?,diagnosa_medis=?,pengaruh_ri_pasien_dan_keluarga=?,keterangan_pengaruh_ri_pasien_dan_keluarga=?,"
+                + "pengaruh_ri_pekerjaan_sekolah=?,keterangan_pengaruh_ri_pekerjaan_sekolah=?,pengaruh_ri_keuangan=?,keterangan_pengaruh_ri_keuangan=?,antisipasi_masalah_saat_pulang=?,"
+                + "keterangan_antisipasi_masalah_saat_pulang=?,bantuan_diperlukan_dalam=?,keterangan_bantuan_diperlukan_dalam=?,adakah_yang_membantu_keperluan=?,keterangan_adakah_yang_membantu_keperluan=?,"
+                + "pasien_tinggal_sendiri=?,keterangan_pasien_tinggal_sendiri=?,pasien_menggunakan_peralatan_medis=?,keterangan_pasien_menggunakan_peralatan_medis=?,pasien_memerlukan_alat_bantu=?,"
+                + "keterangan_pasien_memerlukan_alat_bantu=?,memerlukan_perawatan_khusus=?,keterangan_memerlukan_perawatan_khusus=?,bermasalah_memenuhi_kebutuhan=?,keterangan_bermasalah_memenuhi_kebutuhan=?,"
+                + "memiliki_nyeri_kronis=?,keterangan_memiliki_nyeri_kronis=?,memerlukan_edukasi_kesehatan=?,keterangan_memerlukan_edukasi_kesehatan=?,memerlukan_keterampilkan_khusus=?,"
+                + "keterangan_memerlukan_keterampilkan_khusus=?,nama_pasien_keluarga=?,nip=?",
+                35, new String[]{
+                    TNoRw.getText(), Valid.SetTgl(RencanaPemulangan.
+                    getSelectedItem() + ""), AlasanMasuk.getText(),
+                    DiagnosaMedis.getText(), PengaruhRIKeluarga.
+                    getSelectedItem().toString(),
+                    KeteranganPengaruhRIKeluarga.getText(),
+                    PengaruhRIPekerjaanSekolah.getSelectedItem().toString(),
+                    KeteranganPengaruhRIPekerjaanSekolah.getText(),
+                    PengaruhRIKeuangan.getSelectedItem().toString(),
+                    KeteranganPengaruhRIKeuangan.getText(), AntisipasiMasalah.
+                    getSelectedItem().toString(), KeteranganAntisipasiMasalah.
+                            getText(),
+                    BantuanDiperlukan.getSelectedItem().toString(),
+                    KeteranganBantuanDiperlukan.getText(),
+                    YangMembantuKeperluan.getSelectedItem().toString(),
+                    KeteranganYangMembantuKeperluan.getText(),
+                    TinggalSendiri.getSelectedItem().toString(),
+                    KeteranganTinggalSendiri.getText(), PeralatanMedis.
+                    getSelectedItem().toString(), KeteranganPeralatanMedis.
+                            getText(),
+                    AlatBantu.getSelectedItem().toString(), KeteranganAlatBantu.
+                    getText(), PerawatanKhusus.getSelectedItem().toString(),
+                    KeteranganPerawatanKhusus.getText(),
+                    MemenuhiKebutuhan.getSelectedItem().toString(),
+                    KeteranganMemenuhiKebutuhan.getText(), NyeriKronis.
+                    getSelectedItem().toString(), KeteranganNyeriKronis.
+                            getText(),
+                    EdukasiPasien.getSelectedItem().toString(),
+                    KeteranganEdukasiPasien.getText(), KeterampilanKhusus.
+                    getSelectedItem().toString(), KeteranganKeterampilanKhusus.
+                            getText(),
+                    SaksiKeluarga.getText(), KdPetugas.getText(), tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
+            tampil();
+            emptTeks();
+            TabRawat.setSelectedIndex(1);
         }
     }
-    
-    private void isPhoto(){
-        if(ChkAccor.isSelected()==true){
+
+    private void isPhoto() {
+        if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(430,HEIGHT));
-            FormPhoto.setVisible(true);  
+            PanelAccor.setPreferredSize(new Dimension(430, HEIGHT));
+            FormPhoto.setVisible(true);
             ChkAccor.setVisible(true);
-        }else if(ChkAccor.isSelected()==false){    
+        } else if (ChkAccor.isSelected() == false) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(15,HEIGHT));
-            FormPhoto.setVisible(false);  
+            PanelAccor.setPreferredSize(new Dimension(15, HEIGHT));
+            FormPhoto.setVisible(false);
             ChkAccor.setVisible(true);
         }
     }
 
     private void panggilPhoto() {
-        if(FormPhoto.isVisible()==true){
+        if (FormPhoto.isVisible() == true) {
             try {
-                ps=koneksi.prepareStatement("select bukti_perencanaan_pemulangan_saksikeluarga.photo from bukti_perencanaan_pemulangan_saksikeluarga where bukti_perencanaan_pemulangan_saksikeluarga.no_rawat=?");
+                ps = koneksi.prepareStatement(
+                        "select bukti_perencanaan_pemulangan_saksikeluarga.photo from bukti_perencanaan_pemulangan_saksikeluarga where bukti_perencanaan_pemulangan_saksikeluarga.no_rawat=?");
                 try {
-                    ps.setString(1,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    if(rs.next()){
-                        if(rs.getString("photo").isEmpty()||rs.getString("photo").equals("-")){
-                            LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-                        }else{
-                            LoadHTML2.setText("<html><body><center><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/perencanaanpemulangan/"+rs.getString("photo")+"' alt='photo' width='450' height='500'/></center></body></html>");
-                        }  
-                    }else{
-                        LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                    ps.setString(1, tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        if (rs.getString("photo").isEmpty() || rs.getString(
+                                "photo").equals("-")) {
+                            LoadHTML2.setText(
+                                    "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                        } else {
+                            LoadHTML2.setText(
+                                    "<html><body><center><img src='http://" + koneksiDB.
+                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
+                                            PORTWEB() + "/" + koneksiDB.
+                                            HYBRIDWEB() + "/perencanaanpemulangan/" + rs.
+                                            getString("photo") + "' alt='photo' width='450' height='500'/></center></body></html>");
+                        }
+                    } else {
+                        LoadHTML2.setText(
+                                "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                     }
-                } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                } catch (SQLException e) {
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
             }
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            RMPerencanaanPemulangan.class.getName());
 }

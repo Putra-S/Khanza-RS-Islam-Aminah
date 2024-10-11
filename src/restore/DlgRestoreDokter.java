@@ -3,53 +3,71 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgJnsPerawatanRalan.java
  *
  * Created on May 22, 2010, 11:58:21 PM
  */
-
 package restore;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author dosen
  */
 public class DlgRestoreDokter extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
+    private int i = 0;
 
-    /** Creates new form DlgJnsPerawatanRalan
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgRestoreDokter(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         Object[] row = {
-            "P","Kode Dokter","Nama Dokter","J.K.","Tmp.Lahir",
-            "Tgl.Lahir","G.D.","Agama","Alamat Tinggal",
-            "No.HP/Telp","Stts.Nikah","Spesialis","Alumni",
+            "P", "Kode Dokter", "Nama Dokter", "J.K.", "Tmp.Lahir",
+            "Tgl.Lahir", "G.D.", "Agama", "Alamat Tinggal",
+            "No.HP/Telp", "Stts.Nikah", "Spesialis", "Alumni",
             "No.Ijin Praktek"
         };
         tabMode = new DefaultTableModel(null, row) {
             Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class ,
-                java.lang.Object.class ,java.lang.Object.class 
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class
             };
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -63,6 +81,7 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
         };
         tbObat.setModel(tabMode);
 
@@ -71,70 +90,70 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
 
         for (int i = 0; i < 14; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(40);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(40);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(150);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(150);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(100);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(200);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(100);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
-       
-    
+        }
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -302,36 +321,39 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){ 
-            if(tbObat.getValueAt(i,0).toString().equals("true")){
-                Sequel.mengedit("dokter","kd_dokter='"+tbObat.getValueAt(i,1).toString()+"'","status='1'");
-                Sequel.mengedit("pegawai","nik='"+tbObat.getValueAt(i,1).toString()+"'","stts_aktif='AKTIF'");
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            if (tbObat.getValueAt(i, 0).toString().equals("true")) {
+                Sequel.mengedit("dokter", "kd_dokter='" + tbObat.
+                        getValueAt(i, 1).toString() + "'", "status='1'");
+                Sequel.mengedit("pegawai", "nik='" + tbObat.getValueAt(i, 1).
+                        toString() + "'", "stts_aktif='AKTIF'");
             }
-        }        
+        }
         BtnCariActionPerformed(evt);
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnHapus,BtnKeluar);
+        } else {
+            Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){ 
-            if(tbObat.getValueAt(i,0).toString().equals("true")){
-                Sequel.meghapus("dokter","kd_dokter",tbObat.getValueAt(i,1).toString());
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            if (tbObat.getValueAt(i, 0).toString().equals("true")) {
+                Sequel.meghapus("dokter", "kd_dokter", tbObat.getValueAt(i, 1).
+                        toString());
             }
-        }        
+        }
         BtnCariActionPerformed(evt);
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnSimpan);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -341,17 +363,19 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnSimpan,TCari);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -361,9 +385,9 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -374,10 +398,10 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnHapus);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -387,16 +411,18 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRestoreDokter dialog = new DlgRestoreDokter(new javax.swing.JFrame(), true);
+            DlgRestoreDokter dialog = new DlgRestoreDokter(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -421,22 +447,23 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement("select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "+
-                   "dokter.tgl_lahir,dokter.gol_drh,dokter.agama,dokter.almt_tgl,dokter.no_telp, "+
-                   "dokter.stts_nikah,spesialis.nm_sps,dokter.alumni,dokter.no_ijn_praktek "+
-                   "from dokter inner join spesialis on dokter.kd_sps=spesialis.kd_sps "+
-                   "where dokter.status='0' and dokter.kd_dokter like ? or "+
-                   "dokter.status='0' and dokter.nm_dokter like ? or "+
-                   "dokter.status='0' and dokter.tmp_lahir like ? or "+
-                   "dokter.status='0' and dokter.tgl_lahir like ? or "+
-                   "dokter.status='0' and dokter.agama like ? or "+
-                   "dokter.status='0' and dokter.almt_tgl like ? or "+
-                   "dokter.status='0' and dokter.no_telp like ? or "+
-                   "dokter.status='0' and dokter.stts_nikah like ? or "+
-                   "dokter.status='0' and spesialis.nm_sps like ? or "+
-                   "dokter.status='0' and dokter.alumni like ? or "+
-                   "dokter.status='0' and dokter.no_ijn_praktek like ? "+
-                   "order by dokter.kd_dokter");
+            ps = koneksi.prepareStatement(
+                    "select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "
+                    + "dokter.tgl_lahir,dokter.gol_drh,dokter.agama,dokter.almt_tgl,dokter.no_telp, "
+                    + "dokter.stts_nikah,spesialis.nm_sps,dokter.alumni,dokter.no_ijn_praktek "
+                    + "from dokter inner join spesialis on dokter.kd_sps=spesialis.kd_sps "
+                    + "where dokter.status='0' and dokter.kd_dokter like ? or "
+                    + "dokter.status='0' and dokter.nm_dokter like ? or "
+                    + "dokter.status='0' and dokter.tmp_lahir like ? or "
+                    + "dokter.status='0' and dokter.tgl_lahir like ? or "
+                    + "dokter.status='0' and dokter.agama like ? or "
+                    + "dokter.status='0' and dokter.almt_tgl like ? or "
+                    + "dokter.status='0' and dokter.no_telp like ? or "
+                    + "dokter.status='0' and dokter.stts_nikah like ? or "
+                    + "dokter.status='0' and spesialis.nm_sps like ? or "
+                    + "dokter.status='0' and dokter.alumni like ? or "
+                    + "dokter.status='0' and dokter.no_ijn_praktek like ? "
+                    + "order by dokter.kd_dokter");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -452,26 +479,32 @@ public class DlgRestoreDokter extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        false, rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),
-                        rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),
+                        false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.
+                        getString(8),
+                        rs.getString(9), rs.getString(10), rs.getString(11), rs.
+                        getString(12),
                         rs.getString(13)});
                 }
                 LCount.setText("" + tabMode.getRowCount());
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
-            } finally{
-                if(rs != null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                
-                if(ps != null){
+
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Notifikasi : " + e);
         }
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(DlgRestoreDokter.class.
+            getName());
+
 }

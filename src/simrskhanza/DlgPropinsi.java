@@ -1,35 +1,48 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * Dlgpropinsi.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package simrskhanza;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgPropinsi extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
     private File file;
@@ -40,66 +53,75 @@ public class DlgPropinsi extends javax.swing.JDialog {
     private JsonNode response;
     private FileReader myObj;
 
-    /** Creates new form Dlgpropinsi
+    /**
+     * Creates new form Dlgpropinsi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgPropinsi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,10);
-        setSize(459,539);
+        this.setLocation(10, 10);
+        setSize(459, 539);
 
-        Object[] row={"Nama Propinsi","Kode"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Nama Propinsi", "Kode"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbpropinsi.setModel(tabMode);
-        tbpropinsi.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbpropinsi.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbpropinsi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbpropinsi.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(500);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
 
         tbpropinsi.setDefaultRenderer(Object.class, new WarnaTable());
-        Nama.setDocument(new batasInput((byte)60).getFilter(Nama));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        Nama.setDocument(new batasInput((byte) 60).getFilter(Nama));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
             });
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -318,20 +340,21 @@ public class DlgPropinsi extends javax.swing.JDialog {
 }//GEN-LAST:event_NamaKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Nama.getText().trim().isEmpty()){
-            Valid.textKosong(Nama,"Propinsi");
-        }else{
-            Sequel.menyimpan("propinsi","'0','"+Nama.getText()+"'","Kode propinsi");
+        if (Nama.getText().trim().isEmpty()) {
+            Valid.textKosong(Nama, "Propinsi");
+        } else {
+            Sequel.menyimpan("propinsi", "'0','" + Nama.getText() + "'",
+                    "Kode propinsi");
             tampil2();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnAll,BtnBatal);
+        } else {
+            Valid.pindah(evt, BtnAll, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -340,25 +363,27 @@ public class DlgPropinsi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Valid.hapusTabletf(tabMode,Nama,"propinsi","nm_prop")==true){
-            if(tbpropinsi.getSelectedRow()!= -1){
+        if (Valid.hapusTabletf(tabMode, Nama, "propinsi", "nm_prop") == true) {
+            if (tbpropinsi.getSelectedRow() != -1) {
                 tabMode.removeRow(tbpropinsi.getSelectedRow());
-                LCount.setText(""+tabMode.getRowCount());
+                LCount.setText("" + tabMode.getRowCount());
                 emptTeks();
             }
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnKeluar);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -368,19 +393,21 @@ public class DlgPropinsi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnSimpan,Nama);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, Nama);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Nama.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbpropinsi.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -390,9 +417,9 @@ public class DlgPropinsi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -403,35 +430,36 @@ public class DlgPropinsi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
-            Valid.pindah(evt, BtnCari,BtnSimpan);
+        } else {
+            Valid.pindah(evt, BtnCari, BtnSimpan);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbpropinsiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbpropinsiMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
             }
-            if(evt.getClickCount()==2){
+            if (evt.getClickCount() == 2) {
                 dispose();
             }
         }
 }//GEN-LAST:event_tbpropinsiMouseClicked
 
     private void tbpropinsiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbpropinsiKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -443,8 +471,8 @@ public class DlgPropinsi extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowActivated
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgPropinsi dialog = new DlgPropinsi(new javax.swing.JFrame(), true);
@@ -453,6 +481,7 @@ public class DlgPropinsi extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -480,87 +509,96 @@ public class DlgPropinsi extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{   
-            file=new File("./cache/masterpropinsi.iyem");
+        try {
+            file = new File("./cache/masterpropinsi.iyem");
             file.createNewFile();
             fileWriter = new FileWriter(file);
-            iyem="";
-            ps=koneksi.prepareStatement("select propinsi.nm_prop,propinsi.kd_prop from propinsi");
+            iyem = "";
+            ps = koneksi.prepareStatement(
+                    "select propinsi.nm_prop,propinsi.kd_prop from propinsi");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new String[]{rs.getString(1),rs.getString(2)});
-                    iyem=iyem+"{\"NamaProp\":\""+rs.getString(1)+"\",\"KodeProp\":\""+rs.getString(2)+"\"},";
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new String[]{rs.getString(1), rs.getString(2)});
+                    iyem = iyem + "{\"NamaProp\":\"" + rs.getString(1) + "\",\"KodeProp\":\"" + rs.
+                            getString(2) + "\"},";
                 }
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }   
-            fileWriter.write("{\"masterpropinsi\":["+iyem.substring(0,iyem.length()-1)+"]}");
+            }
+            fileWriter.write("{\"masterpropinsi\":[" + iyem.substring(0, iyem.
+                    length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
-            iyem=null;             
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            iyem = null;
+        } catch (IOException | SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     private void tampil2() {
         try {
             myObj = new FileReader("./cache/masterpropinsi.iyem");
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("masterpropinsi");
-            if(response.isArray()){
-                if(TCari.getText().trim().isEmpty()){
-                    for(JsonNode list:response){
+            if (response.isArray()) {
+                if (TCari.getText().trim().isEmpty()) {
+                    for (JsonNode list : response) {
                         tabMode.addRow(new Object[]{
-                            list.path("NamaProp").asText(),list.path("KodeProp").asText()
+                            list.path("NamaProp").asText(), list.
+                            path("KodeProp").asText()
                         });
                     }
-                }else{
-                    for(JsonNode list:response){
-                        if(list.path("NamaProp").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
+                } else {
+                    for (JsonNode list : response) {
+                        if (list.path("NamaProp").asText().toLowerCase().
+                                contains(TCari.getText().toLowerCase())) {
                             tabMode.addRow(new Object[]{
-                                list.path("NamaProp").asText(),list.path("KodeProp").asText()
+                                list.path("NamaProp").asText(), list.path(
+                                "KodeProp").asText()
                             });
                         }
                     }
                 }
             }
             myObj.close();
-            if(tabMode.getRowCount()==0){
-                ps=koneksi.prepareStatement("select propinsi.nm_prop,propinsi.kd_prop from propinsi where propinsi.nm_prop like ?");
+            if (tabMode.getRowCount() == 0) {
+                ps = koneksi.prepareStatement(
+                        "select propinsi.nm_prop,propinsi.kd_prop from propinsi where propinsi.nm_prop like ?");
                 try {
-                    ps.setString(1,"%"+TCari.getText().trim()+"%");
-                    rs=ps.executeQuery();
-                    while(rs.next()){
-                        tabMode.addRow(new String[]{rs.getString(1),rs.getString(2)});
+                    ps.setString(1, "%" + TCari.getText().trim() + "%");
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        tabMode.addRow(new String[]{rs.getString(1), rs.
+                            getString(2)});
                     }
-                } catch (Exception e) {
-                    System.out.println("Notifikasi : "+e);
-                } finally{
-                    if(rs!=null){
+                } catch (SQLException e) {
+                    System.out.println("Notifikasi : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
             }
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+        } catch (IOException | SQLException ex) {
+            System.out.println("Notifikasi : " + ex);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     /**
      *
      * @param nama
@@ -568,34 +606,37 @@ public class DlgPropinsi extends javax.swing.JDialog {
      */
     public String tampil3(String nama) {
         try {
-            if(Valid.daysOld("./cache/masterpropinsi.iyem")>7){
+            if (Valid.daysOld("./cache/masterpropinsi.iyem") > 7) {
                 tampil();
             }
         } catch (Exception e) {
-            if(e.toString().contains("No such file or directory")){
+            if (e.toString().contains("No such file or directory")) {
                 tampil();
             }
         }
-        
-        iyem="";
+
+        iyem = "";
         try {
             myObj = new FileReader("./cache/masterpropinsi.iyem");
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("masterpropinsi");
-            if(response.isArray()){
-                for(JsonNode list:response){
-                    if(list.path("NamaProp").asText().toLowerCase().equals(nama)){
-                        iyem=list.path("KodeProp").asText();
+            if (response.isArray()) {
+                for (JsonNode list : response) {
+                    if (list.path("NamaProp").asText().toLowerCase().
+                            equals(nama)) {
+                        iyem = list.path("KodeProp").asText();
                     }
                 }
             }
             myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
-        if(iyem.isEmpty()){
-            iyem=Sequel.cariIsi("select propinsi.kd_prop from propinsi where propinsi.nm_prop=?",nama);
+        if (iyem.isEmpty()) {
+            iyem = Sequel.cariIsi(
+                    "select propinsi.kd_prop from propinsi where propinsi.nm_prop=?",
+                    nama);
         }
         return iyem;
     }
@@ -606,11 +647,12 @@ public class DlgPropinsi extends javax.swing.JDialog {
     }
 
     private void getData() {
-        if(tbpropinsi.getSelectedRow()!= -1){
-            Nama.setText(tbpropinsi.getValueAt(tbpropinsi.getSelectedRow(),0).toString());
+        if (tbpropinsi.getSelectedRow() != -1) {
+            Nama.setText(tbpropinsi.getValueAt(tbpropinsi.getSelectedRow(), 0).
+                    toString());
         }
     }
-    
+
     /**
      *
      * @return
@@ -618,9 +660,12 @@ public class DlgPropinsi extends javax.swing.JDialog {
     public JTable getTable() {
         return tbpropinsi;
     }
-    
-    public void onCari(){
+
+    public void onCari() {
         TCari.setText("");
         TCari.requestFocus();
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgPropinsi.class.
+            getName());
 }

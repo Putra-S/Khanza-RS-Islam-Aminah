@@ -1,22 +1,36 @@
 package inventory;
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class InventoryCariSuplier extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i;
@@ -28,71 +42,81 @@ public class InventoryCariSuplier extends javax.swing.JDialog {
     private JsonNode response;
     private FileReader myObj;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public InventoryCariSuplier(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row={"Kode Supplier","Nama Supplier","Alamat Supplier","Kota","No.Telp","Nama Bank","No.Rekening"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Supplier", "Nama Supplier", "Alamat Supplier",
+            "Kota", "No.Telp", "Nama Bank", "No.Rekening"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));      
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
             });
-        }           
+        }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -246,9 +270,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/suplierobat.iyem")<8){
+            if (Valid.daysOld("./cache/suplierobat.iyem") < 8) {
                 tampil2();
-            }else{
+            } else {
                 tampil();
             }
         } catch (Exception e) {
@@ -256,13 +280,13 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_formWindowOpened
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -272,9 +296,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -285,19 +309,20 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTambahActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        InventorySuplier form=new InventorySuplier(null,false);
+        InventorySuplier form = new InventorySuplier(null, false);
         form.emptTeks();
         form.isCek();
-        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        form.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         form.setLocationRelativeTo(internalFrame1);
         form.setAlwaysOnTop(false);
         form.setVisible(true);
@@ -310,16 +335,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryCariSuplier dialog = new InventoryCariSuplier(new javax.swing.JFrame(), true);
+            InventoryCariSuplier dialog = new InventoryCariSuplier(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -342,43 +369,50 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            file=new File("./cache/suplierobat.iyem");
+        try {
+            file = new File("./cache/suplierobat.iyem");
             file.createNewFile();
             fileWriter = new FileWriter(file);
-            iyem="";
-            ps=koneksi.prepareStatement(
-                    "select datasuplier.kode_suplier, datasuplier.nama_suplier, "+
-                    " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"+
-                    " datasuplier.nama_bank,datasuplier.rekening from datasuplier "+
-                    " order by datasuplier.kode_suplier");
+            iyem = "";
+            ps = koneksi.prepareStatement(
+                    "select datasuplier.kode_suplier, datasuplier.nama_suplier, "
+                    + " datasuplier.alamat,datasuplier.kota, datasuplier.no_telp,"
+                    + " datasuplier.nama_bank,datasuplier.rekening from datasuplier "
+                    + " order by datasuplier.kode_suplier");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5),rs.getString(6),rs.getString(7)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7)
                     });
-                    iyem=iyem+"{\"KodeSupplier\":\""+rs.getString(1)+"\",\"NamaSupplier\":\""+rs.getString(2)+"\",\"AlamatSupplier\":\""+rs.getString(3)+"\",\"Kota\":\""+rs.getString(4)+"\",\"NoTelp\":\""+rs.getString(5)+"\",\"NamaBank\":\""+rs.getString(6)+"\",\"NoRekening\":\""+rs.getString(7)+"\"},";
+                    iyem = iyem + "{\"KodeSupplier\":\"" + rs.getString(1) + "\",\"NamaSupplier\":\"" + rs.
+                            getString(2) + "\",\"AlamatSupplier\":\"" + rs.
+                            getString(3) + "\",\"Kota\":\"" + rs.getString(4) + "\",\"NoTelp\":\"" + rs.
+                            getString(5) + "\",\"NamaBank\":\"" + rs.
+                            getString(6) + "\",\"NoRekening\":\"" + rs.
+                            getString(7) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            fileWriter.write("{\"suplierobat\":["+iyem.substring(0,iyem.length()-1)+"]}");
+            fileWriter.write("{\"suplierobat\":[" + iyem.substring(0, iyem.
+                    length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
-            iyem=null;
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            iyem = null;
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     private void tampil2() {
@@ -387,18 +421,33 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("suplierobat");
-            if(response.isArray()){
-                if(TCari.getText().trim().isEmpty()){
-                    for(JsonNode list:response){
+            if (response.isArray()) {
+                if (TCari.getText().trim().isEmpty()) {
+                    for (JsonNode list : response) {
                         tabMode.addRow(new Object[]{
-                            list.path("KodeSupplier").asText(),list.path("NamaSupplier").asText(),list.path("AlamatSupplier").asText(),list.path("Kota").asText(),list.path("NoTelp").asText(),list.path("NamaBank").asText(),list.path("NoRekening").asText()
+                            list.path("KodeSupplier").asText(), list.path(
+                            "NamaSupplier").asText(), list.
+                            path("AlamatSupplier").asText(), list.path("Kota").
+                            asText(), list.path("NoTelp").asText(), list.path(
+                            "NamaBank").asText(), list.path("NoRekening").
+                            asText()
                         });
                     }
-                }else{
-                    for(JsonNode list:response){
-                        if(list.path("KodeSupplier").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaSupplier").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kota").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
+                } else {
+                    for (JsonNode list : response) {
+                        if (list.path("KodeSupplier").asText().toLowerCase().
+                                contains(TCari.getText().toLowerCase()) || list.
+                                path("NamaSupplier").asText().toLowerCase().
+                                contains(TCari.getText().toLowerCase()) || list.
+                                path("Kota").asText().toLowerCase().contains(
+                                TCari.getText().toLowerCase())) {
                             tabMode.addRow(new Object[]{
-                                list.path("KodeSupplier").asText(),list.path("NamaSupplier").asText(),list.path("AlamatSupplier").asText(),list.path("Kota").asText(),list.path("NoTelp").asText(),list.path("NamaBank").asText(),list.path("NoRekening").asText()
+                                list.path("KodeSupplier").asText(), list.path(
+                                "NamaSupplier").asText(), list.path(
+                                "AlamatSupplier").asText(), list.path("Kota").
+                                asText(), list.path("NoTelp").asText(), list.
+                                path("NamaBank").asText(), list.path(
+                                "NoRekening").asText()
                             });
                         }
                     }
@@ -406,9 +455,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             }
             myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -417,20 +466,23 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     public void emptTeks() {
         TCari.requestFocus();
     }
-    
+
     /**
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbDokter;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnTambah.setEnabled(akses.getsuplier());
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(
+            InventoryCariSuplier.class.getName());
+
 }

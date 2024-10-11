@@ -3,132 +3,153 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgBangsal.java
  *
  * Created on May 22, 2010, 9:58:42 PM
  */
-
 package kepegawaian;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgPulang extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String say=" rekap_presensi.jam_datang like '%"+Sequel.cariString("select current_date()")+"%' and rekap_presensi.durasi!='' ";
+    private String say = " rekap_presensi.jam_datang like '%" + Sequel.
+            cariString("select current_date()") + "%' and rekap_presensi.durasi!='' ";
     private String[] primary;
 
-    /** Creates new form DlgBangsal
+    /**
+     * Creates new form DlgBangsal
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgPulang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        Object[] row={"NIK","Nama","Shift","Jam Datang","Jam Pulang","Status","Keterlambatan","Durasi","Catatan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        Object[] row = {"NIK", "Nama", "Shift", "Jam Datang", "Jam Pulang",
+            "Status", "Keterlambatan", "Durasi", "Catatan"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbBangsal.setModel(tabMode);
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 9; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(300);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(80);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(90);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(80);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(300);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
-        
+
         //catatan.setDocument(new batasInput((int)100).getKata(catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        try{
-            ps=koneksi.prepareStatement(
-                "select  pegawai.id, "+
-                "pegawai.nik, "+
-                "pegawai.nama, "+
-                "rekap_presensi.shift, "+
-                "rekap_presensi.jam_datang, "+
-                "rekap_presensi.jam_pulang, "+
-                "rekap_presensi.status, "+
-                "rekap_presensi.keterlambatan, "+
-                "rekap_presensi.durasi, "+
-                "rekap_presensi.keterangan "+
-                " from pegawai inner join rekap_presensi on pegawai.id=rekap_presensi.id where "+
-                "  pegawai.stts_aktif<>'KELUAR' and pegawai.nik like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and pegawai.nama like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.shift like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.status like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterlambatan like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_datang like ? and "+say+" or "+
-                "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterangan like ? and "+say+" or "+
-                " pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_pulang like ? and "+say+" order by rekap_presensi.jam_datang ");            
-        }catch(Exception ex){            
+        }
+        try {
+            ps = koneksi.prepareStatement(
+                    "select  pegawai.id, "
+                    + "pegawai.nik, "
+                    + "pegawai.nama, "
+                    + "rekap_presensi.shift, "
+                    + "rekap_presensi.jam_datang, "
+                    + "rekap_presensi.jam_pulang, "
+                    + "rekap_presensi.status, "
+                    + "rekap_presensi.keterlambatan, "
+                    + "rekap_presensi.durasi, "
+                    + "rekap_presensi.keterangan "
+                    + " from pegawai inner join rekap_presensi on pegawai.id=rekap_presensi.id where "
+                    + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nik like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nama like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.shift like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.status like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterlambatan like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_datang like ? and " + say + " or "
+                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterangan like ? and " + say + " or "
+                    + " pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_pulang like ? and " + say + " order by rekap_presensi.jam_datang ");
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
-        DlgInput.setSize(744,127);
+
+        DlgInput.setSize(744, 127);
         DlgInput.setVisible(false);
     }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -410,17 +431,19 @@ public class DlgPulang extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -430,9 +453,9 @@ public class DlgPulang extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -443,10 +466,10 @@ public class DlgPulang extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -457,21 +480,25 @@ public class DlgPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCloseActionPerformed
 
     private void BtnCloseKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCloseKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             DlgInput.dispose();
-        }else{Valid.pindah(evt,BtnBatal,BtnClose);}
+        } else {
+            Valid.pindah(evt, BtnBatal, BtnClose);
+        }
     }//GEN-LAST:event_BtnCloseKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(id_pegawai.getText().trim().isEmpty()){
-            Valid.textKosong(catatan,"Pegawai");
-        }else if(jam_datang.getText().trim().isEmpty()){
-            Valid.textKosong(id_pegawai,"Jam Datang");
-        }else if(catatan.getText().trim().isEmpty()){
-            Valid.textKosong(catatan,"Jam Datang");
-        }else{
-            Valid.editTable(tabMode,"rekap_presensi","jam_datang='"+jam_datang.getText()+
-                "' and id",id_pegawai,"keterangan='"+catatan.getText()+"'");
+        if (id_pegawai.getText().trim().isEmpty()) {
+            Valid.textKosong(catatan, "Pegawai");
+        } else if (jam_datang.getText().trim().isEmpty()) {
+            Valid.textKosong(id_pegawai, "Jam Datang");
+        } else if (catatan.getText().trim().isEmpty()) {
+            Valid.textKosong(catatan, "Jam Datang");
+        } else {
+            Valid.editTable(tabMode, "rekap_presensi",
+                    "jam_datang='" + jam_datang.getText()
+                    + "' and id", id_pegawai,
+                    "keterangan='" + catatan.getText() + "'");
             tampil();
             emptTeks();
             DlgInput.dispose();
@@ -479,10 +506,10 @@ public class DlgPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,catatan,BtnBatal);
+        } else {
+            Valid.pindah(evt, catatan, BtnBatal);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -491,26 +518,30 @@ public class DlgPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnClose);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnClose);
+        }
     }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void inpketeranganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpketeranganActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, Tabel kosong. Tidak ada data yang bisa Anda edit..!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Tabel kosong. Tidak ada data yang bisa Anda edit..!!!!");
             TCari.requestFocus();
-        }else if(id_pegawai.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda edit dengan menklik data pada tabel...!!!");
+        } else if (id_pegawai.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda edit dengan menklik data pada tabel...!!!");
             tbBangsal.requestFocus();
-        }else if(! id_pegawai.getText().trim().isEmpty()){
+        } else if (!id_pegawai.getText().trim().isEmpty()) {
             DlgInput.setLocationRelativeTo(internalFrame1);
             DlgInput.setVisible(true);
         }
     }//GEN-LAST:event_inpketeranganActionPerformed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -519,8 +550,9 @@ public class DlgPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_tbBangsalMouseClicked
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -530,8 +562,8 @@ public class DlgPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_tbBangsalKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgPulang dialog = new DlgPulang(new javax.swing.JFrame(), true);
@@ -540,6 +572,7 @@ public class DlgPulang extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -576,52 +609,52 @@ public class DlgPulang extends javax.swing.JDialog {
     /**
      *
      */
-    public void tampil() {        
+    public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{            
-            ps.setString(1,"%"+TCari.getText().trim()+"%");
-            ps.setString(2,"%"+TCari.getText().trim()+"%");
-            ps.setString(3,"%"+TCari.getText().trim()+"%");
-            ps.setString(4,"%"+TCari.getText().trim()+"%");
-            ps.setString(5,"%"+TCari.getText().trim()+"%");
-            ps.setString(6,"%"+TCari.getText().trim()+"%");
-            ps.setString(7,"%"+TCari.getText().trim()+"%");
-            ps.setString(8,"%"+TCari.getText().trim()+"%");
-            rs=ps.executeQuery();
+        try {
+            ps.setString(1, "%" + TCari.getText().trim() + "%");
+            ps.setString(2, "%" + TCari.getText().trim() + "%");
+            ps.setString(3, "%" + TCari.getText().trim() + "%");
+            ps.setString(4, "%" + TCari.getText().trim() + "%");
+            ps.setString(5, "%" + TCari.getText().trim() + "%");
+            ps.setString(6, "%" + TCari.getText().trim() + "%");
+            ps.setString(7, "%" + TCari.getText().trim() + "%");
+            ps.setString(8, "%" + TCari.getText().trim() + "%");
+            rs = ps.executeQuery();
             rs.last();
-            primary=new String[rs.getRow()];
+            primary = new String[rs.getRow()];
             rs.beforeFirst();
-            int i=0;            
-            while(rs.next()){
-                String[] data={rs.getString(2),
-                               rs.getString(3),
-                               rs.getString(4),
-                               rs.getString(5),
-                               rs.getString(6),
-                               rs.getString(7),
-                               rs.getString(8),
-                               rs.getString(9),
-                               rs.getString(10)};
+            int i = 0;
+            while (rs.next()) {
+                String[] data = {rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),
+                    rs.getString(9),
+                    rs.getString(10)};
                 tabMode.addRow(data);
-                primary[i]=rs.getString(1);
+                primary[i] = rs.getString(1);
                 i++;
-             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     private void getData() {
-        int row=tbBangsal.getSelectedRow();
-        if(row!= -1){
+        int row = tbBangsal.getSelectedRow();
+        if (row != -1) {
             id_pegawai.setText(primary[row]);
-            jam_datang.setText(tbBangsal.getValueAt(row,3).toString());
-            catatan.setText(tbBangsal.getValueAt(row,8).toString());
-            
+            jam_datang.setText(tbBangsal.getValueAt(row, 3).toString());
+            catatan.setText(tbBangsal.getValueAt(row, 8).toString());
+
         }
     }
-    
+
     /**
      *
      */
@@ -630,5 +663,8 @@ public class DlgPulang extends javax.swing.JDialog {
         id_pegawai.setText("");
         jam_datang.setText("");
     }
+
+    private static final Logger LOG = Logger.
+            getLogger(DlgPulang.class.getName());
 
 }

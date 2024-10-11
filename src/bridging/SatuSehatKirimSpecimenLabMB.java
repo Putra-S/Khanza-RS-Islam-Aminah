@@ -1,175 +1,224 @@
 /*
   by Mas Elkhanza
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class SatuSehatKirimSpecimenLabMB extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
-    private ResultSet rs;   
-    private int i=0;
-    private String link="",json="",idpasien="";
-    private ApiSatuSehat api=new ApiSatuSehat();
-    private HttpHeaders headers ;
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    private String link = "", json = "", idpasien = "";
+
+    private ApiSatuSehat api = new ApiSatuSehat();
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
-    private SatuSehatCekNIK cekViaSatuSehat=new SatuSehatCekNIK();  
-    private StringBuilder htmlContent;    
-    
-    /** Creates new form DlgKamar
+
+    private SatuSehatCekNIK cekViaSatuSehat = new SatuSehatCekNIK();
+
+    private StringBuilder htmlContent;
+
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SatuSehatKirimSpecimenLabMB(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{
-                "P","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","No.Permintaan","Tgl & Jam Sampel","Detail Pemeriksaan",
-                "Lab Code","Lab System","Lab Display","ID Service Request","ID Detail","ID Specimen","Kode Pemeriksaan"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+        tabMode = new DefaultTableModel(null,
+                new String[]{"P", "No.Rawat", "No.RM", "Nama Pasien",
+                    "No.KTP Pasien", "No.Permintaan",
+                    "Tgl & Jam Sampel", "Detail Pemeriksaan", "Lab Code",
+                    "Lab System", "Lab Display",
+                    "ID Service Request", "ID Detail", "ID Specimen",
+                    "Kode Pemeriksaan"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbObat.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(105);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(110);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(105);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(105);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(200);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(150);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(150);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(150);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(210);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(210);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        } 
-        
+        }
+
         try {
-            link=koneksiDB.URLFHIRSATUSEHAT();
+            link = koneksiDB.URLFHIRSATUSEHAT();
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        }  
-        
+            System.out.println("Notif : " + e);
+        }
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -429,102 +478,118 @@ public class SatuSehatKirimSpecimenLabMB extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        try{
+        try {
             htmlContent = new StringBuilder();
-            htmlContent.append(                             
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Permintaan</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl & Jam Sampel</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Detail Pemeriksaan</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab Code</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab System</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab Display</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Service Request</b></td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Specimen</b></td>"+
-                "</tr>"
+            htmlContent.append(
+                    "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Permintaan</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl & Jam Sampel</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Detail Pemeriksaan</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab Code</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab System</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lab Display</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Service Request</b></td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Specimen</b></td>"
+                    + "</tr>"
             );
             for (i = 0; i < tabMode.getRowCount(); i++) {
                 htmlContent.append(
-                    "<tr class='isi'>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,1).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,2).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,3).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,4).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,5).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,6).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,7).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,8).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,9).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,10).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,11).toString()+"</td>"+
-                        "<td valign='top'>"+tbObat.getValueAt(i,13).toString()+"</td>"+
-                    "</tr>");
+                        "<tr class='isi'>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 1).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 2).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 3).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 4).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 5).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 6).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 7).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 8).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 9).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 10).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 11).
+                                toString() + "</td>"
+                        + "<td valign='top'>" + tbObat.getValueAt(i, 13).
+                                toString() + "</td>"
+                        + "</tr>");
             }
             LoadHTML.setText(
-                "<html>"+
-                  "<table width='1600px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                   htmlContent.toString()+
-                  "</table>"+
-                "</html>"
+                    "<html>"
+                    + "<table width='1600px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                    + htmlContent.toString()
+                    + "</table>"
+                    + "</html>"
             );
 
-            File g = new File("file2.css");            
-            BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-            bg.write(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-            );
-            bg.close();
+            File g = new File("file2.css");
+            try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                bg.write(
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                        + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                        + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                        + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                        + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                );
+            }
 
-            File f = new File("DataSatuSehatSpecimenLabMB.html");            
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-            bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                        "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                        "<table width='1600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                            "<tr class='isi2'>"+
-                                "<td valign='top' align='center'>"+
-                                    "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                    akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                    akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                    "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT SPECIMEN LAB MB<br><br></font>"+        
-                                "</td>"+
-                           "</tr>"+
-                        "</table>")
-            );
-            bw.close();                         
+            File f = new File("DataSatuSehatSpecimenLabMB.html");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                        + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='1600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.
+                        getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.
+                        getemailrs() + "<br><br>"
+                        + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT SPECIMEN LAB MB<br><br></font>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+            }
             Desktop.getDesktop().browse(f.toURI());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        this.setCursor(Cursor.getDefaultCursor());       
+        this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbObat.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -536,138 +601,181 @@ public class SatuSehatKirimSpecimenLabMB extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,BtnPrint);
+        } else {
+            Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){
-            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,4).toString().isEmpty())&&tbObat.getValueAt(i,13).toString().isEmpty()){
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            if (tbObat.getValueAt(i, 0).toString().equals("true") && (!tbObat.
+                    getValueAt(i, 4).toString().isEmpty()) && tbObat.getValueAt(
+                    i, 13).toString().isEmpty()) {
                 try {
-                    idpasien=cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i,4).toString());
-                    try{
+                    idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(
+                            i, 4).toString());
+                    try {
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                        json = "{" +
-                                    "\"resourceType\": \"Specimen\"," +
-                                    "\"identifier\": [" +
-                                        "{" +
-                                            "\"system\": \"http://sys-ids.kemkes.go.id/specimen/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                            "\"value\": \""+tbObat.getValueAt(i,5).toString()+"."+tbObat.getValueAt(i,12).toString()+"\"" +
-                                        "}" +
-                                    "]," +
-                                    "\"status\": \"available\"," +
-                                    "\"type\": {" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \""+tbObat.getValueAt(i,9).toString()+"\"," +
-                                                "\"code\": \""+tbObat.getValueAt(i,8).toString()+"\"," +
-                                                "\"display\": \""+tbObat.getValueAt(i,10).toString()+"\"" +
-                                            "}" +
-                                        "]" +
-                                    "}," +
-                                    "\"subject\": {" +
-                                        "\"reference\": \"Patient/"+idpasien+"\"," +
-                                        "\"display\": \""+tbObat.getValueAt(i,3).toString()+"\"" +
-                                    "}," +
-                                    "\"request\": [" +
-                                        "{" +
-                                            "\"reference\": \"ServiceRequest/"+tbObat.getValueAt(i,11).toString()+"\"" +
-                                        "}" +
-                                    "]," +
-                                    "\"receivedTime\": \""+tbObat.getValueAt(i,6).toString().replaceAll(" ","T")+"+07:00\"" +
-                                "}";
-                        System.out.println("URL : "+link+"/Specimen");
-                        System.out.println("Request JSON : "+json);
-                        requestEntity = new HttpEntity(json,headers);
-                        json=api.getRest().exchange(link+"/Specimen", HttpMethod.POST, requestEntity, String.class).getBody();
-                        System.out.println("Result JSON : "+json);
+                        headers.add("Authorization", "Bearer " + api.
+                                TokenSatuSehat());
+                        json = "{"
+                                + "\"resourceType\": \"Specimen\","
+                                + "\"identifier\": ["
+                                + "{"
+                                + "\"system\": \"http://sys-ids.kemkes.go.id/specimen/" + koneksiDB.
+                                        IDSATUSEHAT() + "\","
+                                + "\"value\": \"" + tbObat.getValueAt(i, 5).
+                                        toString() + "." + tbObat.getValueAt(i,
+                                        12).toString() + "\""
+                                + "}"
+                                + "],"
+                                + "\"status\": \"available\","
+                                + "\"type\": {"
+                                + "\"coding\": ["
+                                + "{"
+                                + "\"system\": \"" + tbObat.getValueAt(i, 9).
+                                        toString() + "\","
+                                + "\"code\": \"" + tbObat.getValueAt(i, 8).
+                                        toString() + "\","
+                                + "\"display\": \"" + tbObat.getValueAt(i, 10).
+                                        toString() + "\""
+                                + "}"
+                                + "]"
+                                + "},"
+                                + "\"subject\": {"
+                                + "\"reference\": \"Patient/" + idpasien + "\","
+                                + "\"display\": \"" + tbObat.getValueAt(i, 3).
+                                        toString() + "\""
+                                + "},"
+                                + "\"request\": ["
+                                + "{"
+                                + "\"reference\": \"ServiceRequest/" + tbObat.
+                                        getValueAt(i, 11).toString() + "\""
+                                + "}"
+                                + "],"
+                                + "\"receivedTime\": \"" + tbObat.getValueAt(i,
+                                        6).toString().replaceAll(" ", "T") + "+07:00\""
+                                + "}";
+                        System.out.println("URL : " + link + "/Specimen");
+                        System.out.println("Request JSON : " + json);
+                        requestEntity = new HttpEntity(json, headers);
+                        json = api.getRest().exchange(link + "/Specimen",
+                                HttpMethod.POST, requestEntity, String.class).
+                                getBody();
+                        System.out.println("Result JSON : " + json);
                         root = mapper.readTree(json);
                         response = root.path("id");
-                        if(!response.asText().isEmpty()){
-                            if(Sequel.menyimpantf2("satu_sehat_specimen_lab_mb","?,?,?,?","No.Order",4,new String[]{
-                                tbObat.getValueAt(i,5).toString(),tbObat.getValueAt(i,14).toString(),tbObat.getValueAt(i,12).toString(),response.asText()
-                            })==true){
-                                tbObat.setValueAt(response.asText(),i,13);
-                                tbObat.setValueAt(false,i,0);
+                        if (!response.asText().isEmpty()) {
+                            if (Sequel.
+                                    menyimpantf2("satu_sehat_specimen_lab_mb",
+                                            "?,?,?,?", "No.Order", 4,
+                                            new String[]{
+                                                tbObat.getValueAt(i, 5).
+                                                        toString(), tbObat.
+                                                        getValueAt(i, 14).
+                                                        toString(), tbObat.
+                                                        getValueAt(i, 12).
+                                                        toString(), response.
+                                                        asText()
+                                            }) == true) {
+                                tbObat.setValueAt(response.asText(), i, 13);
+                                tbObat.setValueAt(false, i, 0);
                             }
                         }
-                    }catch(Exception e){
-                        System.out.println("Notifikasi Bridging : "+e);
+                    } catch (IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                        System.out.println("Notifikasi Bridging : " + e);
                     }
                 } catch (Exception e) {
-                    System.out.println("Notifikasi : "+e);
+                    System.out.println("Notifikasi : " + e);
                 }
             }
         }
     }//GEN-LAST:event_BtnKirimActionPerformed
 
     private void ppPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemuaActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){
-            tbObat.setValueAt(true,i,0);
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            tbObat.setValueAt(true, i, 0);
         }
     }//GEN-LAST:event_ppPilihSemuaActionPerformed
 
     private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){
-            tbObat.setValueAt(false,i,0);
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            tbObat.setValueAt(false, i, 0);
         }
     }//GEN-LAST:event_ppBersihkanActionPerformed
 
     private void BtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUpdateActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){
-            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,4).toString().isEmpty())&&(!tbObat.getValueAt(i,13).toString().isEmpty())){
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            if (tbObat.getValueAt(i, 0).toString().equals("true") && (!tbObat.
+                    getValueAt(i, 4).toString().isEmpty()) && (!tbObat.
+                    getValueAt(i, 13).toString().isEmpty())) {
                 try {
-                    idpasien=cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i,4).toString());
-                    try{
+                    idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(
+                            i, 4).toString());
+                    try {
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                        json = "{" +
-                                    "\"resourceType\": \"Specimen\"," +
-                                    "\"id\": \""+tbObat.getValueAt(i,13).toString()+"\"," +
-                                    "\"identifier\": [" +
-                                        "{" +
-                                            "\"system\": \"http://sys-ids.kemkes.go.id/specimen/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                            "\"value\": \""+tbObat.getValueAt(i,5).toString()+"."+tbObat.getValueAt(i,12).toString()+"\"" +
-                                        "}" +
-                                    "]," +
-                                    "\"status\": \"available\"," +
-                                    "\"type\": {" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \""+tbObat.getValueAt(i,9).toString()+"\"," +
-                                                "\"code\": \""+tbObat.getValueAt(i,8).toString()+"\"," +
-                                                "\"display\": \""+tbObat.getValueAt(i,10).toString()+"\"" +
-                                            "}" +
-                                        "]" +
-                                    "}," +
-                                    "\"subject\": {" +
-                                        "\"reference\": \"Patient/"+idpasien+"\"," +
-                                        "\"display\": \""+tbObat.getValueAt(i,3).toString()+"\"" +
-                                    "}," +
-                                    "\"request\": [" +
-                                        "{" +
-                                            "\"reference\": \"ServiceRequest/"+tbObat.getValueAt(i,11).toString()+"\"" +
-                                        "}" +
-                                    "]," +
-                                    "\"receivedTime\": \""+tbObat.getValueAt(i,6).toString().replaceAll(" ","T")+"+07:00\"" +
-                                "}";
-                        System.out.println("URL : "+link+"/Specimen/"+tbObat.getValueAt(i,13).toString());
-                        System.out.println("Request JSON : "+json);
-                        requestEntity = new HttpEntity(json,headers);
-                        json=api.getRest().exchange(link+"/Specimen/"+tbObat.getValueAt(i,13).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                        System.out.println("Result JSON : "+json);
-                        tbObat.setValueAt(false,i,0);
-                    }catch(Exception e){
-                        System.out.println("Notifikasi Bridging : "+e);
+                        headers.add("Authorization", "Bearer " + api.
+                                TokenSatuSehat());
+                        json = "{"
+                                + "\"resourceType\": \"Specimen\","
+                                + "\"id\": \"" + tbObat.getValueAt(i, 13).
+                                        toString() + "\","
+                                + "\"identifier\": ["
+                                + "{"
+                                + "\"system\": \"http://sys-ids.kemkes.go.id/specimen/" + koneksiDB.
+                                        IDSATUSEHAT() + "\","
+                                + "\"value\": \"" + tbObat.getValueAt(i, 5).
+                                        toString() + "." + tbObat.getValueAt(i,
+                                        12).toString() + "\""
+                                + "}"
+                                + "],"
+                                + "\"status\": \"available\","
+                                + "\"type\": {"
+                                + "\"coding\": ["
+                                + "{"
+                                + "\"system\": \"" + tbObat.getValueAt(i, 9).
+                                        toString() + "\","
+                                + "\"code\": \"" + tbObat.getValueAt(i, 8).
+                                        toString() + "\","
+                                + "\"display\": \"" + tbObat.getValueAt(i, 10).
+                                        toString() + "\""
+                                + "}"
+                                + "]"
+                                + "},"
+                                + "\"subject\": {"
+                                + "\"reference\": \"Patient/" + idpasien + "\","
+                                + "\"display\": \"" + tbObat.getValueAt(i, 3).
+                                        toString() + "\""
+                                + "},"
+                                + "\"request\": ["
+                                + "{"
+                                + "\"reference\": \"ServiceRequest/" + tbObat.
+                                        getValueAt(i, 11).toString() + "\""
+                                + "}"
+                                + "],"
+                                + "\"receivedTime\": \"" + tbObat.getValueAt(i,
+                                        6).toString().replaceAll(" ", "T") + "+07:00\""
+                                + "}";
+                        System.out.println(
+                                "URL : " + link + "/Specimen/" + tbObat.
+                                        getValueAt(i, 13).toString());
+                        System.out.println("Request JSON : " + json);
+                        requestEntity = new HttpEntity(json, headers);
+                        json = api.getRest().exchange(
+                                link + "/Specimen/" + tbObat.getValueAt(i, 13).
+                                        toString(), HttpMethod.PUT,
+                                requestEntity, String.class).getBody();
+                        System.out.println("Result JSON : " + json);
+                        tbObat.setValueAt(false, i, 0);
+                    } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                        System.out.println("Notifikasi Bridging : " + e);
                     }
                 } catch (Exception e) {
-                    System.out.println("Notifikasi : "+e);
+                    System.out.println("Notifikasi : " + e);
                 }
             }
         }
@@ -679,25 +787,27 @@ public class SatuSehatKirimSpecimenLabMB extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimSpecimenLabMB dialog = new SatuSehatKirimSpecimenLabMB(new javax.swing.JFrame(), true);
+            SatuSehatKirimSpecimenLabMB dialog = new SatuSehatKirimSpecimenLabMB(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -729,122 +839,140 @@ public class SatuSehatKirimSpecimenLabMB extends javax.swing.JDialog {
     private javax.swing.JMenuItem ppPilihSemua;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    private void tampil() {
+	private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,permintaan_labmb.noorder,"+
-                   "permintaan_labmb.tgl_sampel,permintaan_labmb.jam_sampel,template_laboratorium.Pemeriksaan,"+
-                   "satu_sehat_mapping_lab.sampel_code,satu_sehat_mapping_lab.sampel_system,satu_sehat_mapping_lab.sampel_display,satu_sehat_servicerequest_lab_mb.id_servicerequest,"+
-                   "permintaan_detail_permintaan_labmb.id_template,ifnull(satu_sehat_specimen_lab_mb.id_specimen,'') as id_specimen,permintaan_detail_permintaan_labmb.kd_jenis_prw "+
-                   "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join permintaan_labmb on permintaan_labmb.no_rawat=reg_periksa.no_rawat "+
-                   "inner join permintaan_detail_permintaan_labmb on permintaan_detail_permintaan_labmb.noorder=permintaan_labmb.noorder "+
-                   "inner join template_laboratorium on template_laboratorium.id_template=permintaan_detail_permintaan_labmb.id_template "+
-                   "inner join satu_sehat_mapping_lab on satu_sehat_mapping_lab.id_template=template_laboratorium.id_template "+
-                   "inner join satu_sehat_servicerequest_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=permintaan_detail_permintaan_labmb.noorder "+
-                   "and satu_sehat_servicerequest_lab_mb.id_template=permintaan_detail_permintaan_labmb.id_template "+
-                   "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=permintaan_detail_permintaan_labmb.kd_jenis_prw "+
-                   "left join satu_sehat_specimen_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=satu_sehat_specimen_lab_mb.noorder "+
-                   "and satu_sehat_servicerequest_lab_mb.id_template=satu_sehat_specimen_lab_mb.id_template "+
-                   "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=satu_sehat_specimen_lab_mb.kd_jenis_prw "+
-                   "inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "where nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or template_laboratorium.Pemeriksaan like ? or "+
-                   "satu_sehat_mapping_lab.sampel_code like ? or permintaan_labmb.noorder like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,permintaan_labmb.noorder,"
+                    + "permintaan_labmb.tgl_sampel,permintaan_labmb.jam_sampel,template_laboratorium.Pemeriksaan,"
+                    + "satu_sehat_mapping_lab.sampel_code,satu_sehat_mapping_lab.sampel_system,satu_sehat_mapping_lab.sampel_display,satu_sehat_servicerequest_lab_mb.id_servicerequest,"
+                    + "permintaan_detail_permintaan_labmb.id_template,ifnull(satu_sehat_specimen_lab_mb.id_specimen,'') as id_specimen,permintaan_detail_permintaan_labmb.kd_jenis_prw "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join permintaan_labmb on permintaan_labmb.no_rawat=reg_periksa.no_rawat "
+                    + "inner join permintaan_detail_permintaan_labmb on permintaan_detail_permintaan_labmb.noorder=permintaan_labmb.noorder "
+                    + "inner join template_laboratorium on template_laboratorium.id_template=permintaan_detail_permintaan_labmb.id_template "
+                    + "inner join satu_sehat_mapping_lab on satu_sehat_mapping_lab.id_template=template_laboratorium.id_template "
+                    + "inner join satu_sehat_servicerequest_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=permintaan_detail_permintaan_labmb.noorder "
+                    + "and satu_sehat_servicerequest_lab_mb.id_template=permintaan_detail_permintaan_labmb.id_template "
+                    + "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=permintaan_detail_permintaan_labmb.kd_jenis_prw "
+                    + "left join satu_sehat_specimen_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=satu_sehat_specimen_lab_mb.noorder "
+                    + "and satu_sehat_servicerequest_lab_mb.id_template=satu_sehat_specimen_lab_mb.id_template "
+                    + "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=satu_sehat_specimen_lab_mb.kd_jenis_prw "
+                    + "inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "where nota_jalan.tanggal between ? and ? "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or template_laboratorium.Pemeriksaan like ? or "
+                    + "satu_sehat_mapping_lab.sampel_code like ? or permintaan_labmb.noorder like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        false,rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("no_ktp"),rs.getString("noorder"),
-                        rs.getString("tgl_sampel")+" "+rs.getString("jam_sampel"),rs.getString("Pemeriksaan"),rs.getString("sampel_code"),rs.getString("sampel_system"),
-                        rs.getString("sampel_display"),rs.getString("id_servicerequest"),rs.getString("id_template"),rs.getString("id_specimen"),rs.getString("kd_jenis_prw")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.
+                        getString("noorder"),
+                        rs.getString("tgl_sampel") + " " + rs.getString(
+                        "jam_sampel"), rs.getString("Pemeriksaan"),
+                        rs.getString("sampel_code"), rs.getString(
+                        "sampel_system"), rs.getString("sampel_display"),
+                        rs.getString("id_servicerequest"), rs.getString(
+                        "id_template"), rs.getString("id_specimen"),
+                        rs.getString("kd_jenis_prw")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,permintaan_labmb.noorder,"+
-                   "permintaan_labmb.tgl_sampel,permintaan_labmb.jam_sampel,template_laboratorium.Pemeriksaan,"+
-                   "satu_sehat_mapping_lab.sampel_code,satu_sehat_mapping_lab.sampel_system,satu_sehat_mapping_lab.sampel_display,satu_sehat_servicerequest_lab_mb.id_servicerequest,"+
-                   "permintaan_detail_permintaan_labmb.id_template,ifnull(satu_sehat_specimen_lab_mb.id_specimen,'') as id_specimen,permintaan_detail_permintaan_labmb.kd_jenis_prw "+
-                   "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join permintaan_labmb on permintaan_labmb.no_rawat=reg_periksa.no_rawat "+
-                   "inner join permintaan_detail_permintaan_labmb on permintaan_detail_permintaan_labmb.noorder=permintaan_labmb.noorder "+
-                   "inner join template_laboratorium on template_laboratorium.id_template=permintaan_detail_permintaan_labmb.id_template "+
-                   "inner join satu_sehat_mapping_lab on satu_sehat_mapping_lab.id_template=template_laboratorium.id_template "+
-                   "inner join satu_sehat_servicerequest_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=permintaan_detail_permintaan_labmb.noorder "+
-                   "and satu_sehat_servicerequest_lab_mb.id_template=permintaan_detail_permintaan_labmb.id_template "+
-                   "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=permintaan_detail_permintaan_labmb.kd_jenis_prw "+
-                   "left join satu_sehat_specimen_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=satu_sehat_specimen_lab_mb.noorder "+
-                   "and satu_sehat_servicerequest_lab_mb.id_template=satu_sehat_specimen_lab_mb.id_template "+
-                   "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=satu_sehat_specimen_lab_mb.kd_jenis_prw "+
-                   "inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "where nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or template_laboratorium.Pemeriksaan like ? or "+
-                   "satu_sehat_mapping_lab.sampel_code like ? or permintaan_labmb.noorder like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,permintaan_labmb.noorder,"
+                    + "permintaan_labmb.tgl_sampel,permintaan_labmb.jam_sampel,template_laboratorium.Pemeriksaan,"
+                    + "satu_sehat_mapping_lab.sampel_code,satu_sehat_mapping_lab.sampel_system,satu_sehat_mapping_lab.sampel_display,satu_sehat_servicerequest_lab_mb.id_servicerequest,"
+                    + "permintaan_detail_permintaan_labmb.id_template,ifnull(satu_sehat_specimen_lab_mb.id_specimen,'') as id_specimen,permintaan_detail_permintaan_labmb.kd_jenis_prw "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join permintaan_labmb on permintaan_labmb.no_rawat=reg_periksa.no_rawat "
+                    + "inner join permintaan_detail_permintaan_labmb on permintaan_detail_permintaan_labmb.noorder=permintaan_labmb.noorder "
+                    + "inner join template_laboratorium on template_laboratorium.id_template=permintaan_detail_permintaan_labmb.id_template "
+                    + "inner join satu_sehat_mapping_lab on satu_sehat_mapping_lab.id_template=template_laboratorium.id_template "
+                    + "inner join satu_sehat_servicerequest_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=permintaan_detail_permintaan_labmb.noorder "
+                    + "and satu_sehat_servicerequest_lab_mb.id_template=permintaan_detail_permintaan_labmb.id_template "
+                    + "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=permintaan_detail_permintaan_labmb.kd_jenis_prw "
+                    + "left join satu_sehat_specimen_lab_mb on satu_sehat_servicerequest_lab_mb.noorder=satu_sehat_specimen_lab_mb.noorder "
+                    + "and satu_sehat_servicerequest_lab_mb.id_template=satu_sehat_specimen_lab_mb.id_template "
+                    + "and satu_sehat_servicerequest_lab_mb.kd_jenis_prw=satu_sehat_specimen_lab_mb.kd_jenis_prw "
+                    + "inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "where nota_inap.tanggal between ? and ? "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or template_laboratorium.Pemeriksaan like ? or "
+                    + "satu_sehat_mapping_lab.sampel_code like ? or permintaan_labmb.noorder like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        false,rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("no_ktp"),rs.getString("noorder"),
-                        rs.getString("tgl_sampel")+" "+rs.getString("jam_sampel"),rs.getString("Pemeriksaan"),rs.getString("sampel_code"),rs.getString("sampel_system"),
-                        rs.getString("sampel_display"),rs.getString("id_servicerequest"),rs.getString("id_template"),rs.getString("id_specimen"),rs.getString("kd_jenis_prw")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.
+                        getString("noorder"),
+                        rs.getString("tgl_sampel") + " " + rs.getString(
+                        "jam_sampel"), rs.getString("Pemeriksaan"),
+                        rs.getString("sampel_code"), rs.getString(
+                        "sampel_system"), rs.getString("sampel_display"),
+                        rs.getString("id_servicerequest"), rs.getString(
+                        "id_template"), rs.getString("id_specimen"),
+                        rs.getString("kd_jenis_prw")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
-    public void isCek(){
+    public void isCek() {
         BtnKirim.setEnabled(akses.getsatu_sehat_kirim_specimen_labmb());
         BtnPrint.setEnabled(akses.getsatu_sehat_kirim_specimen_labmb());
     }
-    
-    public JTable getTable(){
+
+    public JTable getTable() {
         return tbObat;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SatuSehatKirimSpecimenLabMB.class.getName());
+
 }

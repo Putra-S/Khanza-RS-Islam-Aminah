@@ -3,108 +3,131 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPenyakit.java
  *
  * Created on May 23, 2010, 12:57:16 AM
  */
-
 package keuangan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgRekening extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps,ps2,ps3,ps4,ps5,ps6,ps7,ps8,ps9,ps10,ps11,ps12,ps13;
-    private ResultSet rs,rs2,rs3,rs4,rs5,rs6,rs7,rs8,rs9,rs10,rs11,rs12,rs13;
-    /** Creates new form DlgPenyakit
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private PreparedStatement ps, ps2, ps3, ps4, ps5, ps6, ps7, ps8, ps9, ps10, ps11, ps12, ps13;
+    private ResultSet rs, rs2, rs3, rs4, rs5, rs6, rs7, rs8, rs9, rs10, rs11, rs12, rs13;
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgRekening(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        Object[] row={"Kode Rekening","Nama Rekening","Kode Rekening","Nama Rekening","Tipe","Balance"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Rekening", "Nama Rekening", "Kode Rekening",
+            "Nama Rekening", "Tipe", "Balance"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 6; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(110);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(400);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(80);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        Kd.setDocument(new batasInput((byte)15).getKata(Kd));
-        Nm.setDocument(new batasInput((byte)100).getKata(Nm));
-        KdSub.setDocument(new batasInput((byte)15).getKata(KdSub));
-        KdSubInduk.setDocument(new batasInput((byte)15).getKata(KdSubInduk));
-        NmSub.setDocument(new batasInput((byte)100).getKata(NmSub));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        Kd.setDocument(new batasInput((byte) 15).getKata(Kd));
+        Nm.setDocument(new batasInput((byte) 100).getKata(Nm));
+        KdSub.setDocument(new batasInput((byte) 15).getKata(KdSub));
+        KdSubInduk.setDocument(new batasInput((byte) 15).getKata(KdSubInduk));
+        NmSub.setDocument(new batasInput((byte) 100).getKata(NmSub));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
             });
-        }  
-        
+        }
+
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -695,29 +718,30 @@ public class DlgRekening extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdKeyPressed
-        Valid.pindah(evt,TCari,Nm);
+        Valid.pindah(evt, TCari, Nm);
 }//GEN-LAST:event_KdKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"Kode Rekening");
-        }else if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Rekening");
-        }else{
-            Sequel.menyimpan("rekening","'"+Kd.getText()+"','"+
-                    Nm.getText()+"','"+
-                    Tipe.getSelectedItem().toString().substring(0,1) +"','"+
-                    Balan.getSelectedItem().toString().substring(0,1)+"','0'","Kode Rekening");
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "Kode Rekening");
+        } else if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Rekening");
+        } else {
+            Sequel.menyimpan("rekening", "'" + Kd.getText() + "','"
+                    + Nm.getText() + "','"
+                    + Tipe.getSelectedItem().toString().substring(0, 1) + "','"
+                    + Balan.getSelectedItem().toString().substring(0, 1) + "','0'",
+                    "Kode Rekening");
             BtnCariActionPerformed(evt);
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Balan,BtnBatal);
+        } else {
+            Valid.pindah(evt, Balan, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -726,42 +750,48 @@ public class DlgRekening extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,Kd,"rekening","kd_rek");
+        Valid.hapusTable(tabMode, Kd, "rekening", "kd_rek");
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"Kode Rekening");
-        }else if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Rekening");
-        }else{
-            Valid.editTable(tabMode,"rekening","kd_rek",Kd2,"nm_rek='"+Nm.getText()+
-                    "',tipe='"+Tipe.getSelectedItem().toString().substring(0,1)+"',balance='"+Balan.getSelectedItem().toString().substring(0,1)+"',kd_rek='"+Kd.getText()+"'");
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "Kode Rekening");
+        } else if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Rekening");
+        } else {
+            Valid.editTable(tabMode, "rekening", "kd_rek", Kd2, "nm_rek='" + Nm.
+                    getText()
+                    + "',tipe='" + Tipe.getSelectedItem().toString().
+                            substring(0, 1) + "',balance='" + Balan.
+                    getSelectedItem().toString().substring(0, 1) + "',kd_rek='" + Kd.
+                    getText() + "'");
             BtnCariActionPerformed(evt);
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -773,79 +803,92 @@ public class DlgRekening extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tbKamar.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tbKamar.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tbKamar.getRowCount()!=0){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));        
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            if(TCari.getText().trim().isEmpty()){
-                
-                Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-                int row=tabMode.getRowCount();
-                for(int i=0;i<row;i++){  
-                    Sequel.menyimpan("temporary","'"+i+"','"+
-                                    tabMode.getValueAt(i,2).toString()+"','"+
-                                    tabMode.getValueAt(i,3).toString()+"','"+
-                                    tabMode.getValueAt(i,4).toString()+"','"+
-                                    tabMode.getValueAt(i,5).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Keuangan"); 
+        } else if (tbKamar.getRowCount() != 0) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            if (TCari.getText().trim().isEmpty()) {
+
+                Sequel.queryu("delete from temporary where temp37='" + akses.
+                        getalamatip() + "'");
+                int row = tabMode.getRowCount();
+                for (int i = 0; i < row; i++) {
+                    Sequel.menyimpan("temporary", "'" + i + "','"
+                            + tabMode.getValueAt(i, 2).toString() + "','"
+                            + tabMode.getValueAt(i, 3).toString() + "','"
+                            + tabMode.getValueAt(i, 4).toString() + "','"
+                            + tabMode.getValueAt(i, 5).toString() + "','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                            getalamatip() + "'", "Keuangan");
                 }
-                  
-                Valid.MyReportqry("rptRekening2.jasper","report","::[ Data Rekening ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
-            }else{
-                Valid.MyReportqry("rptRekening.jasper","report","::[ Data Rekening ]::","select kd_rek, nm_rek, tipe, balance "+
-                    " from rekening where kd_rek like '%"+TCari.getText().trim()+"%' or "+
-                    " nm_rek like '%"+TCari.getText().trim()+"%' or "+
-                    " tipe like '%"+TCari.getText().trim()+"%' or "+
-                    " balance like '%"+TCari.getText().trim()+"%' order by kd_rek",param);                
-            }         
+
+                Valid.MyReportqry("rptRekening2.jasper", "report",
+                        "::[ Data Rekening ]::",
+                        "select * from temporary where temporary.temp37='" + akses.
+                                getalamatip() + "' order by temporary.no", param);
+            } else {
+                Valid.MyReportqry("rptRekening.jasper", "report",
+                        "::[ Data Rekening ]::",
+                        "select kd_rek, nm_rek, tipe, balance "
+                        + " from rekening where kd_rek like '%" + TCari.
+                                getText().trim() + "%' or "
+                        + " nm_rek like '%" + TCari.getText().trim() + "%' or "
+                        + " tipe like '%" + TCari.getText().trim() + "%' or "
+                        + " balance like '%" + TCari.getText().trim() + "%' order by kd_rek",
+                        param);
+            }
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        if(TCari.getText().trim().isEmpty()){
+        if (TCari.getText().trim().isEmpty()) {
             tampil();
-        }else{
+        } else {
             tampil2();
-        }   
+        }
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -856,15 +899,15 @@ public class DlgRekening extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tbKamar.getRowCount()!=0){
+        if (tbKamar.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -873,8 +916,9 @@ public class DlgRekening extends javax.swing.JDialog {
 }//GEN-LAST:event_tbKamarMouseClicked
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tbKamar.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tbKamar.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -884,7 +928,7 @@ public class DlgRekening extends javax.swing.JDialog {
 }//GEN-LAST:event_tbKamarKeyPressed
 
 private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyPressed
-   Valid.pindah(evt,Kd,Tipe);
+    Valid.pindah(evt, Kd, Tipe);
 }//GEN-LAST:event_NmKeyPressed
 
     private void Kd2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Kd2KeyPressed
@@ -892,11 +936,11 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
     }//GEN-LAST:event_Kd2KeyPressed
 
     private void TipeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TipeKeyPressed
-        Valid.pindah(evt,Nm,Balan);
+        Valid.pindah(evt, Nm, Balan);
     }//GEN-LAST:event_TipeKeyPressed
 
     private void BalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BalanKeyPressed
-        Valid.pindah(evt,Tipe,BtnSimpan);
+        Valid.pindah(evt, Tipe, BtnSimpan);
     }//GEN-LAST:event_BalanKeyPressed
 
     private void BtnCloseIn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCloseIn5ActionPerformed
@@ -904,16 +948,18 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
     }//GEN-LAST:event_BtnCloseIn5ActionPerformed
 
     private void BtnSimpan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpan5ActionPerformed
-        if(KdSub.getText().trim().isEmpty()){
-            Valid.textKosong(KdSub,"Kode Rekening");
-        }else if(NmSub.getText().trim().isEmpty()){
-            Valid.textKosong(NmSub,"Nama Rekening");
-        }else{
-            if(Sequel.menyimpantf("rekening","'"+KdSub.getText()+"','"+
-                    NmSub.getText()+"','"+
-                    Tipe1.getSelectedItem().toString().substring(0,1) +"','"+
-                    Balan1.getSelectedItem().toString().substring(0,1)+"','1'","Kode Rekening")==true){
-                Sequel.menyimpan("subrekening","'"+Kd.getText()+"','"+KdSub.getText()+"'");                
+        if (KdSub.getText().trim().isEmpty()) {
+            Valid.textKosong(KdSub, "Kode Rekening");
+        } else if (NmSub.getText().trim().isEmpty()) {
+            Valid.textKosong(NmSub, "Nama Rekening");
+        } else {
+            if (Sequel.menyimpantf("rekening", "'" + KdSub.getText() + "','"
+                    + NmSub.getText() + "','"
+                    + Tipe1.getSelectedItem().toString().substring(0, 1) + "','"
+                    + Balan1.getSelectedItem().toString().substring(0, 1) + "','1'",
+                    "Kode Rekening") == true) {
+                Sequel.menyimpan("subrekening",
+                        "'" + Kd.getText() + "','" + KdSub.getText() + "'");
                 BtnCariActionPerformed(evt);
                 emptTeks2();
             }
@@ -921,51 +967,55 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
     }//GEN-LAST:event_BtnSimpan5ActionPerformed
 
     private void KdSubKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdSubKeyPressed
-        Valid.pindah(evt,BtnCloseIn5,Nm);
+        Valid.pindah(evt, BtnCloseIn5, Nm);
     }//GEN-LAST:event_KdSubKeyPressed
 
     private void NmSubKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmSubKeyPressed
-        Valid.pindah(evt,KdSub,Tipe1);
+        Valid.pindah(evt, KdSub, Tipe1);
     }//GEN-LAST:event_NmSubKeyPressed
 
     private void Tipe1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tipe1KeyPressed
-        Valid.pindah(evt,NmSub,Balan1);
+        Valid.pindah(evt, NmSub, Balan1);
     }//GEN-LAST:event_Tipe1KeyPressed
 
     private void Balan1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Balan1KeyPressed
-        Valid.pindah(evt,Tipe1,BtnSimpan5);
+        Valid.pindah(evt, Tipe1, BtnSimpan5);
     }//GEN-LAST:event_Balan1KeyPressed
 
     private void MnSubAkunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSubAkunActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, table masih kosong...!!!!");
             TCari.requestFocus();
-        }else if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
+        } else if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
             tbKamar.requestFocus();
-        }else{
+        } else {
             KdSub.requestFocus();
             KdSub.setText(Kd.getText());
-            WindowSubRekening.setSize(630,130);
+            WindowSubRekening.setSize(630, 130);
             WindowSubRekening.setLocationRelativeTo(internalFrame1);
             WindowSubRekening.setAlwaysOnTop(false);
             WindowSubRekening.setVisible(true);
         }
-            
+
     }//GEN-LAST:event_MnSubAkunActionPerformed
 
     private void MnJadikanSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnJadikanSubActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, table masih kosong...!!!!");
             TCari.requestFocus();
-        }else if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
+        } else if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
             tbKamar.requestFocus();
-        }else{
+        } else {
             KdSubInduk.requestFocus();
             KdSubInduk.setText("");
             NmSubInduk.setText("");
-            WindowJadikanSub.setSize(430,130);
+            WindowJadikanSub.setSize(430, 130);
             WindowJadikanSub.setLocationRelativeTo(internalFrame1);
             WindowJadikanSub.setAlwaysOnTop(false);
             WindowJadikanSub.setVisible(true);
@@ -977,61 +1027,73 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
     }//GEN-LAST:event_BtnCloseIn6ActionPerformed
 
     private void BtnSimpan6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpan6ActionPerformed
-        if(KdSubInduk.getText().trim().isEmpty()){
-            Valid.textKosong(KdSub,"Kode Rekening");
-        }else if(NmSubInduk.getText().trim().isEmpty()){
-            Valid.textKosong(NmSub,"Nama Rekening");
-        }else{
-            Sequel.meghapus("subrekening","kd_rek2",Kd.getText());
-            if(Sequel.menyimpantf2("subrekening","'"+KdSubInduk.getText()+"','"+Kd.getText()+"'","Sub Rekening")==true){
-                Sequel.mengedit("rekening","kd_rek='"+Kd.getText()+"'","level='1'");                
-            }else{
-                Sequel.mengedit("rekening","kd_rek='"+Kd.getText()+"'","level='0'");
-            }         
+        if (KdSubInduk.getText().trim().isEmpty()) {
+            Valid.textKosong(KdSub, "Kode Rekening");
+        } else if (NmSubInduk.getText().trim().isEmpty()) {
+            Valid.textKosong(NmSub, "Nama Rekening");
+        } else {
+            Sequel.meghapus("subrekening", "kd_rek2", Kd.getText());
+            if (Sequel.menyimpantf2("subrekening",
+                    "'" + KdSubInduk.getText() + "','" + Kd.getText() + "'",
+                    "Sub Rekening") == true) {
+                Sequel.mengedit("rekening", "kd_rek='" + Kd.getText() + "'",
+                        "level='1'");
+            } else {
+                Sequel.mengedit("rekening", "kd_rek='" + Kd.getText() + "'",
+                        "level='0'");
+            }
             WindowJadikanSub.dispose();
             BtnCariActionPerformed(evt);
             emptTeks2();
-            
+
         }
     }//GEN-LAST:event_BtnSimpan6ActionPerformed
 
     private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
-        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",NmSubInduk,KdSubInduk.getText());
-        if(NmSubInduk.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(rootPane,"Akun Rekening tidak ditemukan");
+        Sequel.cariIsi(
+                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                NmSubInduk, KdSubInduk.getText());
+        if (NmSubInduk.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Akun Rekening tidak ditemukan");
         }
         KdSubInduk.requestFocus();
     }//GEN-LAST:event_BtnCari1ActionPerformed
 
     private void KdSubIndukKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdSubIndukKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(!KdSubInduk.getText().trim().isEmpty()){
-                 Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",NmSubInduk,KdSubInduk.getText());
-                if(NmSubInduk.getText().trim().isEmpty()){
-                    JOptionPane.showMessageDialog(rootPane,"Akun Rekening tidak ditemukan");
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!KdSubInduk.getText().trim().isEmpty()) {
+                Sequel.cariIsi(
+                        "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                        NmSubInduk, KdSubInduk.getText());
+                if (NmSubInduk.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Akun Rekening tidak ditemukan");
                 }
                 KdSubInduk.requestFocus();
-            } 
-        }            
+            }
+        }
     }//GEN-LAST:event_KdSubIndukKeyPressed
 
     private void MnJadikanUtamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnJadikanUtamaActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, table masih kosong...!!!!");
             TCari.requestFocus();
-        }else if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
+        } else if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan anda pilih dulu Akun Rekening...!!!");
             tbKamar.requestFocus();
-        }else{
-            Valid.editTable(tabMode,"rekening","kd_rek",Kd2,"level='0'");
+        } else {
+            Valid.editTable(tabMode, "rekening", "kd_rek", Kd2, "level='0'");
             BtnCariActionPerformed(evt);
             emptTeks();
         }
     }//GEN-LAST:event_MnJadikanUtamaActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgRekening dialog = new DlgRekening(new javax.swing.JFrame(), true);
@@ -1040,6 +1102,7 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1103,445 +1166,956 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
 
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select kd_rek, nm_rek, tipe, balance "+
-                    " from rekening where level='0' and kd_rek like ? or "+
-                    " level='0' and nm_rek like ? or "+
-                    " level='0' and tipe like ? or "+
-                    " level='0' and balance like ? order by kd_rek");
-            try {            
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+        try {
+            ps = koneksi.prepareStatement(
+                    "select kd_rek, nm_rek, tipe, balance "
+                    + " from rekening where level='0' and kd_rek like ? or "
+                    + " level='0' and nm_rek like ? or "
+                    + " level='0' and tipe like ? or "
+                    + " level='0' and balance like ? order by kd_rek");
+            try {
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)
+                        rs.getString(1), rs.getString(2), rs.getString(1), rs.
+                        getString(2), rs.getString(3), rs.getString(4)
                     });
-                    ps2=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                    ps2 = koneksi.prepareStatement(
+                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                     try {
-                        ps2.setString(1,rs.getString(1));
-                        ps2.setString(2,"%"+TCari.getText().trim()+"%");
-                        ps2.setString(3,rs.getString(1));
-                        ps2.setString(4,"%"+TCari.getText().trim()+"%");
-                        ps2.setString(5,rs.getString(1));
-                        ps2.setString(6,"%"+TCari.getText().trim()+"%");
-                        ps2.setString(7,rs.getString(1));
-                        ps2.setString(8,"%"+TCari.getText().trim()+"%");
-                        rs2=ps2.executeQuery();
-                        while(rs2.next()){
+                        ps2.setString(1, rs.getString(1));
+                        ps2.setString(2, "%" + TCari.getText().trim() + "%");
+                        ps2.setString(3, rs.getString(1));
+                        ps2.setString(4, "%" + TCari.getText().trim() + "%");
+                        ps2.setString(5, rs.getString(1));
+                        ps2.setString(6, "%" + TCari.getText().trim() + "%");
+                        ps2.setString(7, rs.getString(1));
+                        ps2.setString(8, "%" + TCari.getText().trim() + "%");
+                        rs2 = ps2.executeQuery();
+                        while (rs2.next()) {
                             tabMode.addRow(new Object[]{
-                                rs2.getString(1),rs2.getString(2)," "+rs2.getString(1)," "+rs2.getString(2),rs2.getString(3),rs2.getString(4)
-                            });         
-                            ps3=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                rs2.getString(1), rs2.getString(2), " " + rs2.
+                                getString(1), " " + rs2.getString(2), rs2.
+                                getString(3), rs2.getString(4)
+                            });
+                            ps3 = koneksi.prepareStatement(
+                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                             try {
-                                ps3.setString(1,rs2.getString(1));
-                                ps3.setString(2,"%"+TCari.getText().trim()+"%");
-                                ps3.setString(3,rs2.getString(1));
-                                ps3.setString(4,"%"+TCari.getText().trim()+"%");
-                                ps3.setString(5,rs2.getString(1));
-                                ps3.setString(6,"%"+TCari.getText().trim()+"%");
-                                ps3.setString(7,rs2.getString(1));
-                                ps3.setString(8,"%"+TCari.getText().trim()+"%");
-                                rs3=ps3.executeQuery();
-                                while(rs3.next()){
+                                ps3.setString(1, rs2.getString(1));
+                                ps3.setString(2,
+                                        "%" + TCari.getText().trim() + "%");
+                                ps3.setString(3, rs2.getString(1));
+                                ps3.setString(4,
+                                        "%" + TCari.getText().trim() + "%");
+                                ps3.setString(5, rs2.getString(1));
+                                ps3.setString(6,
+                                        "%" + TCari.getText().trim() + "%");
+                                ps3.setString(7, rs2.getString(1));
+                                ps3.setString(8,
+                                        "%" + TCari.getText().trim() + "%");
+                                rs3 = ps3.executeQuery();
+                                while (rs3.next()) {
                                     tabMode.addRow(new Object[]{
-                                        rs3.getString(1),rs3.getString(2),"  "+rs3.getString(1),"  "+rs3.getString(2),rs3.getString(3),rs3.getString(4)
-                                    });      
-                                    ps4=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                        rs3.getString(1), rs3.getString(2),
+                                        "  " + rs3.getString(1), "  " + rs3.
+                                        getString(2), rs3.getString(3), rs3.
+                                        getString(4)
+                                    });
+                                    ps4 = koneksi.prepareStatement(
+                                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                     try {
-                                        ps4.setString(1,rs3.getString(1));
-                                        ps4.setString(2,"%"+TCari.getText().trim()+"%");
-                                        ps4.setString(3,rs3.getString(1));
-                                        ps4.setString(4,"%"+TCari.getText().trim()+"%");
-                                        ps4.setString(5,rs3.getString(1));
-                                        ps4.setString(6,"%"+TCari.getText().trim()+"%");
-                                        ps4.setString(7,rs3.getString(1));
-                                        ps4.setString(8,"%"+TCari.getText().trim()+"%");
-                                        rs4=ps4.executeQuery();
-                                        while(rs4.next()){
+                                        ps4.setString(1, rs3.getString(1));
+                                        ps4.setString(2, "%" + TCari.getText().
+                                                trim() + "%");
+                                        ps4.setString(3, rs3.getString(1));
+                                        ps4.setString(4, "%" + TCari.getText().
+                                                trim() + "%");
+                                        ps4.setString(5, rs3.getString(1));
+                                        ps4.setString(6, "%" + TCari.getText().
+                                                trim() + "%");
+                                        ps4.setString(7, rs3.getString(1));
+                                        ps4.setString(8, "%" + TCari.getText().
+                                                trim() + "%");
+                                        rs4 = ps4.executeQuery();
+                                        while (rs4.next()) {
                                             tabMode.addRow(new Object[]{
-                                                rs4.getString(1),rs4.getString(2),"   "+rs4.getString(1),"   "+rs4.getString(2),rs4.getString(3),rs4.getString(4)
-                                            });     
-                                            ps5=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                rs4.getString(1), rs4.getString(
+                                                2), "   " + rs4.getString(1),
+                                                "   " + rs4.getString(2), rs4.
+                                                getString(3), rs4.getString(4)
+                                            });
+                                            ps5 = koneksi.prepareStatement(
+                                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                             try {
-                                                ps5.setString(1,rs4.getString(1));
-                                                ps5.setString(2,"%"+TCari.getText().trim()+"%");
-                                                ps5.setString(3,rs4.getString(1));
-                                                ps5.setString(4,"%"+TCari.getText().trim()+"%");
-                                                ps5.setString(5,rs4.getString(1));
-                                                ps5.setString(6,"%"+TCari.getText().trim()+"%");
-                                                ps5.setString(7,rs4.getString(1));
-                                                ps5.setString(8,"%"+TCari.getText().trim()+"%");
-                                                rs5=ps5.executeQuery();
-                                                while(rs5.next()){
+                                                ps5.setString(1, rs4.
+                                                        getString(1));
+                                                ps5.setString(2, "%" + TCari.
+                                                        getText().trim() + "%");
+                                                ps5.setString(3, rs4.
+                                                        getString(1));
+                                                ps5.setString(4, "%" + TCari.
+                                                        getText().trim() + "%");
+                                                ps5.setString(5, rs4.
+                                                        getString(1));
+                                                ps5.setString(6, "%" + TCari.
+                                                        getText().trim() + "%");
+                                                ps5.setString(7, rs4.
+                                                        getString(1));
+                                                ps5.setString(8, "%" + TCari.
+                                                        getText().trim() + "%");
+                                                rs5 = ps5.executeQuery();
+                                                while (rs5.next()) {
                                                     tabMode.addRow(new Object[]{
-                                                        rs5.getString(1),rs5.getString(2),"    "+rs5.getString(1),"    "+rs5.getString(2),rs5.getString(3),rs5.getString(4)
-                                                    });  
-                                                    ps6=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                        rs5.getString(1), rs5.
+                                                        getString(2),
+                                                        "    " + rs5.
+                                                        getString(1),
+                                                        "    " + rs5.
+                                                        getString(2), rs5.
+                                                        getString(3), rs5.
+                                                        getString(4)
+                                                    });
+                                                    ps6 = koneksi.
+                                                            prepareStatement(
+                                                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                     try {
-                                                        ps6.setString(1,rs5.getString(1));
-                                                        ps6.setString(2,"%"+TCari.getText().trim()+"%");
-                                                        ps6.setString(3,rs5.getString(1));
-                                                        ps6.setString(4,"%"+TCari.getText().trim()+"%");
-                                                        ps6.setString(5,rs5.getString(1));
-                                                        ps6.setString(6,"%"+TCari.getText().trim()+"%");
-                                                        ps6.setString(7,rs5.getString(1));
-                                                        ps6.setString(8,"%"+TCari.getText().trim()+"%");
-                                                        rs6=ps6.executeQuery();
-                                                        while(rs6.next()){
-                                                            tabMode.addRow(new Object[]{
-                                                                rs6.getString(1),rs6.getString(2),"     "+rs6.getString(1),"     "+rs6.getString(2),rs6.getString(3),rs6.getString(4)
-                                                            });
-                                                            ps7=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
-                                                            try {
-                                                                ps7.setString(1,rs6.getString(1));
-                                                                ps7.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                ps7.setString(3,rs6.getString(1));
-                                                                ps7.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                ps7.setString(5,rs6.getString(1));
-                                                                ps7.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                ps7.setString(7,rs6.getString(1));
-                                                                ps7.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                rs7=ps7.executeQuery();
-                                                                while(rs7.next()){
-                                                                    tabMode.addRow(new Object[]{
-                                                                        rs7.getString(1),rs7.getString(2),"      "+rs7.getString(1),"      "+rs7.getString(2),rs7.getString(3),rs7.getString(4)
+                                                        ps6.setString(1, rs5.
+                                                                getString(1));
+                                                        ps6.setString(2,
+                                                                "%" + TCari.
+                                                                        getText().
+                                                                        trim() + "%");
+                                                        ps6.setString(3, rs5.
+                                                                getString(1));
+                                                        ps6.setString(4,
+                                                                "%" + TCari.
+                                                                        getText().
+                                                                        trim() + "%");
+                                                        ps6.setString(5, rs5.
+                                                                getString(1));
+                                                        ps6.setString(6,
+                                                                "%" + TCari.
+                                                                        getText().
+                                                                        trim() + "%");
+                                                        ps6.setString(7, rs5.
+                                                                getString(1));
+                                                        ps6.setString(8,
+                                                                "%" + TCari.
+                                                                        getText().
+                                                                        trim() + "%");
+                                                        rs6 = ps6.executeQuery();
+                                                        while (rs6.next()) {
+                                                            tabMode.addRow(
+                                                                    new Object[]{
+                                                                        rs6.
+                                                                                getString(
+                                                                                        1),
+                                                                        rs6.
+                                                                                getString(
+                                                                                        2),
+                                                                        "     " + rs6.
+                                                                                getString(
+                                                                                        1),
+                                                                        "     " + rs6.
+                                                                                getString(
+                                                                                        2),
+                                                                        rs6.
+                                                                                getString(
+                                                                                        3),
+                                                                        rs6.
+                                                                                getString(
+                                                                                        4)
                                                                     });
-                                                                    ps8=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                            ps7 = koneksi.
+                                                                    prepareStatement(
+                                                                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                            try {
+                                                                ps7.setString(1,
+                                                                        rs6.
+                                                                                getString(
+                                                                                        1));
+                                                                ps7.setString(2,
+                                                                        "%" + TCari.
+                                                                                getText().
+                                                                                trim() + "%");
+                                                                ps7.setString(3,
+                                                                        rs6.
+                                                                                getString(
+                                                                                        1));
+                                                                ps7.setString(4,
+                                                                        "%" + TCari.
+                                                                                getText().
+                                                                                trim() + "%");
+                                                                ps7.setString(5,
+                                                                        rs6.
+                                                                                getString(
+                                                                                        1));
+                                                                ps7.setString(6,
+                                                                        "%" + TCari.
+                                                                                getText().
+                                                                                trim() + "%");
+                                                                ps7.setString(7,
+                                                                        rs6.
+                                                                                getString(
+                                                                                        1));
+                                                                ps7.setString(8,
+                                                                        "%" + TCari.
+                                                                                getText().
+                                                                                trim() + "%");
+                                                                rs7 = ps7.
+                                                                        executeQuery();
+                                                                while (rs7.
+                                                                        next()) {
+                                                                    tabMode.
+                                                                            addRow(new Object[]{
+                                                                        rs7.
+                                                                        getString(
+                                                                        1), rs7.
+                                                                        getString(
+                                                                        2),
+                                                                        "      " + rs7.
+                                                                        getString(
+                                                                        1),
+                                                                        "      " + rs7.
+                                                                        getString(
+                                                                        2), rs7.
+                                                                        getString(
+                                                                        3), rs7.
+                                                                        getString(
+                                                                        4)
+                                                                    });
+                                                                    ps8 = koneksi.
+                                                                            prepareStatement(
+                                                                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                     try {
-                                                                        ps8.setString(1,rs7.getString(1));
-                                                                        ps8.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                        ps8.setString(3,rs7.getString(1));
-                                                                        ps8.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                        ps8.setString(5,rs7.getString(1));
-                                                                        ps8.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                        ps8.setString(7,rs7.getString(1));
-                                                                        ps8.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                        rs8=ps8.executeQuery();
-                                                                        while(rs8.next()){
-                                                                            tabMode.addRow(new Object[]{
-                                                                                rs8.getString(1),rs8.getString(2),"       "+rs8.getString(1),"       "+rs8.getString(2),rs8.getString(3),rs8.getString(4)
+                                                                        ps8.
+                                                                                setString(
+                                                                                        1,
+                                                                                        rs7.
+                                                                                                getString(
+                                                                                                        1));
+                                                                        ps8.
+                                                                                setString(
+                                                                                        2,
+                                                                                        "%" + TCari.
+                                                                                                getText().
+                                                                                                trim() + "%");
+                                                                        ps8.
+                                                                                setString(
+                                                                                        3,
+                                                                                        rs7.
+                                                                                                getString(
+                                                                                                        1));
+                                                                        ps8.
+                                                                                setString(
+                                                                                        4,
+                                                                                        "%" + TCari.
+                                                                                                getText().
+                                                                                                trim() + "%");
+                                                                        ps8.
+                                                                                setString(
+                                                                                        5,
+                                                                                        rs7.
+                                                                                                getString(
+                                                                                                        1));
+                                                                        ps8.
+                                                                                setString(
+                                                                                        6,
+                                                                                        "%" + TCari.
+                                                                                                getText().
+                                                                                                trim() + "%");
+                                                                        ps8.
+                                                                                setString(
+                                                                                        7,
+                                                                                        rs7.
+                                                                                                getString(
+                                                                                                        1));
+                                                                        ps8.
+                                                                                setString(
+                                                                                        8,
+                                                                                        "%" + TCari.
+                                                                                                getText().
+                                                                                                trim() + "%");
+                                                                        rs8 = ps8.
+                                                                                executeQuery();
+                                                                        while (rs8.
+                                                                                next()) {
+                                                                            tabMode.
+                                                                                    addRow(new Object[]{
+                                                                                rs8.
+                                                                                getString(
+                                                                                1),
+                                                                                rs8.
+                                                                                getString(
+                                                                                2),
+                                                                                "       " + rs8.
+                                                                                getString(
+                                                                                1),
+                                                                                "       " + rs8.
+                                                                                getString(
+                                                                                2),
+                                                                                rs8.
+                                                                                getString(
+                                                                                3),
+                                                                                rs8.
+                                                                                getString(
+                                                                                4)
                                                                             });
-                                                                            ps9=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                                            ps9 = koneksi.
+                                                                                    prepareStatement(
+                                                                                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                             try {
-                                                                                ps9.setString(1,rs8.getString(1));
-                                                                                ps9.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                                ps9.setString(3,rs8.getString(1));
-                                                                                ps9.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                                ps9.setString(5,rs8.getString(1));
-                                                                                ps9.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                                ps9.setString(7,rs8.getString(1));
-                                                                                ps9.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                                rs9=ps9.executeQuery();
-                                                                                while(rs9.next()){
-                                                                                    tabMode.addRow(new Object[]{
-                                                                                        rs9.getString(1),rs9.getString(2),"        "+rs9.getString(1),"        "+rs9.getString(2),rs9.getString(3),rs9.getString(4)
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                1,
+                                                                                                rs8.
+                                                                                                        getString(
+                                                                                                                1));
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                2,
+                                                                                                "%" + TCari.
+                                                                                                        getText().
+                                                                                                        trim() + "%");
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                3,
+                                                                                                rs8.
+                                                                                                        getString(
+                                                                                                                1));
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                4,
+                                                                                                "%" + TCari.
+                                                                                                        getText().
+                                                                                                        trim() + "%");
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                5,
+                                                                                                rs8.
+                                                                                                        getString(
+                                                                                                                1));
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                6,
+                                                                                                "%" + TCari.
+                                                                                                        getText().
+                                                                                                        trim() + "%");
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                7,
+                                                                                                rs8.
+                                                                                                        getString(
+                                                                                                                1));
+                                                                                ps9.
+                                                                                        setString(
+                                                                                                8,
+                                                                                                "%" + TCari.
+                                                                                                        getText().
+                                                                                                        trim() + "%");
+                                                                                rs9 = ps9.
+                                                                                        executeQuery();
+                                                                                while (rs9.
+                                                                                        next()) {
+                                                                                    tabMode.
+                                                                                            addRow(new Object[]{
+                                                                                        rs9.
+                                                                                        getString(
+                                                                                        1),
+                                                                                        rs9.
+                                                                                        getString(
+                                                                                        2),
+                                                                                        "        " + rs9.
+                                                                                        getString(
+                                                                                        1),
+                                                                                        "        " + rs9.
+                                                                                        getString(
+                                                                                        2),
+                                                                                        rs9.
+                                                                                        getString(
+                                                                                        3),
+                                                                                        rs9.
+                                                                                        getString(
+                                                                                        4)
                                                                                     });
-                                                                                    ps10=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                                                    ps10 = koneksi.
+                                                                                            prepareStatement(
+                                                                                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                                     try {
-                                                                                        ps10.setString(1,rs9.getString(1));
-                                                                                        ps10.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                                        ps10.setString(3,rs9.getString(1));
-                                                                                        ps10.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                                        ps10.setString(5,rs9.getString(1));
-                                                                                        ps10.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                                        ps10.setString(7,rs9.getString(1));
-                                                                                        ps10.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                                        rs10=ps10.executeQuery();
-                                                                                        while(rs10.next()){
-                                                                                            tabMode.addRow(new Object[]{
-                                                                                                rs10.getString(1),rs10.getString(2),"         "+rs10.getString(1),"         "+rs10.getString(2),rs10.getString(3),rs10.getString(4)
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        1,
+                                                                                                        rs9.
+                                                                                                                getString(
+                                                                                                                        1));
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        2,
+                                                                                                        "%" + TCari.
+                                                                                                                getText().
+                                                                                                                trim() + "%");
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        3,
+                                                                                                        rs9.
+                                                                                                                getString(
+                                                                                                                        1));
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        4,
+                                                                                                        "%" + TCari.
+                                                                                                                getText().
+                                                                                                                trim() + "%");
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        5,
+                                                                                                        rs9.
+                                                                                                                getString(
+                                                                                                                        1));
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        6,
+                                                                                                        "%" + TCari.
+                                                                                                                getText().
+                                                                                                                trim() + "%");
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        7,
+                                                                                                        rs9.
+                                                                                                                getString(
+                                                                                                                        1));
+                                                                                        ps10.
+                                                                                                setString(
+                                                                                                        8,
+                                                                                                        "%" + TCari.
+                                                                                                                getText().
+                                                                                                                trim() + "%");
+                                                                                        rs10 = ps10.
+                                                                                                executeQuery();
+                                                                                        while (rs10.
+                                                                                                next()) {
+                                                                                            tabMode.
+                                                                                                    addRow(new Object[]{
+                                                                                                rs10.
+                                                                                                getString(
+                                                                                                1),
+                                                                                                rs10.
+                                                                                                getString(
+                                                                                                2),
+                                                                                                "         " + rs10.
+                                                                                                getString(
+                                                                                                1),
+                                                                                                "         " + rs10.
+                                                                                                getString(
+                                                                                                2),
+                                                                                                rs10.
+                                                                                                getString(
+                                                                                                3),
+                                                                                                rs10.
+                                                                                                getString(
+                                                                                                4)
                                                                                             });
-                                                                                            ps11=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                                                            ps11 = koneksi.
+                                                                                                    prepareStatement(
+                                                                                                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                                             try {
-                                                                                                ps11.setString(1,rs10.getString(1));
-                                                                                                ps11.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                                                ps11.setString(3,rs10.getString(1));
-                                                                                                ps11.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                                                ps11.setString(5,rs10.getString(1));
-                                                                                                ps11.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                                                ps11.setString(7,rs10.getString(1));
-                                                                                                ps11.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                                                rs11=ps11.executeQuery();
-                                                                                                while(rs11.next()){
-                                                                                                    tabMode.addRow(new Object[]{
-                                                                                                        rs11.getString(1),rs11.getString(2),"          "+rs11.getString(1),"          "+rs11.getString(2),rs11.getString(3),rs11.getString(4)
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                1,
+                                                                                                                rs10.
+                                                                                                                        getString(
+                                                                                                                                1));
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                2,
+                                                                                                                "%" + TCari.
+                                                                                                                        getText().
+                                                                                                                        trim() + "%");
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                3,
+                                                                                                                rs10.
+                                                                                                                        getString(
+                                                                                                                                1));
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                4,
+                                                                                                                "%" + TCari.
+                                                                                                                        getText().
+                                                                                                                        trim() + "%");
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                5,
+                                                                                                                rs10.
+                                                                                                                        getString(
+                                                                                                                                1));
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                6,
+                                                                                                                "%" + TCari.
+                                                                                                                        getText().
+                                                                                                                        trim() + "%");
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                7,
+                                                                                                                rs10.
+                                                                                                                        getString(
+                                                                                                                                1));
+                                                                                                ps11.
+                                                                                                        setString(
+                                                                                                                8,
+                                                                                                                "%" + TCari.
+                                                                                                                        getText().
+                                                                                                                        trim() + "%");
+                                                                                                rs11 = ps11.
+                                                                                                        executeQuery();
+                                                                                                while (rs11.
+                                                                                                        next()) {
+                                                                                                    tabMode.
+                                                                                                            addRow(new Object[]{
+                                                                                                        rs11.
+                                                                                                        getString(
+                                                                                                        1),
+                                                                                                        rs11.
+                                                                                                        getString(
+                                                                                                        2),
+                                                                                                        "          " + rs11.
+                                                                                                        getString(
+                                                                                                        1),
+                                                                                                        "          " + rs11.
+                                                                                                        getString(
+                                                                                                        2),
+                                                                                                        rs11.
+                                                                                                        getString(
+                                                                                                        3),
+                                                                                                        rs11.
+                                                                                                        getString(
+                                                                                                        4)
                                                                                                     });
-                                                                                                    ps12=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                                                        " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                                                        " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                                                        " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                                                                    ps12 = koneksi.
+                                                                                                            prepareStatement(
+                                                                                                                    "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                                                    + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                                                    + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                                                    + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                                                     try {
-                                                                                                        ps12.setString(1,rs11.getString(1));
-                                                                                                        ps12.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                                                        ps12.setString(3,rs11.getString(1));
-                                                                                                        ps12.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                                                        ps12.setString(5,rs11.getString(1));
-                                                                                                        ps12.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                                                        ps12.setString(7,rs11.getString(1));
-                                                                                                        ps12.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                                                        rs12=ps12.executeQuery();
-                                                                                                        while(rs12.next()){
-                                                                                                            tabMode.addRow(new Object[]{
-                                                                                                                rs12.getString(1),rs12.getString(2),"           "+rs12.getString(1),"           "+rs12.getString(2),rs12.getString(3),rs12.getString(4)
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        1,
+                                                                                                                        rs11.
+                                                                                                                                getString(
+                                                                                                                                        1));
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        2,
+                                                                                                                        "%" + TCari.
+                                                                                                                                getText().
+                                                                                                                                trim() + "%");
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        3,
+                                                                                                                        rs11.
+                                                                                                                                getString(
+                                                                                                                                        1));
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        4,
+                                                                                                                        "%" + TCari.
+                                                                                                                                getText().
+                                                                                                                                trim() + "%");
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        5,
+                                                                                                                        rs11.
+                                                                                                                                getString(
+                                                                                                                                        1));
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        6,
+                                                                                                                        "%" + TCari.
+                                                                                                                                getText().
+                                                                                                                                trim() + "%");
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        7,
+                                                                                                                        rs11.
+                                                                                                                                getString(
+                                                                                                                                        1));
+                                                                                                        ps12.
+                                                                                                                setString(
+                                                                                                                        8,
+                                                                                                                        "%" + TCari.
+                                                                                                                                getText().
+                                                                                                                                trim() + "%");
+                                                                                                        rs12 = ps12.
+                                                                                                                executeQuery();
+                                                                                                        while (rs12.
+                                                                                                                next()) {
+                                                                                                            tabMode.
+                                                                                                                    addRow(new Object[]{
+                                                                                                                rs12.
+                                                                                                                getString(
+                                                                                                                1),
+                                                                                                                rs12.
+                                                                                                                getString(
+                                                                                                                2),
+                                                                                                                "           " + rs12.
+                                                                                                                getString(
+                                                                                                                1),
+                                                                                                                "           " + rs12.
+                                                                                                                getString(
+                                                                                                                2),
+                                                                                                                rs12.
+                                                                                                                getString(
+                                                                                                                3),
+                                                                                                                rs12.
+                                                                                                                getString(
+                                                                                                                4)
                                                                                                             });
-                                                                                                            ps13=koneksi.prepareStatement("select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "+
-                                                                                                                " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "+
-                                                                                                                " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "+
-                                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "+
-                                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "+
-                                                                                                                " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
+                                                                                                            ps13 = koneksi.
+                                                                                                                    prepareStatement(
+                                                                                                                            "select rekening.kd_rek, rekening.nm_rek, rekening.tipe, rekening.balance "
+                                                                                                                            + " from rekening inner join subrekening on rekening.kd_rek=subrekening.kd_rek2 "
+                                                                                                                            + " where subrekening.kd_rek=? and rekening.level='1' and rekening.kd_rek like ? or "
+                                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.nm_rek like ? or "
+                                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.tipe like ? or "
+                                                                                                                            + " subrekening.kd_rek=? and rekening.level='1' and rekening.balance like ? order by rekening.kd_rek");
                                                                                                             try {
-                                                                                                                ps13.setString(1,rs12.getString(1));
-                                                                                                                ps13.setString(2,"%"+TCari.getText().trim()+"%");
-                                                                                                                ps13.setString(3,rs12.getString(1));
-                                                                                                                ps13.setString(4,"%"+TCari.getText().trim()+"%");
-                                                                                                                ps13.setString(5,rs12.getString(1));
-                                                                                                                ps13.setString(6,"%"+TCari.getText().trim()+"%");
-                                                                                                                ps13.setString(7,rs12.getString(1));
-                                                                                                                ps13.setString(8,"%"+TCari.getText().trim()+"%");
-                                                                                                                rs13=ps13.executeQuery();
-                                                                                                                while(rs13.next()){
-                                                                                                                    tabMode.addRow(new Object[]{
-                                                                                                                        rs13.getString(1),rs13.getString(2),"            "+rs13.getString(1),"            "+rs13.getString(2),rs13.getString(3),rs13.getString(4)
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                1,
+                                                                                                                                rs12.
+                                                                                                                                        getString(
+                                                                                                                                                1));
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                2,
+                                                                                                                                "%" + TCari.
+                                                                                                                                        getText().
+                                                                                                                                        trim() + "%");
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                3,
+                                                                                                                                rs12.
+                                                                                                                                        getString(
+                                                                                                                                                1));
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                4,
+                                                                                                                                "%" + TCari.
+                                                                                                                                        getText().
+                                                                                                                                        trim() + "%");
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                5,
+                                                                                                                                rs12.
+                                                                                                                                        getString(
+                                                                                                                                                1));
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                6,
+                                                                                                                                "%" + TCari.
+                                                                                                                                        getText().
+                                                                                                                                        trim() + "%");
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                7,
+                                                                                                                                rs12.
+                                                                                                                                        getString(
+                                                                                                                                                1));
+                                                                                                                ps13.
+                                                                                                                        setString(
+                                                                                                                                8,
+                                                                                                                                "%" + TCari.
+                                                                                                                                        getText().
+                                                                                                                                        trim() + "%");
+                                                                                                                rs13 = ps13.
+                                                                                                                        executeQuery();
+                                                                                                                while (rs13.
+                                                                                                                        next()) {
+                                                                                                                    tabMode.
+                                                                                                                            addRow(new Object[]{
+                                                                                                                        rs13.
+                                                                                                                        getString(
+                                                                                                                        1),
+                                                                                                                        rs13.
+                                                                                                                        getString(
+                                                                                                                        2),
+                                                                                                                        "            " + rs13.
+                                                                                                                        getString(
+                                                                                                                        1),
+                                                                                                                        "            " + rs13.
+                                                                                                                        getString(
+                                                                                                                        2),
+                                                                                                                        rs13.
+                                                                                                                        getString(
+                                                                                                                        3),
+                                                                                                                        rs13.
+                                                                                                                        getString(
+                                                                                                                        4)
                                                                                                                     });
 
                                                                                                                 }
                                                                                                             } catch (Exception e) {
-                                                                                                                System.out.println("Notif 2 : "+e);
-                                                                                                            } finally{
-                                                                                                                if(rs13!=null){
-                                                                                                                    rs13.close();
+                                                                                                                System.out.
+                                                                                                                        println("Notif 2 : " + e);
+                                                                                                            } finally {
+                                                                                                                if (rs13 != null) {
+                                                                                                                    rs13.
+                                                                                                                            close();
                                                                                                                 }
-                                                                                                                if(ps13!=null){
-                                                                                                                    ps13.close();
+                                                                                                                if (ps13 != null) {
+                                                                                                                    ps13.
+                                                                                                                            close();
                                                                                                                 }
                                                                                                             }
                                                                                                         }
                                                                                                     } catch (Exception e) {
-                                                                                                        System.out.println("Notif 2 : "+e);
-                                                                                                    } finally{
-                                                                                                        if(rs12!=null){
-                                                                                                            rs12.close();
+                                                                                                        System.out.
+                                                                                                                println("Notif 2 : " + e);
+                                                                                                    } finally {
+                                                                                                        if (rs12 != null) {
+                                                                                                            rs12.
+                                                                                                                    close();
                                                                                                         }
-                                                                                                        if(ps12!=null){
-                                                                                                            ps12.close();
+                                                                                                        if (ps12 != null) {
+                                                                                                            ps12.
+                                                                                                                    close();
                                                                                                         }
                                                                                                     }
                                                                                                 }
                                                                                             } catch (Exception e) {
-                                                                                                System.out.println("Notif 2 : "+e);
-                                                                                            } finally{
-                                                                                                if(rs11!=null){
-                                                                                                    rs11.close();
+                                                                                                System.out.
+                                                                                                        println("Notif 2 : " + e);
+                                                                                            } finally {
+                                                                                                if (rs11 != null) {
+                                                                                                    rs11.
+                                                                                                            close();
                                                                                                 }
-                                                                                                if(ps11!=null){
-                                                                                                    ps11.close();
+                                                                                                if (ps11 != null) {
+                                                                                                    ps11.
+                                                                                                            close();
                                                                                                 }
                                                                                             }
                                                                                         }
                                                                                     } catch (Exception e) {
-                                                                                        System.out.println("Notif 2 : "+e);
-                                                                                    } finally{
-                                                                                        if(rs10!=null){
-                                                                                            rs10.close();
+                                                                                        System.out.
+                                                                                                println("Notif 2 : " + e);
+                                                                                    } finally {
+                                                                                        if (rs10 != null) {
+                                                                                            rs10.
+                                                                                                    close();
                                                                                         }
-                                                                                        if(ps10!=null){
-                                                                                            ps10.close();
+                                                                                        if (ps10 != null) {
+                                                                                            ps10.
+                                                                                                    close();
                                                                                         }
                                                                                     }
                                                                                 }
                                                                             } catch (Exception e) {
-                                                                                System.out.println("Notif 2 : "+e);
-                                                                            } finally{
-                                                                                if(rs9!=null){
-                                                                                    rs9.close();
+                                                                                System.out.
+                                                                                        println("Notif 2 : " + e);
+                                                                            } finally {
+                                                                                if (rs9 != null) {
+                                                                                    rs9.
+                                                                                            close();
                                                                                 }
-                                                                                if(ps9!=null){
-                                                                                    ps9.close();
+                                                                                if (ps9 != null) {
+                                                                                    ps9.
+                                                                                            close();
                                                                                 }
                                                                             }
                                                                         }
                                                                     } catch (Exception e) {
-                                                                        System.out.println("Notif 2 : "+e);
-                                                                    } finally{
-                                                                        if(rs8!=null){
-                                                                            rs8.close();
+                                                                        System.out.
+                                                                                println("Notif 2 : " + e);
+                                                                    } finally {
+                                                                        if (rs8 != null) {
+                                                                            rs8.
+                                                                                    close();
                                                                         }
-                                                                        if(ps8!=null){
-                                                                            ps8.close();
+                                                                        if (ps8 != null) {
+                                                                            ps8.
+                                                                                    close();
                                                                         }
                                                                     }
                                                                 }
                                                             } catch (Exception e) {
-                                                                System.out.println("Notif 2 : "+e);
-                                                            } finally{
-                                                                if(rs7!=null){
+                                                                System.out.
+                                                                        println("Notif 2 : " + e);
+                                                            } finally {
+                                                                if (rs7 != null) {
                                                                     rs7.close();
                                                                 }
-                                                                if(ps7!=null){
+                                                                if (ps7 != null) {
                                                                     ps7.close();
                                                                 }
-                                                            }                                                            
+                                                            }
                                                         }
                                                     } catch (Exception e) {
-                                                        System.out.println("Notif 2 : "+e);
-                                                    } finally{
-                                                        if(rs6!=null){
+                                                        System.out.println(
+                                                                "Notif 2 : " + e);
+                                                    } finally {
+                                                        if (rs6 != null) {
                                                             rs6.close();
                                                         }
-                                                        if(ps6!=null){
+                                                        if (ps6 != null) {
                                                             ps6.close();
                                                         }
                                                     }
                                                 }
                                             } catch (Exception e) {
-                                                System.out.println("Notif 2 : "+e);
-                                            } finally{
-                                                if(rs5!=null){
+                                                System.out.println(
+                                                        "Notif 2 : " + e);
+                                            } finally {
+                                                if (rs5 != null) {
                                                     rs5.close();
                                                 }
-                                                if(ps5!=null){
+                                                if (ps5 != null) {
                                                     ps5.close();
                                                 }
                                             }
                                         }
                                     } catch (Exception e) {
-                                        System.out.println("Notif 2 : "+e);
-                                    } finally{
-                                        if(rs4!=null){
+                                        System.out.println("Notif 2 : " + e);
+                                    } finally {
+                                        if (rs4 != null) {
                                             rs4.close();
                                         }
-                                        if(ps4!=null){
+                                        if (ps4 != null) {
                                             ps4.close();
                                         }
                                     }
                                 }
                             } catch (Exception e) {
-                                System.out.println("Notif 2 : "+e);
-                            } finally{
-                                if(rs3!=null){
+                                System.out.println("Notif 2 : " + e);
+                            } finally {
+                                if (rs3 != null) {
                                     rs3.close();
                                 }
-                                if(ps3!=null){
+                                if (ps3 != null) {
                                     ps3.close();
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("Notif 2 : "+e);
-                    } finally{
-                        if(rs2!=null){
+                        System.out.println("Notif 2 : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(ps2!=null){
+                        if (ps2 != null) {
                             ps2.close();
                         }
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Notif 1 : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif 1 : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
-    
+
     public void tampil2() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select kd_rek, nm_rek, tipe, balance "+
-                    " from rekening where kd_rek like ? or "+
-                    " nm_rek like ? or "+
-                    " tipe like ? or "+
-                    " balance like ? order by kd_rek");
-            try {            
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+        try {
+            ps = koneksi.prepareStatement(
+                    "select kd_rek, nm_rek, tipe, balance "
+                    + " from rekening where kd_rek like ? or "
+                    + " nm_rek like ? or "
+                    + " tipe like ? or "
+                    + " balance like ? order by kd_rek");
+            try {
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)
-                    });                    
+                        rs.getString(1), rs.getString(2), rs.getString(1), rs.
+                        getString(2), rs.getString(3), rs.getString(4)
+                    });
                 }
             } catch (Exception e) {
-                System.out.println("Notif 1 : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif 1 : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -1553,9 +2127,9 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
         Nm.setText("");
         Tipe.setSelectedIndex(0);
         Balan.setSelectedIndex(0);
-        Kd.requestFocus();        
+        Kd.requestFocus();
     }
-    
+
     /**
      *
      */
@@ -1564,16 +2138,16 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
         NmSub.setText("");
         Tipe1.setSelectedIndex(0);
         Balan1.setSelectedIndex(0);
-        KdSub.requestFocus();        
+        KdSub.requestFocus();
     }
 
     private void getData() {
-        int row=tbKamar.getSelectedRow();
-        if(row!= -1){
-            Kd.setText(tbKamar.getValueAt(row,0).toString());
-            Kd2.setText(tbKamar.getValueAt(row,0).toString());
-            Nm.setText(tbKamar.getValueAt(row,1).toString());
-            switch (tbKamar.getValueAt(row,4).toString()) {
+        int row = tbKamar.getSelectedRow();
+        if (row != -1) {
+            Kd.setText(tbKamar.getValueAt(row, 0).toString());
+            Kd2.setText(tbKamar.getValueAt(row, 0).toString());
+            Nm.setText(tbKamar.getValueAt(row, 1).toString());
+            switch (tbKamar.getValueAt(row, 4).toString()) {
                 case "N":
                     Tipe.setSelectedIndex(0);
                     break;
@@ -1584,8 +2158,8 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
                     Tipe.setSelectedIndex(2);
                     break;
             }
-            
-            switch (tbKamar.getValueAt(row,5).toString()) {
+
+            switch (tbKamar.getValueAt(row, 5).toString()) {
                 case "D":
                     Balan.setSelectedIndex(0);
                     break;
@@ -1593,27 +2167,30 @@ private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyP
                     Balan.setSelectedIndex(1);
                     break;
             }
-            
+
         }
     }
 
-    public JTextField getTextField(){
+    public JTextField getTextField() {
         return Kd;
     }
 
-    public JTable getTabel(){
+    public JTable getTabel() {
         return tbKamar;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getakun_rekening());
         BtnBatal.setEnabled(akses.getakun_rekening());
         BtnEdit.setEnabled(akses.getakun_rekening());
         BtnHapus.setEnabled(akses.getakun_rekening());
         BtnPrint.setEnabled(akses.getakun_rekening());
     }
-        
+
+    private static final Logger LOG = Logger.getLogger(DlgRekening.class.
+            getName());
+
 }

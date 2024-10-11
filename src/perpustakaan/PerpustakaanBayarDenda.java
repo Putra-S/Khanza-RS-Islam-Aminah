@@ -1,169 +1,209 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgSpesialis.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package perpustakaan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class PerpustakaanBayarDenda extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabMode2;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private final DefaultTableModel tabMode, tabMode2;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private PerpustakaanInventaris perpustakaan_inventaris=new PerpustakaanInventaris(null,false);
-    private PerpustakaanAnggota anggota=new PerpustakaanAnggota(null,false);
-    private PerpustakaanDenda denda=new PerpustakaanDenda(null,false);
-    private double perhari=Sequel.cariIsiAngka("select denda_perhari from perpustakaan_set_peminjaman"),besardenda=0;
+    private PerpustakaanInventaris perpustakaan_inventaris = new PerpustakaanInventaris(
+            null, false);
+    private PerpustakaanAnggota anggota = new PerpustakaanAnggota(null, false);
+    private PerpustakaanDenda denda = new PerpustakaanDenda(null, false);
+    private double perhari = Sequel.cariIsiAngka(
+            "select denda_perhari from perpustakaan_set_peminjaman"), besardenda = 0;
 
-    /** Creates new form DlgSpesialis
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public PerpustakaanBayarDenda(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "Tgl.Denda","No.Anggota","Nama Anggota","No.Inventaris",
-                "Judul Koleksi","Terlambat(Hari)","Denda(Rp)"
-            }){
-            Class[] types = new Class[] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class, 
-            };
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris",
+            "Judul Koleksi", "Terlambat(Hari)", "Denda(Rp)"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Integer.class,
+                java.lang.Double.class,};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
             @Override
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
+
         };
 
         tbBayarDenda.setModel(tabMode);
 
-        tbBayarDenda.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBayarDenda.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBayarDenda.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 7; i++) {
             TableColumn column = tbBayarDenda.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(250);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(90);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(90);
             }
         }
         tbBayarDenda.setDefaultRenderer(Object.class, new WarnaTable());
         //------------------denda lain------------------------------------
 
-        tabMode2=new DefaultTableModel(null,new Object[]{
-                "Tgl.Denda","No.Anggota","Nama Anggota","No.Inventaris",
-                "Judul Koleksi","Kode Jenis","Jenis Denda","Denda","Besar Denda(Rp)","Keterangan"
-            }){
-            Class[] types = new Class[] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, 
+        tabMode2 = new DefaultTableModel(null, new Object[]{
+            "Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris",
+            "Judul Koleksi", "Kode Jenis", "Jenis Denda", "Denda",
+            "Besar Denda(Rp)", "Keterangan"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class,
                 java.lang.Double.class, java.lang.Object.class
             };
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
             @Override
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
+
         };
 
         tbDendaLain.setModel(tabMode2);
 
-        tbDendaLain.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbDendaLain.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDendaLain.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 10; i++) {
             TableColumn column = tbDendaLain.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(250);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(90);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(120);
             }
         }
         tbDendaLain.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TNoA.setDocument(new batasInput((byte)10).getFilter(TNoA));
-        TNoI.setDocument(new batasInput((byte)20).getKata(TNoI));
-        Keterlambatan.setDocument(new batasInput((byte)10).getOnlyAngka(Keterlambatan));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        Keterangan.setDocument(new batasInput((byte)50).getKata(Keterangan));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TNoA.setDocument(new batasInput((byte) 10).getFilter(TNoA));
+        TNoI.setDocument(new batasInput((byte) 20).getKata(TNoI));
+        Keterlambatan.setDocument(new batasInput((byte) 10).getOnlyAngka(
+                Keterlambatan));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        Keterangan.setDocument(new batasInput((byte) 50).getKata(Keterangan));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         Keterlambatan.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -179,8 +219,9 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isDendaHarian();
             }
+
         });
-        
+
         Harga.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -196,8 +237,9 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isDendaLain();
             }
+
         });
-        
+
         DendaLain.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -213,123 +255,191 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isDendaLain();
             }
+
         });
-        
+
         perpustakaan_inventaris.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(perpustakaan_inventaris.getTable().getSelectedRow()!= -1){  
-                    TNoI.setText(perpustakaan_inventaris.getTable().getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(),0).toString());
-                    TJudul.setText(perpustakaan_inventaris.getTable().getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(),1).toString()+", "+perpustakaan_inventaris.getTable().getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(),2).toString());
-                    Harga.setText(perpustakaan_inventaris.getTable().getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(),11).toString());
+                if (perpustakaan_inventaris.getTable().getSelectedRow() != -1) {
+                    TNoI.setText(perpustakaan_inventaris.getTable().getValueAt(
+                            perpustakaan_inventaris.getTable().getSelectedRow(),
+                            0).toString());
+                    TJudul.setText(perpustakaan_inventaris.getTable().
+                            getValueAt(perpustakaan_inventaris.getTable().
+                                    getSelectedRow(), 1).toString() + ", " + perpustakaan_inventaris.
+                                    getTable().getValueAt(
+                                            perpustakaan_inventaris.getTable().
+                                                    getSelectedRow(), 2).
+                                    toString());
+                    Harga.setText(perpustakaan_inventaris.getTable().getValueAt(
+                            perpustakaan_inventaris.getTable().getSelectedRow(),
+                            11).toString());
                     TNoI.requestFocus();
-                }                
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         perpustakaan_inventaris.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     perpustakaan_inventaris.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         anggota.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(anggota.getTable().getSelectedRow()!= -1){                   
-                    TNoA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(),0).toString());
-                    TNmA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(),1).toString());
-                }   
+                if (anggota.getTable().getSelectedRow() != -1) {
+                    TNoA.setText(anggota.getTable().getValueAt(anggota.
+                            getTable().getSelectedRow(), 0).toString());
+                    TNmA.setText(anggota.getTable().getValueAt(anggota.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 TNoA.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         anggota.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     anggota.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         denda.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(denda.getTable().getSelectedRow()!= -1){                   
-                    KdJenisDenda.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(),0).toString());
-                    JenisDenda.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(),1).toString());
-                    DendaLain.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(),2).toString());
-                }   
+                if (denda.getTable().getSelectedRow() != -1) {
+                    KdJenisDenda.setText(denda.getTable().getValueAt(denda.
+                            getTable().getSelectedRow(), 0).toString());
+                    JenisDenda.setText(denda.getTable().getValueAt(denda.
+                            getTable().getSelectedRow(), 1).toString());
+                    DendaLain.setText(denda.getTable().getValueAt(denda.
+                            getTable().getSelectedRow(), 2).toString());
+                }
                 KdJenisDenda.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         denda.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     denda.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -934,37 +1044,53 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoI.getText().trim().isEmpty()||TJudul.getText().trim().isEmpty()){
-            Valid.textKosong(TNoI,"Inventaris");
-        }else if(TNoA.getText().trim().isEmpty()||TNmA.getText().trim().isEmpty()){
-            Valid.textKosong(TNoA,"Peminjam");
-        }else{
-            if(TabRawat.getSelectedIndex()==0){
-                if(Keterlambatan.getText().equals("0")||Keterlambatan.getText().isEmpty()||DendaKeterlambatan.getText().isEmpty()||DendaKeterlambatan.getText().equals("0")){
-                    Valid.textKosong(Keterlambatan,"Keterlambatan");
-                }else{
-                    if(Sequel.menyimpantf("perpustakaan_bayar_denda_harian","?,?,?,?,?","Denda",5,new String[]{
-                            Valid.SetTgl(tgl.getSelectedItem()+""),TNoA.getText(),TNoI.getText(),Keterlambatan.getText(),
-                            Double.toString(Double.parseDouble(Keterlambatan.getText())*perhari)
-                        })==true){
-                            emptTeks();
-                            tampil();
+        if (TNoI.getText().trim().isEmpty() || TJudul.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoI, "Inventaris");
+        } else if (TNoA.getText().trim().isEmpty() || TNmA.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoA, "Peminjam");
+        } else {
+            if (TabRawat.getSelectedIndex() == 0) {
+                if (Keterlambatan.getText().equals("0") || Keterlambatan.
+                        getText().isEmpty() || DendaKeterlambatan.getText().
+                                isEmpty() || DendaKeterlambatan.getText().
+                                equals("0")) {
+                    Valid.textKosong(Keterlambatan, "Keterlambatan");
+                } else {
+                    if (Sequel.menyimpantf("perpustakaan_bayar_denda_harian",
+                            "?,?,?,?,?", "Denda", 5, new String[]{
+                                Valid.SetTgl(tgl.getSelectedItem() + ""), TNoA.
+                                getText(), TNoI.getText(), Keterlambatan.
+                                getText(),
+                                Double.toString(Double.parseDouble(
+                                        Keterlambatan.getText()) * perhari)
+                            }) == true) {
+                        emptTeks();
+                        tampil();
                     }
                 }
-            }else if(TabRawat.getSelectedIndex()==1){
-                if(KdJenisDenda.getText().isEmpty()||JenisDenda.getText().isEmpty()){
-                    Valid.textKosong(KdJenisDenda,"Jenis Denda");
-                }else if(Keterangan.getText().isEmpty()){
-                    Valid.textKosong(Keterangan,"Keterangan");
-                }else if(BesarDendaLain.getText().isEmpty()||BesarDendaLain.getText().equals("0")){
-                    Valid.textKosong(Keterangan,"Besar Denda");
-                }else{
-                    if(Sequel.menyimpantf("perpustakaan_bayar_denda","?,?,?,?,?,?","Denda",6,new String[]{
-                            Valid.SetTgl(tgl.getSelectedItem()+""),TNoA.getText(),TNoI.getText(),KdJenisDenda.getText(),
-                            Double.toString(Double.parseDouble(Harga.getText())*(Double.parseDouble(DendaLain.getText())/100)),Keterangan.getText()
-                        })==true){
-                            emptTeks2();
-                            tampil2();
+            } else if (TabRawat.getSelectedIndex() == 1) {
+                if (KdJenisDenda.getText().isEmpty() || JenisDenda.getText().
+                        isEmpty()) {
+                    Valid.textKosong(KdJenisDenda, "Jenis Denda");
+                } else if (Keterangan.getText().isEmpty()) {
+                    Valid.textKosong(Keterangan, "Keterangan");
+                } else if (BesarDendaLain.getText().isEmpty() || BesarDendaLain.
+                        getText().equals("0")) {
+                    Valid.textKosong(Keterangan, "Besar Denda");
+                } else {
+                    if (Sequel.menyimpantf("perpustakaan_bayar_denda",
+                            "?,?,?,?,?,?", "Denda", 6, new String[]{
+                                Valid.SetTgl(tgl.getSelectedItem() + ""), TNoA.
+                                getText(), TNoI.getText(), KdJenisDenda.
+                                getText(),
+                                Double.toString(Double.parseDouble(Harga.
+                                        getText()) * (Double.parseDouble(
+                                                DendaLain.getText()) / 100)),
+                                Keterangan.getText()
+                            }) == true) {
+                        emptTeks2();
+                        tampil2();
                     }
                 }
             }
@@ -972,7 +1098,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        
+
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
@@ -980,40 +1106,61 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            if(Keterlambatan.getText().equals("0")||Keterlambatan.getText().isEmpty()||DendaKeterlambatan.getText().isEmpty()||DendaKeterlambatan.getText().equals("0")){
-                Valid.textKosong(Keterlambatan,"Keterlambatan");
-            }else{
-                if(tbBayarDenda.getSelectedRow()!= -1){
-                    if(Sequel.queryu2tf("delete from perpustakaan_bayar_denda_harian where tgl_denda=? and no_anggota=? and no_inventaris=?",3,new String[]{
-                            tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),0).toString(),tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),1).toString(),tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),3).toString()
-                        })==true){
-                            tampil();
-                            emptTeks();
+        if (TabRawat.getSelectedIndex() == 0) {
+            if (Keterlambatan.getText().equals("0") || Keterlambatan.getText().
+                    isEmpty() || DendaKeterlambatan.getText().isEmpty() || DendaKeterlambatan.
+                    getText().equals("0")) {
+                Valid.textKosong(Keterlambatan, "Keterlambatan");
+            } else {
+                if (tbBayarDenda.getSelectedRow() != -1) {
+                    if (Sequel.queryu2tf(
+                            "delete from perpustakaan_bayar_denda_harian where tgl_denda=? and no_anggota=? and no_inventaris=?",
+                            3, new String[]{
+                                tbBayarDenda.getValueAt(tbBayarDenda.
+                                        getSelectedRow(), 0).toString(),
+                                tbBayarDenda.getValueAt(tbBayarDenda.
+                                        getSelectedRow(), 1).toString(),
+                                tbBayarDenda.getValueAt(tbBayarDenda.
+                                        getSelectedRow(), 3).toString()
+                            }) == true) {
+                        tampil();
+                        emptTeks();
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==1){
-            if(KdJenisDenda.getText().isEmpty()||JenisDenda.getText().isEmpty()){
-                Valid.textKosong(KdJenisDenda,"Jenis Denda");
-            }else if(Keterangan.getText().isEmpty()){
-                Valid.textKosong(Keterangan,"Keterangan");
-            }else if(BesarDendaLain.getText().isEmpty()||BesarDendaLain.getText().equals("0")){
-                Valid.textKosong(Keterangan,"Besar Denda");
-            }else{
-                if(tbDendaLain.getSelectedRow()!= -1){
-                    if(Sequel.queryu2tf("delete from perpustakaan_bayar_denda where tgl_denda=? and no_anggota=? and no_inventaris=? and kode_denda=?",4,new String[]{
-                            tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),0).toString(),tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),1).toString(),
-                            tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),3).toString(),tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),5).toString()
-                        })==true){
-                            tampil2();
-                            emptTeks2();
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            if (KdJenisDenda.getText().isEmpty() || JenisDenda.getText().
+                    isEmpty()) {
+                Valid.textKosong(KdJenisDenda, "Jenis Denda");
+            } else if (Keterangan.getText().isEmpty()) {
+                Valid.textKosong(Keterangan, "Keterangan");
+            } else if (BesarDendaLain.getText().isEmpty() || BesarDendaLain.
+                    getText().equals("0")) {
+                Valid.textKosong(Keterangan, "Besar Denda");
+            } else {
+                if (tbDendaLain.getSelectedRow() != -1) {
+                    if (Sequel.queryu2tf(
+                            "delete from perpustakaan_bayar_denda where tgl_denda=? and no_anggota=? and no_inventaris=? and kode_denda=?",
+                            4, new String[]{
+                                tbDendaLain.getValueAt(tbDendaLain.
+                                        getSelectedRow(), 0).toString(),
+                                tbDendaLain.getValueAt(tbDendaLain.
+                                        getSelectedRow(), 1).toString(),
+                                tbDendaLain.getValueAt(tbDendaLain.
+                                        getSelectedRow(), 3).toString(),
+                                tbDendaLain.getValueAt(tbDendaLain.
+                                        getSelectedRow(), 5).toString()
+                            }) == true) {
+                        tampil2();
+                        emptTeks2();
                     }
                 }
             }
@@ -1021,9 +1168,9 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnHapus);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -1033,27 +1180,29 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnHapus,TCari);}
+        } else {
+            Valid.pindah(evt, BtnHapus, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        
+
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
+        if (TabRawat.getSelectedIndex() == 0) {
             tampil();
-        }else if(TabRawat.getSelectedIndex()==1){
+        } else if (TabRawat.getSelectedIndex() == 1) {
             tampil2();
         }
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1064,16 +1213,16 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        if(TabRawat.getSelectedIndex()==0){
+        if (TabRawat.getSelectedIndex() == 0) {
             tampil();
-        }else if(TabRawat.getSelectedIndex()==1){
+        } else if (TabRawat.getSelectedIndex() == 1) {
             tampil2();
         }
-        
+
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        
+
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -1081,73 +1230,77 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tglItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tglItemStateChanged
-       
+
     }//GEN-LAST:event_tglItemStateChanged
 
     private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKeyPressed
-        
+
     }//GEN-LAST:event_tglKeyPressed
 
     private void TNoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoAKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             TNoI.requestFocus();
-            Sequel.cariIsi("select nama_anggota from perpustakaan_anggota where no_anggota='"+TNoA.getText()+"'", TNmA);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+            Sequel.cariIsi(
+                    "select nama_anggota from perpustakaan_anggota where no_anggota='" + TNoA.
+                            getText() + "'", TNmA);
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnAngActionPerformed(null);
         }
     }//GEN-LAST:event_TNoAKeyPressed
 
     private void btnAngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAngActionPerformed
         anggota.isCek();
-        anggota.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        anggota.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         anggota.setLocationRelativeTo(internalFrame1);
         anggota.setAlwaysOnTop(false);
-        anggota.setVisible(true); 
+        anggota.setVisible(true);
     }//GEN-LAST:event_btnAngActionPerformed
 
     private void TNoIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoIKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TNoA.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             isInventaris();
-            if(TabRawat.getSelectedIndex()==0){
+            if (TabRawat.getSelectedIndex() == 0) {
                 Keterlambatan.requestFocus();
-            }else if(TabRawat.getSelectedIndex()==1){
+            } else if (TabRawat.getSelectedIndex() == 1) {
                 BtnDenda.requestFocus();
             }
-        } else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnInvActionPerformed(null);
         }
     }//GEN-LAST:event_TNoIKeyPressed
 
     private void btnInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvActionPerformed
         perpustakaan_inventaris.isCek();
-        perpustakaan_inventaris.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        perpustakaan_inventaris.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         perpustakaan_inventaris.setLocationRelativeTo(internalFrame1);
         perpustakaan_inventaris.setAlwaysOnTop(false);
-        perpustakaan_inventaris.setVisible(true); 
+        perpustakaan_inventaris.setVisible(true);
     }//GEN-LAST:event_btnInvActionPerformed
 
     private void TglPinjam2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglPinjam2KeyPressed
-       
+
     }//GEN-LAST:event_TglPinjam2KeyPressed
 
     private void TglPinjam1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglPinjam1KeyPressed
-        
+
     }//GEN-LAST:event_TglPinjam1KeyPressed
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==0){
+        if (TabRawat.getSelectedIndex() == 0) {
             tampil();
-        }else if(TabRawat.getSelectedIndex()==1){
+        } else if (TabRawat.getSelectedIndex() == 1) {
             tampil2();
         }
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void tbBayarDendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBayarDendaMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1156,18 +1309,19 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }//GEN-LAST:event_tbBayarDendaMouseClicked
 
     private void tbBayarDendaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBayarDendaKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }          
+            }
         }
     }//GEN-LAST:event_tbBayarDendaKeyReleased
 
     private void tbDendaLainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDendaLainMouseClicked
-        if(tabMode2.getRowCount()!=0){
+        if (tabMode2.getRowCount() != 0) {
             try {
                 getData2();
             } catch (java.lang.NullPointerException e) {
@@ -1176,40 +1330,42 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }//GEN-LAST:event_tbDendaLainMouseClicked
 
     private void tbDendaLainKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDendaLainKeyReleased
-        if(tabMode2.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode2.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData2();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }          
+            }
         }
     }//GEN-LAST:event_tbDendaLainKeyReleased
 
     private void KeterlambatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeterlambatanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TNoI.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnSimpan.requestFocus();
         }
     }//GEN-LAST:event_KeterlambatanKeyPressed
 
     private void KdJenisDendaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdJenisDendaKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Keterangan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TNoI.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDendaActionPerformed(null);
         }
     }//GEN-LAST:event_KdJenisDendaKeyPressed
 
     private void BtnDendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDendaActionPerformed
         denda.isCek();
-        denda.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        denda.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         denda.setLocationRelativeTo(internalFrame1);
         denda.setAlwaysOnTop(false);
-        denda.setVisible(true); 
+        denda.setVisible(true);
     }//GEN-LAST:event_BtnDendaActionPerformed
 
     private void KeteranganKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeteranganKeyPressed
@@ -1221,103 +1377,146 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnDendaKeyPressed
 
     private void tbBayarDendaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBayarDendaKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
-            }           
+            }
         }
     }//GEN-LAST:event_tbBayarDendaKeyPressed
 
     private void tbDendaLainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDendaLainKeyPressed
-        if(tabMode2.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode2.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
-            }           
+            }
         }
     }//GEN-LAST:event_tbDendaLainKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(TabRawat.getSelectedIndex()==0){
-            if(tabMode.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (TabRawat.getSelectedIndex() == 0) {
+            if (tabMode.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
                 BtnBatal.requestFocus();
-            }else if(tabMode.getRowCount()!=0){
+            } else if (tabMode.getRowCount() != 0) {
                 Map<String, Object> param = new HashMap<>();
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReportqry("rptDendaTrlmbt.jasper","report","::[ Data Inventaris Perpustakaan ]::",
-                    "select perpustakaan_bayar_denda_harian.tgl_denda,perpustakaan_bayar_denda_harian.no_anggota,perpustakaan_anggota.nama_anggota,"+
-                    "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                    "perpustakaan_bayar_denda_harian.keterlambatan,perpustakaan_bayar_denda_harian.besar_denda from perpustakaan_inventaris "+
-                    "inner join perpustakaan_buku inner join perpustakaan_bayar_denda_harian inner join perpustakaan_anggota on "+
-                    "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda_harian.no_anggota=perpustakaan_anggota.no_anggota "+
-                    "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda_harian.no_inventaris where "+
-                    "perpustakaan_bayar_denda_harian.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_bayar_denda_harian.no_anggota like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda_harian.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_anggota.nama_anggota like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda_harian.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_inventaris.no_inventaris like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda_harian.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_buku.kode_buku like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda_harian.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' order by perpustakaan_bayar_denda_harian.tgl_denda desc",param);
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("emailrs", akses.getemailrs());
+                param.put("logo", Sequel.cariGambar(
+                        "select setting.logo from setting"));
+                Valid.MyReportqry("rptDendaTrlmbt.jasper", "report",
+                        "::[ Data Inventaris Perpustakaan ]::",
+                        "select perpustakaan_bayar_denda_harian.tgl_denda,perpustakaan_bayar_denda_harian.no_anggota,perpustakaan_anggota.nama_anggota,"
+                        + "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_bayar_denda_harian.keterlambatan,perpustakaan_bayar_denda_harian.besar_denda from perpustakaan_inventaris "
+                        + "inner join perpustakaan_buku inner join perpustakaan_bayar_denda_harian inner join perpustakaan_anggota on "
+                        + "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda_harian.no_anggota=perpustakaan_anggota.no_anggota "
+                        + "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda_harian.no_inventaris where "
+                        + "perpustakaan_bayar_denda_harian.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_bayar_denda_harian.no_anggota like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda_harian.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_anggota.nama_anggota like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda_harian.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_inventaris.no_inventaris like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda_harian.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_buku.kode_buku like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda_harian.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_buku.judul_buku like '%" + TCari.
+                        getText().trim() + "%' order by perpustakaan_bayar_denda_harian.tgl_denda desc",
+                        param);
             }
-            
-        }else if(TabRawat.getSelectedIndex()==1){
-            if(tabMode2.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            if (tabMode2.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
                 BtnBatal.requestFocus();
-            }else if(tabMode2.getRowCount()!=0){
+            } else if (tabMode2.getRowCount() != 0) {
                 Map<String, Object> param = new HashMap<>();
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReportqry("rptDendaLain.jasper","report","::[ Data Pembayaran Denda Lain-lain ]::",
-                    "select perpustakaan_bayar_denda.tgl_denda,perpustakaan_bayar_denda.no_anggota,perpustakaan_anggota.nama_anggota,"+
-                    "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                    "perpustakaan_denda.kode_denda,perpustakaan_denda.jenis_denda,perpustakaan_bayar_denda.besar_denda,"+
-                    "perpustakaan_bayar_denda.keterangan_denda from perpustakaan_inventaris "+
-                    "inner join perpustakaan_buku inner join perpustakaan_bayar_denda inner join perpustakaan_anggota inner join perpustakaan_denda on "+
-                    "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda.no_anggota=perpustakaan_anggota.no_anggota "+
-                    "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda.no_inventaris and perpustakaan_bayar_denda.kode_denda=perpustakaan_denda.kode_denda where "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_bayar_denda.no_anggota like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_anggota.nama_anggota like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_inventaris.no_inventaris like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_denda.jenis_denda like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_buku.kode_buku like '%"+TCari.getText().trim()+"%' or "+
-                    "perpustakaan_bayar_denda.tgl_denda between '"+Valid.SetTgl(TglPinjam1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglPinjam2.getSelectedItem()+"")+"' and perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' order by perpustakaan_bayar_denda.tgl_denda desc",param);
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("emailrs", akses.getemailrs());
+                param.put("logo", Sequel.cariGambar(
+                        "select setting.logo from setting"));
+                Valid.MyReportqry("rptDendaLain.jasper", "report",
+                        "::[ Data Pembayaran Denda Lain-lain ]::",
+                        "select perpustakaan_bayar_denda.tgl_denda,perpustakaan_bayar_denda.no_anggota,perpustakaan_anggota.nama_anggota,"
+                        + "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_denda.kode_denda,perpustakaan_denda.jenis_denda,perpustakaan_bayar_denda.besar_denda,"
+                        + "perpustakaan_bayar_denda.keterangan_denda from perpustakaan_inventaris "
+                        + "inner join perpustakaan_buku inner join perpustakaan_bayar_denda inner join perpustakaan_anggota inner join perpustakaan_denda on "
+                        + "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda.no_anggota=perpustakaan_anggota.no_anggota "
+                        + "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda.no_inventaris and perpustakaan_bayar_denda.kode_denda=perpustakaan_denda.kode_denda where "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_bayar_denda.no_anggota like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_anggota.nama_anggota like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_inventaris.no_inventaris like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_denda.jenis_denda like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_buku.kode_buku like '%" + TCari.
+                        getText().trim() + "%' or "
+                        + "perpustakaan_bayar_denda.tgl_denda between '" + Valid.
+                                SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
+                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and perpustakaan_buku.judul_buku like '%" + TCari.
+                        getText().trim() + "%' order by perpustakaan_bayar_denda.tgl_denda desc",
+                        param);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanBayarDenda dialog = new PerpustakaanBayarDenda(new javax.swing.JFrame(), true);
+            PerpustakaanBayarDenda dialog = new PerpustakaanBayarDenda(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1387,123 +1586,152 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps=koneksi.prepareStatement(
-                "select perpustakaan_bayar_denda_harian.tgl_denda,perpustakaan_bayar_denda_harian.no_anggota,perpustakaan_anggota.nama_anggota,"+
-                "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                "perpustakaan_bayar_denda_harian.keterlambatan,perpustakaan_bayar_denda_harian.besar_denda from perpustakaan_inventaris "+
-                "inner join perpustakaan_buku inner join perpustakaan_bayar_denda_harian inner join perpustakaan_anggota on "+
-                "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda_harian.no_anggota=perpustakaan_anggota.no_anggota "+
-                "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda_harian.no_inventaris where "+
-                "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_bayar_denda_harian.no_anggota like ? or "+
-                "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_anggota.nama_anggota like ? or "+
-                "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "+
-                "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "+
-                "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda_harian.tgl_denda desc"
+            ps = koneksi.prepareStatement(
+                    "select perpustakaan_bayar_denda_harian.tgl_denda,perpustakaan_bayar_denda_harian.no_anggota,perpustakaan_anggota.nama_anggota,"
+                    + "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_bayar_denda_harian.keterlambatan,perpustakaan_bayar_denda_harian.besar_denda from perpustakaan_inventaris "
+                    + "inner join perpustakaan_buku inner join perpustakaan_bayar_denda_harian inner join perpustakaan_anggota on "
+                    + "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda_harian.no_anggota=perpustakaan_anggota.no_anggota "
+                    + "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda_harian.no_inventaris where "
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_bayar_denda_harian.no_anggota like ? or "
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_anggota.nama_anggota like ? or "
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda_harian.tgl_denda desc"
             );
             try {
-                ps.setString(1,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText().trim()+"%");
-                ps.setString(10,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText().trim()+"%");
-                ps.setString(13,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(14,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(15,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                besardenda=0;
-                while(rs.next()){
+                ps.setString(1, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(5, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                ps.setString(7, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(8, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(9, "%" + TCari.getText().trim() + "%");
+                ps.
+                        setString(10, Valid.SetTgl(
+                                TglPinjam1.getSelectedItem() + ""));
+                ps.
+                        setString(11, Valid.SetTgl(
+                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(12, "%" + TCari.getText().trim() + "%");
+                ps.
+                        setString(13, Valid.SetTgl(
+                                TglPinjam1.getSelectedItem() + ""));
+                ps.
+                        setString(14, Valid.SetTgl(
+                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(15, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                besardenda = 0;
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("tgl_denda"),rs.getString("no_anggota"),rs.getString("nama_anggota"),rs.getString("no_inventaris"),
-                        rs.getString("kode_buku")+" "+rs.getString("judul_buku"),rs.getInt("keterlambatan"),rs.getDouble("besar_denda")
+                        rs.getString("tgl_denda"), rs.getString("no_anggota"),
+                        rs.getString("nama_anggota"), rs.getString(
+                        "no_inventaris"),
+                        rs.getString("kode_buku") + " " + rs.getString(
+                        "judul_buku"), rs.getInt("keterlambatan"), rs.getDouble(
+                        "besar_denda")
                     });
                     besardenda += rs.getDouble("besar_denda");
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             LCount1.setText(Valid.SetAngka(besardenda));
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     public void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            ps=koneksi.prepareStatement(
-                "select perpustakaan_bayar_denda.tgl_denda,perpustakaan_bayar_denda.no_anggota,perpustakaan_anggota.nama_anggota,"+
-                "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                "perpustakaan_denda.kode_denda,perpustakaan_denda.jenis_denda,perpustakaan_denda.besar_denda as denda,"+
-                "perpustakaan_bayar_denda.besar_denda,perpustakaan_bayar_denda.keterangan_denda from perpustakaan_inventaris "+
-                "inner join perpustakaan_buku inner join perpustakaan_bayar_denda inner join perpustakaan_anggota inner join perpustakaan_denda on "+
-                "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda.no_anggota=perpustakaan_anggota.no_anggota "+
-                "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda.no_inventaris and perpustakaan_bayar_denda.kode_denda=perpustakaan_denda.kode_denda where "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_bayar_denda.no_anggota like ? or "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_anggota.nama_anggota like ? or "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_denda.jenis_denda like ? or "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "+
-                "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda.tgl_denda desc"
+            ps = koneksi.prepareStatement(
+                    "select perpustakaan_bayar_denda.tgl_denda,perpustakaan_bayar_denda.no_anggota,perpustakaan_anggota.nama_anggota,"
+                    + "perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_denda.kode_denda,perpustakaan_denda.jenis_denda,perpustakaan_denda.besar_denda as denda,"
+                    + "perpustakaan_bayar_denda.besar_denda,perpustakaan_bayar_denda.keterangan_denda from perpustakaan_inventaris "
+                    + "inner join perpustakaan_buku inner join perpustakaan_bayar_denda inner join perpustakaan_anggota inner join perpustakaan_denda on "
+                    + "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_bayar_denda.no_anggota=perpustakaan_anggota.no_anggota "
+                    + "and perpustakaan_inventaris.no_inventaris=perpustakaan_bayar_denda.no_inventaris and perpustakaan_bayar_denda.kode_denda=perpustakaan_denda.kode_denda where "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_bayar_denda.no_anggota like ? or "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_anggota.nama_anggota like ? or "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_denda.jenis_denda like ? or "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda.tgl_denda desc"
             );
             try {
-                ps.setString(1,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText().trim()+"%");
-                ps.setString(10,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText().trim()+"%");
-                ps.setString(13,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(14,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(15,"%"+TCari.getText().trim()+"%");
-                ps.setString(16,Valid.SetTgl(TglPinjam1.getSelectedItem()+""));
-                ps.setString(17,Valid.SetTgl(TglPinjam2.getSelectedItem()+""));
-                ps.setString(18,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                
-                besardenda=0;
-                while(rs.next()){
+                ps.setString(1, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(5, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                ps.setString(7, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(8, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
+                ps.setString(9, "%" + TCari.getText().trim() + "%");
+                ps.
+                        setString(10, Valid.SetTgl(
+                                TglPinjam1.getSelectedItem() + ""));
+                ps.
+                        setString(11, Valid.SetTgl(
+                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(12, "%" + TCari.getText().trim() + "%");
+                ps.
+                        setString(13, Valid.SetTgl(
+                                TglPinjam1.getSelectedItem() + ""));
+                ps.
+                        setString(14, Valid.SetTgl(
+                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(15, "%" + TCari.getText().trim() + "%");
+                ps.
+                        setString(16, Valid.SetTgl(
+                                TglPinjam1.getSelectedItem() + ""));
+                ps.
+                        setString(17, Valid.SetTgl(
+                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(18, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+
+                besardenda = 0;
+                while (rs.next()) {
                     tabMode2.addRow(new Object[]{
-                        rs.getString("tgl_denda"),rs.getString("no_anggota"),rs.getString("nama_anggota"),rs.getString("no_inventaris"),
-                        rs.getString("kode_buku")+" "+rs.getString("judul_buku"),rs.getString("kode_denda"),rs.getString("jenis_denda"),
-                        rs.getDouble("denda"),rs.getDouble("besar_denda"),rs.getString("keterangan_denda")
+                        rs.getString("tgl_denda"), rs.getString("no_anggota"),
+                        rs.getString("nama_anggota"), rs.getString(
+                        "no_inventaris"),
+                        rs.getString("kode_buku") + " " + rs.getString(
+                        "judul_buku"), rs.getString("kode_denda"), rs.getString(
+                        "jenis_denda"),
+                        rs.getDouble("denda"), rs.getDouble("besar_denda"), rs.
+                        getString("keterangan_denda")
                     });
                     besardenda += rs.getDouble("besar_denda");
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount.setText(""+tabMode2.getRowCount());
+            LCount.setText("" + tabMode2.getRowCount());
             LCount1.setText(Valid.SetAngka(besardenda));
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
 
@@ -1518,7 +1746,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
         DendaKeterlambatan.setText("0");
         TNoA.requestFocus();
     }
-    
+
     public void emptTeks2() {
         TNoI.setText("");
         TJudul.setText("");
@@ -1529,86 +1757,111 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }
 
     private void getData() {
-        if(tbBayarDenda.getSelectedRow()!= -1){
-            Valid.SetTgl(tgl,tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),0).toString());
-            TNoA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),1).toString());
-            TNmA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),2).toString());
-            TNoI.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),3).toString());
+        if (tbBayarDenda.getSelectedRow() != -1) {
+            Valid.SetTgl(tgl, tbBayarDenda.getValueAt(tbBayarDenda.
+                    getSelectedRow(), 0).toString());
+            TNoA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
+                    1).toString());
+            TNmA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
+                    2).toString());
+            TNoI.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
+                    3).toString());
             isInventaris();
-            Keterlambatan.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),5).toString());
-            DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),6).toString())));
+            Keterlambatan.setText(tbBayarDenda.getValueAt(tbBayarDenda.
+                    getSelectedRow(), 5).toString());
+            DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(
+                    tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 6).
+                            toString())));
             isDendaHarian();
         }
     }
-    
+
     private void getData2() {
-        if(tbDendaLain.getSelectedRow()!= -1){
-            Valid.SetTgl(tgl,tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),0).toString());
-            TNoA.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),1).toString());
-            TNmA.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),2).toString());
-            TNoI.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),3).toString());
+        if (tbDendaLain.getSelectedRow() != -1) {
+            Valid.SetTgl(tgl, tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 0).toString());
+            TNoA.setText(
+                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 1).
+                            toString());
+            TNmA.setText(
+                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 2).
+                            toString());
+            TNoI.setText(
+                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 3).
+                            toString());
             isInventaris();
-            KdJenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),5).toString());
-            JenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),6).toString());
-            DendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),7).toString());
-            BesarDendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),8).toString());
-            Keterangan.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(),9).toString());
+            KdJenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 5).toString());
+            JenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 6).toString());
+            DendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 7).toString());
+            BesarDendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 8).toString());
+            Keterangan.setText(tbDendaLain.getValueAt(tbDendaLain.
+                    getSelectedRow(), 9).toString());
             isDendaLain();
         }
     }
-    
+
     /**
      *
      */
-    public void isInventaris(){
+    public void isInventaris() {
         try {
-            ps=koneksi.prepareStatement(
-               "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                "perpustakaan_inventaris.harga from perpustakaan_inventaris inner join perpustakaan_buku on "+
-                "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku where perpustakaan_inventaris.no_inventaris=?");
-            try{
-                ps.setString(1,TNoI.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
-                    TJudul.setText(rs.getString("kode_buku")+", "+rs.getString("judul_buku"));
+            ps = koneksi.prepareStatement(
+                    "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_inventaris.harga from perpustakaan_inventaris inner join perpustakaan_buku on "
+                    + "perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku where perpustakaan_inventaris.no_inventaris=?");
+            try {
+                ps.setString(1, TNoI.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    TJudul.setText(rs.getString("kode_buku") + ", " + rs.
+                            getString("judul_buku"));
                     Harga.setText(rs.getString("harga"));
-                }else{
+                } else {
                     TJudul.setText("");
                     Harga.setText("");
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
     }
 
-    public void isCek(){
-       BtnSimpan.setEnabled(akses.getbayar_denda_perpustakaan());
-       BtnHapus.setEnabled(akses.getbayar_denda_perpustakaan());
+    public void isCek() {
+        BtnSimpan.setEnabled(akses.getbayar_denda_perpustakaan());
+        BtnHapus.setEnabled(akses.getbayar_denda_perpustakaan());
     }
 
     private void isDendaHarian() {
-        if(TabRawat.getSelectedIndex()==0){
-            if(!Keterlambatan.getText().isEmpty()){
-                DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(Keterlambatan.getText())*perhari));
+        if (TabRawat.getSelectedIndex() == 0) {
+            if (!Keterlambatan.getText().isEmpty()) {
+                DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(
+                        Keterlambatan.getText()) * perhari));
             }
         }
     }
-    
-    private void isDendaLain(){
-        if(TabRawat.getSelectedIndex()==1){
-            if((!Harga.getText().isEmpty())&&(!DendaLain.getText().isEmpty())){
-                BesarDendaLain.setText(Valid.SetAngka(Double.parseDouble(Harga.getText())*(Double.parseDouble(DendaLain.getText())/100)));
+
+    private void isDendaLain() {
+        if (TabRawat.getSelectedIndex() == 1) {
+            if ((!Harga.getText().isEmpty()) && (!DendaLain.getText().isEmpty())) {
+                BesarDendaLain.setText(Valid.SetAngka(Double.parseDouble(Harga.
+                        getText()) * (Double.parseDouble(DendaLain.getText()) / 100)));
             }
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            PerpustakaanBayarDenda.class.getName());
 }

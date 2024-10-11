@@ -1,126 +1,169 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
- * DlgSpesialis.java
- *
- * Created on May 23, 2010, 1:25:13 AM
+ /*
+* DlgSpesialis.java
+*
+* Created on May 23, 2010, 1:25:13 AM
  */
-
 package bridging;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import kepegawaian.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author dosen
  */
 public class INACBGCoderNIK extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps;
-    private ResultSet rs;
-    private DlgCariPegawai pegawai=new DlgCariPegawai(null,false);
 
-    /** Creates new form DlgSpesialis
+    private final DefaultTableModel tabMode;
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private PreparedStatement ps;
+
+    private ResultSet rs;
+
+    private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public INACBGCoderNIK(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,10);
-        setSize(459,539);
+        this.setLocation(10, 10);
+        setSize(459, 539);
 
-        Object[] row={"NIP","Petugas","Coder NIK"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"NIP", "Petugas", "Coder NIK"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbSpesialis.setModel(tabMode);
-        //tampil();
-        //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
-        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tampil();
+        // tbJabatan.setDefaultRenderer(Object.class, new
+        // WarnaTable(Scroll.getBackground(),Color.GREEN));
+        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 3; i++) {
             TableColumn column = tbSpesialis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(120);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(300);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(140);
             }
         }
 
         tbSpesialis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NIK.setDocument(new batasInput((byte)20).getKata(NIK));
-        CoderNIK.setDocument(new batasInput((byte)30).getKata(CoderNIK));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        NIK.setDocument(new batasInput((byte) 20).getKata(NIK));
+        CoderNIK.setDocument(new batasInput((byte) 30).getKata(CoderNIK));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
+        }
+
         pegawai.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(pegawai.getTable().getSelectedRow()!= -1){                   
-                    NIK.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),0).toString());
-                    Nama.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),1).toString());                                        
-                }   
+                if (pegawai.getTable().getSelectedRow() != -1) {
+                    NIK.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
+                            getSelectedRow(), 0).toString());
+                    Nama.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
+                            getSelectedRow(), 1).toString());
+                }
                 NIK.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -419,26 +462,28 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CoderNIKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CoderNIKKeyPressed
-        Valid.pindah(evt,NIK,BtnSimpan);
+        Valid.pindah(evt, NIK, BtnSimpan);
 }//GEN-LAST:event_CoderNIKKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NIK.getText().trim().isEmpty()||Nama.getText().trim().isEmpty()){
-            Valid.textKosong(NIK,"Petugas/Dokter");
-        }else if(CoderNIK.getText().trim().isEmpty()){
-            Valid.textKosong(CoderNIK,"Coder NIK");
-        }else{
-            Sequel.menyimpan("inacbg_coder_nik","'"+NIK.getText()+"','"+CoderNIK.getText()+"'","NIP");
+        if (NIK.getText().trim().isEmpty() || Nama.getText().trim().isEmpty()) {
+            Valid.textKosong(NIK, "Petugas/Dokter");
+        } else if (CoderNIK.getText().trim().isEmpty()) {
+            Valid.textKosong(CoderNIK, "Coder NIK");
+        } else {
+            Sequel.menyimpan("inacbg_coder_nik",
+                    "'" + NIK.getText() + "','" + CoderNIK.getText() + "'",
+                    "NIP");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,CoderNIK,BtnBatal);
+        } else {
+            Valid.pindah(evt, CoderNIK, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -447,41 +492,46 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,NIK,"inacbg_coder_nik","nik");
+        Valid.hapusTable(tabMode, NIK, "inacbg_coder_nik", "nik");
         tampil();
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(NIK.getText().trim().isEmpty()||Nama.getText().trim().isEmpty()){
-            Valid.textKosong(NIK,"Petugas/Dokter");
-        }else if(CoderNIK.getText().trim().isEmpty()){
-            Valid.textKosong(CoderNIK,"Coder NIK");
-        }else{
-            Valid.editTable(tabMode,"inacbg_coder_nik","nik",NIK,"no_ik='"+CoderNIK.getText()+"'");
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (NIK.getText().trim().isEmpty() || Nama.getText().trim().isEmpty()) {
+            Valid.textKosong(NIK, "Petugas/Dokter");
+        } else if (CoderNIK.getText().trim().isEmpty()) {
+            Valid.textKosong(CoderNIK, "Coder NIK");
+        } else {
+            Valid.editTable(tabMode, "inacbg_coder_nik", "nik", NIK,
+                    "no_ik='" + CoderNIK.getText() + "'");
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -491,29 +541,31 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-       tampil();
+        tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -528,15 +580,15 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, NIK);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbSpesialisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSpesialisMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -550,17 +602,18 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
 
     private void BtnCariPegawaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariPegawaiActionPerformed
         pegawai.emptTeks();
-        pegawai.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        pegawai.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         pegawai.setLocationRelativeTo(internalFrame1);
         pegawai.setAlwaysOnTop(false);
         pegawai.setVisible(true);
     }//GEN-LAST:event_BtnCariPegawaiActionPerformed
 
     private void NIKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NIKKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnCariPegawaiActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,CoderNIK);
+        } else {
+            Valid.pindah(evt, TCari, CoderNIK);
         }
     }//GEN-LAST:event_NIKKeyPressed
 
@@ -569,8 +622,9 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
     }//GEN-LAST:event_NamaKeyPressed
 
     private void tbSpesialisKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -580,19 +634,24 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
     }//GEN-LAST:event_tbSpesialisKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                INACBGCoderNIK dialog = new INACBGCoderNIK(new javax.swing.JFrame(), true);
+                INACBGCoderNIK dialog = new INACBGCoderNIK(
+                        new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
+
                 });
                 dialog.setVisible(true);
             }
+
         });
     }
 
@@ -625,32 +684,34 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select inacbg_coder_nik.nik,pegawai.nama,inacbg_coder_nik.no_ik "+
-                    "from inacbg_coder_nik inner join pegawai on inacbg_coder_nik.nik=pegawai.nik where "+
-                    "pegawai.nama like ? or inacbg_coder_nik.no_ik like ? order by pegawai.nama");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select inacbg_coder_nik.nik,pegawai.nama,inacbg_coder_nik.no_ik "
+                    + "from inacbg_coder_nik inner join pegawai on inacbg_coder_nik.nik=pegawai.nik where "
+                    + "pegawai.nama like ? or inacbg_coder_nik.no_ik like ? order by pegawai.nama");
             try {
-                ps.setString(1, "%"+TCari.getText().trim()+"%");
-                ps.setString(2, "%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{rs.getString(1),rs.getString(2),rs.getString(3)});
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new Object[]{rs.getString(1), rs.getString(2),
+                                rs.getString(3)});
                 }
             } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }            
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -662,27 +723,35 @@ public class INACBGCoderNIK extends javax.swing.JDialog {
     }
 
     private void getData() {
-        if(tbSpesialis.getSelectedRow()!= -1){
-            NIK.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString());
-            Nama.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),1).toString());
-            CoderNIK.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),2).toString());
+        if (tbSpesialis.getSelectedRow() != -1) {
+            NIK.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 0).
+                    toString());
+            Nama.setText(
+                    tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 1).
+                            toString());
+            CoderNIK.setText(tbSpesialis.
+                    getValueAt(tbSpesialis.getSelectedRow(), 2).toString());
         }
     }
-    
-    public JTextField getTextField(){
+
+    public JTextField getTextField() {
         return NIK;
     }
 
-    public JButton getButton(){
+    public JButton getButton() {
         return BtnKeluar;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getinacbg_coder_nik());
         BtnHapus.setEnabled(akses.getinacbg_coder_nik());
         BtnEdit.setEnabled(akses.getinacbg_coder_nik());
     }
+
+    private static final Logger LOG = Logger.getLogger(INACBGCoderNIK.class.
+            getName());
+
 }

@@ -3,107 +3,134 @@
  * and open the template in the editor.
  */
 
-/*
- * DlgJnsPerawatanRalan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+ /*
+* DlgJnsPerawatanRalan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
-
 package bridging;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class MobileJKNPembatalanPendaftaran extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps;
-    private ResultSet rs;    
-    private int i=0;
 
-    /** Creates new form DlgJnsPerawatanRalan
+    private final DefaultTableModel tabMode;
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private PreparedStatement ps;
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public MobileJKNPembatalanPendaftaran(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.RM","Nama Pasien","No.Rawat Batal","Nomor Referensi","Tanggal Batal","Keterangan","Status Kirim"
-            }){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{"No.RM",
+            "Nama Pasien", "No.Rawat Batal",
+            "Nomor Referensi", "Tanggal Batal", "Keterangan", "Status Kirim"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(165);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(110);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(125);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(117);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(300);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(90);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
-        
+        }
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -297,51 +324,65 @@ public class MobileJKNPembatalanPendaftaran extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnCari,TCari);}
+        } else {
+            Valid.pindah(evt, BtnCari, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptBatalPendaftaranMobileJKN.jasper","report","::[ Data Batal Pendaftaran Mobile JKN ]::",
-                   "SELECT referensi_mobilejkn_bpjs_batal.no_rkm_medis,pasien.nm_pasien,referensi_mobilejkn_bpjs_batal.no_rawat_batal,"+
-                   "referensi_mobilejkn_bpjs_batal.nomorreferensi,referensi_mobilejkn_bpjs_batal.tanggalbatal,referensi_mobilejkn_bpjs_batal.keterangan "+
-                   "FROM referensi_mobilejkn_bpjs_batal INNER JOIN pasien ON referensi_mobilejkn_bpjs_batal.no_rkm_medis=pasien.no_rkm_medis "+
-                   "WHERE referensi_mobilejkn_bpjs_batal.tanggalbatal BETWEEN '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' AND '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' "+(TCari.getText().isEmpty()?"":
-                   "AND (referensi_mobilejkn_bpjs_batal.no_rkm_medis LIKE '%"+TCari.getText()+"%' OR pasien.nm_pasien LIKE '%"+TCari.getText()+"%' OR referensi_mobilejkn_bpjs_batal.no_rawat_batal LIKE '%"+TCari.getText()+"%' OR "+
-                   "referensi_mobilejkn_bpjs_batal.nomorreferensi LIKE '%"+TCari.getText()+"%' OR referensi_mobilejkn_bpjs_batal.keterangan LIKE '%"+TCari.getText()+"%') ")+
-                   "ORDER BY referensi_mobilejkn_bpjs_batal.tanggalbatal",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptBatalPendaftaranMobileJKN.jasper", "report",
+                    "::[ Data Batal Pendaftaran Mobile JKN ]::",
+                    "SELECT referensi_mobilejkn_bpjs_batal.no_rkm_medis,pasien.nm_pasien,referensi_mobilejkn_bpjs_batal.no_rawat_batal,"
+                    + "referensi_mobilejkn_bpjs_batal.nomorreferensi,referensi_mobilejkn_bpjs_batal.tanggalbatal,referensi_mobilejkn_bpjs_batal.keterangan "
+                    + "FROM referensi_mobilejkn_bpjs_batal INNER JOIN pasien ON referensi_mobilejkn_bpjs_batal.no_rkm_medis=pasien.no_rkm_medis "
+                    + "WHERE referensi_mobilejkn_bpjs_batal.tanggalbatal BETWEEN '" + Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' AND '" + Valid.
+                    SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' " + (TCari.
+                    getText().isEmpty() ? ""
+                            : "AND (referensi_mobilejkn_bpjs_batal.no_rkm_medis LIKE '%" + TCari.
+                                    getText() + "%' OR pasien.nm_pasien LIKE '%" + TCari.
+                                    getText() + "%' OR referensi_mobilejkn_bpjs_batal.no_rawat_batal LIKE '%" + TCari.
+                                    getText() + "%' OR "
+                            + "referensi_mobilejkn_bpjs_batal.nomorreferensi LIKE '%" + TCari.
+                                    getText() + "%' OR referensi_mobilejkn_bpjs_batal.keterangan LIKE '%" + TCari.
+                                    getText() + "%') ")
+                    + "ORDER BY referensi_mobilejkn_bpjs_batal.tanggalbatal",
+                    param);
         }
-        this.setCursor(Cursor.getDefaultCursor());  
+        this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -351,9 +392,9 @@ public class MobileJKNPembatalanPendaftaran extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -364,43 +405,49 @@ public class MobileJKNPembatalanPendaftaran extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbJnsPerawatan.getSelectedRow()>-1){
-            Sequel.meghapus("referensi_mobilejkn_bpjs_batal","nomorreferensi",tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
+        if (tbJnsPerawatan.getSelectedRow() > -1) {
+            Sequel.meghapus("referensi_mobilejkn_bpjs_batal", "nomorreferensi",
+                    tbJnsPerawatan.
+                            getValueAt(tbJnsPerawatan.getSelectedRow(), 3).
+                            toString());
             tampil();
-        }else{
-            JOptionPane.showMessageDialog(null,"Silahkan pilih data yang mau dihapus..!!!");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan pilih data yang mau dihapus..!!!");
             tbJnsPerawatan.requestFocus();
         }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            MobileJKNPembatalanPendaftaran dialog = new MobileJKNPembatalanPendaftaran(new javax.swing.JFrame(), true);
+            MobileJKNPembatalanPendaftaran dialog = new MobileJKNPembatalanPendaftaran(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -428,47 +475,55 @@ public class MobileJKNPembatalanPendaftaran extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "SELECT referensi_mobilejkn_bpjs_batal.no_rkm_medis,pasien.nm_pasien,referensi_mobilejkn_bpjs_batal.no_rawat_batal,"+
-                   "referensi_mobilejkn_bpjs_batal.nomorreferensi,referensi_mobilejkn_bpjs_batal.tanggalbatal,referensi_mobilejkn_bpjs_batal.keterangan, "+
-                   "referensi_mobilejkn_bpjs_batal.statuskirim FROM referensi_mobilejkn_bpjs_batal INNER JOIN pasien ON referensi_mobilejkn_bpjs_batal.no_rkm_medis=pasien.no_rkm_medis "+
-                   "WHERE referensi_mobilejkn_bpjs_batal.tanggalbatal BETWEEN ? AND ? "+(TCari.getText().isEmpty()?"":
-                   "AND (referensi_mobilejkn_bpjs_batal.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ? OR referensi_mobilejkn_bpjs_batal.no_rawat_batal LIKE ? OR "+
-                   "referensi_mobilejkn_bpjs_batal.nomorreferensi LIKE ? OR referensi_mobilejkn_bpjs_batal.keterangan LIKE ?) ")+
-                   "ORDER BY referensi_mobilejkn_bpjs_batal.tanggalbatal");
+        try {
+            ps = koneksi.prepareStatement(
+                    "SELECT referensi_mobilejkn_bpjs_batal.no_rkm_medis,pasien.nm_pasien,referensi_mobilejkn_bpjs_batal.no_rawat_batal,"
+                    + "referensi_mobilejkn_bpjs_batal.nomorreferensi,referensi_mobilejkn_bpjs_batal.tanggalbatal,referensi_mobilejkn_bpjs_batal.keterangan, "
+                    + "referensi_mobilejkn_bpjs_batal.statuskirim FROM referensi_mobilejkn_bpjs_batal INNER JOIN pasien ON referensi_mobilejkn_bpjs_batal.no_rkm_medis=pasien.no_rkm_medis "
+                    + "WHERE referensi_mobilejkn_bpjs_batal.tanggalbatal BETWEEN ? AND ? "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "AND (referensi_mobilejkn_bpjs_batal.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ? OR referensi_mobilejkn_bpjs_batal.no_rawat_batal LIKE ? OR "
+                    + "referensi_mobilejkn_bpjs_batal.nomorreferensi LIKE ? OR referensi_mobilejkn_bpjs_batal.keterangan LIKE ?) ")
+                    + "ORDER BY referensi_mobilejkn_bpjs_batal.tanggalbatal");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+" 00:00:00"));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+" 23:59:59"));
-                if(!TCari.getText().trim().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(
+                        DTPCari1.getSelectedItem() + " 00:00:00"));
+                ps.setString(2, Valid.SetTgl(
+                        DTPCari2.getSelectedItem() + " 23:59:59"));
+                if (!TCari.getText().trim().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("no_rawat_batal"),
-                        rs.getString("nomorreferensi"),rs.getString("tanggalbatal"),rs.getString("keterangan"),
-                        rs.getString("statuskirim")
-                    });
+
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_rawat_batal"), rs.getString(
+                        "nomorreferensi"),
+                        rs.getString("tanggalbatal"), rs.getString("keterangan"),
+                        rs.getString("statuskirim")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            MobileJKNPembatalanPendaftaran.class.getName());
+
 }

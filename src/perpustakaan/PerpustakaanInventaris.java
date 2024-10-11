@@ -3,224 +3,296 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgJnsPerawatan.java
  *
  * Created on May 22, 2010, 11:58:21 PM
  */
-
 package perpustakaan;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class PerpustakaanInventaris extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private final Properties prop = new Properties();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String namaruang="";
-    private Connection koneksi=koneksiDB.condb();
+    private String namaruang = "";
+    private Connection koneksi = koneksiDB.condb();
 
-    /** Creates new form DlgJnsPerawatan
+    /**
+     * Creates new form DlgJnsPerawatan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public PerpustakaanInventaris(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        Object[] row={"No.Inventaris","Kode","Nama/Judul","Penerbit",
-                      "Pengarang/Penulis","Terbit","Barcode SN","Kategori","Jenis",
-                      "Asal Koleksi","Pengadaan","Harga","Stts.Koleksi","Ruang",
-                      "No.Rak","No.Box"
+        Object[] row = {"No.Inventaris", "Kode", "Nama/Judul", "Penerbit",
+            "Pengarang/Penulis", "Terbit", "Barcode SN", "Kategori", "Jenis",
+            "Asal Koleksi", "Pengadaan", "Harga", "Stts.Koleksi", "Ruang",
+            "No.Rak", "No.Box"
         };
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 16; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(310);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(130);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(130);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(50);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(130);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(130);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(70);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(90);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(90);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(130);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(60);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(60);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        no_inventaris.setDocument(new batasInput((byte)20).getKata(no_inventaris));
-        kode_buku.setDocument(new batasInput((byte)10).getKata(kode_buku));
-        harga.setDocument(new batasInput((byte)15).getOnlyAngka(harga));
-        kd_ruang.setDocument(new batasInput((byte)5).getKata(kd_ruang));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        no_inventaris.setDocument(new batasInput((byte) 20).getKata(
+                no_inventaris));
+        kode_buku.setDocument(new batasInput((byte) 10).getKata(kode_buku));
+        harga.setDocument(new batasInput((byte) 15).getOnlyAngka(harga));
+        kd_ruang.setDocument(new batasInput((byte) 5).getKata(kd_ruang));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCari.requestFocus();
-        
+
         ChkInput.setSelected(false);
-        isForm(); 
-        
+        isForm();
+
         barang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(barang.getTable().getSelectedRow()!= -1){    
-                    kode_buku.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),0).toString());
-                    judul_buku.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());
-                    nm_produsen.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),3).toString());
-                    nm_merk.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),4).toString());
-                    nm_kategori.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),7).toString());
-                    nm_jenis.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),8).toString());
-                }   
+                if (barang.getTable().getSelectedRow() != -1) {
+                    kode_buku.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 0).toString());
+                    judul_buku.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 1).toString());
+                    nm_produsen.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 3).toString());
+                    nm_merk.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 4).toString());
+                    nm_kategori.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 7).toString());
+                    nm_jenis.setText(barang.getTable().getValueAt(barang.
+                            getTable().getSelectedRow(), 8).toString());
+                }
                 kode_buku.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
 
         });
-        
+
         barang.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     barang.dispose();
-                }                
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
-        });
-              
-        ruang.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(ruang.getTable().getSelectedRow()!= -1){ 
-                    if(pilihan==1){
-                        kd_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),0).toString());                    
-                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),1).toString());
-                        kd_ruang.requestFocus();
-                    }else if(pilihan==2){
-                        nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),1).toString());
-                        TCari.requestFocus();
-                    }                    
-                }                   
+            public void keyReleased(KeyEvent e) {
             }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
 
         });
-        
+
+        ruang.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (ruang.getTable().getSelectedRow() != -1) {
+                    if (pilihan == 1) {
+                        kd_ruang.setText(ruang.getTable().getValueAt(ruang.
+                                getTable().getSelectedRow(), 0).toString());
+                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.
+                                getTable().getSelectedRow(), 1).toString());
+                        kd_ruang.requestFocus();
+                    } else if (pilihan == 2) {
+                        nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.
+                                getTable().getSelectedRow(), 1).toString());
+                        TCari.requestFocus();
+                    }
+                }
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         ruang.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     ruang.dispose();
-                }                
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
     }
-    private PerpustakaanKoleksi barang=new PerpustakaanKoleksi(null,false); 
-    private PerpustakaanRuang ruang=new PerpustakaanRuang(null,false); 
-    private double nilai_inven=0;
-    private int pilihan=0;
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    private PerpustakaanKoleksi barang = new PerpustakaanKoleksi(null, false);
+    private PerpustakaanRuang ruang = new PerpustakaanRuang(null, false);
+    private double nilai_inven = 0;
+    private int pilihan = 0;
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -817,88 +889,110 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(no_inventaris.getText().trim().isEmpty()){
-            Valid.textKosong(no_inventaris,"No.Inventaris");
-        }else if(judul_buku.getText().trim().isEmpty()){
-            Valid.textKosong(kode_buku,"Nama/Judul");
-        }else if(harga.getText().trim().isEmpty()||harga.getText().trim().equals("0")){
-            Valid.textKosong(harga,"Harga Koleksi");
-        }else if(kd_ruang.getText().trim().isEmpty()||nm_ruang.getText().trim().isEmpty()){
-            Valid.textKosong(kd_ruang,"Ruangan");
-        }else {
-            if(Sequel.menyimpantf("perpustakaan_inventaris","?,?,?,?,?,?,?,?,?","No.Inventaris",9,new String[]{
-                    no_inventaris.getText(),kode_buku.getText(),asal_buku.getSelectedItem().toString(),Valid.SetTgl(tgl_pengadaan.getSelectedItem()+""),
-                    harga.getText(),status_buku.getSelectedItem().toString(),kd_ruang.getText(),no_rak.getSelectedItem().toString(),no_box.getSelectedItem().toString()
-                })==true){
-                    tampil();
-                    emptTeks();
+        if (no_inventaris.getText().trim().isEmpty()) {
+            Valid.textKosong(no_inventaris, "No.Inventaris");
+        } else if (judul_buku.getText().trim().isEmpty()) {
+            Valid.textKosong(kode_buku, "Nama/Judul");
+        } else if (harga.getText().trim().isEmpty() || harga.getText().trim().
+                equals("0")) {
+            Valid.textKosong(harga, "Harga Koleksi");
+        } else if (kd_ruang.getText().trim().isEmpty() || nm_ruang.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kd_ruang, "Ruangan");
+        } else {
+            if (Sequel.menyimpantf("perpustakaan_inventaris",
+                    "?,?,?,?,?,?,?,?,?", "No.Inventaris", 9, new String[]{
+                        no_inventaris.getText(), kode_buku.getText(), asal_buku.
+                        getSelectedItem().toString(), Valid.SetTgl(
+                                tgl_pengadaan.getSelectedItem() + ""),
+                        harga.getText(), status_buku.getSelectedItem().
+                        toString(), kd_ruang.getText(),
+                        no_rak.getSelectedItem().toString(), no_box.
+                        getSelectedItem().toString()
+                    }) == true) {
+                tampil();
+                emptTeks();
             }
-            
+
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,no_rak,BtnBatal);
+        } else {
+            Valid.pindah(evt, no_rak, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,no_inventaris,"perpustakaan_inventaris","no_inventaris");
+        Valid.hapusTable(tabMode, no_inventaris, "perpustakaan_inventaris",
+                "no_inventaris");
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(no_inventaris.getText().trim().isEmpty()){
-            Valid.textKosong(no_inventaris,"No.Inventaris");
-        }else if(judul_buku.getText().trim().isEmpty()){
-            Valid.textKosong(kode_buku,"Nama/Judul");
-        }else if(harga.getText().trim().isEmpty()||harga.getText().trim().equals("0")){
-            Valid.textKosong(harga,"Harga Koleksi");
-        }else if(kd_ruang.getText().trim().isEmpty()||nm_ruang.getText().trim().isEmpty()){
-            Valid.textKosong(kd_ruang,"Ruangan");
-        }else {
-            if(tbJnsPerawatan.getSelectedRow()> -1){
-                if(Sequel.mengedittf("perpustakaan_inventaris","no_inventaris=?","no_inventaris=?,kode_buku=?,asal_buku=?,"+
-                        "tgl_pengadaan=?,harga=?,status_buku=?,kd_ruang=?,no_rak=?,no_box=?",10,new String[]{
-                        no_inventaris.getText(),kode_buku.getText(),asal_buku.getSelectedItem().toString(),Valid.SetTgl(tgl_pengadaan.getSelectedItem()+""),
-                        harga.getText(),status_buku.getSelectedItem().toString(),kd_ruang.getText(),no_rak.getSelectedItem().toString(),no_box.getSelectedItem().toString(),
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString()
-                    })==true){
-                        tampil();
-                        emptTeks();
+        if (no_inventaris.getText().trim().isEmpty()) {
+            Valid.textKosong(no_inventaris, "No.Inventaris");
+        } else if (judul_buku.getText().trim().isEmpty()) {
+            Valid.textKosong(kode_buku, "Nama/Judul");
+        } else if (harga.getText().trim().isEmpty() || harga.getText().trim().
+                equals("0")) {
+            Valid.textKosong(harga, "Harga Koleksi");
+        } else if (kd_ruang.getText().trim().isEmpty() || nm_ruang.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kd_ruang, "Ruangan");
+        } else {
+            if (tbJnsPerawatan.getSelectedRow() > -1) {
+                if (Sequel.mengedittf("perpustakaan_inventaris",
+                        "no_inventaris=?",
+                        "no_inventaris=?,kode_buku=?,asal_buku=?,"
+                        + "tgl_pengadaan=?,harga=?,status_buku=?,kd_ruang=?,no_rak=?,no_box=?",
+                        10, new String[]{
+                            no_inventaris.getText(), kode_buku.getText(),
+                            asal_buku.getSelectedItem().toString(), Valid.
+                            SetTgl(tgl_pengadaan.getSelectedItem() + ""),
+                            harga.getText(), status_buku.getSelectedItem().
+                            toString(), kd_ruang.getText(), no_rak.
+                            getSelectedItem().toString(), no_box.
+                                    getSelectedItem().toString(),
+                            tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                                    getSelectedRow(), 0).toString()
+                        }) == true) {
+                    tampil();
+                    emptTeks();
                 }
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -908,85 +1002,123 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-                Map<String, Object> param = new HashMap<>();   
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                if(TCari.getText().isEmpty()&&nm_ruangcari.getText().isEmpty()){
-                    Valid.MyReportqry("rptInventarisPerpustakaan.jasper","report","::[ Data Inventaris Perpustakaan ]::","select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                       "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "+
-                       "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "+
-                       "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                       "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "+
-                       "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                       "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                       "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                       "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                       "order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",param);
-                }else{
-                    Valid.MyReportqry("rptInventarisPerpustakaan.jasper","report","::[ Data Inventaris Perpustakaan ]::","select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                       "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "+
-                       "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "+
-                       "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                       "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "+
-                       "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                       "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                       "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                       "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                       "where perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.kode_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_inventaris.no_inventaris like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_inventaris.asal_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_inventaris.tgl_pengadaan like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_inventaris.status_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_ruang.nm_ruang like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.jml_halaman like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_pengarang.nama_pengarang like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.thn_terbit like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_buku.isbn like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_kategori.nama_kategori like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+nm_ruangcari.getText().trim()+"%' and perpustakaan_jenis_buku.nama_jenis like '%"+TCari.getText().trim()+"%' order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",param);
-                }
-                    
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            if (TCari.getText().isEmpty() && nm_ruangcari.getText().isEmpty()) {
+                Valid.MyReportqry("rptInventarisPerpustakaan.jasper", "report",
+                        "::[ Data Inventaris Perpustakaan ]::",
+                        "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "
+                        + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "
+                        + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                        + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "
+                        + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                        + "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                        + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                        + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                        + "order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",
+                        param);
+            } else {
+                Valid.MyReportqry("rptInventarisPerpustakaan.jasper", "report",
+                        "::[ Data Inventaris Perpustakaan ]::",
+                        "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "
+                        + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "
+                        + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                        + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "
+                        + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                        + "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                        + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                        + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                        + "where perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.kode_buku like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.judul_buku like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_inventaris.no_inventaris like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_inventaris.asal_buku like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_inventaris.tgl_pengadaan like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_inventaris.status_buku like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_ruang.nm_ruang like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.jml_halaman like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.judul_buku like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_pengarang.nama_pengarang like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.thn_terbit like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_buku.isbn like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_kategori.nama_kategori like '%" + TCari.
+                                getText().trim() + "%' "
+                        + "or perpustakaan_ruang.nm_ruang like '%" + nm_ruangcari.
+                                getText().trim() + "%' and perpustakaan_jenis_buku.nama_jenis like '%" + TCari.
+                                getText().trim() + "%' order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",
+                        param);
+            }
+
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbJnsPerawatan.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -996,9 +1128,9 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1006,33 +1138,33 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
         nm_ruangcari.setText("");
-        if(namaruang.isEmpty()){
+        if (namaruang.isEmpty()) {
             nm_ruangcari.setText("");
         }
         tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
-            Valid.pindah(evt, BtnPrint,BtnKeluar);
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbJnsPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbJnsPerawatanMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
-            }            
+            }
         }
 }//GEN-LAST:event_tbJnsPerawatanMouseClicked
 
     private void tbJnsPerawatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -1040,145 +1172,172 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
 }//GEN-LAST:event_tbJnsPerawatanKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
 private void no_inventarisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_no_inventarisKeyPressed
-        Valid.pindah(evt,kd_ruang,tgl_pengadaan);
+    Valid.pindah(evt, kd_ruang, tgl_pengadaan);
 }//GEN-LAST:event_no_inventarisKeyPressed
 
 private void kode_bukuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kode_bukuKeyPressed
-    if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+    if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
         isBarang();
-    }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
         isBarang();
         status_buku.requestFocus();
-    }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+    } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
         isBarang();
         btnRuang.requestFocus();
-    }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+    } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
         btnBarangActionPerformed(null);
     }
 }//GEN-LAST:event_kode_bukuKeyPressed
 
 private void btnBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarangActionPerformed
     barang.isCek();
-    barang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+    barang.setSize(internalFrame1.getWidth() - 20,
+            internalFrame1.getHeight() - 20);
     barang.setLocationRelativeTo(internalFrame1);
     barang.setAlwaysOnTop(false);
     barang.setVisible(true);
 }//GEN-LAST:event_btnBarangActionPerformed
 
 private void kd_ruangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kd_ruangKeyPressed
-    if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-        Sequel.cariIsi("select perpustakaan_ruang.nm_ruang from perpustakaan_ruang where perpustakaan_ruang.kd_ruang=?",nm_ruang,kd_ruang.getText());        
-    }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+    if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+        Sequel.cariIsi(
+                "select perpustakaan_ruang.nm_ruang from perpustakaan_ruang where perpustakaan_ruang.kd_ruang=?",
+                nm_ruang, kd_ruang.getText());
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
         btnBarang.requestFocus();
-    }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+    } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
         no_rak.requestFocus();
-    }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+    } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
         btnRuangActionPerformed(null);
     }
 }//GEN-LAST:event_kd_ruangKeyPressed
 
 private void btnRuangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRuangActionPerformed
-    pilihan=1;
+    pilihan = 1;
     ruang.isCek();
-    ruang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+    ruang.setSize(internalFrame1.getWidth() - 20,
+            internalFrame1.getHeight() - 20);
     ruang.setLocationRelativeTo(internalFrame1);
     ruang.setAlwaysOnTop(false);
     ruang.setVisible(true);
 }//GEN-LAST:event_btnRuangActionPerformed
 
 private void tgl_pengadaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tgl_pengadaanKeyPressed
-    Valid.pindah(evt,no_inventaris,harga);
+    Valid.pindah(evt, no_inventaris, harga);
 }//GEN-LAST:event_tgl_pengadaanKeyPressed
 
 private void status_bukuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_status_bukuKeyPressed
-    Valid.pindah(evt,asal_buku,btnBarang);
+    Valid.pindah(evt, asal_buku, btnBarang);
 }//GEN-LAST:event_status_bukuKeyPressed
 
 private void hargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hargaKeyPressed
-    Valid.pindah(evt,tgl_pengadaan,asal_buku);
+    Valid.pindah(evt, tgl_pengadaan, asal_buku);
 }//GEN-LAST:event_hargaKeyPressed
 
 private void asal_bukuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_asal_bukuKeyPressed
-    Valid.pindah(evt,harga,status_buku);
+    Valid.pindah(evt, harga, status_buku);
 }//GEN-LAST:event_asal_bukuKeyPressed
 
 private void no_boxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_no_boxKeyPressed
-    Valid.pindah(evt,no_rak,BtnSimpan);
+    Valid.pindah(evt, no_rak, BtnSimpan);
 }//GEN-LAST:event_no_boxKeyPressed
 
 private void no_rakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_no_rakKeyPressed
-    Valid.pindah(evt,kd_ruang,no_box);
+    Valid.pindah(evt, kd_ruang, no_box);
 }//GEN-LAST:event_no_rakKeyPressed
 
 private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBarcodeBtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        BtnCariActionPerformed(evt);
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
-            BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs()); 
-            if(TCari.getText().isEmpty()&&nm_ruangcari.getText().isEmpty()){
-                Valid.MyReportqry("rptBarcodePerpustakaan.jasper","report","::[ Data Barang ]::","select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                       "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "+
-                       "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "+
-                       "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                       "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "+
-                       "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                       "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                       "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                       "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                       "order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",param);           
-            }else{
-                Valid.MyReportqry("rptBarcodePerpustakaan.jasper","report","::[ Data Barang ]::","select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                       "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "+
-                       "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "+
-                       "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                       "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "+
-                       "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                       "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                       "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                       "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                       "where perpustakaan_buku.kode_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_inventaris.no_inventaris like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_inventaris.asal_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_inventaris.tgl_pengadaan like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_inventaris.status_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_ruang.nm_ruang like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_buku.jml_halaman like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_buku.judul_buku like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_pengarang.nama_pengarang like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_buku.thn_terbit like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_buku.isbn like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_kategori.nama_kategori like '%"+TCari.getText().trim()+"%' "+
-                        "or perpustakaan_jenis_buku.nama_jenis like '%"+TCari.getText().trim()+"%' order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",param);           
-            }    
+    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    BtnCariActionPerformed(evt);
+    if (tabMode.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(null,
+                "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        BtnBatal.requestFocus();
+    } else if (tabMode.getRowCount() != 0) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("namars", akses.getnamars());
+        param.put("alamatrs", akses.getalamatrs());
+        param.put("kotars", akses.getkabupatenrs());
+        param.put("propinsirs", akses.getpropinsirs());
+        param.put("kontakrs", akses.getkontakrs());
+        if (TCari.getText().isEmpty() && nm_ruangcari.getText().isEmpty()) {
+            Valid.MyReportqry("rptBarcodePerpustakaan.jasper", "report",
+                    "::[ Data Barang ]::",
+                    "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "
+                    + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "
+                    + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                    + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "
+                    + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                    + "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                    + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                    + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                    + "order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",
+                    param);
+        } else {
+            Valid.MyReportqry("rptBarcodePerpustakaan.jasper", "report",
+                    "::[ Data Barang ]::",
+                    "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_buku.judul_buku, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn, "
+                    + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan, "
+                    + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                    + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_ruang "
+                    + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                    + "on perpustakaan_buku.kode_buku=perpustakaan_buku.kode_buku and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                    + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                    + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                    + "where perpustakaan_buku.kode_buku like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_buku.judul_buku like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_inventaris.no_inventaris like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_inventaris.asal_buku like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_inventaris.tgl_pengadaan like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_inventaris.status_buku like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_ruang.nm_ruang like '%" + TCari.getText().
+                            trim() + "%' "
+                    + "or perpustakaan_buku.jml_halaman like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_buku.judul_buku like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_pengarang.nama_pengarang like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_buku.thn_terbit like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_buku.isbn like '%" + TCari.getText().
+                            trim() + "%' "
+                    + "or perpustakaan_kategori.nama_kategori like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_jenis_buku.nama_jenis like '%" + TCari.
+                            getText().trim() + "%' order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris",
+                    param);
         }
-        this.setCursor(Cursor.getDefaultCursor());
+    }
+    this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_ppBarcodeBtnPrintActionPerformed
 
     private void btnRuang1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRuang1ActionPerformed
-        pilihan=2;
+        pilihan = 2;
         ruang.isCek();
-        ruang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        ruang.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         ruang.setLocationRelativeTo(internalFrame1);
         ruang.setAlwaysOnTop(false);
         ruang.setVisible(true);
     }//GEN-LAST:event_btnRuang1ActionPerformed
 
     private void tbJnsPerawatanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1188,16 +1347,18 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
     }//GEN-LAST:event_tbJnsPerawatanKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanInventaris dialog = new PerpustakaanInventaris(new javax.swing.JFrame(), true);
+            PerpustakaanInventaris dialog = new PerpustakaanInventaris(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1269,101 +1430,112 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
     public void tampil() {
         try {
             Valid.tabelKosong(tabMode);
-            if(TCari.getText().isEmpty()&&nm_ruangcari.getText().isEmpty()){
-                ps=koneksi.prepareStatement("select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                        "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn,"+
-                        "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan,"+
-                        "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                        "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_penerbit inner join perpustakaan_ruang "+
-                        "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                        "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                        "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                        "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                        " order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris");
-            }else{
-                ps=koneksi.prepareStatement("select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-                        "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn,"+
-                        "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan,"+
-                        "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "+
-                        "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_penerbit inner join perpustakaan_ruang "+
-                        "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-                        "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-                        "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-                        "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "+
-                        "where perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.kode_buku like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.judul_buku like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.no_inventaris like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.asal_buku like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.tgl_pengadaan like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.status_buku like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_ruang.nm_ruang like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.jml_halaman like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.judul_buku like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_pengarang.nama_pengarang like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.thn_terbit like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.isbn like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_kategori.nama_kategori like ? "+
-                         "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_jenis_buku.nama_jenis like ? order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris");
+            if (TCari.getText().isEmpty() && nm_ruangcari.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn,"
+                        + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan,"
+                        + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                        + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_penerbit inner join perpustakaan_ruang "
+                        + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                        + "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                        + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                        + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                        + " order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select perpustakaan_inventaris.no_inventaris,perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                        + "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn,"
+                        + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis,perpustakaan_inventaris.asal_buku,perpustakaan_inventaris.tgl_pengadaan,"
+                        + "perpustakaan_inventaris.harga,perpustakaan_inventaris.status_buku,perpustakaan_ruang.nm_ruang,perpustakaan_inventaris.no_rak,perpustakaan_inventaris.no_box "
+                        + "from perpustakaan_inventaris inner join perpustakaan_buku inner join perpustakaan_penerbit inner join perpustakaan_ruang "
+                        + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                        + "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                        + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                        + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_inventaris.kd_ruang=perpustakaan_ruang.kd_ruang "
+                        + "where perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.kode_buku like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.judul_buku like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.no_inventaris like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.asal_buku like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.tgl_pengadaan like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_inventaris.status_buku like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_ruang.nm_ruang like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.jml_halaman like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.judul_buku like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_pengarang.nama_pengarang like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.thn_terbit like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_buku.isbn like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_kategori.nama_kategori like ? "
+                        + "or perpustakaan_ruang.nm_ruang like ? and perpustakaan_jenis_buku.nama_jenis like ? order by perpustakaan_buku.kode_buku,perpustakaan_inventaris.no_inventaris");
             }
-                
-            try{ 
-                if(TCari.getText().isEmpty()&&nm_ruangcari.getText().isEmpty()){}else{
-                    ps.setString(1,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(2,"%"+TCari.getText().trim()+"%");
-                    ps.setString(3,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
-                    ps.setString(5,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(6,"%"+TCari.getText().trim()+"%");
-                    ps.setString(7,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(8,"%"+TCari.getText().trim()+"%");
-                    ps.setString(9,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(10,"%"+TCari.getText().trim()+"%");
-                    ps.setString(11,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(12,"%"+TCari.getText().trim()+"%");
-                    ps.setString(13,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(14,"%"+TCari.getText().trim()+"%");
-                    ps.setString(15,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(16,"%"+TCari.getText().trim()+"%");
-                    ps.setString(17,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(18,"%"+TCari.getText().trim()+"%");
-                    ps.setString(19,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(20,"%"+TCari.getText().trim()+"%");
-                    ps.setString(21,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(22,"%"+TCari.getText().trim()+"%");
-                    ps.setString(23,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(24,"%"+TCari.getText().trim()+"%");
-                    ps.setString(25,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(26,"%"+TCari.getText().trim()+"%");
-                    ps.setString(27,"%"+nm_ruangcari.getText().trim()+"%");
-                    ps.setString(28,"%"+TCari.getText().trim()+"%");
+
+            try {
+                if (TCari.getText().isEmpty() && nm_ruangcari.getText().
+                        isEmpty()) {
+                } else {
+                    ps.setString(1, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(2, "%" + TCari.getText().trim() + "%");
+                    ps.setString(3, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                    ps.setString(5, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(6, "%" + TCari.getText().trim() + "%");
+                    ps.setString(7, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(8, "%" + TCari.getText().trim() + "%");
+                    ps.setString(9, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(10, "%" + TCari.getText().trim() + "%");
+                    ps.setString(11, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(12, "%" + TCari.getText().trim() + "%");
+                    ps.setString(13, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(14, "%" + TCari.getText().trim() + "%");
+                    ps.setString(15, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(16, "%" + TCari.getText().trim() + "%");
+                    ps.setString(17, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(18, "%" + TCari.getText().trim() + "%");
+                    ps.setString(19, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(20, "%" + TCari.getText().trim() + "%");
+                    ps.setString(21, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(22, "%" + TCari.getText().trim() + "%");
+                    ps.setString(23, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(24, "%" + TCari.getText().trim() + "%");
+                    ps.setString(25, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(26, "%" + TCari.getText().trim() + "%");
+                    ps.setString(27, "%" + nm_ruangcari.getText().trim() + "%");
+                    ps.setString(28, "%" + TCari.getText().trim() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                nilai_inven=0;
-                while(rs.next()){
+
+                rs = ps.executeQuery();
+                nilai_inven = 0;
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_inventaris"),rs.getString("kode_buku"),rs.getString("judul_buku"),
-                        rs.getString("nama_penerbit"),rs.getString("nama_pengarang"),rs.getString("thn_terbit").substring(0,4),
-                        rs.getString("isbn"),rs.getString("nama_kategori"),rs.getString("nama_jenis"),
-                        rs.getString("asal_buku"),rs.getString("tgl_pengadaan"),rs.getString("harga"),
-                        rs.getString("status_buku"),rs.getString("nm_ruang"),rs.getString("no_rak"),rs.getString("no_box")
+                        rs.getString("no_inventaris"), rs.getString("kode_buku"),
+                        rs.getString("judul_buku"),
+                        rs.getString("nama_penerbit"), rs.getString(
+                        "nama_pengarang"), rs.getString("thn_terbit").substring(
+                        0, 4),
+                        rs.getString("isbn"), rs.getString("nama_kategori"), rs.
+                        getString("nama_jenis"),
+                        rs.getString("asal_buku"), rs.getString("tgl_pengadaan"),
+                        rs.getString("harga"),
+                        rs.getString("status_buku"), rs.getString("nm_ruang"),
+                        rs.getString("no_rak"), rs.getString("no_box")
                     });
                     nilai_inven += rs.getDouble("harga");
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount.setText(tabMode.getRowCount()+" | "+Valid.SetAngka(nilai_inven));
+            LCount.setText(tabMode.getRowCount() + " | " + Valid.SetAngka(
+                    nilai_inven));
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        }        
+            System.out.println("Notif : " + e);
+        }
     }
 
     /**
@@ -1387,78 +1559,97 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
         no_box.setSelectedIndex(0);
         TCari.setText("");
         no_inventaris.requestFocus();
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(no_inventaris,8),signed)),0) from perpustakaan_inventaris  ","IP",8,no_inventaris);
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(no_inventaris,8),signed)),0) from perpustakaan_inventaris  ",
+                "IP", 8, no_inventaris);
         no_inventaris.requestFocus();
     }
 
     private void getData() {
-        if(tbJnsPerawatan.getSelectedRow()!= -1){
-                no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString());
-                kode_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
-                judul_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString());
-                nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
-                nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
-                nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
-                nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),8).toString());
-                asal_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),9).toString());
-                Valid.SetTgl(tgl_pengadaan,tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),10).toString());
-                harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),11).toString());
-                status_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),12).toString());
-                Sequel.cariIsi("select perpustakaan_inventaris.kd_ruang from perpustakaan_inventaris where perpustakaan_inventaris.no_inventaris='"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString()+"'",kd_ruang);
-                nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),13).toString());
-                no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),14).toString());
-                no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),15).toString());        
-          }
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 0).toString());
+            kode_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 1).toString());
+            judul_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 2).toString());
+            nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 3).toString());
+            nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 4).toString());
+            nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 7).toString());
+            nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 8).toString());
+            asal_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 9).toString());
+            Valid.SetTgl(tgl_pengadaan, tbJnsPerawatan.getValueAt(
+                    tbJnsPerawatan.getSelectedRow(), 10).toString());
+            harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 11).toString());
+            status_buku.setSelectedItem(tbJnsPerawatan.getValueAt(
+                    tbJnsPerawatan.getSelectedRow(), 12).toString());
+            Sequel.cariIsi(
+                    "select perpustakaan_inventaris.kd_ruang from perpustakaan_inventaris where perpustakaan_inventaris.no_inventaris='" + tbJnsPerawatan.
+                            getValueAt(tbJnsPerawatan.getSelectedRow(), 0).
+                            toString() + "'", kd_ruang);
+            nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 13).toString());
+            no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 14).toString());
+            no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 15).toString());
+        }
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbJnsPerawatan;
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,155));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 155));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getinventaris_perpustakaan());
         BtnHapus.setEnabled(akses.getinventaris_perpustakaan());
         BtnEdit.setEnabled(akses.getinventaris_perpustakaan());
         TCari.requestFocus();
     }
-    
-    private void isBarang(){
-        try {                    
-            ps=koneksi.prepareStatement(
-               "select perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "+
-               "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang,"+
-               "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis "+
-               "from perpustakaan_buku inner join perpustakaan_penerbit "+
-               "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "+
-               "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit "+
-               "and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "+
-               "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori "+
-               "and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "+
-               "where perpustakaan_buku.kode_buku=?");
+
+    private void isBarang() {
+        try {
+            ps = koneksi.prepareStatement(
+                    "select perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+                    + "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang,"
+                    + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis "
+                    + "from perpustakaan_buku inner join perpustakaan_penerbit "
+                    + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
+                    + "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit "
+                    + "and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
+                    + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori "
+                    + "and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
+                    + "where perpustakaan_buku.kode_buku=?");
             try {
-                ps.setString(1,kode_buku.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, kode_buku.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     judul_buku.setText(rs.getString("judul_buku"));
                     nm_produsen.setText(rs.getString("nama_penerbit"));
                     nm_merk.setText(rs.getString("nama_pengarang"));
                     nm_kategori.setText(rs.getString("nama_kategori"));
                     nm_jenis.setText(rs.getString("nama_jenis"));
-                }else{
+                } else {
                     judul_buku.setText("");
                     nm_produsen.setText("");
                     nm_merk.setText("");
@@ -1466,19 +1657,21 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                     nm_jenis.setText("");
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
-    }   
+    }
 
-    
+    private static final Logger LOG = Logger.getLogger(
+            PerpustakaanInventaris.class.getName());
+
 }

@@ -1,120 +1,141 @@
-
-
 package keuangan;
 
-import bridging.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import bridging.ApiBRI;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgLhtBRIVA extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private double total=0;
-    private ApiBRI apibri=new ApiBRI();
+    private double total = 0;
+    private ApiBRI apibri = new ApiBRI();
 
-    /** Creates new form DlgLhtBiaya
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgLhtBRIVA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] rowRwJlDr={
-            "No.RM","Nama Pasien","Alamat","J.K.","Tgl.Lahir","Registrasi","No.Nota/Tagihan","Besar Bayar",
-            "Keterangan","Status Keperluan","Closing","Status Bayar","Kasir/User","Diverif Bank","Referensi"
+        Object[] rowRwJlDr = {
+            "No.RM", "Nama Pasien", "Alamat", "J.K.", "Tgl.Lahir", "Registrasi",
+            "No.Nota/Tagihan", "Besar Bayar",
+            "Keterangan", "Status Keperluan", "Closing", "Status Bayar",
+            "Kasir/User", "Diverif Bank", "Referensi"
         };
-        tabMode=new DefaultTableModel(null,rowRwJlDr){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, rowRwJlDr) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbBangsal.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 15; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(150);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(30);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(65);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(65);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(110);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(110);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(150);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(110);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(65);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(70);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(100);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(120);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(200);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)20).getKata(TKd));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
-            });
-        }  
-        
-        DlgSinkron.setSize(330,115);
-    }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+        DlgSinkron.setSize(330, 115);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -385,32 +406,47 @@ public class DlgLhtBRIVA extends javax.swing.JDialog {
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptBRIVA.jasper","report","::[ Data Pembayaran BRI Virtual Account ]::",
-               "select * from tagihan_briva where tagihan_briva.tgl_closing between '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"' "+
-               (TCari.getText().isEmpty()?"":"and (tagihan_briva.no_rkm_medis like '%"+TCari.getText().trim()+"%' or tagihan_briva.nm_pasien like '%"+TCari.getText().trim()+"%' or "+
-               "tagihan_briva.no_tagihan like '%"+TCari.getText().trim()+"%' or tagihan_briva.referensi like '%"+TCari.getText().trim()+"%' or tagihan_briva.no_rawat like '%"+TCari.getText().trim()+"%' or "+
-               "tagihan_briva.status_tagihan like '%"+TCari.getText().trim()+"%' or tagihan_briva.status_bayar like '%"+TCari.getText().trim()+"%' or tagihan_briva.kasir like '%"+TCari.getText().trim()+"%' or "+
-               "tagihan_briva.keterangan like '%"+TCari.getText().trim()+"%') ")+" order by tagihan_briva.tgl_closing",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptBRIVA.jasper", "report",
+                    "::[ Data Pembayaran BRI Virtual Account ]::",
+                    "select * from tagihan_briva where tagihan_briva.tgl_closing between '" + Valid.
+                            SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                    + (TCari.getText().isEmpty() ? "" : "and (tagihan_briva.no_rkm_medis like '%" + TCari.
+                    getText().trim() + "%' or tagihan_briva.nm_pasien like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "tagihan_briva.no_tagihan like '%" + TCari.getText().
+                            trim() + "%' or tagihan_briva.referensi like '%" + TCari.
+                            getText().trim() + "%' or tagihan_briva.no_rawat like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "tagihan_briva.status_tagihan like '%" + TCari.getText().
+                            trim() + "%' or tagihan_briva.status_bayar like '%" + TCari.
+                            getText().trim() + "%' or tagihan_briva.kasir like '%" + TCari.
+                            getText().trim() + "%' or "
+                    + "tagihan_briva.keterangan like '%" + TCari.getText().
+                            trim() + "%') ") + " order by tagihan_briva.tgl_closing",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -421,9 +457,11 @@ public class DlgLhtBRIVA extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,TKd);}
+        } else {
+            Valid.pindah(evt, BtnAll, TKd);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
@@ -433,33 +471,33 @@ public class DlgLhtBRIVA extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
 private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            BtnKeluar.requestFocus();
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        BtnCariActionPerformed(null);
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+        BtnCari.requestFocus();
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+        BtnKeluar.requestFocus();
+    }
 }//GEN-LAST:event_TCariKeyPressed
 
 private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+    tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
 private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            tampil();
-        }else{
-            Valid.pindah(evt, TKd, BtnAll);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        tampil();
+    } else {
+        Valid.pindah(evt, TKd, BtnAll);
+    }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -476,7 +514,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }//GEN-LAST:event_BtnPrint1KeyPressed
 
     private void BtnPrint2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint2ActionPerformed
-        apibri.sinkronVA(Valid.SetTgl(TglMulai.getSelectedItem()+""),Valid.SetTgl(TglAkhir.getSelectedItem()+""));
+        apibri.sinkronVA(Valid.SetTgl(TglMulai.getSelectedItem() + ""), Valid.
+                SetTgl(TglAkhir.getSelectedItem() + ""));
     }//GEN-LAST:event_BtnPrint2ActionPerformed
 
     private void BtnKeluar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluar2ActionPerformed
@@ -484,8 +523,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }//GEN-LAST:event_BtnKeluar2ActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgLhtBRIVA dialog = new DlgLhtBRIVA(new javax.swing.JFrame(), true);
@@ -494,6 +533,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -528,54 +568,66 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Table tbBangsal;
     // End of variables declaration//GEN-END:variables
 
-    public void tampil(){
+    public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select * from tagihan_briva where tagihan_briva.tgl_closing between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (tagihan_briva.no_rkm_medis like ? or tagihan_briva.nm_pasien like ? or "+
-                   "tagihan_briva.no_tagihan like ? or tagihan_briva.referensi like ? or tagihan_briva.status_tagihan like ? or "+
-                   "tagihan_briva.status_bayar like ? or tagihan_briva.kasir like ? or tagihan_briva.keterangan like ?) ")+
-                   "order by tagihan_briva.tgl_closing");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select * from tagihan_briva where tagihan_briva.tgl_closing between ? and ? "
+                    + (TCari.getText().isEmpty() ? "" : "and (tagihan_briva.no_rkm_medis like ? or tagihan_briva.nm_pasien like ? or "
+                    + "tagihan_briva.no_tagihan like ? or tagihan_briva.referensi like ? or tagihan_briva.status_tagihan like ? or "
+                    + "tagihan_briva.status_bayar like ? or tagihan_briva.kasir like ? or tagihan_briva.keterangan like ?) ")
+                    + "order by tagihan_briva.tgl_closing");
             try {
-                ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                if(!TCari.getText().trim().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
-                    ps.setString(5,"%"+TCari.getText().trim()+"%");
-                    ps.setString(6,"%"+TCari.getText().trim()+"%");
-                    ps.setString(7,"%"+TCari.getText().trim()+"%");
-                    ps.setString(8,"%"+TCari.getText().trim()+"%");
-                    ps.setString(9,"%"+TCari.getText().trim()+"%");
-                    ps.setString(10,"%"+TCari.getText().trim()+"%");
+                ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                if (!TCari.getText().trim().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                    ps.setString(5, "%" + TCari.getText().trim() + "%");
+                    ps.setString(6, "%" + TCari.getText().trim() + "%");
+                    ps.setString(7, "%" + TCari.getText().trim() + "%");
+                    ps.setString(8, "%" + TCari.getText().trim() + "%");
+                    ps.setString(9, "%" + TCari.getText().trim() + "%");
+                    ps.setString(10, "%" + TCari.getText().trim() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                total=0;
-                while(rs.next()){
+
+                rs = ps.executeQuery();
+                total = 0;
+                while (rs.next()) {
                     total += rs.getDouble("besar_bayar");
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("alamat"),rs.getString("jk"),rs.getString("tgl_lahir"),rs.getString("tgl_registrasi"),rs.getString("no_tagihan"),rs.getString("besar_bayar"),rs.getString("keterangan"),rs.getString("status_tagihan"),rs.getString("tgl_closing"),rs.getString("status_bayar"),rs.getString("kasir"),rs.getString("diupdatebank"),rs.getString("referensi")
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("alamat"), rs.getString("jk"), rs.
+                        getString("tgl_lahir"), rs.getString("tgl_registrasi"),
+                        rs.getString("no_tagihan"), rs.getString("besar_bayar"),
+                        rs.getString("keterangan"), rs.getString(
+                        "status_tagihan"), rs.getString("tgl_closing"), rs.
+                        getString("status_bayar"), rs.getString("kasir"), rs.
+                        getString("diupdatebank"), rs.getString("referensi")
                     });
                 }
-                if(total>0){
+                if (total > 0) {
                     tabMode.addRow(new Object[]{
-                        "Total :","","","","","","",Valid.SetAngka(total),"","","","","","",""
+                        "Total :", "", "", "", "", "", "", Valid.SetAngka(total),
+                        "", "", "", "", "", "", ""
                     });
                 }
             } catch (Exception e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgLhtBRIVA.class.
+            getName());
 
 }

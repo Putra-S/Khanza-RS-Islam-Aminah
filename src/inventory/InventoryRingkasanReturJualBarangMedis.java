@@ -1,207 +1,291 @@
 package inventory;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import kepegawaian.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    public  DlgCariPetugas petugas=new DlgCariPetugas(null,false);
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
 
     /**
      *
      */
-    public  DlgBarang barang=new DlgBarang(null,false);
-    private double ttlretur=0;
-    private Connection koneksi=koneksiDB.condb();
+    public DlgBarang barang = new DlgBarang(null, false);
+    private double ttlretur = 0;
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String tanggal="",noret="",ptg="",sat="",bar="",nonot=""; 
-    private String order="order by databarang.nama_brng";
-    private int i=0;
+    private String tanggal = "", noret = "", ptg = "", sat = "", bar = "", nonot = "";
+    private String order = "order by databarang.nama_brng";
+    private int i = 0;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
-    public InventoryRingkasanReturJualBarangMedis(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     */
+    public InventoryRingkasanReturJualBarangMedis(java.awt.Frame parent,
+            boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        Object[] row={"Kode Barang","Nama Barang","Satuan","Jenis","Jumlah","Total","Kode Sat"};
-        tabMode=new DefaultTableModel(null,row){
-             Class[] types = new Class[] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             /*Class[] types = new Class[] {
+
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
+            "Jumlah", "Total", "Kode Sat"};
+        tabMode = new DefaultTableModel(null, row) {
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Object.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            /*Class[] types = new Class[] {
                 java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
              };*/
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbRetur.setModel(tabMode);
 
-        tbRetur.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbRetur.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbRetur.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbRetur.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(95);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(280);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(140);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(70);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
         tbRetur.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoRetur.setDocument(new batasInput((byte)25).getKata(NoRetur));
-        NoNota.setDocument(new batasInput((byte)25).getKata(NoNota));
-        Kdptg.setDocument(new batasInput((byte)25).getKata(Kdptg));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        NoRetur.setDocument(new batasInput((byte) 25).getKata(NoRetur));
+        NoNota.setDocument(new batasInput((byte) 25).getKata(NoNota));
+        Kdptg.setDocument(new batasInput((byte) 25).getKata(Kdptg));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(akses.getform().equals("DlgCariReturJual")){
-                    if(petugas.getTable().getSelectedRow()!= -1){                   
-                        Kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                        Nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());
-                    }  
+                if (akses.getform().equals("DlgCariReturJual")) {
+                    if (petugas.getTable().getSelectedRow() != -1) {
+                        Kdptg.setText(petugas.getTable().getValueAt(petugas.
+                                getTable().getSelectedRow(), 0).toString());
+                        Nmptg.setText(petugas.getTable().getValueAt(petugas.
+                                getTable().getSelectedRow(), 1).toString());
+                    }
                     Kdptg.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         barang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(akses.getform().equals("DlgCariReturJual")){
-                    if(barang.getTable().getSelectedRow()!= -1){                   
-                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),1).toString());                    
-                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(),2).toString());
-                    }    
+                if (akses.getform().equals("DlgCariReturJual")) {
+                    if (barang.getTable().getSelectedRow() != -1) {
+                        kdbar.setText(barang.getTable().getValueAt(barang.
+                                getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.
+                                getTable().getSelectedRow(), 2).toString());
+                    }
                     kdbar.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         barang.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(akses.getform().equals("DlgCariReturJual")){
-                    if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (akses.getform().equals("DlgCariReturJual")) {
+                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                         barang.dispose();
-                    } 
+                    }
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         barang.jenis.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(akses.getform().equals("DlgCariReturBeli")){
-                    if(barang.jenis.getTable().getSelectedRow()!= -1){                          
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(),0).toString());                    
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(),1).toString());                        
-                    }                    
+                if (akses.getform().equals("DlgCariReturBeli")) {
+                    if (barang.jenis.getTable().getSelectedRow() != -1) {
+                        kdjenis.setText(barang.jenis.getTable().getValueAt(
+                                barang.jenis.getTable().getSelectedRow(), 0).
+                                toString());
+                        nmjenis.setText(barang.jenis.getTable().getValueAt(
+                                barang.jenis.getTable().getSelectedRow(), 1).
+                                toString());
+                    }
                     kdjenis.requestFocus();
-                }                   
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -777,16 +861,17 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tbReturKeyPressed(java.awt.event.KeyEvent evt) {                                    
-        
-}
+    private void tbReturKeyPressed(java.awt.event.KeyEvent evt) {
+
+    }
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         akses.setform("DlgCariReturJual");
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         petugas.emptTeks();
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setVisible(true);
         petugas.setAlwaysOnTop(false);
@@ -798,15 +883,15 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_NoReturKeyPressed
 
     private void KdptgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdptgKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Nmptg.setText(petugas.tampil3(Kdptg.getText()));       
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Nmptg.setText(petugas.tampil3(Kdptg.getText()));
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Nmptg.setText(petugas.tampil3(Kdptg.getText()));
             TglRetur1.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Nmptg.setText(petugas.tampil3(Kdptg.getText()));
-            NoNota.requestFocus();   
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+            NoNota.requestFocus();
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnPetugasActionPerformed(null);
         }
     }//GEN-LAST:event_KdptgKeyPressed
@@ -816,11 +901,11 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_NoNotaKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -830,9 +915,9 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -848,84 +933,108 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());  
-            param.put("tanggal1",Valid.SetTgl(TglRetur1.getSelectedItem()+""));  
-            param.put("tanggal2",Valid.SetTgl(TglRetur2.getSelectedItem()+""));  
-            param.put("parameter","%"+TCari.getText().trim()+"%");   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            tanggal=" returjual.tgl_retur between '"+Valid.SetTgl(TglRetur1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglRetur2.getSelectedItem()+"")+"' ";
-            noret="";ptg="";sat="";bar="";nonot="";     
-            if(!NoRetur.getText().isEmpty()){
-                noret=" and returjual.no_retur_jual='"+NoRetur.getText()+"' ";
-            } 
-
-            if(!Nmptg.getText().isEmpty()){
-                ptg=" and petugas.nama='"+Nmptg.getText()+"' ";
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.
+                    put("tanggal1", Valid.SetTgl(
+                            TglRetur1.getSelectedItem() + ""));
+            param.
+                    put("tanggal2", Valid.SetTgl(
+                            TglRetur2.getSelectedItem() + ""));
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            tanggal = " returjual.tgl_retur between '" + Valid.SetTgl(TglRetur1.
+                    getSelectedItem() + "") + "' and '" + Valid.SetTgl(
+                            TglRetur2.getSelectedItem() + "") + "' ";
+            noret = "";
+            ptg = "";
+            sat = "";
+            bar = "";
+            nonot = "";
+            if (!NoRetur.getText().isEmpty()) {
+                noret = " and returjual.no_retur_jual='" + NoRetur.getText() + "' ";
             }
 
-            if(!nmjenis.getText().isEmpty()){
-                sat=" and jenis.nama='"+nmjenis.getText()+"' ";
+            if (!Nmptg.getText().isEmpty()) {
+                ptg = " and petugas.nama='" + Nmptg.getText() + "' ";
             }
 
-            if(!nmbar.getText().isEmpty()){
-                bar=" and databarang.nama_brng='"+nmbar.getText()+"' ";
+            if (!nmjenis.getText().isEmpty()) {
+                sat = " and jenis.nama='" + nmjenis.getText() + "' ";
             }
 
-            if(!NoNota.getText().isEmpty()){
-                nonot=" and detreturjual.nota_jual='"+NoNota.getText()+"' ";
+            if (!nmbar.getText().isEmpty()) {
+                bar = " and databarang.nama_brng='" + nmbar.getText() + "' ";
             }
-            Valid.MyReportqry("rptRingkasanReturJualObat.jasper","report","::[ Laporan Ringkasan Retur Dari Pembeli Obat/Alkes/BHP Medis ]::",
-                    "select detreturjual.kode_brng,databarang.nama_brng,jenis.nama as namajenis, "+
-                    "detreturjual.kode_sat,kodesatuan.satuan,sum(detreturjual.jml_retur) as jumlah, "+
-                    "sum(detreturjual.subtotal) as total "+
-                    " from returjual inner join petugas inner join pasien inner join bangsal "+
-                    " inner join detreturjual inner join databarang inner join kodesatuan inner join jenis "+
-                    " on detreturjual.kode_brng=databarang.kode_brng "+
-                    " and returjual.kd_bangsal=bangsal.kd_bangsal "+
-                    " and returjual.no_rkm_medis=pasien.no_rkm_medis "+
-                    " and detreturjual.kode_sat=kodesatuan.kode_sat "+
-                    " and returjual.no_retur_jual=detreturjual.no_retur_jual "+
-                    " and returjual.nip=petugas.nip and databarang.kdjns=jenis.kdjns  "+
-                    " where "+tanggal+noret+ptg+sat+bar+nonot+" and returjual.no_retur_jual like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and returjual.nip like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and petugas.nama like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.kode_brng like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and databarang.nama_brng like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and pasien.no_rkm_medis like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and pasien.nm_pasien like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and bangsal.nm_bangsal like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.nota_jual like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and kodesatuan.satuan like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.kode_sat like '%"+TCari.getText()+"%' "+
-                    " group by detreturjual.kode_brng "+order,param); 
+
+            if (!NoNota.getText().isEmpty()) {
+                nonot = " and detreturjual.nota_jual='" + NoNota.getText() + "' ";
+            }
+            Valid.MyReportqry("rptRingkasanReturJualObat.jasper", "report",
+                    "::[ Laporan Ringkasan Retur Dari Pembeli Obat/Alkes/BHP Medis ]::",
+                    "select detreturjual.kode_brng,databarang.nama_brng,jenis.nama as namajenis, "
+                    + "detreturjual.kode_sat,kodesatuan.satuan,sum(detreturjual.jml_retur) as jumlah, "
+                    + "sum(detreturjual.subtotal) as total "
+                    + " from returjual inner join petugas inner join pasien inner join bangsal "
+                    + " inner join detreturjual inner join databarang inner join kodesatuan inner join jenis "
+                    + " on detreturjual.kode_brng=databarang.kode_brng "
+                    + " and returjual.kd_bangsal=bangsal.kd_bangsal "
+                    + " and returjual.no_rkm_medis=pasien.no_rkm_medis "
+                    + " and detreturjual.kode_sat=kodesatuan.kode_sat "
+                    + " and returjual.no_retur_jual=detreturjual.no_retur_jual "
+                    + " and returjual.nip=petugas.nip and databarang.kdjns=jenis.kdjns  "
+                    + " where " + tanggal + noret + ptg + sat + bar + nonot + " and returjual.no_retur_jual like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and returjual.nip like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and petugas.nama like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.kode_brng like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and databarang.nama_brng like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and pasien.no_rkm_medis like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and pasien.nm_pasien like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and bangsal.nm_bangsal like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.nota_jual like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and kodesatuan.satuan like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.kode_sat like '%" + TCari.
+                            getText() + "%' "
+                    + " group by detreturjual.kode_brng " + order, param);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnAll,BtnAll);
+        } else {
+            Valid.pindah(evt, BtnAll, BtnAll);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -934,9 +1043,11 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,kdbar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, kdbar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void nmjenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nmjenisKeyPressed
@@ -947,7 +1058,8 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
         akses.setform("DlgCariReturJual");
         barang.jenis.emptTeks();
         barang.jenis.isCek();
-        barang.jenis.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        barang.jenis.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         barang.jenis.setLocationRelativeTo(internalFrame1);
         barang.jenis.setAlwaysOnTop(false);
         barang.jenis.setVisible(true);
@@ -957,14 +1069,15 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
         akses.setform("DlgCariReturJual");
         barang.emptTeks();
         barang.isCek();
-        barang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        barang.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         barang.setLocationRelativeTo(internalFrame1);
         barang.setAlwaysOnTop(false);
         barang.setVisible(true);
     }//GEN-LAST:event_btnBarangActionPerformed
 
     private void TglRetur1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglRetur1KeyPressed
-        Valid.pindah(evt,NoNota,Kdptg);
+        Valid.pindah(evt, NoNota, Kdptg);
     }//GEN-LAST:event_TglRetur1KeyPressed
 
     private void TglRetur2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglRetur2KeyPressed
@@ -976,76 +1089,78 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     }//GEN-LAST:event_formWindowOpened
 
     private void MnKodeBarangDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKodeBarangDescActionPerformed
-        order="order by databarang.kode_brng desc";
+        order = "order by databarang.kode_brng desc";
         tampil();
     }//GEN-LAST:event_MnKodeBarangDescActionPerformed
 
     private void MnKodeBarangAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKodeBarangAscActionPerformed
-        order="order by databarang.kode_brng asc";
+        order = "order by databarang.kode_brng asc";
         tampil();
     }//GEN-LAST:event_MnKodeBarangAscActionPerformed
 
     private void MnNamaBarangDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnNamaBarangDescActionPerformed
-        order="order by databarang.nama_brng desc";
+        order = "order by databarang.nama_brng desc";
         tampil();
     }//GEN-LAST:event_MnNamaBarangDescActionPerformed
 
     private void MnNamaBarangAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnNamaBarangAscActionPerformed
-        order="order by databarang.nama_brng asc";
+        order = "order by databarang.nama_brng asc";
         tampil();
     }//GEN-LAST:event_MnNamaBarangAscActionPerformed
 
     private void MnKategoriAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKategoriAscActionPerformed
-        order="order by jenis.nama desc";
+        order = "order by jenis.nama desc";
         tampil();
     }//GEN-LAST:event_MnKategoriAscActionPerformed
 
     private void MnKategoriDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKategoriDescActionPerformed
-        order="order by jenis.nama asc";
+        order = "order by jenis.nama asc";
         tampil();
     }//GEN-LAST:event_MnKategoriDescActionPerformed
 
     private void MnSatuanDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSatuanDescActionPerformed
-        order="order by databarang.kode_sat desc";
+        order = "order by databarang.kode_sat desc";
         tampil();
     }//GEN-LAST:event_MnSatuanDescActionPerformed
 
     private void MnSatuanAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSatuanAscActionPerformed
-        order="order by databarang.kode_sat asc";
+        order = "order by databarang.kode_sat asc";
         tampil();
     }//GEN-LAST:event_MnSatuanAscActionPerformed
 
     private void MnTotalAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTotalAscActionPerformed
-        order="order by sum(detreturjual.subtotal) asc";
+        order = "order by sum(detreturjual.subtotal) asc";
         tampil();
     }//GEN-LAST:event_MnTotalAscActionPerformed
 
     private void MnTotalDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTotalDescActionPerformed
-        order="order by sum(detreturjual.subtotal) desc";
+        order = "order by sum(detreturjual.subtotal) desc";
         tampil();
     }//GEN-LAST:event_MnTotalDescActionPerformed
 
     private void MnJumlahAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnJumlahAscActionPerformed
-        order="order by sum(detreturjual.jml_retur) asc";
+        order = "order by sum(detreturjual.jml_retur) asc";
         tampil();
     }//GEN-LAST:event_MnJumlahAscActionPerformed
 
     private void MnJumlahDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnJumlahDescActionPerformed
-        order="order by sum(detreturjual.jml_retur) desc";
+        order = "order by sum(detreturjual.jml_retur) desc";
         tampil();
     }//GEN-LAST:event_MnJumlahDescActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryRingkasanReturJualBarangMedis dialog = new InventoryRingkasanReturJualBarangMedis(new javax.swing.JFrame(), true);
+            InventoryRingkasanReturJualBarangMedis dialog = new InventoryRingkasanReturJualBarangMedis(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1103,84 +1218,107 @@ public class InventoryRingkasanReturJualBarangMedis extends javax.swing.JDialog 
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal=" returjual.tgl_retur between '"+Valid.SetTgl(TglRetur1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(TglRetur2.getSelectedItem()+"")+"' ";
-        noret="";ptg="";sat="";bar="";nonot="";     
-        if(!NoRetur.getText().isEmpty()){
-            noret=" and returjual.no_retur_jual='"+NoRetur.getText()+"' ";
-        } 
-        
-        if(!Nmptg.getText().isEmpty()){
-            ptg=" and petugas.nama='"+Nmptg.getText()+"' ";
+        tanggal = " returjual.tgl_retur between '" + Valid.SetTgl(TglRetur1.
+                getSelectedItem() + "") + "' and '" + Valid.SetTgl(TglRetur2.
+                        getSelectedItem() + "") + "' ";
+        noret = "";
+        ptg = "";
+        sat = "";
+        bar = "";
+        nonot = "";
+        if (!NoRetur.getText().isEmpty()) {
+            noret = " and returjual.no_retur_jual='" + NoRetur.getText() + "' ";
         }
-        
-        if(!nmjenis.getText().isEmpty()){
-            sat=" and jenis.nama='"+nmjenis.getText()+"' ";
+
+        if (!Nmptg.getText().isEmpty()) {
+            ptg = " and petugas.nama='" + Nmptg.getText() + "' ";
         }
-        
-        if(!nmbar.getText().isEmpty()){
-            bar=" and databarang.nama_brng='"+nmbar.getText()+"' ";
+
+        if (!nmjenis.getText().isEmpty()) {
+            sat = " and jenis.nama='" + nmjenis.getText() + "' ";
         }
-     
-        if(!NoNota.getText().isEmpty()){
-            nonot=" and detreturjual.nota_jual='"+NoNota.getText()+"' ";
+
+        if (!nmbar.getText().isEmpty()) {
+            bar = " and databarang.nama_brng='" + nmbar.getText() + "' ";
+        }
+
+        if (!NoNota.getText().isEmpty()) {
+            nonot = " and detreturjual.nota_jual='" + NoNota.getText() + "' ";
         }
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select detreturjual.kode_brng,databarang.nama_brng,jenis.nama as namajenis, "+
-                    "detreturjual.kode_sat,kodesatuan.satuan,sum(detreturjual.jml_retur) as jumlah, "+
-                    "sum(detreturjual.subtotal) as total "+
-                    " from returjual inner join petugas inner join pasien inner join bangsal "+
-                    " inner join detreturjual inner join databarang inner join kodesatuan inner join jenis "+
-                    " on detreturjual.kode_brng=databarang.kode_brng "+
-                    " and returjual.kd_bangsal=bangsal.kd_bangsal "+
-                    " and returjual.no_rkm_medis=pasien.no_rkm_medis "+
-                    " and detreturjual.kode_sat=kodesatuan.kode_sat "+
-                    " and returjual.no_retur_jual=detreturjual.no_retur_jual "+
-                    " and returjual.nip=petugas.nip and databarang.kdjns=jenis.kdjns  "+
-                    " where "+tanggal+noret+ptg+sat+bar+nonot+" and returjual.no_retur_jual like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and returjual.nip like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and petugas.nama like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.kode_brng like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and databarang.nama_brng like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and pasien.no_rkm_medis like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and pasien.nm_pasien like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and bangsal.nm_bangsal like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.nota_jual like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and kodesatuan.satuan like '%"+TCari.getText()+"%' or "+
-                    tanggal+noret+ptg+sat+bar+nonot+" and detreturjual.kode_sat like '%"+TCari.getText()+"%' "+
-                    " group by detreturjual.kode_brng "+order);
+        try {
+            ps = koneksi.prepareStatement(
+                    "select detreturjual.kode_brng,databarang.nama_brng,jenis.nama as namajenis, "
+                    + "detreturjual.kode_sat,kodesatuan.satuan,sum(detreturjual.jml_retur) as jumlah, "
+                    + "sum(detreturjual.subtotal) as total "
+                    + " from returjual inner join petugas inner join pasien inner join bangsal "
+                    + " inner join detreturjual inner join databarang inner join kodesatuan inner join jenis "
+                    + " on detreturjual.kode_brng=databarang.kode_brng "
+                    + " and returjual.kd_bangsal=bangsal.kd_bangsal "
+                    + " and returjual.no_rkm_medis=pasien.no_rkm_medis "
+                    + " and detreturjual.kode_sat=kodesatuan.kode_sat "
+                    + " and returjual.no_retur_jual=detreturjual.no_retur_jual "
+                    + " and returjual.nip=petugas.nip and databarang.kdjns=jenis.kdjns  "
+                    + " where " + tanggal + noret + ptg + sat + bar + nonot + " and returjual.no_retur_jual like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and returjual.nip like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and petugas.nama like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.kode_brng like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and databarang.nama_brng like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and pasien.no_rkm_medis like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and pasien.nm_pasien like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and bangsal.nm_bangsal like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.nota_jual like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and kodesatuan.satuan like '%" + TCari.
+                            getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nonot + " and detreturjual.kode_sat like '%" + TCari.
+                            getText() + "%' "
+                    + " group by detreturjual.kode_brng " + order);
             try {
-                rs=ps.executeQuery();
-                ttlretur=0;
-                while(rs.next()){
+                rs = ps.executeQuery();
+                ttlretur = 0;
+                while (rs.next()) {
                     ttlretur += rs.getDouble("total");
                     tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"),rs.getString("nama_brng"),rs.getString("satuan"),rs.getString("namajenis"),rs.getDouble("jumlah"),rs.getDouble("total"),rs.getString("kode_sat")
-                    }); 
-                }                 
-                LTotal.setText(Valid.SetAngka(ttlretur)); 
+                        rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.
+                        getDouble("jumlah"), rs.getDouble("total"), rs.
+                        getString("kode_sat")
+                    });
+                }
+                LTotal.setText(Valid.SetAngka(ttlretur));
             } catch (Exception e) {
-                System.out.println("Notif Retur : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif Retur : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        
+
     }
 
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnPrint.setEnabled(akses.getringkasan_retur_pembeli_obat());
     }
 
- 
+    private static final Logger LOG = Logger.getLogger(
+            InventoryRingkasanReturJualBarangMedis.class.getName());
+
 }

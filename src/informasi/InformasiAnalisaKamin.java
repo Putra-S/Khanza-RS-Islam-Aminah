@@ -1,100 +1,138 @@
 package informasi;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import simrskhanza.*;
+
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import simrskhanza.DlgCariBangsal;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class InformasiAnalisaKamin extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps,ps2,ps3;
-    private ResultSet rs,rs2;
-    private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
-    private int i=0;
 
-    /** Creates new form DlgProgramStudi
+    private final DefaultTableModel tabMode;
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private PreparedStatement ps, ps2, ps3;
+    private ResultSet rs, rs2;
+    private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+    private int i = 0;
+
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public InformasiAnalisaKamin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row={"","",""};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"", "", ""};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(250);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(150);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
             }
         }
-        
-        tbDokter.setDefaultRenderer(Object.class, new WarnaTable());   
-        
-        kdbangsal.setDocument(new batasInput((byte)5).getKata(kdbangsal));
-        
+
+        tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
+
+        kdbangsal.setDocument(new batasInput((byte) 5).getKata(kdbangsal));
+
         bangsal.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(bangsal.getTable().getSelectedRow()!= -1){                   
-                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),0).toString());
-                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),1).toString());
-                }     
+                if (bangsal.getTable().getSelectedRow() != -1) {
+                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 0).toString());
+                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 kdbangsal.requestFocus();
                 prosesCari();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         bangsal.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     bangsal.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-     
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -262,21 +300,23 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,kdbangsal);}
+        } else {
+            Valid.pindah(evt, BtnAll, kdbangsal);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void kdbangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdbangsalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             nmbangsal.setText(bangsal.tampil3(kdbangsal.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             nmbangsal.setText(bangsal.tampil3(kdbangsal.getText()));
             kdbangsal.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             nmbangsal.setText(bangsal.tampil3(kdbangsal.getText()));
             BtnAll.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnBangsalActionPerformed(null);
         }
     }//GEN-LAST:event_kdbangsalKeyPressed
@@ -289,36 +329,37 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, kdbangsal, BtnAll);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
 private void btnBangsalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBangsalActionPerformed
-        bangsal.isCek();
-        bangsal.emptTeks();        
-        bangsal.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-        bangsal.setLocationRelativeTo(internalFrame1);
-        bangsal.setAlwaysOnTop(false);
-        bangsal.setVisible(true);
+    bangsal.isCek();
+    bangsal.emptTeks();
+    bangsal.setSize(internalFrame1.getWidth() - 20,
+            internalFrame1.getHeight() - 20);
+    bangsal.setLocationRelativeTo(internalFrame1);
+    bangsal.setAlwaysOnTop(false);
+    bangsal.setVisible(true);
 }//GEN-LAST:event_btnBangsalActionPerformed
 
 private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBangsalKeyPressed
-   //Valid.pindah(evt,DTPCari2,TCari);
+    //Valid.pindah(evt,DTPCari2,TCari);
 }//GEN-LAST:event_btnBangsalKeyPressed
 
 private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        prosesCari();
+    prosesCari();
 }//GEN-LAST:event_BtnCariActionPerformed
 
 private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            BtnCariActionPerformed(null);
-        }else{
-            //Valid.pindah(evt, TCari, BtnAll);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        BtnCariActionPerformed(null);
+    } else {
+        //Valid.pindah(evt, TCari, BtnAll);
+    }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -326,21 +367,24 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                InformasiAnalisaKamin dialog = new InformasiAnalisaKamin(new javax.swing.JFrame(), true);
+                InformasiAnalisaKamin dialog = new InformasiAnalisaKamin(
+                        new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
+
                 });
                 dialog.setVisible(true);
             }
+
         });
     }
 
@@ -360,72 +404,93 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     // End of variables declaration//GEN-END:variables
 
     private void prosesCari() {
-       Valid.tabelKosong(tabMode);      
-       try{   
-           ps=koneksi.prepareStatement("select kd_bangsal,nm_bangsal from bangsal where status='1' and kd_bangsal in (select kd_bangsal from kamar group by kd_bangsal) and kd_bangsal like ? order by nm_bangsal");
-           try {
-                ps.setString(1,"%"+kdbangsal.getText()+"%");
-                rs=ps.executeQuery();
-                i=1;
-                tabMode.addRow(new Object[]{"Kondisi kamar saat ini : ","Isi : "+Sequel.cariInteger("select count(kd_bangsal) from kamar where kamar.statusdata='1' and status='ISI'"),"Kosong : "+Sequel.cariInteger("select count(kd_bangsal) from kamar where kamar.statusdata='1' and status='KOSONG'")});
-                tabMode.addRow(new Object[]{"","",""});
-                while(rs.next()){               
-                   tabMode.addRow(new Object[]{i+". Kamar : "+rs.getString("nm_bangsal"),"",""});
-                   tabMode.addRow(new Object[]{"","Isi : "+Sequel.cariInteger("select count(kd_bangsal) from kamar where kamar.statusdata='1' and kd_bangsal=? and status='ISI' ",rs.getString("kd_bangsal"))});
+        Valid.tabelKosong(tabMode);
+        try {
+            ps = koneksi.prepareStatement(
+                    "select kd_bangsal,nm_bangsal from bangsal where status='1' and kd_bangsal in (select kd_bangsal from kamar group by kd_bangsal) and kd_bangsal like ? order by nm_bangsal");
+            try {
+                ps.setString(1, "%" + kdbangsal.getText() + "%");
+                rs = ps.executeQuery();
+                i = 1;
+                tabMode.addRow(new Object[]{"Kondisi kamar saat ini : ",
+                    "Isi : " + Sequel.cariInteger(
+                    "select count(kd_bangsal) from kamar where kamar.statusdata='1' and status='ISI'"),
+                    "Kosong : " + Sequel.cariInteger(
+                    "select count(kd_bangsal) from kamar where kamar.statusdata='1' and status='KOSONG'")});
+                tabMode.addRow(new Object[]{"", "", ""});
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{i + ". Kamar : " + rs.getString(
+                        "nm_bangsal"), "", ""});
+                    tabMode.addRow(new Object[]{"", "Isi : " + Sequel.
+                        cariInteger(
+                        "select count(kd_bangsal) from kamar where kamar.statusdata='1' and kd_bangsal=? and status='ISI' ",
+                        rs.getString("kd_bangsal"))});
 
-                   ps2=koneksi.prepareStatement("select kd_kamar,trf_kamar,kelas from kamar where kamar.statusdata='1' and kd_bangsal=? and status='ISI'");
-                   try {
-                        ps2.setString(1,rs.getString("kd_bangsal"));
-                        rs2=ps2.executeQuery();
-                        while(rs2.next()){
-                            tabMode.addRow(new Object[]{"",rs2.getString("kd_kamar")+" "+rs2.getString("kelas"),Valid.SetAngka(rs2.getDouble("trf_kamar"))});
+                    ps2 = koneksi.prepareStatement(
+                            "select kd_kamar,trf_kamar,kelas from kamar where kamar.statusdata='1' and kd_bangsal=? and status='ISI'");
+                    try {
+                        ps2.setString(1, rs.getString("kd_bangsal"));
+                        rs2 = ps2.executeQuery();
+                        while (rs2.next()) {
+                            tabMode.addRow(new Object[]{"", rs2.getString(
+                                "kd_kamar") + " " + rs2.getString("kelas"),
+                                Valid.SetAngka(rs2.getDouble("trf_kamar"))});
                         }
-                   } catch (Exception e) {
-                       System.out.println("Notifikasi : "+e);
-                   } finally{
-                       if(rs2!=null){
-                           rs2.close();
-                       }
-                       if(ps2!=null){
-                           ps2.close();
-                       }
-                   }
-                   
-                   tabMode.addRow(new Object[]{"","Kosong : "+Sequel.cariInteger("select count(kd_bangsal) from kamar where kamar.statusdata='1' and kd_bangsal=? and status='KOSONG' ",rs.getString("kd_bangsal")),""});
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    } finally {
+                        if (rs2 != null) {
+                            rs2.close();
+                        }
+                        if (ps2 != null) {
+                            ps2.close();
+                        }
+                    }
 
-                   ps3=koneksi.prepareStatement("select kd_kamar,trf_kamar from kamar where kamar.statusdata='1' and kd_bangsal=? and status='KOSONG'");
-                   try {
-                        ps3.setString(1,rs.getString("kd_bangsal"));
-                        rs2=ps3.executeQuery();
-                        while(rs2.next()){
-                            tabMode.addRow(new Object[]{"",rs2.getString("kd_kamar"),Valid.SetAngka(rs2.getDouble("trf_kamar"))});
-                        } 
-                   } catch (Exception e) {
-                       System.out.println("Notifikasi : "+e);
-                   } finally{
-                       if(rs2!=null){
-                           rs2.close();
-                       }
-                       if(ps3!=null){
-                           ps3.close();
-                       }
-                   }
-                                         
-                   i++;
-                }    
+                    tabMode.addRow(new Object[]{"", "Kosong : " + Sequel.
+                        cariInteger(
+                        "select count(kd_bangsal) from kamar where kamar.statusdata='1' and kd_bangsal=? and status='KOSONG' ",
+                        rs.getString("kd_bangsal")), ""});
+
+                    ps3 = koneksi.prepareStatement(
+                            "select kd_kamar,trf_kamar from kamar where kamar.statusdata='1' and kd_bangsal=? and status='KOSONG'");
+                    try {
+                        ps3.setString(1, rs.getString("kd_bangsal"));
+                        rs2 = ps3.executeQuery();
+                        while (rs2.next()) {
+                            tabMode.addRow(new Object[]{"", rs2.getString(
+                                "kd_kamar"), Valid.SetAngka(rs2.getDouble(
+                                "trf_kamar"))});
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    } finally {
+                        if (rs2 != null) {
+                            rs2.close();
+                        }
+                        if (ps3 != null) {
+                            ps3.close();
+                        }
+                    }
+
+                    i++;
+                }
             } catch (Exception e) {
                 System.out.println(e);
-            } finally{
-               if(rs!=null){
-                   rs.close();
-               }
-               if(ps!=null){
-                   ps.close();
-               }
-           }          
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(
+            InformasiAnalisaKamin.class.getName());
+
 }

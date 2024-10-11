@@ -2,103 +2,139 @@
   Kontribusi dari Mas Abdul Wahid RSUD Cipayung & Mas Fanji dari RSUD Kramatjati 
   
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class SatuSehatReferensiPraktisi extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private sekuel Sequel=new sekuel();
-    private int i=0;
-    private String link="",json="";
-    private ApiSatuSehat api=new ApiSatuSehat();
-    private HttpHeaders headers ;
+
+    private validasi Valid = new validasi();
+
+    private sekuel Sequel = new sekuel();
+
+    private int i = 0;
+
+    private String link = "", json = "";
+
+    private ApiSatuSehat api = new ApiSatuSehat();
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
-    private JsonNode response,responsename;
-        
-    /** Creates new form DlgKamar
+
+    private JsonNode response, responsename;
+
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SatuSehatReferensiPraktisi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{"Kode Praktisi","Nama Praktisi"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new String[]{"Kode Praktisi",
+            "Nama Praktisi"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 2; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(120);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(460);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil(TCari.getText());
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil(TCari.getText());
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil(TCari.getText());
                     }
                 }
-            });
-        } 
-        
-        try {
-            link=koneksiDB.URLFHIRSATUSEHAT();
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        }     
-    }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+        try {
+            link = koneksiDB.URLFHIRSATUSEHAT();
+        } catch (Exception e) {
+            System.out.println("Notif : " + e);
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -216,55 +252,61 @@ public class SatuSehatReferensiPraktisi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Sequel.queryu("delete from temporary");
-            int row=tabMode.getRowCount();
-            for(int r=0;r<row;r++){  
-                Sequel.menyimpan("temporary","'0','"+
-                                tabMode.getValueAt(r,0).toString()+"','"+
-                                tabMode.getValueAt(r,1).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Rekap Harian Pengadaan Ipsrs"); 
+            int row = tabMode.getRowCount();
+            for (int r = 0; r < row; r++) {
+                Sequel.menyimpan("temporary", "'0','"
+                        + tabMode.getValueAt(r, 0).toString() + "','"
+                        + tabMode.getValueAt(r, 1).toString() + "','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''",
+                        "Rekap Harian Pengadaan Ipsrs");
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select logo from setting")); 
-            Valid.MyReport("rptCariSatuSehatPraktisi.jasper","report","[ Pencarian Referensi Praktisi Satu Sehat ]",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar("select logo from setting"));
+            Valid.MyReport("rptCariSatuSehatPraktisi.jasper", "report",
+                    "[ Pencarian Referensi Praktisi Satu Sehat ]", param);
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
             BtnPrint.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        if(TCari.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan masukkan NIK/ID parktisi");
-        }else{
+        if (TCari.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan masukkan NIK/ID parktisi");
+        } else {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             tampil(TCari.getText());
             this.setCursor(Cursor.getDefaultCursor());
@@ -272,24 +314,26 @@ public class SatuSehatReferensiPraktisi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,BtnPrint);
+        } else {
+            Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatReferensiPraktisi dialog = new SatuSehatReferensiPraktisi(new javax.swing.JFrame(), true);
+            SatuSehatReferensiPraktisi dialog = new SatuSehatReferensiPraktisi(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -307,61 +351,73 @@ public class SatuSehatReferensiPraktisi extends javax.swing.JDialog {
     private widget.panelisi panelGlass6;
     private widget.Table tbKamar;
     // End of variables declaration//GEN-END:variables
-    private void tampil(String search) {
+	private void tampil(String search) {
         Valid.tabelKosong(tabMode);
-        try{
+        try {
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
+            headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
             requestEntity = new HttpEntity(headers);
-            System.out.println("URL : "+link+"/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|"+search);
-            json=api.getRest().exchange(link+"/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|"+search, HttpMethod.GET, requestEntity, String.class).getBody();
-            System.out.println("JSON : "+json);
+            System.out.println(
+                    "URL : " + link + "/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|" + search);
+            json = api.getRest()
+                    .exchange(
+                            link + "/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|" + search,
+                            HttpMethod.GET,
+                            requestEntity, String.class)
+                    .getBody();
+            System.out.println("JSON : " + json);
             root = mapper.readTree(json);
             response = root.path("entry");
-            for(JsonNode list:response){
-                responsename=list.path("resource").path("name");
-                for(JsonNode list2:responsename){
-                    tabMode.addRow(new String[]{
-                      list.path("resource").path("id").asText(),list2.path("text").asText()
-                    }); 
+            for (JsonNode list : response) {
+                responsename = list.path("resource").path("name");
+                for (JsonNode list2 : responsename) {
+                    tabMode.addRow(
+                            new String[]{list.path("resource").path("id").
+                                        asText(), list2.path("text").asText()});
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        
-        if(tabMode.getRowCount()==0){
-            try{
+
+        if (tabMode.getRowCount() == 0) {
+            try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
+                headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
                 requestEntity = new HttpEntity(headers);
-                System.out.println("URL : "+link+"/Practitioner/"+search);
-                json=api.getRest().exchange(link+"/Practitioner/"+search, HttpMethod.GET, requestEntity, String.class).getBody();
-                System.out.println("JSON : "+json);
+                System.out.println("URL : " + link + "/Practitioner/" + search);
+                json = api.getRest()
+                        .exchange(link + "/Practitioner/" + search,
+                                HttpMethod.GET, requestEntity, String.class)
+                        .getBody();
+                System.out.println("JSON : " + json);
                 root = mapper.readTree(json);
                 response = root.path("name");
-                for(JsonNode list:response){
-                    tabMode.addRow(new String[]{
-                      TCari.getText(),list.path("text").asText()
-                    }); 
+                for (JsonNode list : response) {
+                    tabMode.addRow(new String[]{TCari.getText(), list.path(
+                        "text").asText()});
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
-        
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, Belum Ada data di Server Satu Sehat");
+
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Belum Ada data di Server Satu Sehat");
         }
     }
 
     /**
-     *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SatuSehatReferensiPraktisi.class.getName());
+
 }

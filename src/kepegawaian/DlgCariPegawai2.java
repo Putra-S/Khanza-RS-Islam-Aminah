@@ -1,23 +1,34 @@
 package kepegawaian;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgCariPegawai2 extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private File file;
@@ -27,110 +38,122 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode response;
     private FileReader myObj;
-    /** Creates new form DlgPenyakit
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgCariPegawai2(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(656,250);
+        this.setLocation(10, 2);
+        setSize(656, 250);
 
-        Object[] row={"NIP","Nama","J.K.","Jabatan","Kode Jenjang","Departemen","Bidang","Status","Status Karyawan",
-                      "NPWP","Pendidikan","Tmp.Lahir","Tgl.Lahir","Alamat","Kota","Mulai Kerja","Kode Ms Kerja",
-                      "Kode Index","BPD","Rekening","Stts Aktif","Wajib Masuk","Mulai Kontrak","No.KTP"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"NIP", "Nama", "J.K.", "Jabatan", "Kode Jenjang",
+            "Departemen", "Bidang", "Status", "Status Karyawan",
+            "NPWP", "Pendidikan", "Tmp.Lahir", "Tgl.Lahir", "Alamat", "Kota",
+            "Mulai Kerja", "Kode Ms Kerja",
+            "Kode Index", "BPD", "Rekening", "Stts Aktif", "Wajib Masuk",
+            "Mulai Kontrak", "No.KTP"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 24; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(90);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(170);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(50);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(130);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(90);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(90);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(90);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(60);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(110);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(130);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(110);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(65);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(150);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(90);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(65);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(80);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(70);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(90);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(100);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(60);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(70);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(80);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(120);
             }
         }
-        
+
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
-            });
-        } 
-    }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -269,15 +292,14 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -287,9 +309,9 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -300,9 +322,9 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -321,9 +343,9 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            if(Valid.daysOld("./cache/pegawai.iyem")<8){
+            if (Valid.daysOld("./cache/pegawai.iyem") < 8) {
                 tampil2();
-            }else{
+            } else {
                 tampil();
             }
         } catch (Exception e) {
@@ -331,10 +353,10 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -342,16 +364,18 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
     }//GEN-LAST:event_tbKamarKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPegawai2 dialog = new DlgCariPegawai2(new javax.swing.JFrame(), true);
+            DlgCariPegawai2 dialog = new DlgCariPegawai2(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -372,53 +396,76 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
     public widget.Table tbKamar;
     // End of variables declaration//GEN-END:variables
 
-    private void tampil() {  
+    private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            file=new File("./cache/pegawai.iyem");
+        try {
+            file = new File("./cache/pegawai.iyem");
             file.createNewFile();
             fileWriter = new FileWriter(file);
-            iyem="";
-            ps=koneksi.prepareStatement("select nik,nama,jk,jbtn,jnj_jabatan,departemen,bidang,stts_wp,stts_kerja,"+
-                 "npwp, pendidikan, tmp_lahir,tgl_lahir,alamat,kota,mulai_kerja,ms_kerja,"+
-                 "indexins,bpd,rekening,stts_aktif,wajibmasuk,mulai_kontrak,no_ktp from pegawai "+
-                 "where stts_aktif<>'KELUAR' order by id ASC ");
+            iyem = "";
+            ps = koneksi.prepareStatement(
+                    "select nik,nama,jk,jbtn,jnj_jabatan,departemen,bidang,stts_wp,stts_kerja,"
+                    + "npwp, pendidikan, tmp_lahir,tgl_lahir,alamat,kota,mulai_kerja,ms_kerja,"
+                    + "indexins,bpd,rekening,stts_aktif,wajibmasuk,mulai_kontrak,no_ktp from pegawai "
+                    + "where stts_aktif<>'KELUAR' order by id ASC ");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                       rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),
-                       rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),rs.getString(15),rs.getString(16),rs.getString(17),rs.getString(18),rs.getString(19),rs.getString(20),
-                       rs.getString(21),rs.getString(22),rs.getString(23),rs.getString(24)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5), rs.getString(6), rs.
+                        getString(7), rs.getString(8), rs.getString(9), rs.
+                        getString(10),
+                        rs.getString(11), rs.getString(12), rs.getString(13),
+                        rs.getString(14), rs.getString(15), rs.getString(16),
+                        rs.getString(17), rs.getString(18), rs.getString(19),
+                        rs.getString(20),
+                        rs.getString(21), rs.getString(22), rs.getString(23),
+                        rs.getString(24)
                     });
-                    iyem=iyem+"{\"NIP\":\""+rs.getString(1)+"\",\"Nama\":\""+rs.getString(2).replaceAll("\"","")+"\",\"JK\":\""+rs.getString(3)+"\",\"Jabatan\":\""+rs.getString(4)+"\",\"KodeJenjang\":\""+rs.getString(5)+"\","+
-                               "\"Departemen\":\""+rs.getString(6)+"\",\"Bidang\":\""+rs.getString(7)+"\",\"Status\":\""+rs.getString(8)+"\",\"StatusKaryawan\":\""+rs.getString(9)+"\",\"NPWP\":\""+rs.getString(10)+"\","+
-                               "\"Pendidikan\":\""+rs.getString(11)+"\",\"TmpLahir\":\""+rs.getString(12)+"\",\"TglLahir\":\""+rs.getString(13)+"\",\"Alamat\":\""+rs.getString(14).replaceAll("\"","")+"\",\"Kota\":\""+rs.getString(15).replaceAll("\"","")+"\","+
-                               "\"MulaiKerja\":\""+rs.getString(16)+"\",\"KodeMsKerja\":\""+rs.getString(17)+"\",\"KodeIndex\":\""+rs.getString(18)+"\",\"BPD\":\""+rs.getString(19)+"\",\"Rekening\":\""+rs.getString(20)+"\","+
-                               "\"SttsAktif\":\""+rs.getString(21)+"\",\"WajibMasuk\":\""+rs.getString(22)+"\",\"MulaiKontrak\":\""+rs.getString(23)+"\",\"NoKTP\":\""+rs.getString(24)+"\"},";
+                    iyem = iyem + "{\"NIP\":\"" + rs.getString(1) + "\",\"Nama\":\"" + rs.
+                            getString(2).replaceAll("\"", "") + "\",\"JK\":\"" + rs.
+                            getString(3) + "\",\"Jabatan\":\"" + rs.getString(4) + "\",\"KodeJenjang\":\"" + rs.
+                            getString(5) + "\","
+                            + "\"Departemen\":\"" + rs.getString(6) + "\",\"Bidang\":\"" + rs.
+                            getString(7) + "\",\"Status\":\"" + rs.getString(8) + "\",\"StatusKaryawan\":\"" + rs.
+                            getString(9) + "\",\"NPWP\":\"" + rs.getString(10) + "\","
+                            + "\"Pendidikan\":\"" + rs.getString(11) + "\",\"TmpLahir\":\"" + rs.
+                            getString(12) + "\",\"TglLahir\":\"" + rs.getString(
+                            13) + "\",\"Alamat\":\"" + rs.getString(14).
+                                    replaceAll("\"", "") + "\",\"Kota\":\"" + rs.
+                            getString(15).replaceAll("\"", "") + "\","
+                            + "\"MulaiKerja\":\"" + rs.getString(16) + "\",\"KodeMsKerja\":\"" + rs.
+                            getString(17) + "\",\"KodeIndex\":\"" + rs.
+                            getString(18) + "\",\"BPD\":\"" + rs.getString(19) + "\",\"Rekening\":\"" + rs.
+                            getString(20) + "\","
+                            + "\"SttsAktif\":\"" + rs.getString(21) + "\",\"WajibMasuk\":\"" + rs.
+                            getString(22) + "\",\"MulaiKontrak\":\"" + rs.
+                            getString(23) + "\",\"NoKTP\":\"" + rs.getString(24) + "\"},";
                 }
             } catch (Exception e) {
-                System.out.println("Note : "+e);
-            }finally{
-                if(rs!=null){
+                System.out.println("Note : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }  
-            fileWriter.write("{\"pegawai\":["+iyem.substring(0,iyem.length()-1)+"]}");
+            }
+            fileWriter.write("{\"pegawai\":[" + iyem.substring(0,
+                    iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
-            iyem=null;
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            iyem = null;
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
-        Kd2.setText("");   
+        Kd2.setText("");
         TCari.requestFocus();
     }
 
@@ -426,29 +473,56 @@ public class DlgCariPegawai2 extends javax.swing.JDialog {
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
+
     private void tampil2() {
         try {
             myObj = new FileReader("./cache/pegawai.iyem");
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("pegawai");
-            if(response.isArray()){
-                for(JsonNode list:response){
-                    if(list.path("NIP").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Nama").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jabatan").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Bidang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Departemen").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
+            if (response.isArray()) {
+                for (JsonNode list : response) {
+                    if (list.path("NIP").asText().toLowerCase().contains(TCari.
+                            getText().toLowerCase()) || list.path("Nama").
+                                    asText().toLowerCase().contains(TCari.
+                                            getText().toLowerCase()) || list.
+                                    path("Jabatan").asText().toLowerCase().
+                                    contains(TCari.getText().toLowerCase()) || list.
+                            path("Bidang").asText().toLowerCase().contains(
+                            TCari.getText().toLowerCase()) || list.path(
+                            "Departemen").asText().toLowerCase().contains(TCari.
+                                    getText().toLowerCase())) {
                         tabMode.addRow(new Object[]{
-                            list.path("NIP").asText(),list.path("Nama").asText(),list.path("JK").asText(),list.path("Jabatan").asText(),list.path("KodeJenjang").asText(),list.path("Departemen").asText(),list.path("Bidang").asText(),list.path("Status").asText(),list.path("StatusKaryawan").asText(),list.path("NPWP").asText(),list.path("Pendidikan").asText(),list.path("TmpLahir").asText(),list.path("TglLahir").asText(),list.path("Alamat").asText(),list.path("Kota").asText(),list.path("MulaiKerja").asText(),list.path("KodeMsKerja").asText(),list.path("KodeIndex").asText(),list.path("BPD").asText(),list.path("Rekening").asText(),list.path("SttsAktif").asText(),list.path("WajibMasuk").asText(),list.path("MulaiKontrak").asText(),list.path("NoKTP").asText()
+                            list.path("NIP").asText(), list.path("Nama").
+                            asText(), list.path("JK").asText(), list.path(
+                            "Jabatan").asText(), list.path("KodeJenjang").
+                            asText(), list.path("Departemen").asText(), list.
+                            path("Bidang").asText(), list.path("Status").
+                            asText(), list.path("StatusKaryawan").asText(),
+                            list.path("NPWP").asText(), list.path("Pendidikan").
+                            asText(), list.path("TmpLahir").asText(), list.path(
+                            "TglLahir").asText(), list.path("Alamat").asText(),
+                            list.path("Kota").asText(), list.path("MulaiKerja").
+                            asText(), list.path("KodeMsKerja").asText(), list.
+                            path("KodeIndex").asText(), list.path("BPD").
+                            asText(), list.path("Rekening").asText(), list.path(
+                            "SttsAktif").asText(), list.path("WajibMasuk").
+                            asText(), list.path("MulaiKontrak").asText(), list.
+                            path("NoKTP").asText()
                         });
                     }
                 }
             }
             myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
-    } 
+    }
+
+    private static final Logger LOG = Logger.getLogger(DlgCariPegawai2.class.
+            getName());
 
 }

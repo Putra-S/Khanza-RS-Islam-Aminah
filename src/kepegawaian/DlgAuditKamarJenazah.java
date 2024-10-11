@@ -2,85 +2,108 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package kepegawaian;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.table.*;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgAuditKamarJenazah extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
-    private double audit1=0,audit2=0,audit3=0,
-                audit4=0,audit5=0,ttlaudit1=0,audit6=0,
-                audit7=0,audit8=0,ttlaudit2=0,
-                ttlaudit3=0,ttlaudit4=0,ttlaudit5=0,
-                ttlaudit6=0,ttlaudit7=0,ttlaudit8=0,ttlpenilaian=0;
-    
-    /** Creates new form DlgRujuk
+    private int i = 0;
+    private double audit1 = 0, audit2 = 0, audit3 = 0,
+            audit4 = 0, audit5 = 0, ttlaudit1 = 0, audit6 = 0,
+            audit7 = 0, audit8 = 0, ttlaudit2 = 0,
+            ttlaudit3 = 0, ttlaudit4 = 0, ttlaudit5 = 0,
+            ttlaudit6 = 0, ttlaudit7 = 0, ttlaudit8 = 0, ttlpenilaian = 0;
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgAuditKamarJenazah(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Tanggal Audit","1.Tersedia Tempat Limbah Infeksius Dan Limbah Non Infeksius",
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tanggal Audit",
+            "1.Tersedia Tempat Limbah Infeksius Dan Limbah Non Infeksius",
             "2.Tersedia Tempat Linen Infeksius Dan Linen Non Infeksius",
             "3.Tersedia APD Yang Lengkap (Masker, Sarung Tangan, Apron, Sepatu Boot, Kacamata Google, Tutup Kepala)",
             "4.Petugas Menggunakan APD Sesuai Indikasi (Jenazah Infeksius Dan Non Infeksius)",
-            "5.Tersedia Wastafel Cuci Tangan, Dan Dilengkapi Dengan Tisu, Tempat Sampah Dan Sabun","6.Tersedia Handrub",
+            "5.Tersedia Wastafel Cuci Tangan, Dan Dilengkapi Dengan Tisu, Tempat Sampah Dan Sabun",
+            "6.Tersedia Handrub",
             "7.Tersedia Peralatan Memandikan Jenazah Dan Perawatan Jenazah (Sabun, Minyak Wangi, Kapas dll)",
-            "8.Keranda Dalam Keadaan Bersih, Tidak Berdebu Dan Dibersihkan Setiap Hari/Setiap Selesai Digunakan","Ttl.Nilai(%)"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+            "8.Keranda Dalam Keadaan Bersih, Tidak Berdebu Dan Dibersihkan Setiap Hari/Setiap Selesai Digunakan",
+            "Ttl.Nilai(%)"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(120);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(100);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(100);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(68);
             }
         }
@@ -88,15 +111,12 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
 
         ChkInput.setSelected(false);
         isForm();
-        
+
         jam();
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -569,77 +589,99 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Sequel.menyimpantf("audit_kamar_jenazah","?,?,?,?,?,?,?,?,?","Data",9,new String[]{
-            Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),Audit1.getSelectedItem().toString(),
-            Audit2.getSelectedItem().toString(),Audit3.getSelectedItem().toString(),Audit4.getSelectedItem().toString(),
-            Audit5.getSelectedItem().toString(),Audit6.getSelectedItem().toString(),Audit7.getSelectedItem().toString(),
-            Audit8.getSelectedItem().toString()
-        })==true){
+        if (Sequel.menyimpantf("audit_kamar_jenazah", "?,?,?,?,?,?,?,?,?",
+                "Data", 9, new String[]{
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                    getSelectedItem(), Audit1.getSelectedItem().toString(),
+                    Audit2.getSelectedItem().toString(), Audit3.
+                    getSelectedItem().toString(), Audit4.getSelectedItem().
+                            toString(),
+                    Audit5.getSelectedItem().toString(), Audit6.
+                    getSelectedItem().toString(), Audit7.getSelectedItem().
+                            toString(),
+                    Audit8.getSelectedItem().toString()
+                }) == true) {
             tampil();
             emptTeks();
-        }  
+        }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Audit8,BtnBatal);
+        } else {
+            Valid.pindah(evt, Audit8, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
-            if(Sequel.queryu2tf("delete from audit_kamar_jenazah where tanggal=?",1,new String[]{
-                tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
+        if (tbObat.getSelectedRow() != -1) {
+            if (Sequel.queryu2tf(
+                    "delete from audit_kamar_jenazah where tanggal=?", 1,
+                    new String[]{
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }else{
-                JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
             }
-        }            
-            
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(tbObat.getSelectedRow()!= -1){  
-            Sequel.mengedit("audit_kamar_jenazah","tanggal=?","tanggal=?,audit1=?,audit2=?,audit3=?,"+
-                "audit4=?,audit5=?,audit6=?,audit7=?,audit8=?",10,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),Audit1.getSelectedItem().toString(),
-                Audit2.getSelectedItem().toString(),Audit3.getSelectedItem().toString(),Audit4.getSelectedItem().toString(),
-                Audit5.getSelectedItem().toString(),Audit6.getSelectedItem().toString(),Audit7.getSelectedItem().toString(),
-                Audit8.getSelectedItem().toString(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (tbObat.getSelectedRow() != -1) {
+            Sequel.mengedit("audit_kamar_jenazah", "tanggal=?",
+                    "tanggal=?,audit1=?,audit2=?,audit3=?,"
+                    + "audit4=?,audit5=?,audit6=?,audit7=?,audit8=?", 10,
+                    new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), Audit1.getSelectedItem().toString(),
+                        Audit2.getSelectedItem().toString(), Audit3.
+                        getSelectedItem().toString(), Audit4.getSelectedItem().
+                                toString(),
+                        Audit5.getSelectedItem().toString(), Audit6.
+                        getSelectedItem().toString(), Audit7.getSelectedItem().
+                                toString(),
+                        Audit8.getSelectedItem().toString(), tbObat.getValueAt(
+                        tbObat.getSelectedRow(), 0).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -649,43 +691,50 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,BtnSimpan);}
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnSimpan);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            
-            Valid.MyReportqry("rptAuditKamarJenazah.jasper","report","::[ Data Audit Kamar Jenazah ]::",
-                    "select audit_kamar_jenazah.tanggal,audit_kamar_jenazah.audit1,"+
-                    "audit_kamar_jenazah.audit2,audit_kamar_jenazah.audit3,"+
-                    "audit_kamar_jenazah.audit4,audit_kamar_jenazah.audit5,"+
-                    "audit_kamar_jenazah.audit6,audit_kamar_jenazah.audit7,"+
-                    "audit_kamar_jenazah.audit8 from audit_kamar_jenazah "+
-                    "where audit_kamar_jenazah.tanggal between "+
-                    "'"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' order by audit_kamar_jenazah.tanggal",param);
-            
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+
+            Valid.MyReportqry("rptAuditKamarJenazah.jasper", "report",
+                    "::[ Data Audit Kamar Jenazah ]::",
+                    "select audit_kamar_jenazah.tanggal,audit_kamar_jenazah.audit1,"
+                    + "audit_kamar_jenazah.audit2,audit_kamar_jenazah.audit3,"
+                    + "audit_kamar_jenazah.audit4,audit_kamar_jenazah.audit5,"
+                    + "audit_kamar_jenazah.audit6,audit_kamar_jenazah.audit7,"
+                    + "audit_kamar_jenazah.audit8 from audit_kamar_jenazah "
+                    + "where audit_kamar_jenazah.tanggal between "
+                    + "'" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' and '" + Valid.
+                    SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' order by audit_kamar_jenazah.tanggal",
+                    param);
+
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -695,19 +744,19 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnSimpan, BtnKeluar);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,BtnSimpan,Jam);
+        Valid.pindah(evt, BtnSimpan, Jam);
 }//GEN-LAST:event_TanggalKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -716,8 +765,9 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -731,19 +781,19 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void JamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JamKeyPressed
-        Valid.pindah(evt,Tanggal,Menit);
+        Valid.pindah(evt, Tanggal, Menit);
     }//GEN-LAST:event_JamKeyPressed
 
     private void MenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MenitKeyPressed
-        Valid.pindah(evt,Jam,Detik);
+        Valid.pindah(evt, Jam, Detik);
     }//GEN-LAST:event_MenitKeyPressed
 
     private void DetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DetikKeyPressed
-        Valid.pindah(evt,Menit,Audit1);
+        Valid.pindah(evt, Menit, Audit1);
     }//GEN-LAST:event_DetikKeyPressed
 
     private void Audit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit1KeyPressed
-        Valid.pindah(evt,Tanggal,Audit2);
+        Valid.pindah(evt, Tanggal, Audit2);
     }//GEN-LAST:event_Audit1KeyPressed
 
     private void Audit2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit2KeyPressed
@@ -751,40 +801,42 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
     }//GEN-LAST:event_Audit2KeyPressed
 
     private void Audit3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit3KeyPressed
-        Valid.pindah(evt, Audit2,Audit4);
+        Valid.pindah(evt, Audit2, Audit4);
     }//GEN-LAST:event_Audit3KeyPressed
 
     private void Audit4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit4KeyPressed
-        Valid.pindah(evt, Audit3,Audit5);
+        Valid.pindah(evt, Audit3, Audit5);
     }//GEN-LAST:event_Audit4KeyPressed
 
     private void Audit5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit5KeyPressed
-        Valid.pindah(evt, Audit4,Audit6);
+        Valid.pindah(evt, Audit4, Audit6);
     }//GEN-LAST:event_Audit5KeyPressed
 
     private void Audit7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit7KeyPressed
-        Valid.pindah(evt, Audit6,Audit8);
+        Valid.pindah(evt, Audit6, Audit8);
     }//GEN-LAST:event_Audit7KeyPressed
 
     private void Audit6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit6KeyPressed
-        Valid.pindah(evt, Audit5,Audit7);
+        Valid.pindah(evt, Audit5, Audit7);
     }//GEN-LAST:event_Audit6KeyPressed
 
     private void Audit8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit8KeyPressed
-        Valid.pindah(evt, Audit7,BtnSimpan);
+        Valid.pindah(evt, Audit7, BtnSimpan);
     }//GEN-LAST:event_Audit8KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditKamarJenazah dialog = new DlgAuditKamarJenazah(new javax.swing.JFrame(), true);
+            DlgAuditKamarJenazah dialog = new DlgAuditKamarJenazah(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -834,91 +886,121 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
     private widget.ScrollPane scrollInput;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select audit_kamar_jenazah.tanggal,audit_kamar_jenazah.audit1,"+
-                    "audit_kamar_jenazah.audit2,audit_kamar_jenazah.audit3,"+
-                    "audit_kamar_jenazah.audit4,audit_kamar_jenazah.audit5,"+
-                    "audit_kamar_jenazah.audit6,audit_kamar_jenazah.audit7,"+
-                    "audit_kamar_jenazah.audit8 from audit_kamar_jenazah "+
-                    "where audit_kamar_jenazah.tanggal between ? and ? order by audit_kamar_jenazah.tanggal");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select audit_kamar_jenazah.tanggal,audit_kamar_jenazah.audit1,"
+                    + "audit_kamar_jenazah.audit2,audit_kamar_jenazah.audit3,"
+                    + "audit_kamar_jenazah.audit4,audit_kamar_jenazah.audit5,"
+                    + "audit_kamar_jenazah.audit6,audit_kamar_jenazah.audit7,"
+                    + "audit_kamar_jenazah.audit8 from audit_kamar_jenazah "
+                    + "where audit_kamar_jenazah.tanggal between ? and ? order by audit_kamar_jenazah.tanggal");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                
-                rs=ps.executeQuery();
-                ttlaudit1=0;ttlaudit2=0;ttlaudit3=0;ttlaudit4=0;ttlaudit5=0;
-                ttlaudit6=0;ttlaudit7=0;ttlaudit8=0;ttlpenilaian=0;
-                i=1;
-                while(rs.next()){
-                    audit1=Double.parseDouble(rs.getString("audit1").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                ps.setString(1,
+                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2,
+                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+
+                rs = ps.executeQuery();
+                ttlaudit1 = 0;
+                ttlaudit2 = 0;
+                ttlaudit3 = 0;
+                ttlaudit4 = 0;
+                ttlaudit5 = 0;
+                ttlaudit6 = 0;
+                ttlaudit7 = 0;
+                ttlaudit8 = 0;
+                ttlpenilaian = 0;
+                i = 1;
+                while (rs.next()) {
+                    audit1 = Double.parseDouble(rs.getString("audit1").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit1 += audit1;
-                    audit2=Double.parseDouble(rs.getString("audit2").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit2 = Double.parseDouble(rs.getString("audit2").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit2 += audit2;
-                    audit3=Double.parseDouble(rs.getString("audit3").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit3 = Double.parseDouble(rs.getString("audit3").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit3 += audit3;
-                    audit4=Double.parseDouble(rs.getString("audit4").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit4 = Double.parseDouble(rs.getString("audit4").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit4 += audit4;
-                    audit5=Double.parseDouble(rs.getString("audit5").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit5 = Double.parseDouble(rs.getString("audit5").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit5 += audit5;
-                    audit6=Double.parseDouble(rs.getString("audit6").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit6 = Double.parseDouble(rs.getString("audit6").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit6 += audit6;
-                    audit7=Double.parseDouble(rs.getString("audit7").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit7 = Double.parseDouble(rs.getString("audit7").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit7 += audit7;
-                    audit8=Double.parseDouble(rs.getString("audit8").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit8 = Double.parseDouble(rs.getString("audit8").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit8 += audit8;
-                    ttlpenilaian += (((audit1+audit2+audit3+
-                            audit4+audit5+audit6+audit7+
-                            audit8)/8)*100);
+                    ttlpenilaian += (((audit1 + audit2 + audit3
+                            + audit4 + audit5 + audit6 + audit7
+                            + audit8) / 8) * 100);
                     tabMode.addRow(new String[]{
-                        rs.getString("tanggal"),rs.getString("audit1"),rs.getString("audit2"),
-                        rs.getString("audit3"),rs.getString("audit4"),rs.getString("audit5"),
-                        rs.getString("audit6"),rs.getString("audit7"),rs.getString("audit8"),
-                        Math.round(((audit1+audit2+audit3+audit4+
-                        audit5+audit6+audit7+audit8)/8)*100)+" %"
+                        rs.getString("tanggal"), rs.getString("audit1"), rs.
+                        getString("audit2"),
+                        rs.getString("audit3"), rs.getString("audit4"), rs.
+                        getString("audit5"),
+                        rs.getString("audit6"), rs.getString("audit7"), rs.
+                        getString("audit8"),
+                        Math.round(((audit1 + audit2 + audit3 + audit4
+                        + audit5 + audit6 + audit7 + audit8) / 8) * 100) + " %"
                     });
                     i++;
                 }
                 i -= 1;
-                if(i>0){
+                if (i > 0) {
                     tabMode.addRow(new String[]{
-                        "Ya",""+ttlaudit1,""+ttlaudit2,""+ttlaudit3,
-                        ""+ttlaudit4,""+ttlaudit5,""+ttlaudit6,""+ttlaudit7,
-                        ""+ttlaudit8,""+(ttlaudit1+ttlaudit2+
-                        ttlaudit3+ttlaudit4+ttlaudit5+ttlaudit6+
-                        ttlaudit7+ttlaudit8)
+                        "Ya", "" + ttlaudit1, "" + ttlaudit2, "" + ttlaudit3,
+                        "" + ttlaudit4, "" + ttlaudit5, "" + ttlaudit6,
+                        "" + ttlaudit7,
+                        "" + ttlaudit8, "" + (ttlaudit1 + ttlaudit2
+                        + ttlaudit3 + ttlaudit4 + ttlaudit5 + ttlaudit6
+                        + ttlaudit7 + ttlaudit8)
                     });
                     tabMode.addRow(new String[]{
-                        "Tidak",""+(i-ttlaudit1),""+(i-ttlaudit2),""+(i-ttlaudit3),
-                        ""+(i-ttlaudit4),""+(i-ttlaudit5),""+(i-ttlaudit6),""+(i-ttlaudit7),
-                        ""+(i-ttlaudit8),""+((i-ttlaudit1)+(i-ttlaudit2)+
-                        (i-ttlaudit3)+(i-ttlaudit4)+(i-ttlaudit5)+(i-ttlaudit6)+
-                        (i-ttlaudit7)+(i-ttlaudit8))
+                        "Tidak", "" + (i - ttlaudit1), "" + (i - ttlaudit2),
+                        "" + (i - ttlaudit3),
+                        "" + (i - ttlaudit4), "" + (i - ttlaudit5),
+                        "" + (i - ttlaudit6), "" + (i - ttlaudit7),
+                        "" + (i - ttlaudit8),
+                        "" + ((i - ttlaudit1) + (i - ttlaudit2)
+                        + (i - ttlaudit3) + (i - ttlaudit4) + (i - ttlaudit5) + (i - ttlaudit6)
+                        + (i - ttlaudit7) + (i - ttlaudit8))
                     });
                     tabMode.addRow(new String[]{
-                        "Rata-rata",Math.round((ttlaudit1/i)*100)+" %",Math.round((ttlaudit2/i)*100)+" %",Math.round((ttlaudit3/i)*100)+" %",
-                        Math.round((ttlaudit4/i)*100)+" %",Math.round((ttlaudit5/i)*100)+" %",Math.round((ttlaudit6/i)*100)+" %",
-                        Math.round((ttlaudit7/i)*100)+" %",Math.round((ttlaudit8/i)*100)+" %",Math.round(ttlpenilaian/i)+" %"
+                        "Rata-rata", Math.round((ttlaudit1 / i) * 100) + " %",
+                        Math.round((ttlaudit2 / i) * 100) + " %", Math.round(
+                        (ttlaudit3 / i) * 100) + " %",
+                        Math.round((ttlaudit4 / i) * 100) + " %", Math.round(
+                        (ttlaudit5 / i) * 100) + " %", Math.round(
+                        (ttlaudit6 / i) * 100) + " %",
+                        Math.round((ttlaudit7 / i) * 100) + " %", Math.round(
+                        (ttlaudit8 / i) * 100) + " %", Math.round(
+                        ttlpenilaian / i) + " %"
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     public void emptTeks() {
         Tanggal.setDate(new Date());
         Audit1.setSelectedIndex(0);
@@ -930,70 +1012,83 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
         Audit7.setSelectedIndex(0);
         Audit8.setSelectedIndex(0);
         Audit1.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            if(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().length()>10){
-                Audit1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-                Audit2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-                Audit3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-                Audit4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-                Audit5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-                Audit6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-                Audit7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-                Audit8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-                Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
+                    length() > 10) {
+                Audit1.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 1).toString());
+                Audit2.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 2).toString());
+                Audit3.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 3).toString());
+                Audit4.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 4).toString());
+                Audit5.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 5).toString());
+                Audit6.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 6).toString());
+                Audit7.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 7).toString());
+                Audit8.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 8).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
+                        0).toString());
             }
         }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            if(this.getHeight()>440){
-                PanelInput.setPreferredSize(new Dimension(WIDTH,305));
-            }else{
-                PanelInput.setPreferredSize(new Dimension(WIDTH,this.getHeight()-122));
+            if (this.getHeight() > 440) {
+                PanelInput.setPreferredSize(new Dimension(WIDTH, 305));
+            } else {
+                PanelInput.setPreferredSize(new Dimension(WIDTH, this.
+                        getHeight() - 122));
             }
-            FormInput.setVisible(true);      
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getaudit_kamar_jenazah());
         BtnHapus.setEnabled(akses.getaudit_kamar_jenazah());
         BtnEdit.setEnabled(akses.getaudit_kamar_jenazah());
-        BtnPrint.setEnabled(akses.getaudit_kamar_jenazah());         
+        BtnPrint.setEnabled(akses.getaudit_kamar_jenazah());
     }
 
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
                 String nol_detik = "";
-                
+
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkKejadian.isSelected()==true){
+                if (ChkKejadian.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkKejadian.isSelected()==false){
-                    nilai_jam =Jam.getSelectedIndex();
-                    nilai_menit =Menit.getSelectedIndex();
-                    nilai_detik =Detik.getSelectedIndex();
+                } else if (ChkKejadian.isSelected() == false) {
+                    nilai_jam = Jam.getSelectedIndex();
+                    nilai_menit = Menit.getSelectedIndex();
+                    nilai_detik = Detik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -1021,8 +1116,12 @@ public class DlgAuditKamarJenazah extends javax.swing.JDialog {
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgAuditKamarJenazah.class.getName());
 }

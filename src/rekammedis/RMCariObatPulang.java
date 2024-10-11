@@ -3,115 +3,132 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPenyakit.java
  *
  * Created on May 23, 2010, 12:57:16 AM
  */
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class RMCariObatPulang extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String norawat="";
-    private int z=0,i=0,jml=0,index=0;
+    private String norawat = "";
+    private int z = 0, i = 0, jml = 0, index = 0;
     private boolean[] pilih;
-    private String[] tanggal,jam,obatpulang;
-    /** Creates new form DlgPenyakit
+    private String[] tanggal, jam, obatpulang;
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMCariObatPulang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(656,250);
+        this.setLocation(10, 2);
+        setSize(656, 250);
 
 //        Object[] row={"Tanggal","Jam","Obat Diberikan"};
 //        tabMode=new DefaultTableModel(null,row){
 //              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
 //        };
 //        tbKamar.setModel(tabMode);
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "P","Tanggal","Jam","Obat Pulang"
-            }){
-             Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-               boolean a = false;
-               if (colIndex==0) {
-                 a=true;
-               }
-               return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "P", "Tanggal", "Jam", "Obat Pulang"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if (colIndex == 0) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for (z= 0; z < 4; z++) {
+        for (z = 0; z < 4; z++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(z);
-            if(z==0){
+            if (z == 0) {
                 column.setPreferredWidth(15);
-            }else if(z==1){
+            } else if (z == 1) {
                 column.setPreferredWidth(65);
-            }else if(z==2){
+            } else if (z == 2) {
                 column.setPreferredWidth(50);
-            }else if(z==3){
+            } else if (z == 3) {
                 column.setPreferredWidth(750);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
     }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -284,15 +301,14 @@ public class RMCariObatPulang extends javax.swing.JDialog {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -302,9 +318,9 @@ public class RMCariObatPulang extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -315,26 +331,26 @@ public class RMCariObatPulang extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tabMode.getRowCount()!=0){
-            if(evt.getClickCount()==2){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getClickCount() == 2) {
                 dispose();
             }
         }
 }//GEN-LAST:event_tbKamarMouseClicked
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -354,28 +370,30 @@ public class RMCariObatPulang extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
   private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for(i=0;i<tbKamar.getRowCount();i++){
-      tbKamar.setValueAt(false,i,0);
-    }
+      for (i = 0; i < tbKamar.getRowCount(); i++) {
+          tbKamar.setValueAt(false, i, 0);
+      }
   }//GEN-LAST:event_ppBersihkanActionPerformed
 
   private void ppSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppSemuaActionPerformed
-    for(i=0;i<tbKamar.getRowCount();i++){
-      tbKamar.setValueAt(true,i,0);
-    }
+      for (i = 0; i < tbKamar.getRowCount(); i++) {
+          tbKamar.setValueAt(true, i, 0);
+      }
   }//GEN-LAST:event_ppSemuaActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMCariObatPulang dialog = new RMCariObatPulang(new javax.swing.JFrame(), true);
+            RMCariObatPulang dialog = new RMCariObatPulang(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -399,96 +417,101 @@ public class RMCariObatPulang extends javax.swing.JDialog {
   // End of variables declaration//GEN-END:variables
 
     public void tampil() {
-        jml=0;
-        for(i=0;i<tabMode.getRowCount();i++){
-            if(tabMode.getValueAt(i,0).toString().equals("true")){
+        jml = 0;
+        for (i = 0; i < tabMode.getRowCount(); i++) {
+            if (tabMode.getValueAt(i, 0).toString().equals("true")) {
                 jml++;
             }
         }
 
-        pilih=null;
-        pilih=new boolean[jml]; 
-        tanggal=null;
-        tanggal=new String[jml];
-        jam=null;
-        jam=new String[jml];
-        obatpulang=null;
-        obatpulang=new String[jml];
-        
-        index=0;        
-        for(i=0;i<tabMode.getRowCount();i++){
-            if(tabMode.getValueAt(i,0).toString().equals("true")){
-                pilih[index]=true;
-                tanggal[index]=tabMode.getValueAt(i,1).toString();
-                jam[index]=tabMode.getValueAt(i,2).toString();
-                obatpulang[index]=tabMode.getValueAt(i,3).toString();
+        pilih = null;
+        pilih = new boolean[jml];
+        tanggal = null;
+        tanggal = new String[jml];
+        jam = null;
+        jam = new String[jml];
+        obatpulang = null;
+        obatpulang = new String[jml];
+
+        index = 0;
+        for (i = 0; i < tabMode.getRowCount(); i++) {
+            if (tabMode.getValueAt(i, 0).toString().equals("true")) {
+                pilih[index] = true;
+                tanggal[index] = tabMode.getValueAt(i, 1).toString();
+                jam[index] = tabMode.getValueAt(i, 2).toString();
+                obatpulang[index] = tabMode.getValueAt(i, 3).toString();
                 index++;
             }
-        }       
+        }
 
         Valid.tabelKosong(tabMode);
 
-        for(i=0;i<jml;i++){
-            tabMode.addRow(new Object[] {
-                pilih[i],tanggal[i],jam[i],obatpulang[i]
+        for (i = 0; i < jml; i++) {
+            tabMode.addRow(new Object[]{
+                pilih[i], tanggal[i], jam[i], obatpulang[i]
             });
         }
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-//                    "select resep_pulang.tanggal,resep_pulang.jam,databarang.nama_brng,resep_pulang.jml_barang,resep_pulang.dosis "+
-//                    "from resep_pulang inner join databarang on databarang.kode_brng=resep_pulang.kode_brng where resep_pulang.no_rawat=? "+
-//                    "and (resep_pulang.tanggal like ? or databarang.nama_brng like ?) order by resep_pulang.tanggal,resep_pulang.jam");
-                    "select permintaan_resep_pulang.tgl_permintaan,permintaan_resep_pulang.jam,databarang.nama_brng,detail_permintaan_resep_pulang.jml,detail_permintaan_resep_pulang.dosis,kodesatuan.satuan "+
-                    "from permintaan_resep_pulang inner join detail_permintaan_resep_pulang on permintaan_resep_pulang.no_permintaan=detail_permintaan_resep_pulang.no_permintaan inner join databarang on databarang.kode_brng=detail_permintaan_resep_pulang.kode_brng inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where permintaan_resep_pulang.no_rawat=? "+
-                    "and (permintaan_resep_pulang.tgl_permintaan like ? or databarang.nama_brng like ?) order by permintaan_resep_pulang.tgl_permintaan,permintaan_resep_pulang.jam");
-            try{
-                ps.setString(1,norawat);
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[] {
-                        false,rs.getString(1),rs.getString(2),rs.getString(3)+": "+rs.getString(4)+" "+rs.getString(6)+" "+rs.getString(5)
+        try {
+            ps = koneksi.prepareStatement(
+                    //                    "select resep_pulang.tanggal,resep_pulang.jam,databarang.nama_brng,resep_pulang.jml_barang,resep_pulang.dosis "+
+                    //                    "from resep_pulang inner join databarang on databarang.kode_brng=resep_pulang.kode_brng where resep_pulang.no_rawat=? "+
+                    //                    "and (resep_pulang.tanggal like ? or databarang.nama_brng like ?) order by resep_pulang.tanggal,resep_pulang.jam");
+                    "select permintaan_resep_pulang.tgl_permintaan,permintaan_resep_pulang.jam,databarang.nama_brng,detail_permintaan_resep_pulang.jml,detail_permintaan_resep_pulang.dosis,kodesatuan.satuan "
+                    + "from permintaan_resep_pulang inner join detail_permintaan_resep_pulang on permintaan_resep_pulang.no_permintaan=detail_permintaan_resep_pulang.no_permintaan inner join databarang on databarang.kode_brng=detail_permintaan_resep_pulang.kode_brng inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where permintaan_resep_pulang.no_rawat=? "
+                    + "and (permintaan_resep_pulang.tgl_permintaan like ? or databarang.nama_brng like ?) order by permintaan_resep_pulang.tgl_permintaan,permintaan_resep_pulang.jam");
+            try {
+                ps.setString(1, norawat);
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{
+                        false, rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ": " + rs.getString(4) + " " + rs.
+                        getString(6) + " " + rs.getString(5)
                     });
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex);
-            }finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
      *
      */
-    public void emptTeks() {   
+    public void emptTeks() {
         TCari.requestFocus();
     }
-    
+
     /**
      *
      * @param norawat
      */
-    public void setNoRawat(String norawat){
-        this.norawat=norawat;
+    public void setNoRawat(String norawat) {
+        this.norawat = norawat;
     }
 
     /**
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(RMCariObatPulang.class.
+            getName());
+
 }

@@ -3,88 +3,117 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgAdmin.java
  *
  * Created on 21 Jun 10, 20:53:44
  */
-
 package setting;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgSetAplikasi extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
 
-    /** Creates new form DlgAdmin
+    private final DefaultTableModel tabMode;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+
+    /**
+     * Creates new form DlgAdmin
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSetAplikasi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,10);
-        setSize(457,249);
+        this.setLocation(10, 10);
+        setSize(457, 249);
 
-        Object[] row={"Nama Toko","Alamat Toko","Kota","Propinsi","Aktifkan?","Wallpaper","KontaK","Email","Logo","Kode PPK BPJS","Kode PPK Inhealth","Kode PPK Kemenkes"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Nama Toko", "Alamat Toko", "Kota", "Propinsi",
+            "Aktifkan?", "Wallpaper", "KontaK", "Email", "Logo", "Kode PPK BPJS",
+            "Kode PPK Inhealth", "Kode PPK Kemenkes"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin.setModel(tabMode);
         //tampil();
         //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
-        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 12; i++) {
             TableColumn column = tbAdmin.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(150);
-            }else{
+            } else {
                 column.setPreferredWidth(150);
             }
         }
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Nm.setDocument(new batasInput((byte)60).getKata(Nm));
+        Nm.setDocument(new batasInput((byte) 60).getKata(Nm));
         Almt.setDocument(new batasInput(150).getKata(Almt));
-        Kota.setDocument(new batasInput((byte)30).getKata(Kota));
-        Propinsi.setDocument(new batasInput((byte)30).getKata(Propinsi));
-        Kontak.setDocument(new batasInput((byte)50).getKata(Kontak));
-        Email.setDocument(new batasInput((byte)50).getKata(Email));
-        kdPPK.setDocument(new batasInput((byte)15).getKata(kdPPK));
-        kdPPK1.setDocument(new batasInput((byte)15).getKata(kdPPK1));
-        kdPPK2.setDocument(new batasInput((byte)15).getKata(kdPPK2));
+        Kota.setDocument(new batasInput((byte) 30).getKata(Kota));
+        Propinsi.setDocument(new batasInput((byte) 30).getKata(Propinsi));
+        Kontak.setDocument(new batasInput((byte) 50).getKata(Kontak));
+        Email.setDocument(new batasInput((byte) 50).getKata(Email));
+        kdPPK.setDocument(new batasInput((byte) 15).getKata(kdPPK));
+        kdPPK1.setDocument(new batasInput((byte) 15).getKata(kdPPK1));
+        kdPPK2.setDocument(new batasInput((byte) 15).getKata(kdPPK2));
     }
-    Dimension screen=Toolkit.getDefaultToolkit().getScreenSize();
-    private javax.swing.JFileChooser jfc = new JFileChooser();    
-    private javax.swing.JFileChooser jfc2 = new JFileChooser();
-    private FileFilter jpgFilter = new FileNameExtensionFilter("Gambar JPEG", "jpg");
-    private FileFilter gifFilter = new FileNameExtensionFilter("Gambar GIF", "gif");
-    private FileFilter pngFilter = new FileNameExtensionFilter("Gambar PNG", "png");
-    private FileFilter bothFilter = new FileNameExtensionFilter("Gambar JPEG dan GIF dan PNG", "jpg", "gif", "png");
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    private javax.swing.JFileChooser jfc = new JFileChooser();
+    private javax.swing.JFileChooser jfc2 = new JFileChooser();
+    private FileFilter jpgFilter = new FileNameExtensionFilter("Gambar JPEG",
+            "jpg");
+    private FileFilter gifFilter = new FileNameExtensionFilter("Gambar GIF",
+            "gif");
+    private FileFilter pngFilter = new FileNameExtensionFilter("Gambar PNG",
+            "png");
+    private FileFilter bothFilter = new FileNameExtensionFilter(
+            "Gambar JPEG dan GIF dan PNG", "jpg", "gif", "png");
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -513,15 +542,15 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NmKeyPressed
-        Valid.pindah(evt,BtnSimpan,Almt);
+        Valid.pindah(evt, BtnSimpan, Almt);
 }//GEN-LAST:event_NmKeyPressed
 
     private void AlmtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlmtKeyPressed
-        Valid.pindah(evt,Nm,Kota);
+        Valid.pindah(evt, Nm, Kota);
 }//GEN-LAST:event_AlmtKeyPressed
 
     private void tbAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdminMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -530,8 +559,9 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminMouseClicked
 
     private void tbAdminKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdminKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -541,11 +571,11 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminKeyPressed
 
     private void KotaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KotaKeyPressed
-        Valid.pindah(evt,Almt,Propinsi);
+        Valid.pindah(evt, Almt, Propinsi);
     }//GEN-LAST:event_KotaKeyPressed
 
     private void PropinsiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PropinsiKeyPressed
-        Valid.pindah(evt,Kota,YesNo);
+        Valid.pindah(evt, Kota, YesNo);
     }//GEN-LAST:event_PropinsiKeyPressed
 
     private void BtnCariGbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariGbActionPerformed
@@ -564,34 +594,39 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariGbActionPerformed
 
     private void EGbKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EGbKeyPressed
-        Valid.pindah(evt,Propinsi,BtnSimpan);
+        Valid.pindah(evt, Propinsi, BtnSimpan);
     }//GEN-LAST:event_EGbKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Toko");
-        }else if(EGb.getText().trim().isEmpty()){
+        if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Toko");
+        } else if (EGb.getText().trim().isEmpty()) {
             YesNo.setSelectedItem("No");
             EGb.setText("./setting/wallpaper.jpg");
-        }else if(ELogo.getText().trim().isEmpty()){
+        } else if (ELogo.getText().trim().isEmpty()) {
             YesNo.setSelectedItem("No");
             ELogo.setText("./setting/logo.jpg");
-        }else if(tabMode.getRowCount()==0){
-            Sequel.menyimpan("setting","'"+Nm.getText()+"','"+Almt.getText()+"','"+Kota.getText()+
-                             "','"+Propinsi.getText()+"','"+Kontak.getText()+"','"+Email.getText()+
-                             "','"+YesNo.getSelectedItem()+"','"+kdPPK.getText()+"','"+kdPPK1.getText()+"','"+kdPPK2.getText()+"'","Setting",EGb,ELogo);
+        } else if (tabMode.getRowCount() == 0) {
+            Sequel.menyimpan("setting", "'" + Nm.getText() + "','" + Almt.
+                    getText() + "','" + Kota.getText()
+                    + "','" + Propinsi.getText() + "','" + Kontak.getText() + "','" + Email.
+                    getText()
+                    + "','" + YesNo.getSelectedItem() + "','" + kdPPK.getText() + "','" + kdPPK1.
+                    getText() + "','" + kdPPK2.getText() + "'", "Setting", EGb,
+                    ELogo);
             tampil();
-        }else if(tabMode.getRowCount()>0){
-            JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu Set Aplikasi...!!!!");
+        } else if (tabMode.getRowCount() > 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Hanya diijinkan satu Set Aplikasi...!!!!");
             Nm.requestFocus();
         }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Email,BtnBatal);
+        } else {
+            Valid.pindah(evt, Email, BtnBatal);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -600,18 +635,21 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
     }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             Nm.requestFocus();
-        }else if(Nm.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-        }else if(! Nm.getText().trim().isEmpty()){
+        } else if (Nm.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+        } else if (!Nm.getText().trim().isEmpty()) {
             Sequel.queryu("delete from setting ");
             tampil();
             emptTeks();
@@ -619,25 +657,27 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnHapus);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-          dispose();
+        dispose();
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnHapus,BtnSimpan);}
+        } else {
+            Valid.pindah(evt, BtnHapus, BtnSimpan);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void YesNoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_YesNoKeyPressed
-        Valid.pindah(evt, Propinsi,Kontak);
+        Valid.pindah(evt, Propinsi, Kontak);
     }//GEN-LAST:event_YesNoKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -645,15 +685,15 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void KontakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KontakKeyPressed
-        Valid.pindah(evt,YesNo,Email);
+        Valid.pindah(evt, YesNo, Email);
     }//GEN-LAST:event_KontakKeyPressed
 
     private void EmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EmailKeyPressed
-        Valid.pindah(evt,Kontak,kdPPK);
+        Valid.pindah(evt, Kontak, kdPPK);
     }//GEN-LAST:event_EmailKeyPressed
 
     private void ELogoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ELogoKeyPressed
-        Valid.pindah(evt,kdPPK,BtnSimpan);
+        Valid.pindah(evt, kdPPK, BtnSimpan);
     }//GEN-LAST:event_ELogoKeyPressed
 
     private void BtnCariLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariLogoActionPerformed
@@ -672,58 +712,64 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariLogoActionPerformed
 
     private void BtnCariLogoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariLogoKeyPressed
-        Valid.pindah(evt,kdPPK2,BtnSimpan);
+        Valid.pindah(evt, kdPPK2, BtnSimpan);
     }//GEN-LAST:event_BtnCariLogoKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(Nm.getText().trim().isEmpty()){
-            Valid.textKosong(Nm,"Nama Toko");
-        }else if(EGb.getText().trim().isEmpty()){
+        if (Nm.getText().trim().isEmpty()) {
+            Valid.textKosong(Nm, "Nama Toko");
+        } else if (EGb.getText().trim().isEmpty()) {
             YesNo.setSelectedItem("No");
             EGb.setText("./setting/wallpaper.jpg");
-        }else if(ELogo.getText().trim().isEmpty()){
+        } else if (ELogo.getText().trim().isEmpty()) {
             YesNo.setSelectedItem("No");
             ELogo.setText("./setting/logo.jpg");
-        }else{  
+        } else {
             Sequel.queryu("delete from setting ");
-            Sequel.menyimpan("setting","'"+Nm.getText()+"','"+Almt.getText()+"','"+Kota.getText()+
-                             "','"+Propinsi.getText()+"','"+Kontak.getText()+"','"+Email.getText()+
-                             "','"+YesNo.getSelectedItem()+"','"+kdPPK.getText()+"','"+kdPPK1.getText()+"','"+kdPPK2.getText()+"'","Setting",EGb,ELogo);
+            Sequel.menyimpan("setting", "'" + Nm.getText() + "','" + Almt.
+                    getText() + "','" + Kota.getText()
+                    + "','" + Propinsi.getText() + "','" + Kontak.getText() + "','" + Email.
+                    getText()
+                    + "','" + YesNo.getSelectedItem() + "','" + kdPPK.getText() + "','" + kdPPK1.
+                    getText() + "','" + kdPPK2.getText() + "'", "Setting", EGb,
+                    ELogo);
             tampil();
         }
     }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
     }//GEN-LAST:event_BtnEditKeyPressed
 
     private void kdPPKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdPPKKeyPressed
-        Valid.pindah(evt,Email,kdPPK1);
+        Valid.pindah(evt, Email, kdPPK1);
     }//GEN-LAST:event_kdPPKKeyPressed
 
     private void kdPPK1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdPPK1KeyPressed
-        Valid.pindah(evt,kdPPK,kdPPK2);
+        Valid.pindah(evt, kdPPK, kdPPK2);
     }//GEN-LAST:event_kdPPK1KeyPressed
 
     private void kdPPK2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdPPK2KeyPressed
-        Valid.pindah(evt,kdPPK1,BtnCariLogo);
+        Valid.pindah(evt, kdPPK1, BtnCariLogo);
     }//GEN-LAST:event_kdPPK2KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetAplikasi dialog = new DlgSetAplikasi(new javax.swing.JFrame(), true);
+            DlgSetAplikasi dialog = new DlgSetAplikasi(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -773,57 +819,65 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        String sql="select nama_instansi, alamat_instansi, kabupaten, propinsi, aktifkan, wallpaper,kontak,email,logo,kode_ppk,kode_ppkinhealth,kode_ppkkemenkes from setting";
+        String sql = "select nama_instansi, alamat_instansi, kabupaten, propinsi, aktifkan, wallpaper,kontak,email,logo,kode_ppk,kode_ppkinhealth,kode_ppkkemenkes from setting";
         prosesCari(sql);
     }
 
     private void prosesCari(String sql) {
         Valid.tabelKosong(tabMode);
-        try{
-            ResultSet rs=koneksi.prepareStatement(sql).executeQuery();
-            while(rs.next()){
-                Object[] data={rs.getString(1),rs.getString(2),rs.getString(3),
-                               rs.getString(4),rs.getString(5),rs.getBlob(6),
-                               rs.getString(7),rs.getString(8),rs.getBlob(9),
-                               rs.getString(10),rs.getString(11),rs.getString(12)
+        try {
+            ResultSet rs = koneksi.prepareStatement(sql).executeQuery();
+            while (rs.next()) {
+                Object[] data = {rs.getString(1), rs.getString(2), rs.getString(
+                    3),
+                    rs.getString(4), rs.getString(5), rs.getBlob(6),
+                    rs.getString(7), rs.getString(8), rs.getBlob(9),
+                    rs.getString(10), rs.getString(11), rs.getString(12)
                 };
                 tabMode.addRow(data);
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void getData() {
-        int row=tbAdmin.getSelectedRow();
-        if(row!= -1){
-            Nm.setText(tabMode.getValueAt(row,0).toString());
-            Almt.setText(tabMode.getValueAt(row,1).toString());
-            Kota.setText(tabMode.getValueAt(row,2).toString());
-            Propinsi.setText(tabMode.getValueAt(row,3).toString());
-            YesNo.setSelectedItem(tabMode.getValueAt(row,4).toString());
-            Kontak.setText(tabMode.getValueAt(row,6).toString());
-            Email.setText(tabMode.getValueAt(row,7).toString());
-            kdPPK.setText(tabMode.getValueAt(row,9).toString());
-            kdPPK1.setText(tabMode.getValueAt(row,10).toString());
-            kdPPK2.setText(tabMode.getValueAt(row,11).toString());
+        int row = tbAdmin.getSelectedRow();
+        if (row != -1) {
+            Nm.setText(tabMode.getValueAt(row, 0).toString());
+            Almt.setText(tabMode.getValueAt(row, 1).toString());
+            Kota.setText(tabMode.getValueAt(row, 2).toString());
+            Propinsi.setText(tabMode.getValueAt(row, 3).toString());
+            YesNo.setSelectedItem(tabMode.getValueAt(row, 4).toString());
+            Kontak.setText(tabMode.getValueAt(row, 6).toString());
+            Email.setText(tabMode.getValueAt(row, 7).toString());
+            kdPPK.setText(tabMode.getValueAt(row, 9).toString());
+            kdPPK1.setText(tabMode.getValueAt(row, 10).toString());
+            kdPPK2.setText(tabMode.getValueAt(row, 11).toString());
             try {
-                ResultSet hasil = koneksi.prepareStatement("select wallpaper,logo from setting").executeQuery();
-                for (int I = 0; hasil.next(); I++) {
-                    ((Painter) PhotoGambar).setImage(gambar(tabMode.getValueAt(row,0).toString()));
-                    Blob blob = hasil.getBlob(1);
-                    ((Painter) PhotoGambar).setImageIcon(new javax.swing.ImageIcon(
-                        blob.getBytes(1, (int) (blob.length()))));
-                    blob.free();
-                    
-                    ((Painter) PhotoLogo).setImage(gambar(tabMode.getValueAt(row,0).toString()));
-                    Blob blob2 = hasil.getBlob(2);
-                    ((Painter) PhotoLogo).setImageIcon(new javax.swing.ImageIcon(
-                        blob2.getBytes(1, (int) (blob2.length()))));
-                    blob2.free();
+                try (ResultSet hasil = koneksi.prepareStatement(
+                        "select wallpaper,logo from setting").executeQuery()) {
+                    for (int I = 0; hasil.next(); I++) {
+                        ((Painter) PhotoGambar).setImage(gambar(tabMode.
+                                getValueAt(row, 0).toString()));
+                        Blob blob = hasil.getBlob(1);
+                        ((Painter) PhotoGambar).setImageIcon(
+                                new javax.swing.ImageIcon(
+                                        blob.getBytes(1, (int) (blob.length()))));
+                        blob.free();
+
+                        ((Painter) PhotoLogo).setImage(gambar(tabMode.
+                                getValueAt(row, 0).toString()));
+                        Blob blob2 = hasil.getBlob(2);
+                        ((Painter) PhotoLogo).setImageIcon(
+                                new javax.swing.ImageIcon(
+                                        blob2.
+                                                getBytes(1, (int) (blob2.
+                                                        length()))));
+                        blob2.free();
+                    }
                 }
-                hasil.close();
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 cetak(ex.toString());
             }
         }
@@ -837,8 +891,8 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
         Almt.setText("");
         Kota.setText("");
         Propinsi.setText("");
-        kdPPK.setText("");        
-        kdPPK1.setText("");       
+        kdPPK.setText("");
+        kdPPK1.setText("");
         kdPPK2.setText("");
         ((Painter) PhotoGambar).setImage("");
         EGb.setText("");
@@ -847,8 +901,7 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
         YesNo.setSelectedItem("No");
         Nm.requestFocus();
     }
-    
-    
+
     private String gambar(String id) {
         return folder + File.separator + id.trim() + ".jpg";
     }
@@ -893,14 +946,20 @@ public class DlgSetAplikasi extends javax.swing.JDialog {
                 double d = image.getHeight(this) / this.getHeight();
                 double w = image.getWidth(this) / d;
                 double x = this.getWidth() / 2 - w / 2;
-                g.drawImage(image, (int) x, 0, (int) (w), this.getHeight(), this);
+                g.
+                        drawImage(image, (int) x, 0, (int) (w), this.getHeight(),
+                                this);
             } catch (Exception e) {
-            }            
+            }
         }
+
     }
-    
+
     private void cetak(String str) {
         System.out.println(str);
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(DlgSetAplikasi.class.
+            getName());
+
 }

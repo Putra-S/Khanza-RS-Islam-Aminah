@@ -5,41 +5,51 @@
  */
 package bridging;
 
-import AESsecurity.*;
-import com.mysql.jdbc.jdbc2.optional.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
+import AESsecurity.EnkripsiAES;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
- *
  * @author khanzasoft
  */
 public class koneksiDBSysmex {
-    private static Connection connection=null;
-    private static final Properties prop = new Properties();  
-    private static final MysqlDataSource dataSource=new MysqlDataSource();
-    
-    public static Connection condb(){ 
-        if(connection == null){
-            try{
-                prop.loadFromXML(new FileInputStream("setting/database.xml"));
-                dataSource.setURL("jdbc:mysql://"+EnkripsiAES.decrypt(prop.getProperty("HOSTSYSMEX"))+":"+EnkripsiAES.decrypt(prop.getProperty("PORTSYSMEX"))+"/"+EnkripsiAES.decrypt(prop.getProperty("DATABASESYSMEX"))+"?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
-                dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERSYSMEX")));
-                dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASSYSMEX")));
-                connection=dataSource.getConnection();       
-                System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging Sysmex...!!!");
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Koneksi ke server bridging Sysmex terputus : "+e);
-            }
-        }
-        return connection;        
-    }
 
-    /**
-     *
-     */
-    public koneksiDBSysmex(){}
-    
+  private static Connection connection = null;
+
+  private static final Properties prop = new Properties();
+
+  private static final MysqlDataSource dataSource = new MysqlDataSource();
+
+  // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
+  public static Connection condb() {
+    if (connection == null) {
+      try {
+        prop.loadFromXML(new FileInputStream("setting/database.xml"));
+        dataSource.setURL(
+            "jdbc:mysql://"
+                + EnkripsiAES.decrypt(prop.getProperty("HOSTSYSMEX"))
+                + ":"
+                + EnkripsiAES.decrypt(prop.getProperty("PORTSYSMEX"))
+                + "/"
+                + EnkripsiAES.decrypt(prop.getProperty("DATABASESYSMEX"))
+                + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
+        dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERSYSMEX")));
+        dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASSYSMEX")));
+        connection = dataSource.getConnection();
+        System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging Sysmex...!!!");
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Koneksi ke server bridging Sysmex terputus : " + e);
+      }
+    }
+    return connection;
+  }
+
+  /** */
+  public koneksiDBSysmex() {}
+
+  private static final Logger LOG = Logger.getLogger(koneksiDBSysmex.class.getName());
 }

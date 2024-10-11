@@ -1,35 +1,55 @@
 package laporan;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import simrskhanza.*;
+
+import fungsi.akses;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import simrskhanza.DlgCariBangsal;
+import simrskhanza.DlgCariCaraBayar;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class DlgHarianKlasifikasiPasienRanap extends javax.swing.JDialog {
-    private final sekuel Sequel=new sekuel();
-    private final validasi Valid=new validasi();
-    private final Connection koneksi=koneksiDB.condb();
+
+    private final sekuel Sequel = new sekuel();
+    private final validasi Valid = new validasi();
+    private final Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
-    private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
-    private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
+    private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+    private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
     private ResultSet rs;
-    private int i=0,minimal=0,partial=0,total=0,jmlminimal,jmlpartial,jmltotal;
-    
-    /** Creates new form DlgProgramStudi
+    private int i = 0, minimal = 0, partial = 0, total = 0, jmlminimal, jmlpartial, jmltotal;
+
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgHarianKlasifikasiPasienRanap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
@@ -37,78 +57,111 @@ public class DlgHarianKlasifikasiPasienRanap extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML.setDocument(doc);
-        
+
         penjab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(penjab.getTable().getSelectedRow()!= -1){
-                    NmPenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),2).toString());
-                }      
+                if (penjab.getTable().getSelectedRow() != -1) {
+                    NmPenjab.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 2).toString());
+                }
                 NmPenjab.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {penjab.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                penjab.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         penjab.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     penjab.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         bangsal.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(bangsal.getTable().getSelectedRow()!= -1){                          
-                    NmKamar.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),1).toString());
-                    NmKamar.requestFocus();                           
-                }                         
+                if (bangsal.getTable().getSelectedRow() != -1) {
+                    NmKamar.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 1).toString());
+                    NmKamar.requestFocus();
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
     }
-    private final Dimension screen=Toolkit.getDefaultToolkit().getScreenSize();
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    private final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -358,44 +411,47 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            
-            File g = new File("file2.css");            
-            BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-            bg.write(
-                    ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"+                    
-                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-            );
-            bg.close();
-            
-            File f = new File("HarianKlasifikasi.html");            
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-            bw.write(LoadHTML.getText().replaceAll("<head>","<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                            "<tr class='isi2'>"+
-                                "<td valign='top' align='center'>"+
-                                    "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                    akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                    akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+       
-                                "</td>"+
-                           "</tr>"+
-                        "</table>")
-            );
-            bw.close();                         
+
+            File g = new File("file2.css");
+            try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                bg.write(
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                );
+            }
+
+            File f = new File("HarianKlasifikasi.html");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                bw.write(LoadHTML.getText().replaceAll("<head>",
+                        "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.
+                        getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.
+                        getemailrs() + "<br><br>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+            }
             Desktop.getDesktop().browse(f.toURI());
         } catch (Exception e) {
-            System.out.println("Notifikasi : "+e);
-        }     
-        
+            System.out.println("Notifikasi : " + e);
+        }
+
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Tgl2,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Tgl2, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -404,9 +460,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,Tgl1);}
+        } else {
+            Valid.pindah(evt, BtnPrint, Tgl1);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
 private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
@@ -414,11 +472,11 @@ private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_btnCariActionPerformed
 
 private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            btnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt, Tgl2, BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        btnCariActionPerformed(null);
+    } else {
+        Valid.pindah(evt, Tgl2, BtnPrint);
+    }
 }//GEN-LAST:event_btnCariKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -426,11 +484,11 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_formWindowOpened
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             btnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -438,7 +496,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     private void BtnSeek2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek2ActionPerformed
         bangsal.emptTeks();
         bangsal.isCek();
-        bangsal.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        bangsal.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         bangsal.setLocationRelativeTo(internalFrame1);
         bangsal.setVisible(true);
     }//GEN-LAST:event_BtnSeek2ActionPerformed
@@ -449,7 +508,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
 
     private void BtnSeek3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek3ActionPerformed
         penjab.isCek();
-        penjab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
         penjab.setAlwaysOnTop(false);
         penjab.setVisible(true);
@@ -467,27 +527,29 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             NmKamar.setText("");
             NmPenjab.setText("");
             prosesCari();
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgHarianKlasifikasiPasienRanap dialog = new DlgHarianKlasifikasiPasienRanap(new javax.swing.JFrame(), true);
+            DlgHarianKlasifikasiPasienRanap dialog = new DlgHarianKlasifikasiPasienRanap(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -523,102 +585,129 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             StringBuilder htmlContent = new StringBuilder();
-            htmlContent.append(                             
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='2'>No.</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='2'>No.R.M</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>Nama Pasien</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='2'>Tanggal</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='38%' colspan='3'>Klasifikasi Ketergantungan Pasien</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>Kamar/Bangsal</td>"+
-                "</tr>"+
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>Minimal</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>Partial</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>Total</td>"+
-                "</tr>"
-            );     
-            ps=koneksi.prepareStatement(
-                "select data_klasifikasi_pasien_ranap.tanggal,data_klasifikasi_pasien_ranap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                "data_klasifikasi_pasien_ranap.Minimal,data_klasifikasi_pasien_ranap.Partial,data_klasifikasi_pasien_ranap.Total,"+
-                "concat(data_klasifikasi_pasien_ranap.kd_kamar,', ',bangsal.nm_bangsal) as ruang,data_klasifikasi_pasien_ranap.kd_kamar from data_klasifikasi_pasien_ranap inner join reg_periksa "+
-                "inner join pasien inner join kamar inner join bangsal inner join penjab on data_klasifikasi_pasien_ranap.kd_kamar=kamar.kd_kamar "+
-                "and kamar.kd_bangsal=bangsal.kd_bangsal and data_klasifikasi_pasien_ranap.no_rawat=reg_periksa.no_rawat "+
-                "and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where "+
-                "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and data_klasifikasi_pasien_ranap.no_rawat like ? or "+
-                "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and reg_periksa.no_rkm_medis like ? or "+
-                "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and bangsal.nm_bangsal like ? or "+
-                "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and pasien.nm_pasien like ? order by data_klasifikasi_pasien_ranap.tanggal ");
+            htmlContent.append(
+                    "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='2'>No.</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='2'>No.R.M</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>Nama Pasien</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='2'>Tanggal</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='38%' colspan='3'>Klasifikasi Ketergantungan Pasien</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>Kamar/Bangsal</td>"
+                    + "</tr>"
+                    + "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Minimal</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Partial</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Total</td>"
+                    + "</tr>"
+            );
+            ps = koneksi.prepareStatement(
+                    "select data_klasifikasi_pasien_ranap.tanggal,data_klasifikasi_pasien_ranap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"
+                    + "data_klasifikasi_pasien_ranap.Minimal,data_klasifikasi_pasien_ranap.Partial,data_klasifikasi_pasien_ranap.Total,"
+                    + "concat(data_klasifikasi_pasien_ranap.kd_kamar,', ',bangsal.nm_bangsal) as ruang,data_klasifikasi_pasien_ranap.kd_kamar from data_klasifikasi_pasien_ranap inner join reg_periksa "
+                    + "inner join pasien inner join kamar inner join bangsal inner join penjab on data_klasifikasi_pasien_ranap.kd_kamar=kamar.kd_kamar "
+                    + "and kamar.kd_bangsal=bangsal.kd_bangsal and data_klasifikasi_pasien_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where "
+                    + "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and data_klasifikasi_pasien_ranap.no_rawat like ? or "
+                    + "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and reg_periksa.no_rkm_medis like ? or "
+                    + "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and bangsal.nm_bangsal like ? or "
+                    + "data_klasifikasi_pasien_ranap.tanggal between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and pasien.nm_pasien like ? order by data_klasifikasi_pasien_ranap.tanggal ");
             try {
-                i=1;
-                jmlminimal=0;jmlpartial=0;jmltotal=0;                 
-                ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(3,"%"+NmKamar.getText().trim()+"%");
-                ps.setString(4,"%"+NmPenjab.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText()+"%");
-                ps.setString(6,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(7,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(8,"%"+NmKamar.getText().trim()+"%");
-                ps.setString(9,"%"+NmPenjab.getText().trim()+"%");
-                ps.setString(10,"%"+TCari.getText()+"%");
-                ps.setString(11,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(12,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(13,"%"+NmKamar.getText().trim()+"%");
-                ps.setString(14,"%"+NmPenjab.getText().trim()+"%");
-                ps.setString(15,"%"+TCari.getText()+"%");
-                ps.setString(16,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(17,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(18,"%"+NmKamar.getText().trim()+"%");
-                ps.setString(19,"%"+NmPenjab.getText().trim()+"%");
-                ps.setString(20,"%"+TCari.getText()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    minimal=0;partial=0;total=0;
-                    if(rs.getString("Minimal").equals("IYA")){
-                        minimal=1;
+                i = 1;
+                jmlminimal = 0;
+                jmlpartial = 0;
+                jmltotal = 0;
+                ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                ps.setString(3, "%" + NmKamar.getText().trim() + "%");
+                ps.setString(4, "%" + NmPenjab.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText() + "%");
+                ps.setString(6, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(7, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                ps.setString(8, "%" + NmKamar.getText().trim() + "%");
+                ps.setString(9, "%" + NmPenjab.getText().trim() + "%");
+                ps.setString(10, "%" + TCari.getText() + "%");
+                ps.setString(11, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(12, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                ps.setString(13, "%" + NmKamar.getText().trim() + "%");
+                ps.setString(14, "%" + NmPenjab.getText().trim() + "%");
+                ps.setString(15, "%" + TCari.getText() + "%");
+                ps.setString(16, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(17, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                ps.setString(18, "%" + NmKamar.getText().trim() + "%");
+                ps.setString(19, "%" + NmPenjab.getText().trim() + "%");
+                ps.setString(20, "%" + TCari.getText() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    minimal = 0;
+                    partial = 0;
+                    total = 0;
+                    if (rs.getString("Minimal").equals("IYA")) {
+                        minimal = 1;
                         jmlminimal += 1;
                     }
-                    if(rs.getString("Partial").equals("IYA")){
-                        partial=1;
+                    if (rs.getString("Partial").equals("IYA")) {
+                        partial = 1;
                         jmlpartial += 1;
                     }
-                    if(rs.getString("Total").equals("IYA")){
-                        total=1;
+                    if (rs.getString("Total").equals("IYA")) {
+                        total = 1;
                         jmltotal += 1;
                     }
-                    
-                    htmlContent.append("<tr class='isi'><td valign='middle' align='center'>").append(i).append("</td><td valign='middle' align='left'>").append(rs.getString("no_rkm_medis")).append("</td><td valign='middle' align='left'>").append(rs.getString("nm_pasien")).append("</td><td valign='middle' align='center'>").append(rs.getString("tanggal")).append("</td><td valign='middle' align='center'>").append(minimal).append("</td><td valign='middle' align='center'>").append(partial).append("</td><td valign='middle' align='center'>").append(total).append("</td><td valign='middle' align='left'>").append(rs.getString("ruang")).append("</td></tr>");
+
+                    htmlContent.append(
+                            "<tr class='isi'><td valign='middle' align='center'>").
+                            append(i).append(
+                            "</td><td valign='middle' align='left'>").append(rs.
+                                    getString("no_rkm_medis")).append(
+                            "</td><td valign='middle' align='left'>").append(rs.
+                                    getString("nm_pasien")).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    rs.getString("tanggal")).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    minimal).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(partial).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    total).append(
+                                    "</td><td valign='middle' align='left'>").
+                            append(rs.getString("ruang")).append("</td></tr>");
                     i++;
                 }
-                if(i>1){
-                    htmlContent.append("<tr class='isi'><td valign='middle' align='right' colspan='4'>Total :</td><td valign='middle' align='center'>").append(jmlminimal).append("</td><td valign='middle' align='center'>").append(jmlpartial).append("</td><td valign='middle' align='center'>").append(jmltotal).append("</td><td valign='middle' align='center'>&nbsp;</td></tr>");
-                }                    
+                if (i > 1) {
+                    htmlContent.append(
+                            "<tr class='isi'><td valign='middle' align='right' colspan='4'>Total :</td><td valign='middle' align='center'>").
+                            append(jmlminimal).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    jmlpartial).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(jmltotal).append(
+                            "</td><td valign='middle' align='center'>&nbsp;</td></tr>");
+                }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
+
             LoadHTML.setText(
-                    "<html>"+
-                      "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                       htmlContent.toString()+
-                      "</table>"+
-                    "</html>");
+                    "<html>"
+                    + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                    + htmlContent.toString()
+                    + "</table>"
+                    + "</html>");
         } catch (Exception e) {
-            System.out.println("laporan.DlgRL4A.prosesCari() 5 : "+e);
-        } 
+            System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
+        }
         this.setCursor(Cursor.getDefaultCursor());
-        
+
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnPrint.setEnabled(akses.getharian_klasifikasi_pasien_ranap());
     }
 
@@ -628,5 +717,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     public void tampil() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgHarianKlasifikasiPasienRanap.class.getName());
+
 }

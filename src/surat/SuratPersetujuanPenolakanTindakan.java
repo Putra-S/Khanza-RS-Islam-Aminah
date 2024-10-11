@@ -1,302 +1,413 @@
 /*
  * By Mas Khanza
  */
-
-
 package surat;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariDokter;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author windiartohugroho
  */
 public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
-    private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
-    private MasterCariTemplatePersetujuanPenolakanTindakan template=new MasterCariTemplatePersetujuanPenolakanTindakan(null,false);
+    private int i = 0;
+    private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+    private MasterCariTemplatePersetujuanPenolakanTindakan template = new MasterCariTemplatePersetujuanPenolakanTindakan(
+            null, false);
     private StringBuilder htmlContent;
-    private String pilihan="";
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
-    private String finger="",finger2="",lokasifile="",lokasifile2="";
-    
-    /** Creates new form DlgRujuk
+    private String pilihan = "";
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
+    private String finger = "", finger2 = "", lokasifile = "", lokasifile2 = "";
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
-    public SuratPersetujuanPenolakanTindakan(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     */
+    public SuratPersetujuanPenolakanTindakan(java.awt.Frame parent,
+            boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Pernyataan","No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","J.K.","Tanggal","Diagnosa","Ya/Tidak","Tindakan Kedokteran","Ya/Tidak",
-            "Indikasi Tindakan","Ya/Tidak","Tata Cara","Ya/Tidak","Tujuan","Ya/Tidak","Risiko","Ya/Tidak","Komplikasi","Ya/Tidak","Prognosis","Ya/Tidak",
-            "Alternatif & Resikonya","Ya/Tidak","Lain-lain","Ya/Tidak","Biaya","Ya/Tidak","Kode Dokter","Nama Dokter","Nip","Saksi II Perawat",
-            "Penerima Informasi","Alasan Jika Diwakilkan","J.K. P.I","Tgl.Lahir P.I.","Umur P.I.","Alamat Penerima Informasi", "No.H.P. P.I",
-            "Hubungan Dengan Pasien","Pernyataan","Saksi I Keluarga"
-        }){
-              Class[] types = new Class[] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, 
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };
-              @Override
-              public boolean isCellEditable(int rowIndex, int colIndex){
-                  return false;
-              }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Pernyataan", "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir",
+            "J.K.", "Tanggal", "Diagnosa", "Ya/Tidak", "Tindakan Kedokteran",
+            "Ya/Tidak",
+            "Indikasi Tindakan", "Ya/Tidak", "Tata Cara", "Ya/Tidak", "Tujuan",
+            "Ya/Tidak", "Risiko", "Ya/Tidak", "Komplikasi", "Ya/Tidak",
+            "Prognosis", "Ya/Tidak",
+            "Alternatif & Resikonya", "Ya/Tidak", "Lain-lain", "Ya/Tidak",
+            "Biaya", "Ya/Tidak", "Kode Dokter", "Nama Dokter", "Nip",
+            "Saksi II Perawat",
+            "Penerima Informasi", "Alasan Jika Diwakilkan", "J.K. P.I",
+            "Tgl.Lahir P.I.", "Umur P.I.", "Alamat Penerima Informasi",
+            "No.H.P. P.I",
+            "Hubungan Dengan Pasien", "Pernyataan", "Saksi I Keluarga"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
-        
+
         tbObat.setModel(tabMode);
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 43; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(95);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(105);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(65);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(25);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(65);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(200);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(50);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(200);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(50);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(200);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(50);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(200);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(50);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(200);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(50);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(200);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(50);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(200);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(50);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(200);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(50);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(200);
-            }else if(i==24){
+            } else if (i == 24) {
                 column.setPreferredWidth(50);
-            }else if(i==25){
+            } else if (i == 25) {
                 column.setPreferredWidth(200);
-            }else if(i==26){
+            } else if (i == 26) {
                 column.setPreferredWidth(50);
-            }else if(i==27){
+            } else if (i == 27) {
                 column.setPreferredWidth(90);
-            }else if(i==28){
+            } else if (i == 28) {
                 column.setPreferredWidth(50);
-            }else if(i==29){
+            } else if (i == 29) {
                 column.setPreferredWidth(90);
-            }else if(i==30){
+            } else if (i == 30) {
                 column.setPreferredWidth(150);
-            }else if(i==31){
+            } else if (i == 31) {
                 column.setPreferredWidth(90);
-            }else if(i==32){
+            } else if (i == 32) {
                 column.setPreferredWidth(150);
-            }else if(i==33){
+            } else if (i == 33) {
                 column.setPreferredWidth(150);
-            }else if(i==34){
+            } else if (i == 34) {
                 column.setPreferredWidth(150);
-            }else if(i==35){
+            } else if (i == 35) {
                 column.setPreferredWidth(45);
-            }else if(i==36){
+            } else if (i == 36) {
                 column.setPreferredWidth(70);
-            }else if(i==37){
+            } else if (i == 37) {
                 column.setPreferredWidth(55);
-            }else if(i==38){
+            } else if (i == 38) {
                 column.setPreferredWidth(150);
-            }else if(i==39){
+            } else if (i == 39) {
                 column.setPreferredWidth(100);
-            }else if(i==40){
+            } else if (i == 40) {
                 column.setPreferredWidth(130);
-            }else if(i==41){
+            } else if (i == 41) {
                 column.setPreferredWidth(100);
-            }else if(i==42){
+            } else if (i == 42) {
                 column.setPreferredWidth(150);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
-        NoPenyataan.setDocument(new batasInput((byte)20).getKata(NoPenyataan));
+
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
+        NoPenyataan.setDocument(new batasInput((byte) 20).getKata(NoPenyataan));
         Diagnosa.setDocument(new batasInput(200).getKata(Diagnosa));
-        TindakanKedokteran.setDocument(new batasInput(200).getKata(TindakanKedokteran));
-        IndikasiTindakan.setDocument(new batasInput(200).getKata(IndikasiTindakan));
+        TindakanKedokteran.setDocument(new batasInput(200).getKata(
+                TindakanKedokteran));
+        IndikasiTindakan.setDocument(new batasInput(200).getKata(
+                IndikasiTindakan));
         TataCara.setDocument(new batasInput(400).getKata(TataCara));
         Tujuan.setDocument(new batasInput(200).getKata(Tujuan));
         Risiko.setDocument(new batasInput(200).getKata(Risiko));
         Komplikasi.setDocument(new batasInput(200).getKata(Komplikasi));
         Prognosis.setDocument(new batasInput(200).getKata(Prognosis));
-        AlternatifResiko.setDocument(new batasInput(200).getKata(AlternatifResiko));
+        AlternatifResiko.setDocument(new batasInput(200).getKata(
+                AlternatifResiko));
         LainLain.setDocument(new batasInput(200).getKata(LainLain));
-        Biaya.setDocument(new batasInput((byte)12).getOnlyAngka(Biaya));
-        AlasanDiwakilkan.setDocument(new batasInput(40).getKata(AlasanDiwakilkan));
-        PenerimaInformasi.setDocument(new batasInput(50).getKata(PenerimaInformasi));
+        Biaya.setDocument(new batasInput((byte) 12).getOnlyAngka(Biaya));
+        AlasanDiwakilkan.setDocument(new batasInput(40).
+                getKata(AlasanDiwakilkan));
+        PenerimaInformasi.setDocument(new batasInput(50).getKata(
+                PenerimaInformasi));
         AlamatPenerima.setDocument(new batasInput(100).getKata(AlamatPenerima));
         NoHPPenerima.setDocument(new batasInput(40).getKata(NoHPPenerima));
-        UmurPenerima.setDocument(new batasInput((byte)3).getOnlyAngka(UmurPenerima));
+        UmurPenerima.setDocument(new batasInput((byte) 3).getOnlyAngka(
+                UmurPenerima));
         SaksiKeluarga.setDocument(new batasInput(50).getKata(SaksiKeluarga));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
+
         ChkAccor.setSelected(false);
         isPhoto();
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){
-                    KdPerawat.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NmPerawat.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    KdPerawat.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 0).toString());
+                    NmPerawat.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
                     KdPerawat.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         template.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(template.getTable().getSelectedRow()!= -1){                   
-                    Diagnosa.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),1).toString());
-                    TindakanKedokteran.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),2).toString());
-                    IndikasiTindakan.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),3).toString());
-                    TataCara.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),4).toString());
-                    Tujuan.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),5).toString());
-                    Risiko.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),6).toString());
-                    Komplikasi.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),7).toString());
-                    Prognosis.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),8).toString());
-                    AlternatifResiko.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),9).toString());
-                    LainLain.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),10).toString());
-                    Biaya.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),11).toString());
-                } 
+                if (template.getTable().getSelectedRow() != -1) {
+                    Diagnosa.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 1).toString());
+                    TindakanKedokteran.setText(template.getTable().getValueAt(
+                            template.getTable().getSelectedRow(), 2).toString());
+                    IndikasiTindakan.setText(template.getTable().getValueAt(
+                            template.getTable().getSelectedRow(), 3).toString());
+                    TataCara.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 4).toString());
+                    Tujuan.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 5).toString());
+                    Risiko.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 6).toString());
+                    Komplikasi.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 7).toString());
+                    Prognosis.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 8).toString());
+                    AlternatifResiko.setText(template.getTable().getValueAt(
+                            template.getTable().getSelectedRow(), 9).toString());
+                    LainLain.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 10).toString());
+                    Biaya.setText(template.getTable().getValueAt(template.
+                            getTable().getSelectedRow(), 11).toString());
+                }
                 LainLain.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML2.setEditable(true);
         LoadHTML2.setEditorKit(kit);
@@ -304,26 +415,23 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
         LoadHTML3.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML2.setDocument(doc);
         LoadHTML3.setDocument(doc);
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1440,30 +1548,46 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmDokter.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Dokter");
-        }else if(Diagnosa.getText().trim().isEmpty()){
-            Valid.textKosong(Diagnosa,"Diagnosa");
-        }else if(TindakanKedokteran.getText().trim().isEmpty()){
-            Valid.textKosong(TindakanKedokteran,"Tindakan");
-        }else if(PenerimaInformasi.getText().trim().isEmpty()){
-            Valid.textKosong(PenerimaInformasi,"Penerima Informasi");
-        }else if(NmPerawat.getText().trim().isEmpty()){
-            Valid.textKosong(NmPerawat,"Saksi II Perawat");
-        }else if(SaksiKeluarga.getText().trim().isEmpty()){
-            Valid.textKosong(SaksiKeluarga,"Saksi I Keluarga");
-        }else if(Biaya.getText().trim().isEmpty()){
-            Valid.textKosong(Biaya,"Biaya");
-        }else{
-            if(Sequel.menyimpantf("persetujuan_penolakan_tindakan","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","No.Pernyataan",37,new String[]{
-                    NoPenyataan.getText(),TNoRw.getText(),Valid.SetTgl(TglPernyataan.getSelectedItem()+""),Diagnosa.getText(),"false",TindakanKedokteran.getText(),"false",
-                    IndikasiTindakan.getText(),"false",TataCara.getText(),"false",Tujuan.getText(),"false",Risiko.getText(),"false",Komplikasi.getText(),"false",Prognosis.getText(), 
-                    "false",AlternatifResiko.getText(),"false",Biaya.getText(),"false",LainLain.getText(),"false",KdDokter.getText(),KdPerawat.getText(),PenerimaInformasi.getText(),
-                    AlasanDiwakilkan.getText(),JKPenerima.getSelectedItem().toString().substring(0,1),Valid.SetTgl(TglLahirPenerima.getSelectedItem()+""),UmurPenerima.getText(),
-                    AlamatPenerima.getText(),NoHPPenerima.getText(),HubunganDenganPasien.getSelectedItem().toString(),"Belum Dikonfirmasi",SaksiKeluarga.getText()
-                })==true){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmDokter.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Dokter");
+        } else if (Diagnosa.getText().trim().isEmpty()) {
+            Valid.textKosong(Diagnosa, "Diagnosa");
+        } else if (TindakanKedokteran.getText().trim().isEmpty()) {
+            Valid.textKosong(TindakanKedokteran, "Tindakan");
+        } else if (PenerimaInformasi.getText().trim().isEmpty()) {
+            Valid.textKosong(PenerimaInformasi, "Penerima Informasi");
+        } else if (NmPerawat.getText().trim().isEmpty()) {
+            Valid.textKosong(NmPerawat, "Saksi II Perawat");
+        } else if (SaksiKeluarga.getText().trim().isEmpty()) {
+            Valid.textKosong(SaksiKeluarga, "Saksi I Keluarga");
+        } else if (Biaya.getText().trim().isEmpty()) {
+            Valid.textKosong(Biaya, "Biaya");
+        } else {
+            if (Sequel.menyimpantf("persetujuan_penolakan_tindakan",
+                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                    "No.Pernyataan", 37, new String[]{
+                        NoPenyataan.getText(), TNoRw.getText(), Valid.SetTgl(
+                        TglPernyataan.getSelectedItem() + ""), Diagnosa.
+                        getText(), "false", TindakanKedokteran.getText(),
+                        "false",
+                        IndikasiTindakan.getText(), "false", TataCara.getText(),
+                        "false", Tujuan.getText(), "false", Risiko.getText(),
+                        "false", Komplikasi.getText(), "false", Prognosis.
+                        getText(),
+                        "false", AlternatifResiko.getText(), "false", Biaya.
+                        getText(), "false", LainLain.getText(), "false",
+                        KdDokter.getText(), KdPerawat.getText(),
+                        PenerimaInformasi.getText(),
+                        AlasanDiwakilkan.getText(),
+                        JKPenerima.getSelectedItem().toString().substring(0, 1),
+                        Valid.SetTgl(TglLahirPenerima.getSelectedItem() + ""),
+                        UmurPenerima.getText(),
+                        AlamatPenerima.getText(), NoHPPenerima.getText(),
+                        HubunganDenganPasien.getSelectedItem().toString(),
+                        "Belum Dikonfirmasi", SaksiKeluarga.getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
             }
@@ -1471,10 +1595,10 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,SaksiKeluarga,BtnBatal);
+        } else {
+            Valid.pindah(evt, SaksiKeluarga, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -1483,74 +1607,82 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else{
-                if(KdDokter.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString())){
+            } else {
+                if (KdDokter.getText().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 29).toString())) {
                     hapus();
-                }else{
-                    JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh dokter yang bersangkutan..!!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Hanya bisa dihapus oleh dokter yang bersangkutan..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }              
-            
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmDokter.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Dokter");
-        }else if(Diagnosa.getText().trim().isEmpty()){
-            Valid.textKosong(Diagnosa,"Diagnosa");
-        }else if(TindakanKedokteran.getText().trim().isEmpty()){
-            Valid.textKosong(TindakanKedokteran,"Tindakan");
-        }else if(PenerimaInformasi.getText().trim().isEmpty()){
-            Valid.textKosong(PenerimaInformasi,"Penerima Informasi");
-        }else if(NmPerawat.getText().trim().isEmpty()){
-            Valid.textKosong(NmPerawat,"Saksi II Perawat");
-        }else if(SaksiKeluarga.getText().trim().isEmpty()){
-            Valid.textKosong(SaksiKeluarga,"Saksi I Keluarga");
-        }else if(Biaya.getText().trim().isEmpty()){
-            Valid.textKosong(Biaya,"Biaya");
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmDokter.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Dokter");
+        } else if (Diagnosa.getText().trim().isEmpty()) {
+            Valid.textKosong(Diagnosa, "Diagnosa");
+        } else if (TindakanKedokteran.getText().trim().isEmpty()) {
+            Valid.textKosong(TindakanKedokteran, "Tindakan");
+        } else if (PenerimaInformasi.getText().trim().isEmpty()) {
+            Valid.textKosong(PenerimaInformasi, "Penerima Informasi");
+        } else if (NmPerawat.getText().trim().isEmpty()) {
+            Valid.textKosong(NmPerawat, "Saksi II Perawat");
+        } else if (SaksiKeluarga.getText().trim().isEmpty()) {
+            Valid.textKosong(SaksiKeluarga, "Saksi I Keluarga");
+        } else if (Biaya.getText().trim().isEmpty()) {
+            Valid.textKosong(Biaya, "Biaya");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else{
-                    if(KdDokter.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString())){
+                } else {
+                    if (KdDokter.getText().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 29).toString())) {
                         ganti();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh dokter yang bersangkutan..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Hanya bisa diganti oleh dokter yang bersangkutan..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1560,362 +1692,580 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
-                File g = new File("file2.css");            
-                BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"+                    
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                );
-                bg.close();
+        } else if (tabMode.getRowCount() != 0) {
+            try {
+                File g = new File("file2.css");
+                try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                    bg.write(
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                    );
+                }
 
-                File f;            
-                BufferedWriter bw; 
-                
-                if(TCari.getText().trim().isEmpty()){
-                    ps=koneksi.prepareStatement(
-                            "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"+
-                            "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"+
-                            "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"+
-                            "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"+
-                            "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"+
-                            "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"+
-                            "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"+
-                            "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "+
-                            "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "+
-                            "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                            "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "+
-                            "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "+
-                            "persetujuan_penolakan_tindakan.tanggal between ? and ? order by persetujuan_penolakan_tindakan.tanggal");
-                }else{
-                    ps=koneksi.prepareStatement(
-                            "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"+
-                            "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"+
-                            "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"+
-                            "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"+
-                            "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"+
-                            "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"+
-                            "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"+
-                            "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"+
-                            "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "+
-                            "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "+
-                            "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                            "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "+
-                            "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "+
-                            "persetujuan_penolakan_tindakan.tanggal between ? and ? and (persetujuan_penolakan_tindakan.no_pernyataan like ? or reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                            "persetujuan_penolakan_tindakan.kd_dokter like ? or dokter.nm_dokter like ?) order by persetujuan_penolakan_tindakan.tanggal");
+                File f;
+                BufferedWriter bw;
+
+                if (TCari.getText().trim().isEmpty()) {
+                    ps = koneksi.prepareStatement(
+                            "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
+                            + "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"
+                            + "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"
+                            + "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"
+                            + "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"
+                            + "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"
+                            + "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"
+                            + "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "
+                            + "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "
+                            + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                            + "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "
+                            + "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "
+                            + "persetujuan_penolakan_tindakan.tanggal between ? and ? order by persetujuan_penolakan_tindakan.tanggal");
+                } else {
+                    ps = koneksi.prepareStatement(
+                            "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
+                            + "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"
+                            + "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"
+                            + "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"
+                            + "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"
+                            + "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"
+                            + "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"
+                            + "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"
+                            + "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "
+                            + "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "
+                            + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                            + "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "
+                            + "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "
+                            + "persetujuan_penolakan_tindakan.tanggal between ? and ? and (persetujuan_penolakan_tindakan.no_pernyataan like ? or reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                            + "persetujuan_penolakan_tindakan.kd_dokter like ? or dokter.nm_dokter like ?) order by persetujuan_penolakan_tindakan.tanggal");
                 }
 
                 try {
-                    if(TCari.getText().trim().isEmpty()){
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    }else{
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                        ps.setString(3,"%"+TCari.getText()+"%");
-                        ps.setString(4,"%"+TCari.getText()+"%");
-                        ps.setString(5,"%"+TCari.getText()+"%");
-                        ps.setString(6,"%"+TCari.getText()+"%");
-                        ps.setString(7,"%"+TCari.getText()+"%");
-                        ps.setString(8,"%"+TCari.getText()+"%");
-                    } 
-                    rs=ps.executeQuery();
-                    pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih laporan..!","Pilihan Cetak",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Laporan 1 (HTML)","Laporan 2 (WPS)","Laporan 3 (CSV)"},"Laporan 1 (HTML)");
+                    if (TCari.getText().trim().isEmpty()) {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    } else {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                        ps.setString(3, "%" + TCari.getText() + "%");
+                        ps.setString(4, "%" + TCari.getText() + "%");
+                        ps.setString(5, "%" + TCari.getText() + "%");
+                        ps.setString(6, "%" + TCari.getText() + "%");
+                        ps.setString(7, "%" + TCari.getText() + "%");
+                        ps.setString(8, "%" + TCari.getText() + "%");
+                    }
+                    rs = ps.executeQuery();
+                    pilihan = (String) JOptionPane.showInputDialog(null,
+                            "Silahkan pilih laporan..!", "Pilihan Cetak",
+                            JOptionPane.QUESTION_MESSAGE, null, new Object[]{
+                                "Laporan 1 (HTML)", "Laporan 2 (WPS)",
+                                "Laporan 3 (CSV)"}, "Laporan 1 (HTML)");
                     switch (pilihan) {
                         case "Laporan 1 (HTML)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
-                                    "<tr class='isi'>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Pernyataan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tanggal</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tindakan Kedokteran</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Indikasi Tindakan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tata Cara</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tujuan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Risiko</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Komplikasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Prognosis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alternatif & Resikonya</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Lain-lain</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Biaya</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Kode Dokter</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Dokter</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nip</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi II Perawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Penerima Informasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Jika Diwakilkan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K. P.I</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir P.I.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Umur P.I.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alamat Penerima Informasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.H.P. P.I</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Hubungan Dengan Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pernyataan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi I Keluarga</td>"+
-                                    "</tr>"
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
+                                    "<tr class='isi'>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Pernyataan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tanggal</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tindakan Kedokteran</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Indikasi Tindakan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tata Cara</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tujuan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Risiko</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Komplikasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Prognosis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alternatif & Resikonya</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Lain-lain</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Biaya</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Kode Dokter</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Dokter</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nip</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi II Perawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Penerima Informasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Jika Diwakilkan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K. P.I</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir P.I.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Umur P.I.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alamat Penerima Informasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.H.P. P.I</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Hubungan Dengan Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pernyataan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi I Keluarga</td>"
+                                    + "</tr>"
+                            );
+                            while (rs.next()) {
+                                htmlContent.append(
+                                        "<tr class='isi'>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_pernyataan") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_rawat") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_rkm_medis") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nm_pasien") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tgl_lahir") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "jk") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tanggal") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "diagnosa") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("diagnosa_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tindakan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tindakan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "indikasi_tindakan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "indikasi_tindakan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tata_cara") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tata_cara_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tujuan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tujuan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "risiko") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("risiko_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "komplikasi") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "komplikasi_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "prognosis") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("prognosis_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alternatif_dan_risikonya") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "alternatif_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "lain_lain") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("lain_lain_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "biaya") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("biaya_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "kd_dokter") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nm_dokter") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nip") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nama") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alasan_diwakilkan_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "jk_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tanggal_lahir_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "umur_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alamat_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_hp") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "hubungan_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "pernyataan") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "saksi_keluarga") + "</td>"
+                                        + "</tr>"
                                 );
-                                while(rs.next()){
-                                    htmlContent.append(
-                                        "<tr class='isi'>"+
-                                            "<td valign='top'>"+rs.getString("no_pernyataan")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_rawat")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_rkm_medis")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nm_pasien")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tgl_lahir")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("jk")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tanggal")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("diagnosa")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("diagnosa_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tindakan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tindakan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("indikasi_tindakan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("indikasi_tindakan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tata_cara")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tata_cara_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tujuan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tujuan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("risiko")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("risiko_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("komplikasi")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("komplikasi_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("prognosis")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("prognosis_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("alternatif_dan_risikonya")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("alternatif_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("lain_lain")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("lain_lain_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("biaya")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("biaya_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("kd_dokter")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nm_dokter")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nip")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nama")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("alasan_diwakilkan_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("jk_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tanggal_lahir_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("umur_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("alamat_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_hp")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("hubungan_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("pernyataan")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("saksi_keluarga")+"</td>"+ 
-                                        "</tr>"
-                                    );
-                                }
-                                f = new File("PersetujuanPenolakanTindakan.html");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write("<html>"+
-                                            "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                            "<body>"+
-                                                "<table width='3600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                    htmlContent.toString()+
-                                                "</table>"+
-                                            "</body>"+                   
-                                         "</html>"
-                                );
+                            }
+                            f = new File("PersetujuanPenolakanTindakan.html");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write("<html>"
+                                    + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                    + "<body>"
+                                    + "<table width='3600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                    + htmlContent.toString()
+                                    + "</table>"
+                                    + "</body>"
+                                    + "</html>"
+                            );
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
                             break;
                         case "Laporan 2 (WPS)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
-                                    "<tr class='isi'>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Pernyataan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tanggal</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tindakan Kedokteran</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Indikasi Tindakan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tata Cara</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tujuan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Risiko</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Komplikasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Prognosis</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alternatif & Resikonya</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Lain-lain</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Biaya</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Kode Dokter</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Dokter</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nip</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi II Perawat</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Penerima Informasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Jika Diwakilkan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K. P.I</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir P.I.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Umur P.I.</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alamat Penerima Informasi</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.H.P. P.I</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Hubungan Dengan Pasien</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pernyataan</td>"+
-                                        "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi I Keluarga</td>"+
-                                    "</tr>"
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
+                                    "<tr class='isi'>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Pernyataan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.Rawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.RM</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tanggal</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Diagnosa</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tindakan Kedokteran</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Indikasi Tindakan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tata Cara</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tujuan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Risiko</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Komplikasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Prognosis</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alternatif & Resikonya</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Lain-lain</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Biaya</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Ya/Tidak</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Kode Dokter</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nama Dokter</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Nip</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi II Perawat</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Penerima Informasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alasan Jika Diwakilkan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>J.K. P.I</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Tgl.Lahir P.I.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Umur P.I.</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Alamat Penerima Informasi</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>No.H.P. P.I</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Hubungan Dengan Pasien</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Pernyataan</td>"
+                                    + "<td valign='middle' bgcolor='#FFFAF8' align='center'>Saksi I Keluarga</td>"
+                                    + "</tr>"
+                            );
+                            while (rs.next()) {
+                                htmlContent.append(
+                                        "<tr class='isi'>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_pernyataan") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_rawat") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_rkm_medis") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nm_pasien") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tgl_lahir") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "jk") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tanggal") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "diagnosa") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("diagnosa_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tindakan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tindakan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "indikasi_tindakan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "indikasi_tindakan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tata_cara") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tata_cara_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tujuan") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("tujuan_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "risiko") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("risiko_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "komplikasi") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "komplikasi_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "prognosis") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("prognosis_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alternatif_dan_risikonya") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString(
+                                                        "alternatif_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "lain_lain") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("lain_lain_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "biaya") + "</td>"
+                                        + "<td valign='top' align='center'><input type=checkbox " + rs.
+                                                getString("biaya_konfirmasi").
+                                                replaceAll("true", "checked").
+                                                replaceAll("false", "") + "></td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "kd_dokter") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nm_dokter") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nip") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "nama") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alasan_diwakilkan_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "jk_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "tanggal_lahir_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "umur_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "alamat_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "no_hp") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "hubungan_penerima_informasi") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "pernyataan") + "</td>"
+                                        + "<td valign='top'>" + rs.getString(
+                                                "saksi_keluarga") + "</td>"
+                                        + "</tr>"
                                 );
-                                while(rs.next()){
-                                    htmlContent.append(
-                                        "<tr class='isi'>"+
-                                            "<td valign='top'>"+rs.getString("no_pernyataan")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_rawat")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_rkm_medis")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nm_pasien")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tgl_lahir")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("jk")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tanggal")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("diagnosa")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("diagnosa_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tindakan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tindakan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("indikasi_tindakan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("indikasi_tindakan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tata_cara")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tata_cara_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("tujuan")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("tujuan_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("risiko")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("risiko_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("komplikasi")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("komplikasi_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("prognosis")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("prognosis_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("alternatif_dan_risikonya")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("alternatif_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("lain_lain")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("lain_lain_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("biaya")+"</td>"+
-                                            "<td valign='top' align='center'><input type=checkbox "+rs.getString("biaya_konfirmasi").replaceAll("true","checked").replaceAll("false","")+"></td>"+
-                                            "<td valign='top'>"+rs.getString("kd_dokter")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nm_dokter")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nip")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("nama")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("alasan_diwakilkan_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("jk_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("tanggal_lahir_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("umur_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("alamat_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("no_hp")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("hubungan_penerima_informasi")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("pernyataan")+"</td>"+
-                                            "<td valign='top'>"+rs.getString("saksi_keluarga")+"</td>"+ 
-                                        "</tr>"
-                                    );
-                                }
-                                f = new File("PersetujuanPenolakanTindakan.wps");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write("<html>"+
-                                            "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"+
-                                            "<body>"+
-                                                "<table width='3600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                                    htmlContent.toString()+
-                                                "</table>"+
-                                            "</body>"+                   
-                                         "</html>"
-                                );
+                            }
+                            f = new File("PersetujuanPenolakanTindakan.wps");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write("<html>"
+                                    + "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" /></head>"
+                                    + "<body>"
+                                    + "<table width='3600px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                    + htmlContent.toString()
+                                    + "</table>"
+                                    + "</body>"
+                                    + "</html>"
+                            );
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
                             break;
                         case "Laporan 3 (CSV)":
-                                htmlContent = new StringBuilder();
-                                htmlContent.append(                             
+                            htmlContent = new StringBuilder();
+                            htmlContent.append(
                                     "\"No.Pernyataan\";\"No.Rawat\";\"No.RM\";\"Nama Pasien\";\"Tgl.Lahir\";\"J.K.\";\"Tanggal\";\"Diagnosa\";\"Ya/Tidak\";\"Tindakan Kedokteran\";\"Ya/Tidak\";\"Indikasi Tindakan\";\"Ya/Tidak\";\"Tata Cara\";\"Ya/Tidak\";\"Tujuan\";\"Ya/Tidak\";\"Risiko\";\"Ya/Tidak\";\"Komplikasi\";\"Ya/Tidak\";\"Prognosis\";\"Ya/Tidak\";\"Alternatif & Resikonya\";\"Ya/Tidak\";\"Lain-lain\";\"Ya/Tidak\";\"Biaya\";\"Ya/Tidak\";\"Kode Dokter\";\"Nama Dokter\";\"Nip\";\"Saksi II Perawat\";\"Penerima Informasi\";\"Alasan Jika Diwakilkan\";\"J.K. P.I\";\"Tgl.Lahir P.I.\";\"Umur P.I.\";\"Alamat Penerima Informasi\";\"No.H.P. P.I\";\"Hubungan Dengan Pasien\";\"Pernyataan\";\"Saksi I Keluarga\"\n"
-                                ); 
-                                while(rs.next()){
-                                    htmlContent.append(
-                                        "\""+rs.getString("no_pernyataan")+"\";\""+rs.getString("no_rawat")+"\";\" "+rs.getString("no_rkm_medis")+"\";\""+rs.getString("nm_pasien")+"\";\""+rs.getString("tgl_lahir")+"\";\""+rs.getString("jk")+"\";\""+rs.getString("tanggal")+"\";\""+rs.getString("diagnosa")+"\";\""+rs.getString("diagnosa_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("tindakan")+"\";\""+rs.getString("tindakan_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("indikasi_tindakan")+"\";\""+rs.getString("indikasi_tindakan_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("tata_cara")+"\";\""+rs.getString("tata_cara_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("tujuan")+"\";\""+rs.getString("tujuan_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("risiko")+"\";\""+rs.getString("risiko_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("komplikasi")+"\";\""+rs.getString("komplikasi_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("prognosis")+"\";\""+rs.getString("prognosis_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("alternatif_dan_risikonya")+"\";\""+rs.getString("alternatif_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("lain_lain")+"\";\""+rs.getString("lain_lain_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("biaya")+"\";\""+rs.getString("biaya_konfirmasi").replaceAll("true","Ya").replaceAll("false","Tidak")+"\";\""+rs.getString("kd_dokter")+"\";\""+rs.getString("nm_dokter")+"\";\""+rs.getString("nip")+"\";\""+rs.getString("nama")+"\";\""+rs.getString("penerima_informasi")+"\";\""+rs.getString("alasan_diwakilkan_penerima_informasi")+"\";\""+rs.getString("jk_penerima_informasi")+"\";\""+rs.getString("tanggal_lahir_penerima_informasi")+"\";\""+rs.getString("umur_penerima_informasi")+"\";\""+rs.getString("alamat_penerima_informasi")+"\";\""+rs.getString("no_hp")+"\";\""+rs.getString("hubungan_penerima_informasi")+"\";\""+rs.getString("pernyataan")+"\";\""+rs.getString("saksi_keluarga")+"\"\n"
-                                    );
-                                }
-                                f = new File("PersetujuanPenolakanTindakan.csv");            
-                                bw = new BufferedWriter(new FileWriter(f));            
-                                bw.write(htmlContent.toString());
+                            );
+                            while (rs.next()) {
+                                htmlContent.append(
+                                        "\"" + rs.getString("no_pernyataan") + "\";\"" + rs.
+                                        getString("no_rawat") + "\";\" " + rs.
+                                        getString("no_rkm_medis") + "\";\"" + rs.
+                                        getString("nm_pasien") + "\";\"" + rs.
+                                        getString("tgl_lahir") + "\";\"" + rs.
+                                        getString("jk") + "\";\"" + rs.
+                                        getString("tanggal") + "\";\"" + rs.
+                                        getString("diagnosa") + "\";\"" + rs.
+                                        getString("diagnosa_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("tindakan") + "\";\"" + rs.
+                                        getString("tindakan_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("indikasi_tindakan") + "\";\"" + rs.
+                                        getString("indikasi_tindakan_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("tata_cara") + "\";\"" + rs.
+                                        getString("tata_cara_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("tujuan") + "\";\"" + rs.
+                                        getString("tujuan_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("risiko") + "\";\"" + rs.
+                                        getString("risiko_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("komplikasi") + "\";\"" + rs.
+                                        getString("komplikasi_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("prognosis") + "\";\"" + rs.
+                                        getString("prognosis_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString(
+                                                        "alternatif_dan_risikonya") + "\";\"" + rs.
+                                                getString(
+                                                        "alternatif_konfirmasi").
+                                                replaceAll("true", "Ya").
+                                                replaceAll("false", "Tidak") + "\";\"" + rs.
+                                        getString("lain_lain") + "\";\"" + rs.
+                                        getString("lain_lain_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("biaya") + "\";\"" + rs.
+                                        getString("biaya_konfirmasi").
+                                        replaceAll("true", "Ya").replaceAll(
+                                        "false", "Tidak") + "\";\"" + rs.
+                                                getString("kd_dokter") + "\";\"" + rs.
+                                        getString("nm_dokter") + "\";\"" + rs.
+                                        getString("nip") + "\";\"" + rs.
+                                        getString("nama") + "\";\"" + rs.
+                                        getString("penerima_informasi") + "\";\"" + rs.
+                                        getString(
+                                                "alasan_diwakilkan_penerima_informasi") + "\";\"" + rs.
+                                                getString(
+                                                        "jk_penerima_informasi") + "\";\"" + rs.
+                                                getString(
+                                                        "tanggal_lahir_penerima_informasi") + "\";\"" + rs.
+                                                getString(
+                                                        "umur_penerima_informasi") + "\";\"" + rs.
+                                                getString(
+                                                        "alamat_penerima_informasi") + "\";\"" + rs.
+                                                getString("no_hp") + "\";\"" + rs.
+                                        getString("hubungan_penerima_informasi") + "\";\"" + rs.
+                                        getString("pernyataan") + "\";\"" + rs.
+                                        getString("saksi_keluarga") + "\"\n"
+                                );
+                            }
+                            f = new File("PersetujuanPenolakanTindakan.csv");
+                            bw = new BufferedWriter(new FileWriter(f));
+                            bw.write(htmlContent.toString());
 
-                                bw.close();                         
-                                Desktop.getDesktop().browse(f.toURI());
-                            break; 
-                    }           
-                } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                            bw.close();
+                            Desktop.getDesktop().browse(f.toURI());
+                            break;
+                    }
+                } catch (HeadlessException | IOException | SQLException e) {
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (IOException | SQLException e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1925,9 +2275,9 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1938,35 +2288,36 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 isPhoto();
                 panggilPhoto();
             } catch (java.lang.NullPointerException e) {
             }
-            if((evt.getClickCount()==2)&&(tbObat.getSelectedColumn()==0)){
+            if ((evt.getClickCount() == 2) && (tbObat.getSelectedColumn() == 0)) {
                 TabRawat.setSelectedIndex(0);
             }
         }
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     getData();
                     TabRawat.setSelectedIndex(0);
@@ -1977,22 +2328,23 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==1){
+        if (TabRawat.getSelectedIndex() == 1) {
             tampil();
         }
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
-        }else{
-            Valid.pindah(evt,TCari,BtnDokter);
+        } else {
+            Valid.pindah(evt, TCari, BtnDokter);
         }
     }//GEN-LAST:event_TNoRwKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
         dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setAlwaysOnTop(false);
         dokter.setVisible(true);
@@ -2003,119 +2355,121 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void HubunganDenganPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HubunganDenganPasienKeyPressed
-        Valid.pindah(evt,Biaya,AlasanDiwakilkan);
+        Valid.pindah(evt, Biaya, AlasanDiwakilkan);
     }//GEN-LAST:event_HubunganDenganPasienKeyPressed
 
     private void TglPernyataanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglPernyataanKeyPressed
-        Valid.pindah(evt,BtnDokter,HubunganDenganPasien);
+        Valid.pindah(evt, BtnDokter, HubunganDenganPasien);
     }//GEN-LAST:event_TglPernyataanKeyPressed
 
     private void DiagnosaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaKeyPressed
-        Valid.pindah2(evt,NoPenyataan,TindakanKedokteran);
+        Valid.pindah2(evt, NoPenyataan, TindakanKedokteran);
     }//GEN-LAST:event_DiagnosaKeyPressed
 
     private void TindakanKedokteranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TindakanKedokteranKeyPressed
-        Valid.pindah2(evt,Diagnosa,IndikasiTindakan);
+        Valid.pindah2(evt, Diagnosa, IndikasiTindakan);
     }//GEN-LAST:event_TindakanKedokteranKeyPressed
 
     private void IndikasiTindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IndikasiTindakanKeyPressed
-        Valid.pindah2(evt,TindakanKedokteran,TataCara);
+        Valid.pindah2(evt, TindakanKedokteran, TataCara);
     }//GEN-LAST:event_IndikasiTindakanKeyPressed
 
     private void TataCaraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TataCaraKeyPressed
-        Valid.pindah2(evt,IndikasiTindakan,Tujuan);
+        Valid.pindah2(evt, IndikasiTindakan, Tujuan);
     }//GEN-LAST:event_TataCaraKeyPressed
 
     private void RisikoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RisikoKeyPressed
-        Valid.pindah2(evt,Tujuan,Komplikasi);
+        Valid.pindah2(evt, Tujuan, Komplikasi);
     }//GEN-LAST:event_RisikoKeyPressed
 
     private void TujuanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TujuanKeyPressed
-        Valid.pindah2(evt,TataCara,Risiko);
+        Valid.pindah2(evt, TataCara, Risiko);
     }//GEN-LAST:event_TujuanKeyPressed
 
     private void KomplikasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KomplikasiKeyPressed
-        Valid.pindah2(evt,Risiko,Prognosis);
+        Valid.pindah2(evt, Risiko, Prognosis);
     }//GEN-LAST:event_KomplikasiKeyPressed
 
     private void PrognosisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PrognosisKeyPressed
-        Valid.pindah2(evt,Komplikasi,AlternatifResiko);
+        Valid.pindah2(evt, Komplikasi, AlternatifResiko);
     }//GEN-LAST:event_PrognosisKeyPressed
 
     private void AlternatifResikoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlternatifResikoKeyPressed
-        Valid.pindah2(evt,Prognosis,LainLain);
+        Valid.pindah2(evt, Prognosis, LainLain);
     }//GEN-LAST:event_AlternatifResikoKeyPressed
 
     private void LainLainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LainLainKeyPressed
-        Valid.pindah2(evt,AlternatifResiko,Biaya);
+        Valid.pindah2(evt, AlternatifResiko, Biaya);
     }//GEN-LAST:event_LainLainKeyPressed
 
     private void TglLahirPenerimaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglLahirPenerimaKeyPressed
-        Valid.pindah(evt,AlamatPenerima,NoHPPenerima);
+        Valid.pindah(evt, AlamatPenerima, NoHPPenerima);
     }//GEN-LAST:event_TglLahirPenerimaKeyPressed
 
     private void JKPenerimaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JKPenerimaKeyPressed
-        Valid.pindah(evt,NoHPPenerima,UmurPenerima);
+        Valid.pindah(evt, NoHPPenerima, UmurPenerima);
     }//GEN-LAST:event_JKPenerimaKeyPressed
 
     private void BtnPerawatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerawatActionPerformed
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setAlwaysOnTop(false);
         petugas.setVisible(true);
     }//GEN-LAST:event_BtnPerawatActionPerformed
 
     private void BtnPerawatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPerawatKeyPressed
-        Valid.pindah(evt,UmurPenerima,SaksiKeluarga);
+        Valid.pindah(evt, UmurPenerima, SaksiKeluarga);
     }//GEN-LAST:event_BtnPerawatKeyPressed
 
     private void NoPenyataanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoPenyataanKeyPressed
-        Valid.pindah(evt,TglPernyataan,Diagnosa);
+        Valid.pindah(evt, TglPernyataan, Diagnosa);
     }//GEN-LAST:event_NoPenyataanKeyPressed
 
     private void BiayaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BiayaKeyPressed
-        Valid.pindah(evt,LainLain,HubunganDenganPasien);
+        Valid.pindah(evt, LainLain, HubunganDenganPasien);
     }//GEN-LAST:event_BiayaKeyPressed
 
     private void AlasanDiwakilkanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlasanDiwakilkanKeyPressed
-        Valid.pindah(evt,HubunganDenganPasien,PenerimaInformasi);
+        Valid.pindah(evt, HubunganDenganPasien, PenerimaInformasi);
     }//GEN-LAST:event_AlasanDiwakilkanKeyPressed
 
     private void PenerimaInformasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PenerimaInformasiKeyPressed
-        Valid.pindah(evt,AlamatPenerima,AlamatPenerima);
+        Valid.pindah(evt, AlamatPenerima, AlamatPenerima);
     }//GEN-LAST:event_PenerimaInformasiKeyPressed
 
     private void AlamatPenerimaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlamatPenerimaKeyPressed
-        Valid.pindah(evt,PenerimaInformasi,NoHPPenerima);
+        Valid.pindah(evt, PenerimaInformasi, NoHPPenerima);
     }//GEN-LAST:event_AlamatPenerimaKeyPressed
 
     private void NoHPPenerimaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoHPPenerimaKeyPressed
-        Valid.pindah(evt,TglLahirPenerima,JKPenerima);
+        Valid.pindah(evt, TglLahirPenerima, JKPenerima);
     }//GEN-LAST:event_NoHPPenerimaKeyPressed
 
     private void UmurPenerimaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UmurPenerimaKeyPressed
-        Valid.pindah(evt,JKPenerima,BtnPerawat);
+        Valid.pindah(evt, JKPenerima, BtnPerawat);
     }//GEN-LAST:event_UmurPenerimaKeyPressed
 
     private void SaksiKeluargaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SaksiKeluargaKeyPressed
-        Valid.pindah(evt,BtnPerawat,BtnSimpan);
+        Valid.pindah(evt, BtnPerawat, BtnSimpan);
     }//GEN-LAST:event_SaksiKeluargaKeyPressed
 
     private void HubunganDenganPasienItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_HubunganDenganPasienItemStateChanged
-        if(HubunganDenganPasien.getSelectedIndex()==0){
+        if (HubunganDenganPasien.getSelectedIndex() == 0) {
             try {
-                ps=koneksi.prepareStatement("select concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,"+
-                            "TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,pasien.tgl_lahir,pasien.no_tlp,pasien.umur "+
-                            "from pasien inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                            "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                            "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                            "inner join penjab on pasien.kd_pj=penjab.kd_pj "+
-                            "where pasien.no_rkm_medis=?");
-                try {            
-                    ps.setString(1,TNoRM.getText());
-                    rs=ps.executeQuery();
-                    while(rs.next()){
+                ps = koneksi.prepareStatement(
+                        "select concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,"
+                        + "TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,pasien.tgl_lahir,pasien.no_tlp,pasien.umur "
+                        + "from pasien inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                        + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                        + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                        + "inner join penjab on pasien.kd_pj=penjab.kd_pj "
+                        + "where pasien.no_rkm_medis=?");
+                try {
+                    ps.setString(1, TNoRM.getText());
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
                         PenerimaInformasi.setText(TPasien.getText());
                         AlamatPenerima.setText(rs.getString("asal"));
                         TglLahirPenerima.setDate(rs.getDate("tgl_lahir"));
@@ -2123,21 +2477,21 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
                         JKPenerima.setSelectedItem(Jk.getText());
                         UmurPenerima.setText(rs.getString("umur"));
                     }
-                } catch (Exception ex) {
+                } catch (SQLException ex) {
                     System.out.println(ex);
-                }finally{
-                    if(rs != null ){
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
 
-                    if(ps != null ){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
             }
-        }else{
+        } else {
             PenerimaInformasi.setText("");
             AlamatPenerima.setText("");
             TglLahirPenerima.setDate(new Date());
@@ -2148,111 +2502,167 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
     }//GEN-LAST:event_HubunganDenganPasienItemStateChanged
 
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
+        if (tbObat.getSelectedRow() != -1) {
             isPhoto();
             panggilPhoto();
-        }else{
+        } else {
             ChkAccor.setSelected(false);
-            JOptionPane.showMessageDialog(null,"Silahkan pilih No.Pernyataan..!!!");
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan pilih No.Pernyataan..!!!");
         }
     }//GEN-LAST:event_ChkAccorActionPerformed
 
     private void btnAmbilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAmbilActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(tbObat.getValueAt(tbObat.getSelectedRow(),41).toString().equals("Belum Dikonfirmasi")){
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString().
+                        equals("Belum Dikonfirmasi")) {
                     Sequel.queryu("delete from antripersetujuan");
-                    Sequel.queryu("insert into antripersetujuan values('"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"','"+tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()+"')");
-                    Sequel.queryu("delete from bukti_persetujuan_penolakan_tindakan_penerimainformasi where no_pernyataan='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'");
-                    Sequel.queryu("delete from bukti_persetujuan_penolakan_tindakan_saksikeluarga where no_pernyataan='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'");
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"Sudah terkonfirmasi oleh pasien/keluarga/pendamping..!!");
+                    Sequel.queryu(
+                            "insert into antripersetujuan values('" + tbObat.
+                                    getValueAt(tbObat.getSelectedRow(), 0).
+                                    toString() + "','" + tbObat.getValueAt(
+                                    tbObat.getSelectedRow(), 1).toString() + "')");
+                    Sequel.queryu(
+                            "delete from bukti_persetujuan_penolakan_tindakan_penerimainformasi where no_pernyataan='" + tbObat.
+                                    getValueAt(tbObat.getSelectedRow(), 0).
+                                    toString() + "'");
+                    Sequel.queryu(
+                            "delete from bukti_persetujuan_penolakan_tindakan_saksikeluarga where no_pernyataan='" + tbObat.
+                                    getValueAt(tbObat.getSelectedRow(), 0).
+                                    toString() + "'");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Sudah terkonfirmasi oleh pasien/keluarga/pendamping..!!");
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
-            }   
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
+            }
         }
     }//GEN-LAST:event_btnAmbilActionPerformed
 
     private void BtnRefreshPhoto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRefreshPhoto1ActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             panggilPhoto();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih No.Pernyataan terlebih dahulu..!!");
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
 
     private void BtnTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTemplateActionPerformed
         template.isCek();
-        template.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        template.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         template.setLocationRelativeTo(internalFrame1);
         template.setAlwaysOnTop(false);
         template.setVisible(true);
     }//GEN-LAST:event_BtnTemplateActionPerformed
 
     private void BtnPrint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrint1ActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(lokasifile.isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Silahkan ambil photo bukti persetujuan penolakan tindakan terlebih dahulu..!!!!");
-            }else{
+        if (tbObat.getSelectedRow() > -1) {
+            if (lokasifile.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Silahkan ambil photo bukti persetujuan penolakan tindakan terlebih dahulu..!!!!");
+            } else {
                 Map<String, Object> param = new HashMap<>();
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-                param.put("photo_penerima","http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile);
-                param.put("photo_saksi","http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile2);
-                finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),29).toString());
-                finger2=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());
-                param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),30).toString()+"\nID "+(finger.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),29).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()));
-                param.put("finger2","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),32).toString()+"\nID "+(finger2.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),31).toString():finger2)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()));
-                Valid.MyReportqry("rptSuratPersetujuanPenolakanTindakan.jasper","report","::[ Surat Persetujuan Penolakan Tindakan ]::",
-                    "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,pasien.tmp_lahir,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) as alamat,persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"+
-		    "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,"+
-                    "persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"+
-		    "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,"+
-                    "persetujuan_penolakan_tindakan.alamat_penerima_informasi,persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga,reg_periksa.umurdaftar,reg_periksa.sttsumur from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-		    "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join propinsi on pasien.kd_prop=propinsi.kd_prop "+
-                    "where persetujuan_penolakan_tindakan.no_pernyataan='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'",param);
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("emailrs", akses.getemailrs());
+                param.put("logo", Sequel.cariGambar(
+                        "select setting.logo from setting"));
+                param.put("photo_penerima", "http://" + koneksiDB.
+                        HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                        HYBRIDWEB() + "/persetujuantindakan/" + lokasifile);
+                param.put("photo_saksi",
+                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.
+                        PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/persetujuantindakan/" + lokasifile2);
+                finger = Sequel.cariIsi(
+                        "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 29).
+                                toString());
+                finger2 = Sequel.cariIsi(
+                        "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 31).
+                                toString());
+                param.put("finger",
+                        "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                        getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                                getValueAt(tbObat.getSelectedRow(), 30).
+                                toString() + "\nID " + (finger.isEmpty() ? tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 29).toString() : finger) + "\n" + Valid.
+                        SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
+                                toString()));
+                param.put("finger2",
+                        "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                        getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                                getValueAt(tbObat.getSelectedRow(), 32).
+                                toString() + "\nID " + (finger2.isEmpty() ? tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 31).toString() : finger2) + "\n" + Valid.
+                        SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
+                                toString()));
+                Valid.MyReportqry("rptSuratPersetujuanPenolakanTindakan.jasper",
+                        "report", "::[ Surat Persetujuan Penolakan Tindakan ]::",
+                        "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,pasien.tmp_lahir,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) as alamat,persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"
+                        + "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"
+                        + "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,"
+                        + "persetujuan_penolakan_tindakan.alamat_penerima_informasi,persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga,reg_periksa.umurdaftar,reg_periksa.sttsumur from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                        + "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join propinsi on pasien.kd_prop=propinsi.kd_prop "
+                        + "where persetujuan_penolakan_tindakan.no_pernyataan='" + tbObat.
+                                getValueAt(tbObat.getSelectedRow(), 0).
+                                toString() + "'", param);
             }
-        }else{
-            JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data terlebih dahulu..!!!!");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, silahkan pilih data terlebih dahulu..!!!!");
         }
     }//GEN-LAST:event_BtnPrint1ActionPerformed
 
     private void TabDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabDataMouseClicked
-        if(TabData.getSelectedIndex()==0){
-            if(lokasifile.isEmpty()){
-                LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-            }else{
-                LoadHTML2.setText("<html><body><center><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile+"' alt='photo' width='450' height='550'/></center></body></html>");
-            } 
-        }else{
-            if(lokasifile2.isEmpty()){
-                LoadHTML3.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-            }else{
-                LoadHTML3.setText("<html><body><center><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile2+"' alt='photo' width='450' height='550'/></center></body></html>");
-            } 
+        if (TabData.getSelectedIndex() == 0) {
+            if (lokasifile.isEmpty()) {
+                LoadHTML2.setText(
+                        "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+            } else {
+                LoadHTML2.setText(
+                        "<html><body><center><img src='http://" + koneksiDB.
+                                HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                        HYBRIDWEB() + "/persetujuantindakan/" + lokasifile + "' alt='photo' width='450' height='550'/></center></body></html>");
+            }
+        } else {
+            if (lokasifile2.isEmpty()) {
+                LoadHTML3.setText(
+                        "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+            } else {
+                LoadHTML3.setText(
+                        "<html><body><center><img src='http://" + koneksiDB.
+                                HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                        HYBRIDWEB() + "/persetujuantindakan/" + lokasifile2 + "' alt='photo' width='450' height='550'/></center></body></html>");
+            }
         }
     }//GEN-LAST:event_TabDataMouseClicked
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SuratPersetujuanPenolakanTindakan dialog = new SuratPersetujuanPenolakanTindakan(new javax.swing.JFrame(), true);
+            SuratPersetujuanPenolakanTindakan dialog = new SuratPersetujuanPenolakanTindakan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2382,89 +2792,115 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                        "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"+
-                        "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"+
-                        "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"+
-                        "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"+
-                        "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"+
-                        "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"+
-                        "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"+
-                        "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "+
-                        "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                        "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "+
-                        "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "+
-                        "persetujuan_penolakan_tindakan.tanggal between ? and ? order by persetujuan_penolakan_tindakan.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                        "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"+
-                        "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"+
-                        "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"+
-                        "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"+
-                        "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"+
-                        "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"+
-                        "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"+
-                        "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"+
-                        "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "+
-                        "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "+
-                        "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "+
-                        "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "+
-                        "persetujuan_penolakan_tindakan.tanggal between ? and ? and (persetujuan_penolakan_tindakan.no_pernyataan like ? or reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                        "persetujuan_penolakan_tindakan.kd_dokter like ? or dokter.nm_dokter like ?) order by persetujuan_penolakan_tindakan.tanggal");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
+                        + "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"
+                        + "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"
+                        + "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"
+                        + "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"
+                        + "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"
+                        + "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"
+                        + "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "
+                        + "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                        + "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "
+                        + "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "
+                        + "persetujuan_penolakan_tindakan.tanggal between ? and ? order by persetujuan_penolakan_tindakan.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select persetujuan_penolakan_tindakan.no_pernyataan,reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
+                        + "persetujuan_penolakan_tindakan.tanggal,persetujuan_penolakan_tindakan.diagnosa,persetujuan_penolakan_tindakan.diagnosa_konfirmasi,persetujuan_penolakan_tindakan.tindakan,"
+                        + "persetujuan_penolakan_tindakan.tindakan_konfirmasi,persetujuan_penolakan_tindakan.indikasi_tindakan,persetujuan_penolakan_tindakan.indikasi_tindakan_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.tata_cara,persetujuan_penolakan_tindakan.tata_cara_konfirmasi,persetujuan_penolakan_tindakan.tujuan,persetujuan_penolakan_tindakan.tujuan_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.risiko,persetujuan_penolakan_tindakan.risiko_konfirmasi,persetujuan_penolakan_tindakan.komplikasi,persetujuan_penolakan_tindakan.komplikasi_konfirmasi,"
+                        + "persetujuan_penolakan_tindakan.prognosis,persetujuan_penolakan_tindakan.prognosis_konfirmasi,persetujuan_penolakan_tindakan.alternatif_dan_risikonya,"
+                        + "persetujuan_penolakan_tindakan.alternatif_konfirmasi,persetujuan_penolakan_tindakan.biaya,persetujuan_penolakan_tindakan.biaya_konfirmasi,persetujuan_penolakan_tindakan.lain_lain,"
+                        + "persetujuan_penolakan_tindakan.lain_lain_konfirmasi,persetujuan_penolakan_tindakan.kd_dokter,dokter.nm_dokter,persetujuan_penolakan_tindakan.nip,petugas.nama,"
+                        + "persetujuan_penolakan_tindakan.penerima_informasi,persetujuan_penolakan_tindakan.alasan_diwakilkan_penerima_informasi,persetujuan_penolakan_tindakan.jk_penerima_informasi,"
+                        + "persetujuan_penolakan_tindakan.tanggal_lahir_penerima_informasi,persetujuan_penolakan_tindakan.umur_penerima_informasi,persetujuan_penolakan_tindakan.alamat_penerima_informasi,"
+                        + "persetujuan_penolakan_tindakan.no_hp,persetujuan_penolakan_tindakan.hubungan_penerima_informasi,persetujuan_penolakan_tindakan.pernyataan,persetujuan_penolakan_tindakan.saksi_keluarga "
+                        + "from persetujuan_penolakan_tindakan inner join reg_periksa on persetujuan_penolakan_tindakan.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
+                        + "inner join dokter on dokter.kd_dokter=persetujuan_penolakan_tindakan.kd_dokter "
+                        + "inner join petugas on petugas.nip=persetujuan_penolakan_tindakan.nip where "
+                        + "persetujuan_penolakan_tindakan.tanggal between ? and ? and (persetujuan_penolakan_tindakan.no_pernyataan like ? or reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                        + "persetujuan_penolakan_tindakan.kd_dokter like ? or dokter.nm_dokter like ?) order by persetujuan_penolakan_tindakan.tanggal");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_pernyataan"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("tgl_lahir"),rs.getString("jk"),rs.getString("tanggal"),
-                        rs.getString("diagnosa"),rs.getBoolean("diagnosa_konfirmasi"),rs.getString("tindakan"),rs.getBoolean("tindakan_konfirmasi"),rs.getString("indikasi_tindakan"),
-                        rs.getBoolean("indikasi_tindakan_konfirmasi"),rs.getString("tata_cara"),rs.getBoolean("tata_cara_konfirmasi"),rs.getString("tujuan"),rs.getBoolean("tujuan_konfirmasi"),
-                        rs.getString("risiko"),rs.getBoolean("risiko_konfirmasi"),rs.getString("komplikasi"),rs.getBoolean("komplikasi_konfirmasi"),rs.getString("prognosis"),rs.getBoolean("prognosis_konfirmasi"),
-                        rs.getString("alternatif_dan_risikonya"),rs.getBoolean("alternatif_konfirmasi"),rs.getString("lain_lain"),rs.getBoolean("lain_lain_konfirmasi"),
-                        rs.getString("biaya"),rs.getBoolean("biaya_konfirmasi"),rs.getString("kd_dokter"),rs.getString("nm_dokter"),rs.getString("nip"),rs.getString("nama"),
-                        rs.getString("penerima_informasi"),rs.getString("alasan_diwakilkan_penerima_informasi"),rs.getString("jk_penerima_informasi"),rs.getString("tanggal_lahir_penerima_informasi"),
-                        rs.getString("umur_penerima_informasi"),rs.getString("alamat_penerima_informasi"),rs.getString("no_hp"),rs.getString("hubungan_penerima_informasi"),rs.getString("pernyataan"),
-                        rs.getString("saksi_keluarga")                  
+                        rs.getString("no_pernyataan"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("tgl_lahir"), rs.getString("jk"), rs.
+                        getString("tanggal"),
+                        rs.getString("diagnosa"), rs.getBoolean(
+                        "diagnosa_konfirmasi"), rs.getString("tindakan"), rs.
+                        getBoolean("tindakan_konfirmasi"), rs.getString(
+                        "indikasi_tindakan"),
+                        rs.getBoolean("indikasi_tindakan_konfirmasi"), rs.
+                        getString("tata_cara"), rs.getBoolean(
+                        "tata_cara_konfirmasi"), rs.getString("tujuan"), rs.
+                        getBoolean("tujuan_konfirmasi"),
+                        rs.getString("risiko"), rs.getBoolean(
+                        "risiko_konfirmasi"), rs.getString("komplikasi"), rs.
+                        getBoolean("komplikasi_konfirmasi"), rs.getString(
+                        "prognosis"), rs.getBoolean("prognosis_konfirmasi"),
+                        rs.getString("alternatif_dan_risikonya"), rs.getBoolean(
+                        "alternatif_konfirmasi"), rs.getString("lain_lain"), rs.
+                        getBoolean("lain_lain_konfirmasi"),
+                        rs.getString("biaya"), rs.getBoolean("biaya_konfirmasi"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("nip"), rs.getString("nama"),
+                        rs.getString("penerima_informasi"), rs.getString(
+                        "alasan_diwakilkan_penerima_informasi"), rs.getString(
+                        "jk_penerima_informasi"), rs.getString(
+                        "tanggal_lahir_penerima_informasi"),
+                        rs.getString("umur_penerima_informasi"), rs.getString(
+                        "alamat_penerima_informasi"), rs.getString("no_hp"), rs.
+                        getString("hubungan_penerima_informasi"), rs.getString(
+                        "pernyataan"),
+                        rs.getString("saksi_keluarga")
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -2496,64 +2932,97 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
         KdPerawat.setText("");
         NmPerawat.setText("");
         SaksiKeluarga.setText("");
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(persetujuan_penolakan_tindakan.no_pernyataan,3),signed)),0) from persetujuan_penolakan_tindakan where persetujuan_penolakan_tindakan.tanggal='"+Valid.SetTgl(TglPernyataan.getSelectedItem()+"")+"' ",
-                "PM"+TglPernyataan.getSelectedItem().toString().substring(6,10)+TglPernyataan.getSelectedItem().toString().substring(3,5)+TglPernyataan.getSelectedItem().toString().substring(0,2),3,NoPenyataan);
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(persetujuan_penolakan_tindakan.no_pernyataan,3),signed)),0) from persetujuan_penolakan_tindakan where persetujuan_penolakan_tindakan.tanggal='" + Valid.
+                        SetTgl(TglPernyataan.getSelectedItem() + "") + "' ",
+                "PM" + TglPernyataan.getSelectedItem().toString().substring(6,
+                        10) + TglPernyataan.getSelectedItem().toString().
+                        substring(3, 5) + TglPernyataan.getSelectedItem().
+                toString().substring(0, 2), 3, NoPenyataan);
         TabRawat.setSelectedIndex(0);
         NoPenyataan.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            NoPenyataan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()); 
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()); 
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()); 
-            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            TindakanKedokteran.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            IndikasiTindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            TataCara.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            Tujuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            Risiko.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            Komplikasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            Prognosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());
-            AlternatifResiko.setText(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString());
-            LainLain.setText(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString());
-            Biaya.setText(tbObat.getValueAt(tbObat.getSelectedRow(),27).toString());
-            KdPerawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());
-            NmPerawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),32).toString());
-            PenerimaInformasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),33).toString());
-            AlasanDiwakilkan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),34).toString());
-            if(tbObat.getValueAt(tbObat.getSelectedRow(),35).toString().equals("L")){
+        if (tbObat.getSelectedRow() != -1) {
+            NoPenyataan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
+                    toString());
+            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
+                    toString());
+            TindakanKedokteran.setText(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 9).toString());
+            IndikasiTindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    11).toString());
+            TataCara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
+                    toString());
+            Tujuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
+                    toString());
+            Risiko.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
+                    toString());
+            Komplikasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
+                    toString());
+            Prognosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
+                    toString());
+            AlternatifResiko.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    23).toString());
+            LainLain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
+                    toString());
+            Biaya.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).
+                    toString());
+            KdPerawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).
+                    toString());
+            NmPerawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
+                    toString());
+            PenerimaInformasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    33).toString());
+            AlasanDiwakilkan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    34).toString());
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString().
+                    equals("L")) {
                 JKPenerima.setSelectedIndex(0);
-            }else{
+            } else {
                 JKPenerima.setSelectedIndex(1);
             }
-            UmurPenerima.setText(tbObat.getValueAt(tbObat.getSelectedRow(),37).toString());
-            AlamatPenerima.setText(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString());
-            NoHPPenerima.setText(tbObat.getValueAt(tbObat.getSelectedRow(),39).toString());
-            HubunganDenganPasien.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),40).toString());
-            SaksiKeluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(),42).toString());
-            Valid.SetTgl2(TglPernyataan,tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-            Valid.SetTgl2(TglLahirPenerima,tbObat.getValueAt(tbObat.getSelectedRow(),36).toString());
+            UmurPenerima.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).
+                    toString());
+            AlamatPenerima.setText(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 38).toString());
+            NoHPPenerima.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).
+                    toString());
+            HubunganDenganPasien.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 40).toString());
+            SaksiKeluarga.setText(
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Valid.SetTgl2(TglPernyataan, tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 6).toString());
+            Valid.SetTgl2(TglLahirPenerima, tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 36).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','LAKI-LAKI','PEREMPUAN') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi, "+
-                    "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,"+
-                    "pasien.no_tlp,pasien.umur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                    "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                    "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                    "where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','LAKI-LAKI','PEREMPUAN') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi, "
+                    + "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) asal,TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) as tahun,"
+                    + "pasien.no_tlp,pasien.umur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                    + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                    + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                    + "where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
@@ -2566,171 +3035,204 @@ public class SuratPersetujuanPenolakanTindakan extends javax.swing.JDialog {
                     JKPenerima.setSelectedItem(rs.getString("jk"));
                     UmurPenerima.setText(rs.getString("umur"));
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notif : " + e);
         }
     }
- 
-    public void setNoRm(String norwt,Date tgl2) {
+
+    public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        DTPCari2.setDate(tgl2);    
-        isRawat(); 
+        DTPCari2.setDate(tgl2);
+        isRawat();
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getpersetujuan_penolakan_tindakan());
         BtnHapus.setEnabled(akses.getpersetujuan_penolakan_tindakan());
         BtnEdit.setEnabled(akses.getpersetujuan_penolakan_tindakan());
         BtnEdit.setEnabled(akses.getpersetujuan_penolakan_tindakan());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KdDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KdDokter.setText(akses.getkode());
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
-            if(NmDokter.getText().isEmpty()){
+            if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan Dokter...!!");
             }
-        }            
+        }
     }
-    
+
     /**
      *
      */
-    public void setTampil(){
-       TabRawat.setSelectedIndex(1);
+    public void setTampil() {
+        TabRawat.setSelectedIndex(1);
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from persetujuan_penolakan_tindakan where no_pernyataan=?",1,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from persetujuan_penolakan_tindakan where no_pernyataan=?",
+                1, new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             emptTeks();
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("persetujuan_penolakan_tindakan","no_pernyataan=?","no_pernyataan=?,no_rawat=?,tanggal=?,diagnosa=?,diagnosa_konfirmasi=?,tindakan=?,tindakan_konfirmasi=?,indikasi_tindakan=?,indikasi_tindakan_konfirmasi=?,tata_cara=?,tata_cara_konfirmasi=?,tujuan=?,tujuan_konfirmasi=?,risiko=?,risiko_konfirmasi=?,komplikasi=?,komplikasi_konfirmasi=?,prognosis=?,prognosis_konfirmasi=?,alternatif_dan_risikonya=?,alternatif_konfirmasi=?,biaya=?,biaya_konfirmasi=?,lain_lain=?,lain_lain_konfirmasi=?,kd_dokter=?,nip=?,penerima_informasi=?,alasan_diwakilkan_penerima_informasi=?,jk_penerima_informasi=?,tanggal_lahir_penerima_informasi=?,umur_penerima_informasi=?,alamat_penerima_informasi=?,no_hp=?,hubungan_penerima_informasi=?,pernyataan=?,saksi_keluarga=?",38,new String[]{
-                NoPenyataan.getText(),TNoRw.getText(),Valid.SetTgl(TglPernyataan.getSelectedItem()+""),Diagnosa.getText(),"false",TindakanKedokteran.getText(),"false",
-                IndikasiTindakan.getText(),"false",TataCara.getText(),"false",Tujuan.getText(),"false",Risiko.getText(),"false",Komplikasi.getText(),"false",Prognosis.getText(), 
-                "false",AlternatifResiko.getText(),"false",Biaya.getText(),"false",LainLain.getText(),"false",KdDokter.getText(),KdPerawat.getText(),PenerimaInformasi.getText(),
-                AlasanDiwakilkan.getText(),JKPenerima.getSelectedItem().toString().substring(0,1),Valid.SetTgl(TglLahirPenerima.getSelectedItem()+""),UmurPenerima.getText(),
-                AlamatPenerima.getText(),NoHPPenerima.getText(),HubunganDenganPasien.getSelectedItem().toString(),"Belum Dikonfirmasi",SaksiKeluarga.getText(),
-                tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
-               tampil();
-               emptTeks();
-               TabRawat.setSelectedIndex(1);
+        if (Sequel.mengedittf("persetujuan_penolakan_tindakan",
+                "no_pernyataan=?",
+                "no_pernyataan=?,no_rawat=?,tanggal=?,diagnosa=?,diagnosa_konfirmasi=?,tindakan=?,tindakan_konfirmasi=?,indikasi_tindakan=?,indikasi_tindakan_konfirmasi=?,tata_cara=?,tata_cara_konfirmasi=?,tujuan=?,tujuan_konfirmasi=?,risiko=?,risiko_konfirmasi=?,komplikasi=?,komplikasi_konfirmasi=?,prognosis=?,prognosis_konfirmasi=?,alternatif_dan_risikonya=?,alternatif_konfirmasi=?,biaya=?,biaya_konfirmasi=?,lain_lain=?,lain_lain_konfirmasi=?,kd_dokter=?,nip=?,penerima_informasi=?,alasan_diwakilkan_penerima_informasi=?,jk_penerima_informasi=?,tanggal_lahir_penerima_informasi=?,umur_penerima_informasi=?,alamat_penerima_informasi=?,no_hp=?,hubungan_penerima_informasi=?,pernyataan=?,saksi_keluarga=?",
+                38, new String[]{
+                    NoPenyataan.getText(), TNoRw.getText(), Valid.SetTgl(
+                    TglPernyataan.getSelectedItem() + ""), Diagnosa.getText(),
+                    "false", TindakanKedokteran.getText(), "false",
+                    IndikasiTindakan.getText(), "false", TataCara.getText(),
+                    "false", Tujuan.getText(), "false", Risiko.getText(),
+                    "false", Komplikasi.getText(), "false", Prognosis.getText(),
+                    "false", AlternatifResiko.getText(), "false", Biaya.
+                    getText(), "false", LainLain.getText(), "false", KdDokter.
+                    getText(), KdPerawat.getText(), PenerimaInformasi.getText(),
+                    AlasanDiwakilkan.getText(), JKPenerima.getSelectedItem().
+                    toString().substring(0, 1), Valid.SetTgl(TglLahirPenerima.
+                    getSelectedItem() + ""), UmurPenerima.getText(),
+                    AlamatPenerima.getText(), NoHPPenerima.getText(),
+                    HubunganDenganPasien.getSelectedItem().toString(),
+                    "Belum Dikonfirmasi", SaksiKeluarga.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
+            tampil();
+            emptTeks();
+            TabRawat.setSelectedIndex(1);
         }
     }
-    
-    private void isPhoto(){
-        if(ChkAccor.isSelected()==true){
+
+    private void isPhoto() {
+        if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(430,HEIGHT));
-            FormPhoto.setVisible(true);  
+            PanelAccor.setPreferredSize(new Dimension(430, HEIGHT));
+            FormPhoto.setVisible(true);
             ChkAccor.setVisible(true);
-        }else if(ChkAccor.isSelected()==false){    
+        } else if (ChkAccor.isSelected() == false) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(15,HEIGHT));
-            FormPhoto.setVisible(false);  
+            PanelAccor.setPreferredSize(new Dimension(15, HEIGHT));
+            FormPhoto.setVisible(false);
             ChkAccor.setVisible(true);
         }
     }
 
     private void panggilPhoto() {
-        if(FormPhoto.isVisible()==true){
-            lokasifile="";
+        if (FormPhoto.isVisible() == true) {
+            lokasifile = "";
             try {
-                ps=koneksi.prepareStatement("select bukti_persetujuan_penolakan_tindakan_penerimainformasi.photo from bukti_persetujuan_penolakan_tindakan_penerimainformasi where bukti_persetujuan_penolakan_tindakan_penerimainformasi.no_pernyataan=?");
+                ps = koneksi.prepareStatement(
+                        "select bukti_persetujuan_penolakan_tindakan_penerimainformasi.photo from bukti_persetujuan_penolakan_tindakan_penerimainformasi where bukti_persetujuan_penolakan_tindakan_penerimainformasi.no_pernyataan=?");
                 try {
-                    ps.setString(1,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    if(rs.next()){
-                        if(rs.getString("photo").isEmpty()||rs.getString("photo").equals("-")){
-                            lokasifile="";
-                        }else{
-                            lokasifile=rs.getString("photo");
-                        }  
-                    }else{
-                        lokasifile="";
+                    ps.setString(1, tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        if (rs.getString("photo").isEmpty() || rs.getString(
+                                "photo").equals("-")) {
+                            lokasifile = "";
+                        } else {
+                            lokasifile = rs.getString("photo");
+                        }
+                    } else {
+                        lokasifile = "";
                     }
-                } catch (Exception e) {
-                    lokasifile="";
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                } catch (SQLException e) {
+                    lokasifile = "";
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
             }
 
-            lokasifile2="";
+            lokasifile2 = "";
             try {
-                ps=koneksi.prepareStatement("select bukti_persetujuan_penolakan_tindakan_saksikeluarga.photo from bukti_persetujuan_penolakan_tindakan_saksikeluarga where bukti_persetujuan_penolakan_tindakan_saksikeluarga.no_pernyataan=?");
+                ps = koneksi.prepareStatement(
+                        "select bukti_persetujuan_penolakan_tindakan_saksikeluarga.photo from bukti_persetujuan_penolakan_tindakan_saksikeluarga where bukti_persetujuan_penolakan_tindakan_saksikeluarga.no_pernyataan=?");
                 try {
-                    ps.setString(1,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    if(rs.next()){
-                        if(rs.getString("photo").isEmpty()||rs.getString("photo").equals("-")){
-                            lokasifile2="";
-                        }else{
-                            lokasifile2=rs.getString("photo");
-                        }  
-                    }else{
-                        lokasifile2="";
+                    ps.setString(1, tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        if (rs.getString("photo").isEmpty() || rs.getString(
+                                "photo").equals("-")) {
+                            lokasifile2 = "";
+                        } else {
+                            lokasifile2 = rs.getString("photo");
+                        }
+                    } else {
+                        lokasifile2 = "";
                     }
-                } catch (Exception e) {
-                    lokasifile2="";
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                } catch (SQLException e) {
+                    lokasifile2 = "";
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
             }
-            
-            if(TabData.getSelectedIndex()==0){
-                if(lokasifile.isEmpty()){
-                    LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-                }else{
-                    LoadHTML2.setText("<html><body><center><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile+"' alt='photo' width='450' height='550'/></center></body></html>");
-                } 
-            }else{
-                if(lokasifile2.isEmpty()){
-                    LoadHTML3.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-                }else{
-                    LoadHTML3.setText("<html><body><center><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/persetujuantindakan/"+lokasifile2+"' alt='photo' width='450' height='550'/></center></body></html>");
-                } 
+
+            if (TabData.getSelectedIndex() == 0) {
+                if (lokasifile.isEmpty()) {
+                    LoadHTML2.setText(
+                            "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                } else {
+                    LoadHTML2.setText(
+                            "<html><body><center><img src='http://" + koneksiDB.
+                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                            HYBRIDWEB() + "/persetujuantindakan/" + lokasifile + "' alt='photo' width='450' height='550'/></center></body></html>");
+                }
+            } else {
+                if (lokasifile2.isEmpty()) {
+                    LoadHTML3.setText(
+                            "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                } else {
+                    LoadHTML3.setText(
+                            "<html><body><center><img src='http://" + koneksiDB.
+                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                            HYBRIDWEB() + "/persetujuantindakan/" + lokasifile2 + "' alt='photo' width='450' height='550'/></center></body></html>");
+                }
             }
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SuratPersetujuanPenolakanTindakan.class.getName());
 }

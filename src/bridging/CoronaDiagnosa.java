@@ -1,58 +1,100 @@
 package bridging;
 
-
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class CoronaDiagnosa extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabMode2;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps;
-    private ResultSet rs;
-    private int jml=0,i=0,row=0,index=0;
-    private boolean [] pilihan;
-    private String[] kodepenyakit,namapenyakit;
-    private CoronaPasien pasien=new CoronaPasien(null,false);
-    private String link="",idrs="",body="";
-    private HttpHeaders headers ;
-    private HttpEntity requestEntity;
-    private ObjectMapper mapper = new ObjectMapper();
-    private JsonNode root;
-    private JsonNode response;
-    private ApiKemenkesCorona api=new ApiKemenkesCorona();
 
-    /** Creates new form DlgProgramStudi
+    private final DefaultTableModel tabMode, tabMode2;
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private PreparedStatement ps;
+
+    private ResultSet rs;
+
+    private int jml = 0, i = 0, row = 0, index = 0;
+
+    private boolean[] pilihan;
+
+    private String[] kodepenyakit, namapenyakit;
+
+    private CoronaPasien pasien = new CoronaPasien(null, false);
+
+    private String link = "", idrs = "", body = "";
+
+    private HttpHeaders headers;
+
+    private HttpEntity requestEntity;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    private JsonNode root;
+
+    private JsonNode response;
+
+    private ApiKemenkesCorona api = new ApiKemenkesCorona();
+
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public CoronaDiagnosa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] judul={"P","Kode ICD X","Nama Penyakit"};
-        tabMode=new DefaultTableModel(null,judul){
+        Object[] judul = {"P", "Kode ICD X", "Nama Penyakit"};
+        tabMode = new DefaultTableModel(null, judul) {
 
-            Class[] types = new Class[]{
-                java.lang.Boolean.class,java.lang.String.class,java.lang.String.class
-            };
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
             }
@@ -61,148 +103,180 @@ public class CoronaDiagnosa extends javax.swing.JDialog {
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(700);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        norm.setDocument(new batasInput((byte)10).getKata(norm));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        tabMode2=new DefaultTableModel(null,new Object[]{
-                "No.KTP/Paspor","No.RM","Nama Pasien","Tgl.Masuk","Kode ICD X","Nama Penyakit","Status"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        norm.setDocument(new batasInput((byte) 10).getKata(norm));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        tabMode2 = new DefaultTableModel(null, new Object[]{"No.KTP/Paspor",
+            "No.RM", "Nama Pasien", "Tgl.Masuk",
+            "Kode ICD X", "Nama Penyakit", "Status"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode2);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(125);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(60);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(170);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(65);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(300);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(60);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari2.setDocument(new batasInput((byte)100).getKata(TCari2));    
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari2.setDocument(new batasInput((byte) 100).getKata(TCari2));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-            TCari2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            TCari2.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari2.getText().length()>2){
+                    if (TCari2.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari2.getText().length()>2){
+                    if (TCari2.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari2.getText().length()>2){
+                    if (TCari2.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
             });
         }
-        
+
         pasien.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(pasien.getTable().getSelectedRow()!= -1){   
-                    norm.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(),1).toString());
-                    nmpasien.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(),2).toString());
+                if (pasien.getTable().getSelectedRow() != -1) {
+                    norm.setText(pasien.getTable().getValueAt(pasien.getTable().
+                            getSelectedRow(), 1).toString());
+                    nmpasien.setText(pasien.getTable().getValueAt(pasien.
+                            getTable().getSelectedRow(), 2).toString());
                     norm.requestFocus();
-                }        
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         pasien.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     pasien.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         try {
-            link=koneksiDB.URLAPICORONA();
-            idrs=koneksiDB.IDCORONA();
+            link = koneksiDB.URLAPICORONA();
+            idrs = koneksiDB.IDCORONA();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -622,146 +696,163 @@ public class CoronaDiagnosa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnSimpan,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnSimpan, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(norm.getText().trim().isEmpty()||nmpasien.getText().trim().isEmpty()){
-            Valid.textKosong(norm,"Pasien");
-        }else{
-            index=0;
-            for(i=0;i<tbDokter.getRowCount();i++){
-                if(tbDokter.getValueAt(i,0).toString().equals("true")){
+    /*
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        if (norm.getText().trim().isEmpty() || nmpasien.getText().trim().isEmpty()) {//GEN-FIRST:event_BtnSimpanActionPerformed
+            Valid.textKosong(norm, "Pasien");
+        } else {
+            index = 0;
+            for (i = 0; i < tbDokter.getRowCount(); i++) {
+                if (tbDokter.getValueAt(i, 0).toString().equals("true")) {
                     index++;
                     try {
                         headers = new HttpHeaders();
-                        headers.add("X-rs-id",idrs);
-                        headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString())); 
-                        headers.add("X-pass",api.getHmac()); 
-                        body="{" +
-                                "\"nomr\" : \""+norm.getText()+"\"," +
-                                "\"icd\"  : \""+tbDokter.getValueAt(i,1).toString()+"\"," +
-                                "\"level\": \""+(index==1?"1":"2")+"\"" +
-                              "}";
-                        requestEntity = new HttpEntity(body,headers);
-                        root = mapper.readTree(api.getRest().exchange(link+"/Pasien/diagnosis", HttpMethod.POST, requestEntity, String.class).getBody());
+                        headers.add("X-rs-id", idrs);
+                        headers.add("X-Timestamp", String.valueOf(api.
+                                GetUTCdatetimeAsString()));
+                        headers.add("X-pass", api.getHmac());
+                        body = "{"
+                                + "\"nomr\" : \"" + norm.getText() + "\","
+                                + "\"icd\"  : \"" + tbDokter.getValueAt(i, 1).
+                                        toString() + "\","
+                                + "\"level\": \"" + (index == 1 ? "1" : "2") + "\""
+                                + "}";
+                        requestEntity = new HttpEntity(body, headers);
+                        root = mapper.readTree(api.getRest().exchange(
+                                link + "/Pasien/diagnosis", HttpMethod.POST,
+                                requestEntity, String.class).getBody());
                         response = root.path("diagnosis");
-                        if(response.isArray()){
-                            for(JsonNode list:response){
-                                if(list.path("status").asText().equals("200")){
-                                    if(Sequel.menyimpantf("diagnosa_corona","?,?,?,?","Diagnosa Pasien",4,new String[]{
-                                        norm.getText(),tbDokter.getValueAt(i,1).toString(),tbDokter.getValueAt(i,2).toString(),(index==1?"Primer":"Sekunder")
-                                    })==true){
-                                        tbDokter.setValueAt(false,i,0);
+                        if (response.isArray()) {
+                            for (JsonNode list : response) {
+                                if (list.path("status").asText().equals("200")) {
+                                    if (Sequel.menyimpantf("diagnosa_corona",
+                                            "?,?,?,?", "Diagnosa Pasien", 4,
+                                            new String[]{
+                                                norm.getText(), tbDokter.
+                                                getValueAt(i, 1).toString(),
+                                                tbDokter.getValueAt(i, 2).
+                                                        toString(),
+                                                (index == 1 ? "Primer" : "Sekunder")
+                                            }) == true) {
+                                        tbDokter.setValueAt(false, i, 0);
                                     }
-                                }else{
-                                    JOptionPane.showMessageDialog(rootPane,list.path("message").asText());
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane,
+                                            list.path("message").asText());
                                 }
                             }
-                        }         
-                    } catch (Exception ex) {
-                        System.out.println("Notifikasi : "+ex);
-                        if(ex.toString().contains("UnknownHostException")){
-                            JOptionPane.showMessageDialog(rootPane,"Koneksi ke server Kemenkes terputus....!");
-                        }else if(ex.toString().contains("404")){
-                            JOptionPane.showMessageDialog(rootPane,"Tidak ditemukan....!");
-                        }else if(ex.toString().contains("500")){
-                            JOptionPane.showMessageDialog(rootPane,"Server internal error....!");
-                        }else if(ex.toString().contains("502")){
-                            JOptionPane.showMessageDialog(rootPane,"Server kemenkes lelah broo....!");
                         }
-                    } 
+                    } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException ex) {
+                        System.out.println("Notifikasi : " + ex);
+                        if (ex.toString().contains("UnknownHostException")) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Koneksi ke server Kemenkes terputus....!");
+                        } else if (ex.toString().contains("404")) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Tidak ditemukan....!");
+                        } else if (ex.toString().contains("500")) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Server internal error....!");
+                        } else if (ex.toString().contains("502")) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "Server kemenkes lelah broo....!");
+                        }
+                    }
                 }
             }
-        }   
+        }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnKeluar,TCari);
+        } else {
+            Valid.pindah(evt, BtnKeluar, TCari);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
 private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            tampil();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            BtnCari1.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            norm.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
-            tbDokter.requestFocus();
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        tampil();
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+        BtnCari1.requestFocus();
+    } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+        norm.requestFocus();
+    } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
+        tbDokter.requestFocus();
+    }
 }//GEN-LAST:event_TCariKeyPressed
 
 private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
-    if(TCari.getText().trim().isEmpty()){
-        JOptionPane.showMessageDialog(rootPane,"Silahkan masukkan kode ICD");
-    }else{
+    if (TCari.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(rootPane, "Silahkan masukkan kode ICD");
+    } else {
         tampil();
-    }   
+    }
 }//GEN-LAST:event_BtnCari1ActionPerformed
 
 private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            BtnCari1ActionPerformed(null);
-        }else{
-            Valid.pindah(evt, BtnSimpan, BtnKeluar);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        BtnCari1ActionPerformed(null);
+    } else {
+        Valid.pindah(evt, BtnSimpan, BtnKeluar);
+    }
 }//GEN-LAST:event_BtnCari1KeyPressed
 
 private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-            for(i=0;i<tbDokter.getRowCount();i++){ 
-                tbDokter.setValueAt("",i,0);
-                tbDokter.setValueAt("0",i,4);
-            }
+    for (i = 0; i < tbDokter.getRowCount(); i++) {
+        tbDokter.setValueAt("", i, 0);
+        tbDokter.setValueAt("0", i, 4);
+    }
 }//GEN-LAST:event_ppBersihkanActionPerformed
 
     private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_normKeyPressed
-        
+
     }//GEN-LAST:event_normKeyPressed
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         akses.setform("DlgUTDMedisRusak");
         pasien.emptTeks();
         pasien.isCek();
-        pasien.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        pasien.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         pasien.setLocationRelativeTo(internalFrame1);
         pasien.setAlwaysOnTop(false);
         pasien.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
 
     private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDokterKeyPressed
-        
+
     }//GEN-LAST:event_tbDokterKeyPressed
 
     private void TabSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabSettingMouseClicked
-        if(TabSetting.getSelectedIndex()==1){
+        if (TabSetting.getSelectedIndex() == 1) {
             tampil2();
         }
     }//GEN-LAST:event_TabSettingMouseClicked
 
     private void TCari2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCari2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari2ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
     }//GEN-LAST:event_TCari2KeyPressed
@@ -771,9 +862,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }//GEN-LAST:event_BtnCari2ActionPerformed
 
     private void BtnCari2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCari2ActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCari2KeyPressed
@@ -784,90 +875,119 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari2, TCari);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tabMode2.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode2.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari2.requestFocus();
-        }else if(tbKamar.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data yang mau dihapus..!!");
-        }else{
+        } else if (tbKamar.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data yang mau dihapus..!!");
+        } else {
             try {
                 headers = new HttpHeaders();
-                headers.add("X-rs-id",idrs);
-                headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString())); 
-                headers.add("X-pass",api.getHmac()); 
-                headers.add("nomr",tbKamar.getValueAt(tbKamar.getSelectedRow(),1).toString()); 
-                headers.add("icd",tbKamar.getValueAt(tbKamar.getSelectedRow(),4).toString()); 
-                headers.add("level",tbKamar.getValueAt(tbKamar.getSelectedRow(),6).toString().replaceAll("Primer","1").replaceAll("Sekunder","2")); 
+                headers.add("X-rs-id", idrs);
+                headers.add("X-Timestamp", String.valueOf(api.
+                        GetUTCdatetimeAsString()));
+                headers.add("X-pass", api.getHmac());
+                headers.add("nomr", tbKamar.getValueAt(tbKamar.getSelectedRow(),
+                        1).toString());
+                headers.add("icd", tbKamar.getValueAt(tbKamar.getSelectedRow(),
+                        4).toString());
+                headers.add("level", tbKamar.
+                        getValueAt(tbKamar.getSelectedRow(), 6).toString().
+                        replaceAll("Primer", "1").replaceAll("Sekunder", "2"));
                 requestEntity = new HttpEntity(headers);
-                root = mapper.readTree(api.getRest().exchange(link+"/Pasien/diagnosis", HttpMethod.DELETE, requestEntity, String.class).getBody());
+                root = mapper.readTree(api.getRest().exchange(
+                        link + "/Pasien/diagnosis", HttpMethod.DELETE,
+                        requestEntity, String.class).getBody());
                 response = root.path("diagnosis");
-                if(response.isArray()){
-                    for(JsonNode list:response){
-                        if(list.path("status").asText().equals("200")){
-                            if(Sequel.queryu2tf("delete from diagnosa_corona where no_rkm_medis=? and kode_icd=? and status=?",3,new String[]{
-                                    tbKamar.getValueAt(tbKamar.getSelectedRow(),1).toString(),tbKamar.getValueAt(tbKamar.getSelectedRow(),4).toString(),tbKamar.getValueAt(tbKamar.getSelectedRow(),6).toString()
-                                })==true){
+                if (response.isArray()) {
+                    for (JsonNode list : response) {
+                        if (list.path("status").asText().equals("200")) {
+                            if (Sequel.queryu2tf(
+                                    "delete from diagnosa_corona where no_rkm_medis=? and kode_icd=? and status=?",
+                                    3, new String[]{
+                                        tbKamar.getValueAt(tbKamar.
+                                                getSelectedRow(), 1).toString(),
+                                        tbKamar.getValueAt(tbKamar.
+                                                getSelectedRow(), 4).toString(),
+                                        tbKamar.getValueAt(tbKamar.
+                                                getSelectedRow(), 6).toString()
+                                    }) == true) {
                                 tampil2();
                             }
-                        }else{
-                            JOptionPane.showMessageDialog(rootPane,list.path("message").asText());
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, list.path(
+                                    "message").asText());
                         }
                     }
-                }       
-            } catch (Exception ex) {
-                System.out.println("Notifikasi : "+ex);
-                if(ex.toString().contains("UnknownHostException")){
-                    JOptionPane.showMessageDialog(rootPane,"Koneksi ke server Kemenkes terputus....!");
-                }else if(ex.toString().contains("404")){
-                    JOptionPane.showMessageDialog(rootPane,"Tidak ditemukan....!");
-                }else if(ex.toString().contains("500")){
-                    JOptionPane.showMessageDialog(rootPane,"Server internal error....!");
-                }else if(ex.toString().contains("502")){
-                    JOptionPane.showMessageDialog(rootPane,"Server kemenkes lelah broo....!");
+                }
+            } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException ex) {
+                System.out.println("Notifikasi : " + ex);
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Koneksi ke server Kemenkes terputus....!");
+                } else if (ex.toString().contains("404")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Tidak ditemukan....!");
+                } else if (ex.toString().contains("500")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Server internal error....!");
+                } else if (ex.toString().contains("502")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Server kemenkes lelah broo....!");
                 }
             }
         }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnKeluar2, BtnAll);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCetakActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode2.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode2.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             BtnKeluar.requestFocus();
-        }else {
+        } else {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-            Valid.MyReportqry("rptDiagnosaCorona.jasper","report","::[ Data Bridging Kemenkes Diagnosa Pasien Teridentifikasi Corona ]::",
-                    "select pasien_corona.no_pengenal,pasien_corona.no_rkm_medis,pasien_corona.nama_lengkap,"+
-                    "pasien_corona.tgl_masuk,diagnosa_corona.kode_icd,diagnosa_corona.nama_penyakit,diagnosa_corona.status "+
-                    "from pasien_corona inner join diagnosa_corona on pasien_corona.no_rkm_medis=diagnosa_corona.no_rkm_medis "+
-                    "where pasien_corona.tgl_masuk between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' "+
-                    (TCari2.getText().trim().isEmpty()?"":"and (pasien_corona.no_pengenal like '%"+TCari2.getText().trim()+"%' or pasien_corona.no_rkm_medis like '%"+TCari2.getText().trim()+"%' or "+
-                    "pasien_corona.nama_lengkap like '%"+TCari2.getText().trim()+"%' or diagnosa_corona.kode_icd like '%"+TCari2.getText().trim()+"%' or diagnosa_corona.nama_penyakit like '%"+TCari2.getText().trim()+"%' or "+
-                    "diagnosa_corona.status like '%"+TCari2.getText().trim()+"%') ")+
-                    "order by tgl_masuk",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptDiagnosaCorona.jasper", "report",
+                    "::[ Data Bridging Kemenkes Diagnosa Pasien Teridentifikasi Corona ]::",
+                    "select pasien_corona.no_pengenal,pasien_corona.no_rkm_medis,pasien_corona.nama_lengkap,"
+                    + "pasien_corona.tgl_masuk,diagnosa_corona.kode_icd,diagnosa_corona.nama_penyakit,diagnosa_corona.status "
+                    + "from pasien_corona inner join diagnosa_corona on pasien_corona.no_rkm_medis=diagnosa_corona.no_rkm_medis "
+                    + "where pasien_corona.tgl_masuk between '" + Valid.SetTgl(
+                            DTPCari1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(DTPCari2.getSelectedItem() + "") + "' "
+                    + (TCari2.getText().trim().isEmpty() ? "" : "and (pasien_corona.no_pengenal like '%" + TCari2.
+                    getText().trim() + "%' or pasien_corona.no_rkm_medis like '%" + TCari2.
+                            getText().trim() + "%' or "
+                    + "pasien_corona.nama_lengkap like '%" + TCari2.getText().
+                            trim() + "%' or diagnosa_corona.kode_icd like '%" + TCari2.
+                            getText().trim() + "%' or diagnosa_corona.nama_penyakit like '%" + TCari2.
+                            getText().trim() + "%' or "
+                    + "diagnosa_corona.status like '%" + TCari2.getText().trim() + "%') ")
+                    + "order by tgl_masuk", param);
 
         }
         this.setCursor(Cursor.getDefaultCursor());
@@ -882,22 +1002,26 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }//GEN-LAST:event_BtnKeluar2ActionPerformed
 
     private void BtnKeluar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluar2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnAll,TCari2);}
+        } else {
+            Valid.pindah(evt, BtnAll, TCari2);
+        }
     }//GEN-LAST:event_BtnKeluar2KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            CoronaDiagnosa dialog = new CoronaDiagnosa(new javax.swing.JFrame(), true);
+            CoronaDiagnosa dialog = new CoronaDiagnosa(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -946,124 +1070,138 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        row=tbDokter.getRowCount();
-        jml=0;
-        for(i=0;i<row;i++){
-            if(tbDokter.getValueAt(i,0).toString().equals("true")){
+        row = tbDokter.getRowCount();
+        jml = 0;
+        for (i = 0; i < row; i++) {
+            if (tbDokter.getValueAt(i, 0).toString().equals("true")) {
                 jml++;
             }
         }
-        
-        kodepenyakit=new String[jml];
-        namapenyakit=new String[jml];
-        pilihan=new boolean[jml];
-        index=0;        
-        for(i=0;i<tbDokter.getRowCount();i++){
-            if(tbDokter.getValueAt(i,0).toString().equals("true")){
-                pilihan[index]=true;
-                kodepenyakit[index]=tbDokter.getValueAt(i,1).toString();
-                namapenyakit[index]=tbDokter.getValueAt(i,2).toString();
+
+        kodepenyakit = new String[jml];
+        namapenyakit = new String[jml];
+        pilihan = new boolean[jml];
+        index = 0;
+        for (i = 0; i < tbDokter.getRowCount(); i++) {
+            if (tbDokter.getValueAt(i, 0).toString().equals("true")) {
+                pilihan[index] = true;
+                kodepenyakit[index] = tbDokter.getValueAt(i, 1).toString();
+                namapenyakit[index] = tbDokter.getValueAt(i, 2).toString();
                 index++;
             }
         }
-        
+
         Valid.tabelKosong(tabMode);
-        
-        for(i=0;i<jml;i++){
-            tabMode.addRow(new Object[]{pilihan[i],kodepenyakit[i],namapenyakit[i]});
+
+        for (i = 0; i < jml; i++) {
+            tabMode.addRow(new Object[]{pilihan[i], kodepenyakit[i],
+                namapenyakit[i]});
         }
-        
+
         try {
             headers = new HttpHeaders();
-            headers.add("X-rs-id",idrs);
-            headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString())); 
-            headers.add("X-pass",api.getHmac()); 
-            headers.add("icd",TCari.getText()); 
-	   requestEntity = new HttpEntity(headers);
-            root = mapper.readTree(api.getRest().exchange(link+"/Referensi/icd", HttpMethod.POST, requestEntity, String.class).getBody());
-            response = root.path("icd - "+TCari.getText());
-            if(response.isArray()){
-                for(JsonNode list:response){
-                    tabMode.addRow(new Object[]{
-                       false,list.path("icd").asText(),list.path("description").asText()
-                    });
+            headers.add("X-rs-id", idrs);
+            headers.add("X-Timestamp", String.valueOf(api.
+                    GetUTCdatetimeAsString()));
+            headers.add("X-pass", api.getHmac());
+            headers.add("icd", TCari.getText());
+            requestEntity = new HttpEntity(headers);
+            root = mapper.readTree(api.getRest()
+                    .exchange(link + "/Referensi/icd", HttpMethod.POST,
+                            requestEntity, String.class)
+                    .getBody());
+            response = root.path("icd - " + TCari.getText());
+            if (response.isArray()) {
+                for (JsonNode list : response) {
+                    tabMode
+                            .addRow(new Object[]{false, list.path("icd").
+                        asText(), list.path("description").asText()});
                 }
             }
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server Kemenkes terputus....!");
-            }else if(ex.toString().contains("404")){
-                JOptionPane.showMessageDialog(rootPane,"Tidak ditemukan....!");
-            }else if(ex.toString().contains("500")){
-                JOptionPane.showMessageDialog(rootPane,"Server internal error....!");
-            }else if(ex.toString().contains("502")){
-                JOptionPane.showMessageDialog(rootPane,"Server kemenkes lelah broo....!");
+        } catch (IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server Kemenkes terputus....!");
+            } else if (ex.toString().contains("404")) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak ditemukan....!");
+            } else if (ex.toString().contains("500")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Server internal error....!");
+            } else if (ex.toString().contains("502")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Server kemenkes lelah broo....!");
             }
         }
-        
+
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getdiagnosa_pasien_corona());
         BtnHapus.setEnabled(akses.getdiagnosa_pasien_corona());
     }
-    
+
     /**
      *
      */
     public void tampil2() {
         Valid.tabelKosong(tabMode2);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select pasien_corona.no_pengenal,pasien_corona.no_rkm_medis,pasien_corona.nama_lengkap,"+
-                    "pasien_corona.tgl_masuk,diagnosa_corona.kode_icd,diagnosa_corona.nama_penyakit,diagnosa_corona.status "+
-                    "from pasien_corona inner join diagnosa_corona on pasien_corona.no_rkm_medis=diagnosa_corona.no_rkm_medis "+
-                    "where pasien_corona.tgl_masuk between ? and ? "+
-                    (TCari.getText().trim().isEmpty()?"":"and (pasien_corona.no_pengenal like ? or pasien_corona.no_rkm_medis like ? or "+
-                    "pasien_corona.nama_lengkap like ? or diagnosa_corona.kode_icd like ? or diagnosa_corona.nama_penyakit like ? or "+
-                    "diagnosa_corona.status like ?) ")+
-                    "order by tgl_masuk");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select pasien_corona.no_pengenal,pasien_corona.no_rkm_medis,pasien_corona.nama_lengkap,"
+                    + "pasien_corona.tgl_masuk,diagnosa_corona.kode_icd,diagnosa_corona.nama_penyakit,diagnosa_corona.status "
+                    + "from pasien_corona inner join diagnosa_corona on pasien_corona.no_rkm_medis=diagnosa_corona.no_rkm_medis "
+                    + "where pasien_corona.tgl_masuk between ? and ? "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (pasien_corona.no_pengenal like ? or pasien_corona.no_rkm_medis like ? or "
+                    + "pasien_corona.nama_lengkap like ? or diagnosa_corona.kode_icd like ? or diagnosa_corona.nama_penyakit like ? or "
+                    + "diagnosa_corona.status like ?) ")
+                    + "order by tgl_masuk");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().trim().isEmpty()){
-                    ps.setString(3,"%"+TCari2.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari2.getText().trim()+"%");
-                    ps.setString(5,"%"+TCari2.getText().trim()+"%");
-                    ps.setString(6,"%"+TCari2.getText().trim()+"%");
-                    ps.setString(7,"%"+TCari2.getText().trim()+"%");
-                    ps.setString(8,"%"+TCari2.getText().trim()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().trim().isEmpty()) {
+                    ps.setString(3, "%" + TCari2.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari2.getText().trim() + "%");
+                    ps.setString(5, "%" + TCari2.getText().trim() + "%");
+                    ps.setString(6, "%" + TCari2.getText().trim() + "%");
+                    ps.setString(7, "%" + TCari2.getText().trim() + "%");
+                    ps.setString(8, "%" + TCari2.getText().trim() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode2.addRow(new Object[]{
-                        rs.getString("no_pengenal"),rs.getString("no_rkm_medis"),rs.getString("nama_lengkap"),rs.getString("tgl_masuk"),
-                        rs.getString("kode_icd"),rs.getString("nama_penyakit"),rs.getString("status")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode2.addRow(new Object[]{rs.getString("no_pengenal"),
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nama_lengkap"), rs.getString("tgl_masuk"),
+                        rs.getString("kode_icd"),
+                        rs.getString("nama_penyakit"), rs.getString("status")});
                 }
             } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode2.getRowCount());
+        LCount.setText("" + tabMode2.getRowCount());
     }
 
-    public void SetPasien(String norm,String nmpasien,Date tglmasuk,Date tglkeluar){
+    public void SetPasien(String norm, String nmpasien, Date tglmasuk,
+            Date tglkeluar) {
         this.norm.setText(norm);
         this.nmpasien.setText(nmpasien);
         TCari2.setText(norm);
         DTPCari1.setDate(tglmasuk);
         DTPCari2.setDate(tglkeluar);
     }
- 
+
+    private static final Logger LOG = Logger.getLogger(CoronaDiagnosa.class.
+            getName());
+
 }

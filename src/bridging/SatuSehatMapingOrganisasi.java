@@ -2,133 +2,197 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bridging;
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import kepegawaian.*;
-import org.springframework.http.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariDepartemen;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
-    private ResultSet rs;    
-    private int i=0;
-    private DlgCariDepartemen poli=new DlgCariDepartemen(null,false);
-    private String link="",json="";
-    private ApiSatuSehat api=new ApiSatuSehat();
-    private HttpHeaders headers ;
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    private DlgCariDepartemen poli = new DlgCariDepartemen(null, false);
+
+    private String link = "", json = "";
+
+    private ApiSatuSehat api = new ApiSatuSehat();
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
 
-    /** Creates new form DlgJnsPerawatanRalan
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SatuSehatMapingOrganisasi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Kode Departemen","Nama Departemen","ID Organisasi Satu Sehat"}){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Kode Departemen", "Nama Departemen",
+                    "ID Organisasi Satu Sehat"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(110);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(360);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(230);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        KodeDepartemen.setDocument(new batasInput((byte)5).getKata(KodeDepartemen)); 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));                  
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        KodeDepartemen.setDocument(new batasInput((byte) 5).getKata(
+                KodeDepartemen));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
+        }
+
         poli.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(poli.getTable().getSelectedRow()!= -1){                    
-                    KodeDepartemen.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),0).toString());
-                    NamaDepartemen.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
+                if (poli.getTable().getSelectedRow() != -1) {
+                    KodeDepartemen.setText(poli.getTable().getValueAt(poli.
+                            getTable().getSelectedRow(), 0).toString());
+                    NamaDepartemen.setText(poli.getTable().getValueAt(poli.
+                            getTable().getSelectedRow(), 1).toString());
                 }
                 KodeDepartemen.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         try {
-            link=koneksiDB.URLFHIRSATUSEHAT();
+            link = koneksiDB.URLFHIRSATUSEHAT();
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        }  
-    
+            System.out.println("Notif : " + e);
+        }
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -423,132 +487,143 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDepartemenRSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepartemenRSActionPerformed
-        poli.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        poli.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         poli.setLocationRelativeTo(internalFrame1);
         poli.setVisible(true);
 }//GEN-LAST:event_btnDepartemenRSActionPerformed
 
     private void btnDepartemenRSKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDepartemenRSKeyPressed
-        
+
 }//GEN-LAST:event_btnDepartemenRSKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(KodeDepartemen.getText().trim().isEmpty()||NamaDepartemen.getText().trim().isEmpty()){
-            Valid.textKosong(KodeDepartemen,"Departemen/Organisasi");
-        }else{
-            try{
+        if (KodeDepartemen.getText().trim().isEmpty() || NamaDepartemen.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodeDepartemen, "Departemen/Organisasi");
+        } else {
+            try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                json = "{" +
-                            "\"resourceType\": \"Organization\"," +
-                            "\"active\": true," +
-                            "\"identifier\": [" +
-                                "{" +
-                                    "\"use\": \"official\"," +
-                                    "\"system\": \"http://sys-ids.kemkes.go.id/organization/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                    "\"value\": \""+KodeDepartemen.getText()+"\"" +
-                                "}" +
-                            "]," +
-                            "\"type\": [" +
-                                "{" +
-                                    "\"coding\": [" +
-                                        "{" +
-                                            "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\"," +
-                                            "\"code\": \"dept\"," +
-                                            "\"display\": \"Hospital Department\"" +
-                                        "}" +
-                                    "]" +
-                                "}" +
-                            "]," +
-                            "\"name\": \""+NamaDepartemen.getText()+"\"," +
-                            "\"telecom\": [" +
-                                "{" +
-                                    "\"system\": \"phone\"," +
-                                    "\"value\": \""+akses.getkontakrs()+"\"," +
-                                    "\"use\": \"work\"" +
-                                "}," +
-                                "{" +
-                                    "\"system\": \"email\"," +
-                                    "\"value\": \""+akses.getemailrs()+"\"," +
-                                    "\"use\": \"work\"" +
-                                "}," +
-                                "{" +
-                                    "\"system\": \"url\"," +
-                                    "\"value\": \"www."+akses.getemailrs()+"\"," +
-                                    "\"use\": \"work\"" +
-                                "}" +
-                            "]," +
-                            "\"address\": [" +
-                                "{" +
-                                    "\"use\": \"work\"," +
-                                    "\"type\": \"both\"," +
-                                    "\"line\": [" +
-                                        "\""+akses.getalamatrs()+"\"" +
-                                    "]," +
-                                    "\"city\": \""+akses.getkabupatenrs()+"\"," +
-                                    "\"postalCode\": \""+koneksiDB.KODEPOSSATUSEHAT()+"\"," +
-                                    "\"country\": \"ID\"," +
-                                    "\"extension\": [" +
-                                        "{" +
-                                            "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\"," +
-                                            "\"extension\": [" +
-                                                "{" +
-                                                    "\"url\": \"province\"," +
-                                                    "\"valueCode\": \""+koneksiDB.PROPINSISATUSEHAT()+"\"" +
-                                                "}," +
-                                                "{" +
-                                                    "\"url\": \"city\"," +
-                                                    "\"valueCode\": \""+koneksiDB.KABUPATENSATUSEHAT()+"\"" +
-                                                "}," +
-                                                "{" +
-                                                    "\"url\": \"district\"," +
-                                                    "\"valueCode\": \""+koneksiDB.KECAMATANSATUSEHAT()+"\"" +
-                                                "}," +
-                                                "{" +
-                                                    "\"url\": \"village\"," +
-                                                    "\"valueCode\": \""+koneksiDB.KELURAHANSATUSEHAT()+"\"" +
-                                                "}" +
-                                            "]" +
-                                        "}" +
-                                    "]" +
-                                "}" +
-                            "]," +
-                            "\"partOf\": {" +
-                                "\"reference\": \"Organization/"+koneksiDB.IDSATUSEHAT()+"\"" +
-                            "}" +
-                        "}";
-                System.out.println("URL : "+link+"/Organization");
-                System.out.println("Request JSON : "+json);
-                requestEntity = new HttpEntity(json,headers);
-                json=api.getRest().exchange(link+"/Organization", HttpMethod.POST, requestEntity, String.class).getBody();
-                System.out.println("Result JSON : "+json);
+                headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                json = "{"
+                        + "\"resourceType\": \"Organization\","
+                        + "\"active\": true,"
+                        + "\"identifier\": ["
+                        + "{"
+                        + "\"use\": \"official\","
+                        + "\"system\": \"http://sys-ids.kemkes.go.id/organization/" + koneksiDB.
+                                IDSATUSEHAT() + "\","
+                        + "\"value\": \"" + KodeDepartemen.getText() + "\""
+                        + "}"
+                        + "],"
+                        + "\"type\": ["
+                        + "{"
+                        + "\"coding\": ["
+                        + "{"
+                        + "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\","
+                        + "\"code\": \"dept\","
+                        + "\"display\": \"Hospital Department\""
+                        + "}"
+                        + "]"
+                        + "}"
+                        + "],"
+                        + "\"name\": \"" + NamaDepartemen.getText() + "\","
+                        + "\"telecom\": ["
+                        + "{"
+                        + "\"system\": \"phone\","
+                        + "\"value\": \"" + akses.getkontakrs() + "\","
+                        + "\"use\": \"work\""
+                        + "},"
+                        + "{"
+                        + "\"system\": \"email\","
+                        + "\"value\": \"" + akses.getemailrs() + "\","
+                        + "\"use\": \"work\""
+                        + "},"
+                        + "{"
+                        + "\"system\": \"url\","
+                        + "\"value\": \"www." + akses.getemailrs() + "\","
+                        + "\"use\": \"work\""
+                        + "}"
+                        + "],"
+                        + "\"address\": ["
+                        + "{"
+                        + "\"use\": \"work\","
+                        + "\"type\": \"both\","
+                        + "\"line\": ["
+                        + "\"" + akses.getalamatrs() + "\""
+                        + "],"
+                        + "\"city\": \"" + akses.getkabupatenrs() + "\","
+                        + "\"postalCode\": \"" + koneksiDB.KODEPOSSATUSEHAT() + "\","
+                        + "\"country\": \"ID\","
+                        + "\"extension\": ["
+                        + "{"
+                        + "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\","
+                        + "\"extension\": ["
+                        + "{"
+                        + "\"url\": \"province\","
+                        + "\"valueCode\": \"" + koneksiDB.PROPINSISATUSEHAT() + "\""
+                        + "},"
+                        + "{"
+                        + "\"url\": \"city\","
+                        + "\"valueCode\": \"" + koneksiDB.KABUPATENSATUSEHAT() + "\""
+                        + "},"
+                        + "{"
+                        + "\"url\": \"district\","
+                        + "\"valueCode\": \"" + koneksiDB.KECAMATANSATUSEHAT() + "\""
+                        + "},"
+                        + "{"
+                        + "\"url\": \"village\","
+                        + "\"valueCode\": \"" + koneksiDB.KELURAHANSATUSEHAT() + "\""
+                        + "}"
+                        + "]"
+                        + "}"
+                        + "]"
+                        + "}"
+                        + "],"
+                        + "\"partOf\": {"
+                        + "\"reference\": \"Organization/" + koneksiDB.
+                                IDSATUSEHAT() + "\""
+                        + "}"
+                        + "}";
+                System.out.println("URL : " + link + "/Organization");
+                System.out.println("Request JSON : " + json);
+                requestEntity = new HttpEntity(json, headers);
+                json = api.getRest().exchange(link + "/Organization",
+                        HttpMethod.POST, requestEntity, String.class).getBody();
+                System.out.println("Result JSON : " + json);
                 root = mapper.readTree(json);
                 response = root.path("id");
-                if(!response.asText().isEmpty()){
-                    if(Sequel.menyimpantf("satu_sehat_mapping_departemen","?,?","Kode Departemen",2,new String[]{
-                            KodeDepartemen.getText(),response.asText()
-                        })==true){
+                if (!response.asText().isEmpty()) {
+                    if (Sequel.menyimpantf("satu_sehat_mapping_departemen",
+                            "?,?", "Kode Departemen", 2, new String[]{
+                                KodeDepartemen.getText(), response.asText()
+                            }) == true) {
                         tabMode.addRow(new String[]{
-                            KodeDepartemen.getText(),NamaDepartemen.getText(),response.asText()
+                            KodeDepartemen.getText(), NamaDepartemen.getText(),
+                            response.asText()
                         });
                         emptTeks();
-                        LCount.setText(""+tabMode.getRowCount());
+                        LCount.setText("" + tabMode.getRowCount());
                     }
-                }else{
-                    JOptionPane.showMessageDialog(null,"Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
-                } 
-            }catch(Exception e){
-                System.out.println("Notifikasi Bridging : "+e);
-                JOptionPane.showMessageDialog(null,"Error Respon Satu Sehat Kemenkes : "+e);
-            }               
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
+                }
+            } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                System.out.println("Notifikasi Bridging : " + e);
+                JOptionPane.showMessageDialog(null,
+                        "Error Respon Satu Sehat Kemenkes : " + e);
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{Valid.pindah(evt,btnDepartemenRS, BtnBatal);}
+        } else {
+            Valid.pindah(evt, btnDepartemenRS, BtnBatal);
+        }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
@@ -556,250 +631,294 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(KodeDepartemen.getText().trim().isEmpty()||NamaDepartemen.getText().trim().isEmpty()){
-            Valid.textKosong(KodeDepartemen,"Departemen/Organisasi");
-        }else{
-            if(tbJnsPerawatan.getSelectedRow()>-1){
-                try{
+        if (KodeDepartemen.getText().trim().isEmpty() || NamaDepartemen.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodeDepartemen, "Departemen/Organisasi");
+        } else {
+            if (tbJnsPerawatan.getSelectedRow() > -1) {
+                try {
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
-                    headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                    json = "{" +
-                                "\"resourceType\": \"Organization\"," +
-                                "\"id\": \""+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString()+"\"," +
-                                "\"active\": false," +
-                                "\"identifier\": [" +
-                                    "{" +
-                                        "\"use\": \"official\"," +
-                                        "\"system\": \"http://sys-ids.kemkes.go.id/organization/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                        "\"value\": \""+KodeDepartemen.getText()+"\"" +
-                                    "}" +
-                                "]," +
-                                "\"type\": [" +
-                                    "{" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\"," +
-                                                "\"code\": \"dept\"," +
-                                                "\"display\": \"Hospital Department\"" +
-                                            "}" +
-                                        "]" +
-                                    "}" +
-                                "]," +
-                                "\"name\": \""+NamaDepartemen.getText()+"\"," +
-                                "\"telecom\": [" +
-                                    "{" +
-                                        "\"system\": \"phone\"," +
-                                        "\"value\": \""+akses.getkontakrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}," +
-                                    "{" +
-                                        "\"system\": \"email\"," +
-                                        "\"value\": \""+akses.getemailrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}," +
-                                    "{" +
-                                        "\"system\": \"url\"," +
-                                        "\"value\": \"www."+akses.getemailrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}" +
-                                "]," +
-                                "\"address\": [" +
-                                    "{" +
-                                        "\"use\": \"work\"," +
-                                        "\"type\": \"both\"," +
-                                        "\"line\": [" +
-                                            "\""+akses.getalamatrs()+"\"" +
-                                        "]," +
-                                        "\"city\": \""+akses.getkabupatenrs()+"\"," +
-                                        "\"postalCode\": \""+koneksiDB.KODEPOSSATUSEHAT()+"\"," +
-                                        "\"country\": \"ID\"," +
-                                        "\"extension\": [" +
-                                            "{" +
-                                                "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\"," +
-                                                "\"extension\": [" +
-                                                    "{" +
-                                                        "\"url\": \"province\"," +
-                                                        "\"valueCode\": \""+koneksiDB.PROPINSISATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"city\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KABUPATENSATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"district\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KECAMATANSATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"village\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KELURAHANSATUSEHAT()+"\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]" +
-                                    "}" +
-                                "]," +
-                                "\"partOf\": {" +
-                                    "\"reference\": \"Organization/"+koneksiDB.IDSATUSEHAT()+"\"" +
-                                "}" +
-                            "}";
-                    System.out.println("URL : "+link+"/Organization");
-                    System.out.println("Request JSON : "+json);
-                    requestEntity = new HttpEntity(json,headers);
-                    json=api.getRest().exchange(link+"/Organization/"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                    System.out.println("Result JSON : "+json);
+                    headers.add("Authorization", "Bearer " + api.
+                            TokenSatuSehat());
+                    json = "{"
+                            + "\"resourceType\": \"Organization\","
+                            + "\"id\": \"" + tbJnsPerawatan.getValueAt(
+                                    tbJnsPerawatan.getSelectedRow(), 2).
+                                    toString() + "\","
+                            + "\"active\": false,"
+                            + "\"identifier\": ["
+                            + "{"
+                            + "\"use\": \"official\","
+                            + "\"system\": \"http://sys-ids.kemkes.go.id/organization/" + koneksiDB.
+                                    IDSATUSEHAT() + "\","
+                            + "\"value\": \"" + KodeDepartemen.getText() + "\""
+                            + "}"
+                            + "],"
+                            + "\"type\": ["
+                            + "{"
+                            + "\"coding\": ["
+                            + "{"
+                            + "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\","
+                            + "\"code\": \"dept\","
+                            + "\"display\": \"Hospital Department\""
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "],"
+                            + "\"name\": \"" + NamaDepartemen.getText() + "\","
+                            + "\"telecom\": ["
+                            + "{"
+                            + "\"system\": \"phone\","
+                            + "\"value\": \"" + akses.getkontakrs() + "\","
+                            + "\"use\": \"work\""
+                            + "},"
+                            + "{"
+                            + "\"system\": \"email\","
+                            + "\"value\": \"" + akses.getemailrs() + "\","
+                            + "\"use\": \"work\""
+                            + "},"
+                            + "{"
+                            + "\"system\": \"url\","
+                            + "\"value\": \"www." + akses.getemailrs() + "\","
+                            + "\"use\": \"work\""
+                            + "}"
+                            + "],"
+                            + "\"address\": ["
+                            + "{"
+                            + "\"use\": \"work\","
+                            + "\"type\": \"both\","
+                            + "\"line\": ["
+                            + "\"" + akses.getalamatrs() + "\""
+                            + "],"
+                            + "\"city\": \"" + akses.getkabupatenrs() + "\","
+                            + "\"postalCode\": \"" + koneksiDB.
+                                    KODEPOSSATUSEHAT() + "\","
+                            + "\"country\": \"ID\","
+                            + "\"extension\": ["
+                            + "{"
+                            + "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\","
+                            + "\"extension\": ["
+                            + "{"
+                            + "\"url\": \"province\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    PROPINSISATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"city\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KABUPATENSATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"district\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KECAMATANSATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"village\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KELURAHANSATUSEHAT() + "\""
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "],"
+                            + "\"partOf\": {"
+                            + "\"reference\": \"Organization/" + koneksiDB.
+                                    IDSATUSEHAT() + "\""
+                            + "}"
+                            + "}";
+                    System.out.println("URL : " + link + "/Organization");
+                    System.out.println("Request JSON : " + json);
+                    requestEntity = new HttpEntity(json, headers);
+                    json = api.getRest().exchange(
+                            link + "/Organization/" + tbJnsPerawatan.getValueAt(
+                                    tbJnsPerawatan.getSelectedRow(), 2).
+                                    toString(), HttpMethod.PUT, requestEntity,
+                            String.class).getBody();
+                    System.out.println("Result JSON : " + json);
                     root = mapper.readTree(json);
                     response = root.path("id");
-                    if(!response.asText().isEmpty()){
-                        if(Valid.hapusTabletf(tabMode,KodeDepartemen,"satu_sehat_mapping_departemen","dep_id")==true){
+                    if (!response.asText().isEmpty()) {
+                        if (Valid.hapusTabletf(tabMode, KodeDepartemen,
+                                "satu_sehat_mapping_departemen", "dep_id") == true) {
                             tabMode.removeRow(tbJnsPerawatan.getSelectedRow());
                             emptTeks();
-                            LCount.setText(""+tabMode.getRowCount());
+                            LCount.setText("" + tabMode.getRowCount());
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
-                    } 
-                }catch(Exception e){
-                    System.out.println("Notifikasi Bridging : "+e);
-                    JOptionPane.showMessageDialog(null,"Error Respon Satu Sehat Kemenkes : "+e);
-                }  
-            }                
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
+                    }
+                } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                    System.out.println("Notifikasi Bridging : " + e);
+                    JOptionPane.showMessageDialog(null,
+                            "Error Respon Satu Sehat Kemenkes : " + e);
+                }
+            }
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(KodeDepartemen.getText().trim().isEmpty()||NamaDepartemen.getText().trim().isEmpty()){
-            Valid.textKosong(KodeDepartemen,"Departemen/Organisasi");
-        }else{
-            if(tbJnsPerawatan.getSelectedRow()>-1){
-                try{
+        if (KodeDepartemen.getText().trim().isEmpty() || NamaDepartemen.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodeDepartemen, "Departemen/Organisasi");
+        } else {
+            if (tbJnsPerawatan.getSelectedRow() > -1) {
+                try {
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
-                    headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                    json = "{" +
-                                "\"resourceType\": \"Organization\"," +
-                                "\"id\": \""+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString()+"\"," +
-                                "\"active\": true," +
-                                "\"identifier\": [" +
-                                    "{" +
-                                        "\"use\": \"official\"," +
-                                        "\"system\": \"http://sys-ids.kemkes.go.id/organization/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                        "\"value\": \""+KodeDepartemen.getText()+"\"" +
-                                    "}" +
-                                "]," +
-                                "\"type\": [" +
-                                    "{" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\"," +
-                                                "\"code\": \"dept\"," +
-                                                "\"display\": \"Hospital Department\"" +
-                                            "}" +
-                                        "]" +
-                                    "}" +
-                                "]," +
-                                "\"name\": \""+NamaDepartemen.getText()+"\"," +
-                                "\"telecom\": [" +
-                                    "{" +
-                                        "\"system\": \"phone\"," +
-                                        "\"value\": \""+akses.getkontakrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}," +
-                                    "{" +
-                                        "\"system\": \"email\"," +
-                                        "\"value\": \""+akses.getemailrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}," +
-                                    "{" +
-                                        "\"system\": \"url\"," +
-                                        "\"value\": \"www."+akses.getemailrs()+"\"," +
-                                        "\"use\": \"work\"" +
-                                    "}" +
-                                "]," +
-                                "\"address\": [" +
-                                    "{" +
-                                        "\"use\": \"work\"," +
-                                        "\"type\": \"both\"," +
-                                        "\"line\": [" +
-                                            "\""+akses.getalamatrs()+"\"" +
-                                        "]," +
-                                        "\"city\": \""+akses.getkabupatenrs()+"\"," +
-                                        "\"postalCode\": \""+koneksiDB.KODEPOSSATUSEHAT()+"\"," +
-                                        "\"country\": \"ID\"," +
-                                        "\"extension\": [" +
-                                            "{" +
-                                                "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\"," +
-                                                "\"extension\": [" +
-                                                    "{" +
-                                                        "\"url\": \"province\"," +
-                                                        "\"valueCode\": \""+koneksiDB.PROPINSISATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"city\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KABUPATENSATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"district\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KECAMATANSATUSEHAT()+"\"" +
-                                                    "}," +
-                                                    "{" +
-                                                        "\"url\": \"village\"," +
-                                                        "\"valueCode\": \""+koneksiDB.KELURAHANSATUSEHAT()+"\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]" +
-                                    "}" +
-                                "]," +
-                                "\"partOf\": {" +
-                                    "\"reference\": \"Organization/"+koneksiDB.IDSATUSEHAT()+"\"" +
-                                "}" +
-                            "}";
-                    System.out.println("URL : "+link+"/Organization");
-                    System.out.println("Request JSON : "+json);
-                    requestEntity = new HttpEntity(json,headers);
-                    json=api.getRest().exchange(link+"/Organization/"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                    System.out.println("Result JSON : "+json);
+                    headers.add("Authorization", "Bearer " + api.
+                            TokenSatuSehat());
+                    json = "{"
+                            + "\"resourceType\": \"Organization\","
+                            + "\"id\": \"" + tbJnsPerawatan.getValueAt(
+                                    tbJnsPerawatan.getSelectedRow(), 2).
+                                    toString() + "\","
+                            + "\"active\": true,"
+                            + "\"identifier\": ["
+                            + "{"
+                            + "\"use\": \"official\","
+                            + "\"system\": \"http://sys-ids.kemkes.go.id/organization/" + koneksiDB.
+                                    IDSATUSEHAT() + "\","
+                            + "\"value\": \"" + KodeDepartemen.getText() + "\""
+                            + "}"
+                            + "],"
+                            + "\"type\": ["
+                            + "{"
+                            + "\"coding\": ["
+                            + "{"
+                            + "\"system\": \"http://terminology.hl7.org/CodeSystem/organization-type\","
+                            + "\"code\": \"dept\","
+                            + "\"display\": \"Hospital Department\""
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "],"
+                            + "\"name\": \"" + NamaDepartemen.getText() + "\","
+                            + "\"telecom\": ["
+                            + "{"
+                            + "\"system\": \"phone\","
+                            + "\"value\": \"" + akses.getkontakrs() + "\","
+                            + "\"use\": \"work\""
+                            + "},"
+                            + "{"
+                            + "\"system\": \"email\","
+                            + "\"value\": \"" + akses.getemailrs() + "\","
+                            + "\"use\": \"work\""
+                            + "},"
+                            + "{"
+                            + "\"system\": \"url\","
+                            + "\"value\": \"www." + akses.getemailrs() + "\","
+                            + "\"use\": \"work\""
+                            + "}"
+                            + "],"
+                            + "\"address\": ["
+                            + "{"
+                            + "\"use\": \"work\","
+                            + "\"type\": \"both\","
+                            + "\"line\": ["
+                            + "\"" + akses.getalamatrs() + "\""
+                            + "],"
+                            + "\"city\": \"" + akses.getkabupatenrs() + "\","
+                            + "\"postalCode\": \"" + koneksiDB.
+                                    KODEPOSSATUSEHAT() + "\","
+                            + "\"country\": \"ID\","
+                            + "\"extension\": ["
+                            + "{"
+                            + "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode\","
+                            + "\"extension\": ["
+                            + "{"
+                            + "\"url\": \"province\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    PROPINSISATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"city\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KABUPATENSATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"district\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KECAMATANSATUSEHAT() + "\""
+                            + "},"
+                            + "{"
+                            + "\"url\": \"village\","
+                            + "\"valueCode\": \"" + koneksiDB.
+                                    KELURAHANSATUSEHAT() + "\""
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "],"
+                            + "\"partOf\": {"
+                            + "\"reference\": \"Organization/" + koneksiDB.
+                                    IDSATUSEHAT() + "\""
+                            + "}"
+                            + "}";
+                    System.out.println("URL : " + link + "/Organization");
+                    System.out.println("Request JSON : " + json);
+                    requestEntity = new HttpEntity(json, headers);
+                    json = api.getRest().exchange(
+                            link + "/Organization/" + tbJnsPerawatan.getValueAt(
+                                    tbJnsPerawatan.getSelectedRow(), 2).
+                                    toString(), HttpMethod.PUT, requestEntity,
+                            String.class).getBody();
+                    System.out.println("Result JSON : " + json);
                     root = mapper.readTree(json);
                     response = root.path("id");
-                    if(!response.asText().isEmpty()){
-                        if(Sequel.mengedittf("satu_sehat_mapping_departemen","dep_id=?","dep_id=?,id_organisasi_satusehat=?",3,new String[]{
-                                KodeDepartemen.getText(),response.asText(),tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString()
-                            })==true){
-                            tabMode.setValueAt(KodeDepartemen.getText(),tbJnsPerawatan.getSelectedRow(),0);
-                            tabMode.setValueAt(NamaDepartemen.getText(),tbJnsPerawatan.getSelectedRow(),1);
-                            tabMode.setValueAt(response.asText(),tbJnsPerawatan.getSelectedRow(),3);
+                    if (!response.asText().isEmpty()) {
+                        if (Sequel.mengedittf("satu_sehat_mapping_departemen",
+                                "dep_id=?", "dep_id=?,id_organisasi_satusehat=?",
+                                3, new String[]{
+                                    KodeDepartemen.getText(), response.asText(),
+                                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                                            getSelectedRow(), 0).toString()
+                                }) == true) {
+                            tabMode.setValueAt(KodeDepartemen.getText(),
+                                    tbJnsPerawatan.getSelectedRow(), 0);
+                            tabMode.setValueAt(NamaDepartemen.getText(),
+                                    tbJnsPerawatan.getSelectedRow(), 1);
+                            tabMode.setValueAt(response.asText(),
+                                    tbJnsPerawatan.getSelectedRow(), 3);
                             emptTeks();
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
-                    } 
-                }catch(Exception e){
-                    System.out.println("Notifikasi Bridging : "+e);
-                    JOptionPane.showMessageDialog(null,"Error Respon Satu Sehat Kemenkes : "+e);
-                }  
-            }                
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Gagal melakukan mapping organisasi ke server Satu Sehat Kemenkes");
+                    }
+                } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                    System.out.println("Notifikasi Bridging : " + e);
+                    JOptionPane.showMessageDialog(null,
+                            "Error Respon Satu Sehat Kemenkes : " + e);
+                }
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -809,45 +928,51 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){            
-                Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                param.put("parameter","%"+TCari.getText().trim()+"%");
-                Valid.MyReport("rptMapingOrganisasiSatuSehat.jasper","report","::[ Mapping Departemen/Organisasi Satu Sehat Kemenkes ]::",param);            
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            Valid.MyReport("rptMapingOrganisasiSatuSehat.jasper", "report",
+                    "::[ Mapping Departemen/Organisasi Satu Sehat Kemenkes ]::",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -857,9 +982,9 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -870,16 +995,16 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbJnsPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbJnsPerawatanMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -893,8 +1018,9 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tbJnsPerawatanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -904,16 +1030,18 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
     }//GEN-LAST:event_tbJnsPerawatanKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatMapingOrganisasi dialog = new SatuSehatMapingOrganisasi(new javax.swing.JFrame(), true);
+            SatuSehatMapingOrganisasi dialog = new SatuSehatMapingOrganisasi(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -947,37 +1075,40 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-           ps=koneksi.prepareStatement("select satu_sehat_mapping_departemen.dep_id,departemen.nama,satu_sehat_mapping_departemen.id_organisasi_satusehat "+
-                   "from satu_sehat_mapping_departemen inner join departemen on satu_sehat_mapping_departemen.dep_id=departemen.dep_id "+
-                   (TCari.getText().isEmpty()?"":"where satu_sehat_mapping_departemen.dep_id like ? or departemen.nama like ? or "+
-                   "satu_sehat_mapping_departemen.id_organisasi_satusehat like ? ")+" order by departemen.nama");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select satu_sehat_mapping_departemen.dep_id,departemen.nama,satu_sehat_mapping_departemen.id_organisasi_satusehat "
+                    + "from satu_sehat_mapping_departemen inner join departemen on satu_sehat_mapping_departemen.dep_id=departemen.dep_id "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "where satu_sehat_mapping_departemen.dep_id like ? or departemen.nama like ? or "
+                    + "satu_sehat_mapping_departemen.id_organisasi_satusehat like ? ")
+                    + " order by departemen.nama");
             try {
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(1,"%"+TCari.getText()+"%");
-                    ps.setString(2,"%"+TCari.getText()+"%");
-                    ps.setString(3,"%"+TCari.getText()+"%");
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(1, "%" + TCari.getText() + "%");
+                    ps.setString(2, "%" + TCari.getText() + "%");
+                    ps.setString(3, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString("dep_id"),rs.getString("nama"),rs.getString("id_organisasi_satusehat")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{rs.getString("dep_id"), rs.
+                        getString("nama"),
+                        rs.getString("id_organisasi_satusehat")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif Ketersediaan : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif Ketersediaan : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -990,20 +1121,26 @@ public class SatuSehatMapingOrganisasi extends javax.swing.JDialog {
     }
 
     private void getData() {
-       if(tbJnsPerawatan.getSelectedRow()!= -1){
-           KodeDepartemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString());
-           NamaDepartemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            KodeDepartemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 0).toString());
+            NamaDepartemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 1).toString());
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getsatu_sehat_mapping_departemen());
         BtnHapus.setEnabled(akses.getsatu_sehat_mapping_departemen());
         BtnEdit.setEnabled(akses.getsatu_sehat_mapping_departemen());
         BtnPrint.setEnabled(akses.getsatu_sehat_mapping_departemen());
     }
-    
-    public JTable getTable(){
+
+    public JTable getTable() {
         return tbJnsPerawatan;
-    }  
+    }
+
+    private static final Logger LOG = Logger.getLogger(
+            SatuSehatMapingOrganisasi.class.getName());
+
 }

@@ -3,127 +3,155 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgAdmin.java
  *
  * Created on 21 Jun 10, 20:53:44
  */
-
 package setting;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgSetNota extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabMode2,tabMode3;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private final DefaultTableModel tabMode, tabMode2, tabMode3;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String laborat="No",radiologi="No",operasi="No",obat="No",
-            ranap_dokter="No",ranap_paramedis="No",ralan_dokter="No",
-            ralan_paramedis="No",tambahan="No",potongan="No",
-            kamar="No",registrasi="No",harian="No",retur_Obat="No",resep_Pulang="No";
+    private String laborat = "No", radiologi = "No", operasi = "No", obat = "No",
+            ranap_dokter = "No", ranap_paramedis = "No", ralan_dokter = "No",
+            ralan_paramedis = "No", tambahan = "No", potongan = "No",
+            kamar = "No", registrasi = "No", harian = "No", retur_Obat = "No", resep_Pulang = "No";
 
-    /** Creates new form DlgAdmin
+    /**
+     * Creates new form DlgAdmin
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSetNota(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,10);
-        setSize(457,249);
-        tabMode=new DefaultTableModel(null,new Object[]{"Parameter","Nilai"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        this.setLocation(10, 10);
+        setSize(457, 249);
+        tabMode = new DefaultTableModel(null, new Object[]{"Parameter", "Nilai"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin.setModel(tabMode);
-        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbAdmin.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(550);
-            }else{
+            } else {
                 column.setPreferredWidth(150);
             }
         }
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabMode2=new DefaultTableModel(null,new Object[]{"Parameter","Nilai"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"Parameter", "Nilai"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin2.setModel(tabMode2);
-        tbAdmin2.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin2.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbAdmin2.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(250);
-            }else{
+            } else {
                 column.setPreferredWidth(250);
             }
         }
         tbAdmin2.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabMode3=new DefaultTableModel(null,new Object[]{"Parameter","Nilai"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode3 = new DefaultTableModel(null,
+                new Object[]{"Parameter", "Nilai"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin3.setModel(tabMode3);
-        tbAdmin3.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin3.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin3.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbAdmin3.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(250);
-            }else{
+            } else {
                 column.setPreferredWidth(250);
             }
         }
 
         tbAdmin3.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NotaRalan.setDocument(new batasInput((byte)11).getKata(NotaRalan));
-        KwitansiRalan.setDocument(new batasInput((byte)11).getKata(KwitansiRalan));
-        Nota2Ranap.setDocument(new batasInput((byte)11).getKata(Nota2Ranap));
-        Nota1Ranap.setDocument(new batasInput((byte)11).getKata(Nota1Ranap));
-        KwitansiRanap.setDocument(new batasInput((byte)11).getKata(KwitansiRanap));
-        NotaApotek.setDocument(new batasInput((byte)11).getKata(NotaApotek));
-        NotaLab.setDocument(new batasInput((byte)11).getKata(NotaLab));      
-        NotaToko.setDocument(new batasInput((byte)11).getKata(NotaToko));        
-        NamaService.setDocument(new batasInput((byte)100).getKata(NamaService));
-        BesarBiaya.setDocument(new batasInput((byte)5).getKata(BesarBiaya));
-        NamaService1.setDocument(new batasInput((byte)100).getKata(NamaService));
-        BesarBiaya1.setDocument(new batasInput((byte)5).getKata(BesarBiaya));
-        
+        NotaRalan.setDocument(new batasInput((byte) 11).getKata(NotaRalan));
+        KwitansiRalan.setDocument(new batasInput((byte) 11).getKata(
+                KwitansiRalan));
+        Nota2Ranap.setDocument(new batasInput((byte) 11).getKata(Nota2Ranap));
+        Nota1Ranap.setDocument(new batasInput((byte) 11).getKata(Nota1Ranap));
+        KwitansiRanap.setDocument(new batasInput((byte) 11).getKata(
+                KwitansiRanap));
+        NotaApotek.setDocument(new batasInput((byte) 11).getKata(NotaApotek));
+        NotaLab.setDocument(new batasInput((byte) 11).getKata(NotaLab));
+        NotaToko.setDocument(new batasInput((byte) 11).getKata(NotaToko));
+        NamaService.setDocument(new batasInput((byte) 100).getKata(NamaService));
+        BesarBiaya.setDocument(new batasInput((byte) 5).getKata(BesarBiaya));
+        NamaService1.
+                setDocument(new batasInput((byte) 100).getKata(NamaService));
+        BesarBiaya1.setDocument(new batasInput((byte) 5).getKata(BesarBiaya));
+
         ChkInput.setSelected(false);
         isForm();
         ChkInput2.setSelected(false);
         isForm2();
         ChkInput3.setSelected(false);
         isForm3();
-        
+
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1570,250 +1598,361 @@ public class DlgSetNota extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
-            if(NotaRalan.getText().trim().isEmpty()||KwitansiRalan.getText().trim().isEmpty()||Nota1Ranap.getText().trim().isEmpty()||Nota2Ranap.getText().trim().isEmpty()||
-                    KwitansiRanap.getText().trim().isEmpty()||NotaApotek.getText().trim().isEmpty()||NotaLab.getText().trim().isEmpty()||NotaToko.getText().trim().isEmpty()){
-                Valid.textKosong(NotaRalan,"Semua field");
-            }else if(tabMode.getRowCount()==0){
-                if(Sequel.menyimpantf("set_nota","'"+NotaRalan.getText()+"','"+KwitansiRalan.getText()+"','"+Nota1Ranap.getText()+"',"+
-                        "'"+Nota2Ranap.getText()+"','"+KwitansiRanap.getText()+"','"+NotaApotek.getText()+"','"+NotaLab.getText()+"','"+NotaToko.getText()+"',"+
-                        "'"+cmbYesRalan.getSelectedItem()+"','"+cmbYesRanap.getSelectedItem()+"','"+cmbYesRincianRalan.getSelectedItem()+"',"+
-                        "'"+cmbYesRincianRanap.getSelectedItem()+"','"+cmbYesCentangDokterRalan.getSelectedItem()+"',"+
-                        "'"+cmbYesCentangDokterRanap.getSelectedItem()+"','"+cmbYesAdministrasiRanap.getSelectedItem()+"',"+
-                        "'"+cmbYesRincianOperasi.getSelectedItem()+"','"+cmbYesPPNRalan.getSelectedItem()+"','"+cmbYesPPNRanap.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolNotaRalan.getSelectedItem()+"','"+cmbYesTombolNotaRanap.getSelectedItem()+"','"+cmbYesTombolPenjualan.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolPenyerahanDarah.getSelectedItem()+"','"+cmbYesCetakPenjualan.getSelectedItem()+"','"+cmbYesTombolNotaPenjualan.getSelectedItem()+"',"+
-                        "'"+cmbYesCentangObatRalan.getSelectedItem()+"','"+cmbYesCentangObatRanap.getSelectedItem()+"','"+cmbYesCetakPenjualanToko.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolNotaPenjualanToko.getSelectedItem()+"'","Set Nota")==true){
+        if (TabSetting.getSelectedIndex() == 0) {
+            if (NotaRalan.getText().trim().isEmpty() || KwitansiRalan.getText().
+                    trim().isEmpty() || Nota1Ranap.getText().trim().isEmpty() || Nota2Ranap.
+                    getText().trim().isEmpty()
+                    || KwitansiRanap.getText().trim().isEmpty() || NotaApotek.
+                    getText().trim().isEmpty() || NotaLab.getText().trim().
+                            isEmpty() || NotaToko.getText().trim().isEmpty()) {
+                Valid.textKosong(NotaRalan, "Semua field");
+            } else if (tabMode.getRowCount() == 0) {
+                if (Sequel.menyimpantf("set_nota",
+                        "'" + NotaRalan.getText() + "','" + KwitansiRalan.
+                        getText() + "','" + Nota1Ranap.getText() + "',"
+                        + "'" + Nota2Ranap.getText() + "','" + KwitansiRanap.
+                        getText() + "','" + NotaApotek.getText() + "','" + NotaLab.
+                        getText() + "','" + NotaToko.getText() + "',"
+                        + "'" + cmbYesRalan.getSelectedItem() + "','" + cmbYesRanap.
+                        getSelectedItem() + "','" + cmbYesRincianRalan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesRincianRanap.getSelectedItem() + "','" + cmbYesCentangDokterRalan.
+                        getSelectedItem() + "',"
+                        + "'" + cmbYesCentangDokterRanap.getSelectedItem() + "','" + cmbYesAdministrasiRanap.
+                        getSelectedItem() + "',"
+                        + "'" + cmbYesRincianOperasi.getSelectedItem() + "','" + cmbYesPPNRalan.
+                        getSelectedItem() + "','" + cmbYesPPNRanap.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolNotaRalan.getSelectedItem() + "','" + cmbYesTombolNotaRanap.
+                        getSelectedItem() + "','" + cmbYesTombolPenjualan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolPenyerahanDarah.getSelectedItem() + "','" + cmbYesCetakPenjualan.
+                        getSelectedItem() + "','" + cmbYesTombolNotaPenjualan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesCentangObatRalan.getSelectedItem() + "','" + cmbYesCentangObatRanap.
+                        getSelectedItem() + "','" + cmbYesCetakPenjualanToko.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolNotaPenjualanToko.getSelectedItem() + "'",
+                        "Set Nota") == true) {
                     tampil();
                     emptTeks();
-                }                
-            }else if(tabMode.getRowCount()>0){
-                JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu Set Nota, Kwitansi, Verifikasi Penjualan...!!!!");
+                }
+            } else if (tabMode.getRowCount() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Hanya diijinkan satu Set Nota, Kwitansi, Verifikasi Penjualan...!!!!");
                 NotaRalan.requestFocus();
             }
-        }else if(TabSetting.getSelectedIndex()==1){
-            if(NamaService.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService,"Nama Service");
-            }else if(BesarBiaya.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService,"Nama Service");
-            }else if((chkLaborat.isSelected()==false)&&(chkRadiologi.isSelected()==false)&&
-                    (chkOperasi.isSelected()==false)&&(chkObat.isSelected()==false)&&
-                    (chkRanapDokter.isSelected()==false)&&(chkRanapParamedis.isSelected()==false)&&
-                    (chkRalanDokter.isSelected()==false)&&(chkRalanParamedis.isSelected()==false)&&
-                    (chkTambahan.isSelected()==false)&&(chkPotongan.isSelected()==false)&&
-                    (chkKamar.isSelected()==false)&&(chkRegistrasi.isSelected()==false)&&
-                    (chkHarian.isSelected()==false)&&(chkRetur.isSelected()==false)&&
-                    (chkResepPulang.isSelected()==false)){
-                JOptionPane.showMessageDialog(null,"Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (NamaService.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService, "Nama Service");
+            } else if (BesarBiaya.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService, "Nama Service");
+            } else if ((chkLaborat.isSelected() == false) && (chkRadiologi.
+                    isSelected() == false)
+                    && (chkOperasi.isSelected() == false) && (chkObat.
+                    isSelected() == false)
+                    && (chkRanapDokter.isSelected() == false) && (chkRanapParamedis.
+                    isSelected() == false)
+                    && (chkRalanDokter.isSelected() == false) && (chkRalanParamedis.
+                    isSelected() == false)
+                    && (chkTambahan.isSelected() == false) && (chkPotongan.
+                    isSelected() == false)
+                    && (chkKamar.isSelected() == false) && (chkRegistrasi.
+                    isSelected() == false)
+                    && (chkHarian.isSelected() == false) && (chkRetur.
+                    isSelected() == false)
+                    && (chkResepPulang.isSelected() == false)) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
                 chkLaborat.requestFocus();
-            }else if(tabMode2.getRowCount()==0){
-                laborat="No";radiologi="No";operasi="No";obat="No";
-                ranap_dokter="No";ranap_paramedis="No";ralan_dokter="No";
-                ralan_paramedis="No";tambahan="No";potongan="No";
-                kamar="No";registrasi="No";harian="No";retur_Obat="No";resep_Pulang="No";
-                if(chkLaborat.isSelected()==true){
-		    laborat="Yes";
-                }if(chkRadiologi.isSelected()==true){
-                    radiologi="Yes";
-                }if(chkOperasi.isSelected()==true){
-                    operasi="Yes";
-                }if(chkObat.isSelected()==true){
-                    obat="Yes";
-                }if(chkRanapDokter.isSelected()==true){
-                    ranap_dokter="Yes";
-                }if(chkRanapParamedis.isSelected()==true){
-                    ranap_paramedis="Yes";
-                }if(chkRalanDokter.isSelected()==true){
-                    ralan_dokter="Yes";
-                }if(chkRalanParamedis.isSelected()==true){
-                    ralan_paramedis="Yes";
-                }if(chkTambahan.isSelected()==true){
-                    tambahan="Yes";
-                }if(chkPotongan.isSelected()==true){
-                    potongan="Yes";
-                }if(chkKamar.isSelected()==true){
-                    kamar="Yes";
-                }if(chkRegistrasi.isSelected()==true){
-                    registrasi="Yes";
-                }if(chkHarian.isSelected()==true){
-                    harian="Yes";
-                }if(chkRetur.isSelected()==true){
-                    retur_Obat="Yes";
-                }if(chkResepPulang.isSelected()==true){
-                    resep_Pulang="Yes";
+            } else if (tabMode2.getRowCount() == 0) {
+                laborat = "No";
+                radiologi = "No";
+                operasi = "No";
+                obat = "No";
+                ranap_dokter = "No";
+                ranap_paramedis = "No";
+                ralan_dokter = "No";
+                ralan_paramedis = "No";
+                tambahan = "No";
+                potongan = "No";
+                kamar = "No";
+                registrasi = "No";
+                harian = "No";
+                retur_Obat = "No";
+                resep_Pulang = "No";
+                if (chkLaborat.isSelected() == true) {
+                    laborat = "Yes";
                 }
-                if(Sequel.menyimpantf("set_service_ranap","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",17,new String[]{
-                    NamaService.getText(),BesarBiaya.getText(),laborat,radiologi,operasi,obat,ranap_dokter,ranap_paramedis,
-                    ralan_dokter,ralan_paramedis,tambahan,potongan,kamar,registrasi,harian,retur_Obat,resep_Pulang
-                })==true){
+                if (chkRadiologi.isSelected() == true) {
+                    radiologi = "Yes";
+                }
+                if (chkOperasi.isSelected() == true) {
+                    operasi = "Yes";
+                }
+                if (chkObat.isSelected() == true) {
+                    obat = "Yes";
+                }
+                if (chkRanapDokter.isSelected() == true) {
+                    ranap_dokter = "Yes";
+                }
+                if (chkRanapParamedis.isSelected() == true) {
+                    ranap_paramedis = "Yes";
+                }
+                if (chkRalanDokter.isSelected() == true) {
+                    ralan_dokter = "Yes";
+                }
+                if (chkRalanParamedis.isSelected() == true) {
+                    ralan_paramedis = "Yes";
+                }
+                if (chkTambahan.isSelected() == true) {
+                    tambahan = "Yes";
+                }
+                if (chkPotongan.isSelected() == true) {
+                    potongan = "Yes";
+                }
+                if (chkKamar.isSelected() == true) {
+                    kamar = "Yes";
+                }
+                if (chkRegistrasi.isSelected() == true) {
+                    registrasi = "Yes";
+                }
+                if (chkHarian.isSelected() == true) {
+                    harian = "Yes";
+                }
+                if (chkRetur.isSelected() == true) {
+                    retur_Obat = "Yes";
+                }
+                if (chkResepPulang.isSelected() == true) {
+                    resep_Pulang = "Yes";
+                }
+                if (Sequel.menyimpantf("set_service_ranap",
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                        new String[]{
+                            NamaService.getText(), BesarBiaya.getText(), laborat,
+                            radiologi, operasi, obat, ranap_dokter,
+                            ranap_paramedis,
+                            ralan_dokter, ralan_paramedis, tambahan, potongan,
+                            kamar, registrasi, harian, retur_Obat, resep_Pulang
+                        }) == true) {
                     tampil2();
                     emptTeks2();
                 }
-            }else if(tabMode2.getRowCount()>0){
-                JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu Set Biaya Service Rawat Inap...!!!!");
+            } else if (tabMode2.getRowCount() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Hanya diijinkan satu Set Biaya Service Rawat Inap...!!!!");
                 NamaService.requestFocus();
             }
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(NamaService1.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService1,"Nama Service");
-            }else if(BesarBiaya1.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService1,"Nama Service");
-            }else if((chkLaborat1.isSelected()==false)&&(chkRadiologi1.isSelected()==false)&&
-                    (chkOperasi1.isSelected()==false)&&(chkObat1.isSelected()==false)&&
-                    (chkRanapDokter1.isSelected()==false)&&(chkRanapParamedis1.isSelected()==false)&&
-                    (chkRalanDokter1.isSelected()==false)&&(chkRalanParamedis1.isSelected()==false)&&
-                    (chkTambahan1.isSelected()==false)&&(chkPotongan1.isSelected()==false)&&
-                    (chkKamar1.isSelected()==false)&&(chkRegistrasi1.isSelected()==false)&&
-                    (chkHarian1.isSelected()==false)&&(chkRetur1.isSelected()==false)&&
-                    (chkResepPulang1.isSelected()==false)){
-                JOptionPane.showMessageDialog(null,"Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (NamaService1.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService1, "Nama Service");
+            } else if (BesarBiaya1.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService1, "Nama Service");
+            } else if ((chkLaborat1.isSelected() == false) && (chkRadiologi1.
+                    isSelected() == false)
+                    && (chkOperasi1.isSelected() == false) && (chkObat1.
+                    isSelected() == false)
+                    && (chkRanapDokter1.isSelected() == false) && (chkRanapParamedis1.
+                    isSelected() == false)
+                    && (chkRalanDokter1.isSelected() == false) && (chkRalanParamedis1.
+                    isSelected() == false)
+                    && (chkTambahan1.isSelected() == false) && (chkPotongan1.
+                    isSelected() == false)
+                    && (chkKamar1.isSelected() == false) && (chkRegistrasi1.
+                    isSelected() == false)
+                    && (chkHarian1.isSelected() == false) && (chkRetur1.
+                    isSelected() == false)
+                    && (chkResepPulang1.isSelected() == false)) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
                 chkLaborat.requestFocus();
-            }else if(tabMode3.getRowCount()==0){
-                laborat="No";radiologi="No";operasi="No";obat="No";
-                ranap_dokter="No";ranap_paramedis="No";ralan_dokter="No";
-                ralan_paramedis="No";tambahan="No";potongan="No";
-                kamar="No";registrasi="No";harian="No";retur_Obat="No";resep_Pulang="No";
-                if(chkLaborat1.isSelected()==true){
-		    laborat="Yes";
-                }if(chkRadiologi1.isSelected()==true){
-                    radiologi="Yes";
-                }if(chkOperasi1.isSelected()==true){
-                    operasi="Yes";
-                }if(chkObat1.isSelected()==true){
-                    obat="Yes";
-                }if(chkRanapDokter1.isSelected()==true){
-                    ranap_dokter="Yes";
-                }if(chkRanapParamedis1.isSelected()==true){
-                    ranap_paramedis="Yes";
-                }if(chkRalanDokter1.isSelected()==true){
-                    ralan_dokter="Yes";
-                }if(chkRalanParamedis1.isSelected()==true){
-                    ralan_paramedis="Yes";
-                }if(chkTambahan1.isSelected()==true){
-                    tambahan="Yes";
-                }if(chkPotongan1.isSelected()==true){
-                    potongan="Yes";
-                }if(chkKamar1.isSelected()==true){
-                    kamar="Yes";
-                }if(chkRegistrasi1.isSelected()==true){
-                    registrasi="Yes";
-                }if(chkHarian1.isSelected()==true){
-                    harian="Yes";
-                }if(chkRetur1.isSelected()==true){
-                    retur_Obat="Yes";
-                }if(chkResepPulang1.isSelected()==true){
-                    resep_Pulang="Yes";
+            } else if (tabMode3.getRowCount() == 0) {
+                laborat = "No";
+                radiologi = "No";
+                operasi = "No";
+                obat = "No";
+                ranap_dokter = "No";
+                ranap_paramedis = "No";
+                ralan_dokter = "No";
+                ralan_paramedis = "No";
+                tambahan = "No";
+                potongan = "No";
+                kamar = "No";
+                registrasi = "No";
+                harian = "No";
+                retur_Obat = "No";
+                resep_Pulang = "No";
+                if (chkLaborat1.isSelected() == true) {
+                    laborat = "Yes";
                 }
-                if(Sequel.menyimpantf("set_service_ranap_piutang","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",17,new String[]{
-                    NamaService1.getText(),BesarBiaya1.getText(),laborat,radiologi,operasi,obat,ranap_dokter,ranap_paramedis,
-                    ralan_dokter,ralan_paramedis,tambahan,potongan,kamar,registrasi,harian,retur_Obat,resep_Pulang
-                })==true){
+                if (chkRadiologi1.isSelected() == true) {
+                    radiologi = "Yes";
+                }
+                if (chkOperasi1.isSelected() == true) {
+                    operasi = "Yes";
+                }
+                if (chkObat1.isSelected() == true) {
+                    obat = "Yes";
+                }
+                if (chkRanapDokter1.isSelected() == true) {
+                    ranap_dokter = "Yes";
+                }
+                if (chkRanapParamedis1.isSelected() == true) {
+                    ranap_paramedis = "Yes";
+                }
+                if (chkRalanDokter1.isSelected() == true) {
+                    ralan_dokter = "Yes";
+                }
+                if (chkRalanParamedis1.isSelected() == true) {
+                    ralan_paramedis = "Yes";
+                }
+                if (chkTambahan1.isSelected() == true) {
+                    tambahan = "Yes";
+                }
+                if (chkPotongan1.isSelected() == true) {
+                    potongan = "Yes";
+                }
+                if (chkKamar1.isSelected() == true) {
+                    kamar = "Yes";
+                }
+                if (chkRegistrasi1.isSelected() == true) {
+                    registrasi = "Yes";
+                }
+                if (chkHarian1.isSelected() == true) {
+                    harian = "Yes";
+                }
+                if (chkRetur1.isSelected() == true) {
+                    retur_Obat = "Yes";
+                }
+                if (chkResepPulang1.isSelected() == true) {
+                    resep_Pulang = "Yes";
+                }
+                if (Sequel.menyimpantf("set_service_ranap_piutang",
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                        new String[]{
+                            NamaService1.getText(), BesarBiaya1.getText(),
+                            laborat, radiologi, operasi, obat, ranap_dokter,
+                            ranap_paramedis,
+                            ralan_dokter, ralan_paramedis, tambahan, potongan,
+                            kamar, registrasi, harian, retur_Obat, resep_Pulang
+                        }) == true) {
                     tampil3();
                     emptTeks3();
                 }
-            }else if(tabMode3.getRowCount()>0){
-                JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu Set Biaya Service Rawat Inap...!!!!");
+            } else if (tabMode3.getRowCount() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Hanya diijinkan satu Set Biaya Service Rawat Inap...!!!!");
                 NamaService.requestFocus();
             }
         }
-            
+
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,cmbYesTombolNotaPenjualanToko,BtnBatal);
+        } else {
+            Valid.pindah(evt, cmbYesTombolNotaPenjualanToko, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             ChkInput.setSelected(true);
-            isForm(); 
+            isForm();
             emptTeks();
-        }else if(TabSetting.getSelectedIndex()==1){
+        } else if (TabSetting.getSelectedIndex() == 1) {
             ChkInput2.setSelected(true);
-            isForm2(); 
+            isForm2();
             emptTeks2();
-        }else if(TabSetting.getSelectedIndex()==2){
+        } else if (TabSetting.getSelectedIndex() == 2) {
             ChkInput3.setSelected(true);
-            isForm3(); 
+            isForm3();
             emptTeks3();
         }
-        
+
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
-            if(tabMode.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (TabSetting.getSelectedIndex() == 0) {
+            if (tabMode.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 NotaRalan.requestFocus();
-            }else if(NotaRalan.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(!NotaRalan.getText().trim().isEmpty()){
+            } else if (NotaRalan.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!NotaRalan.getText().trim().isEmpty()) {
                 Sequel.queryu("delete from set_nota");
                 tampil();
                 emptTeks();
             }
-        }else if(TabSetting.getSelectedIndex()==1){
-            if(tabMode2.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (tabMode2.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 NamaService.requestFocus();
-            }else if(NamaService.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(!NamaService.getText().trim().isEmpty()){
+            } else if (NamaService.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!NamaService.getText().trim().isEmpty()) {
                 Sequel.queryu("delete from set_service_ranap");
                 tampil2();
                 emptTeks2();
             }
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(tabMode3.getRowCount()==0){
-                JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (tabMode3.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, data sudah habis...!!!!");
                 NamaService1.requestFocus();
-            }else if(NamaService1.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-            }else if(!NamaService1.getText().trim().isEmpty()){
+            } else if (NamaService1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+            } else if (!NamaService1.getText().trim().isEmpty()) {
                 Sequel.queryu("delete from set_service_ranap_piutang");
                 tampil3();
                 emptTeks3();
             }
         }
-            
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnKeluar);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data jam minimal tidak boleh kosong ...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data jam minimal tidak boleh kosong ...!!!!");
             NotaRalan.requestFocus();
-        }else if(! (tabMode.getRowCount()==0)) {
+        } else if (!(tabMode.getRowCount() == 0)) {
             dispose();
         }
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnBatal,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnBatal, BtnKeluar);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void tbAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdminMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1822,8 +1961,9 @@ public class DlgSetNota extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminMouseClicked
 
     private void tbAdminKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdminKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1833,229 +1973,326 @@ public class DlgSetNota extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminKeyPressed
 
 private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NotaRalanKeyPressed
-     Valid.pindah(evt, BtnKeluar,KwitansiRalan);
+    Valid.pindah(evt, BtnKeluar, KwitansiRalan);
 
 }//GEN-LAST:event_NotaRalanKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       tampil();
+        tampil();
     }//GEN-LAST:event_formWindowOpened
 
     private void cmbYesRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesRalanKeyPressed
-        Valid.pindah(evt, cmbYesCentangObatRanap,cmbYesRanap);
+        Valid.pindah(evt, cmbYesCentangObatRanap, cmbYesRanap);
     }//GEN-LAST:event_cmbYesRalanKeyPressed
 
     private void KwitansiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KwitansiRalanKeyPressed
-        Valid.pindah(evt, NotaRalan,Nota1Ranap);
+        Valid.pindah(evt, NotaRalan, Nota1Ranap);
     }//GEN-LAST:event_KwitansiRalanKeyPressed
 
     private void Nota1RanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nota1RanapKeyPressed
-        Valid.pindah(evt, KwitansiRalan,Nota2Ranap);
+        Valid.pindah(evt, KwitansiRalan, Nota2Ranap);
     }//GEN-LAST:event_Nota1RanapKeyPressed
 
     private void Nota2RanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nota2RanapKeyPressed
-        Valid.pindah(evt, Nota1Ranap,KwitansiRanap);
+        Valid.pindah(evt, Nota1Ranap, KwitansiRanap);
     }//GEN-LAST:event_Nota2RanapKeyPressed
 
     private void KwitansiRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KwitansiRanapKeyPressed
-        Valid.pindah(evt, Nota2Ranap,NotaApotek);
+        Valid.pindah(evt, Nota2Ranap, NotaApotek);
     }//GEN-LAST:event_KwitansiRanapKeyPressed
 
     private void NotaApotekKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NotaApotekKeyPressed
-        Valid.pindah(evt, KwitansiRanap,NotaLab);
+        Valid.pindah(evt, KwitansiRanap, NotaLab);
     }//GEN-LAST:event_NotaApotekKeyPressed
 
     private void NotaLabKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NotaLabKeyPressed
-        Valid.pindah(evt, NotaApotek,NotaToko);
+        Valid.pindah(evt, NotaApotek, NotaToko);
     }//GEN-LAST:event_NotaLabKeyPressed
 
     private void cmbYesRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesRanapKeyPressed
-        Valid.pindah(evt, cmbYesRalan,cmbYesRincianRalan);
+        Valid.pindah(evt, cmbYesRalan, cmbYesRincianRalan);
     }//GEN-LAST:event_cmbYesRanapKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TabSetting.getSelectedIndex()==0){
-            if(NotaRalan.getText().trim().isEmpty()||KwitansiRalan.getText().trim().isEmpty()||Nota1Ranap.getText().trim().isEmpty()||Nota2Ranap.getText().trim().isEmpty()||
-                    KwitansiRanap.getText().trim().isEmpty()||NotaApotek.getText().trim().isEmpty()||NotaLab.getText().trim().isEmpty()){
-                Valid.textKosong(NotaRalan,"Semua field");
-            }else{
+        if (TabSetting.getSelectedIndex() == 0) {
+            if (NotaRalan.getText().trim().isEmpty() || KwitansiRalan.getText().
+                    trim().isEmpty() || Nota1Ranap.getText().trim().isEmpty() || Nota2Ranap.
+                    getText().trim().isEmpty()
+                    || KwitansiRanap.getText().trim().isEmpty() || NotaApotek.
+                    getText().trim().isEmpty() || NotaLab.getText().trim().
+                            isEmpty()) {
+                Valid.textKosong(NotaRalan, "Semua field");
+            } else {
                 Sequel.queryu("delete from set_nota");
-                if(Sequel.menyimpantf("set_nota","'"+NotaRalan.getText()+"','"+KwitansiRalan.getText()+"','"+Nota1Ranap.getText()+"',"+
-                        "'"+Nota2Ranap.getText()+"','"+KwitansiRanap.getText()+"','"+NotaApotek.getText()+"','"+NotaLab.getText()+"','"+NotaToko.getText()+"',"+
-                        "'"+cmbYesRalan.getSelectedItem()+"','"+cmbYesRanap.getSelectedItem()+"','"+cmbYesRincianRalan.getSelectedItem()+"',"+
-                        "'"+cmbYesRincianRanap.getSelectedItem()+"','"+cmbYesCentangDokterRalan.getSelectedItem()+"',"+
-                        "'"+cmbYesCentangDokterRanap.getSelectedItem()+"','"+cmbYesAdministrasiRanap.getSelectedItem()+"',"+
-                        "'"+cmbYesRincianOperasi.getSelectedItem()+"','"+cmbYesPPNRalan.getSelectedItem()+"','"+cmbYesPPNRanap.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolNotaRalan.getSelectedItem()+"','"+cmbYesTombolNotaRanap.getSelectedItem()+"','"+cmbYesTombolPenjualan.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolPenyerahanDarah.getSelectedItem()+"','"+cmbYesCetakPenjualan.getSelectedItem()+"','"+cmbYesTombolNotaPenjualan.getSelectedItem()+"',"+
-                        "'"+cmbYesCentangObatRalan.getSelectedItem()+"','"+cmbYesCentangObatRanap.getSelectedItem()+"','"+cmbYesCetakPenjualanToko.getSelectedItem()+"',"+
-                        "'"+cmbYesTombolNotaPenjualanToko.getSelectedItem()+"'","Set Nota")==true){
+                if (Sequel.menyimpantf("set_nota",
+                        "'" + NotaRalan.getText() + "','" + KwitansiRalan.
+                        getText() + "','" + Nota1Ranap.getText() + "',"
+                        + "'" + Nota2Ranap.getText() + "','" + KwitansiRanap.
+                        getText() + "','" + NotaApotek.getText() + "','" + NotaLab.
+                        getText() + "','" + NotaToko.getText() + "',"
+                        + "'" + cmbYesRalan.getSelectedItem() + "','" + cmbYesRanap.
+                        getSelectedItem() + "','" + cmbYesRincianRalan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesRincianRanap.getSelectedItem() + "','" + cmbYesCentangDokterRalan.
+                        getSelectedItem() + "',"
+                        + "'" + cmbYesCentangDokterRanap.getSelectedItem() + "','" + cmbYesAdministrasiRanap.
+                        getSelectedItem() + "',"
+                        + "'" + cmbYesRincianOperasi.getSelectedItem() + "','" + cmbYesPPNRalan.
+                        getSelectedItem() + "','" + cmbYesPPNRanap.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolNotaRalan.getSelectedItem() + "','" + cmbYesTombolNotaRanap.
+                        getSelectedItem() + "','" + cmbYesTombolPenjualan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolPenyerahanDarah.getSelectedItem() + "','" + cmbYesCetakPenjualan.
+                        getSelectedItem() + "','" + cmbYesTombolNotaPenjualan.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesCentangObatRalan.getSelectedItem() + "','" + cmbYesCentangObatRanap.
+                        getSelectedItem() + "','" + cmbYesCetakPenjualanToko.
+                                getSelectedItem() + "',"
+                        + "'" + cmbYesTombolNotaPenjualanToko.getSelectedItem() + "'",
+                        "Set Nota") == true) {
                     tampil();
                     emptTeks();
-                } 
+                }
             }
-        }else if(TabSetting.getSelectedIndex()==1){
-            if(NamaService.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService,"Nama Service");
-            }else if(BesarBiaya.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService,"Nama Service");
-            }else if((chkLaborat.isSelected()==false)&&(chkRadiologi.isSelected()==false)&&
-                    (chkOperasi.isSelected()==false)&&(chkObat.isSelected()==false)&&
-                    (chkRanapDokter.isSelected()==false)&&(chkRanapParamedis.isSelected()==false)&&
-                    (chkRalanDokter.isSelected()==false)&&(chkRalanParamedis.isSelected()==false)&&
-                    (chkTambahan.isSelected()==false)&&(chkPotongan.isSelected()==false)&&
-                    (chkKamar.isSelected()==false)&&(chkRegistrasi.isSelected()==false)&&
-                    (chkHarian.isSelected()==false)&&(chkRetur.isSelected()==false)&&
-                    (chkResepPulang.isSelected()==false)){
-                JOptionPane.showMessageDialog(null,"Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 1) {
+            if (NamaService.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService, "Nama Service");
+            } else if (BesarBiaya.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService, "Nama Service");
+            } else if ((chkLaborat.isSelected() == false) && (chkRadiologi.
+                    isSelected() == false)
+                    && (chkOperasi.isSelected() == false) && (chkObat.
+                    isSelected() == false)
+                    && (chkRanapDokter.isSelected() == false) && (chkRanapParamedis.
+                    isSelected() == false)
+                    && (chkRalanDokter.isSelected() == false) && (chkRalanParamedis.
+                    isSelected() == false)
+                    && (chkTambahan.isSelected() == false) && (chkPotongan.
+                    isSelected() == false)
+                    && (chkKamar.isSelected() == false) && (chkRegistrasi.
+                    isSelected() == false)
+                    && (chkHarian.isSelected() == false) && (chkRetur.
+                    isSelected() == false)
+                    && (chkResepPulang.isSelected() == false)) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
                 chkLaborat.requestFocus();
-            }else{
-                laborat="No";radiologi="No";operasi="No";obat="No";
-                ranap_dokter="No";ranap_paramedis="No";ralan_dokter="No";
-                ralan_paramedis="No";tambahan="No";potongan="No";
-                kamar="No";registrasi="No";harian="No";retur_Obat="No";resep_Pulang="No";
-                if(chkLaborat.isSelected()==true){
-		    laborat="Yes";
-                }if(chkRadiologi.isSelected()==true){
-                    radiologi="Yes";
-                }if(chkOperasi.isSelected()==true){
-                    operasi="Yes";
-                }if(chkObat.isSelected()==true){
-                    obat="Yes";
-                }if(chkRanapDokter.isSelected()==true){
-                    ranap_dokter="Yes";
-                }if(chkRanapParamedis.isSelected()==true){
-                    ranap_paramedis="Yes";
-                }if(chkRalanDokter.isSelected()==true){
-                    ralan_dokter="Yes";
-                }if(chkRalanParamedis.isSelected()==true){
-                    ralan_paramedis="Yes";
-                }if(chkTambahan.isSelected()==true){
-                    tambahan="Yes";
-                }if(chkPotongan.isSelected()==true){
-                    potongan="Yes";
-                }if(chkKamar.isSelected()==true){
-                    kamar="Yes";
-                }if(chkRegistrasi.isSelected()==true){
-                    registrasi="Yes";
-                }if(chkHarian.isSelected()==true){
-                    harian="Yes";
-                }if(chkRetur.isSelected()==true){
-                    retur_Obat="Yes";
-                }if(chkResepPulang.isSelected()==true){
-                    resep_Pulang="Yes";
+            } else {
+                laborat = "No";
+                radiologi = "No";
+                operasi = "No";
+                obat = "No";
+                ranap_dokter = "No";
+                ranap_paramedis = "No";
+                ralan_dokter = "No";
+                ralan_paramedis = "No";
+                tambahan = "No";
+                potongan = "No";
+                kamar = "No";
+                registrasi = "No";
+                harian = "No";
+                retur_Obat = "No";
+                resep_Pulang = "No";
+                if (chkLaborat.isSelected() == true) {
+                    laborat = "Yes";
+                }
+                if (chkRadiologi.isSelected() == true) {
+                    radiologi = "Yes";
+                }
+                if (chkOperasi.isSelected() == true) {
+                    operasi = "Yes";
+                }
+                if (chkObat.isSelected() == true) {
+                    obat = "Yes";
+                }
+                if (chkRanapDokter.isSelected() == true) {
+                    ranap_dokter = "Yes";
+                }
+                if (chkRanapParamedis.isSelected() == true) {
+                    ranap_paramedis = "Yes";
+                }
+                if (chkRalanDokter.isSelected() == true) {
+                    ralan_dokter = "Yes";
+                }
+                if (chkRalanParamedis.isSelected() == true) {
+                    ralan_paramedis = "Yes";
+                }
+                if (chkTambahan.isSelected() == true) {
+                    tambahan = "Yes";
+                }
+                if (chkPotongan.isSelected() == true) {
+                    potongan = "Yes";
+                }
+                if (chkKamar.isSelected() == true) {
+                    kamar = "Yes";
+                }
+                if (chkRegistrasi.isSelected() == true) {
+                    registrasi = "Yes";
+                }
+                if (chkHarian.isSelected() == true) {
+                    harian = "Yes";
+                }
+                if (chkRetur.isSelected() == true) {
+                    retur_Obat = "Yes";
+                }
+                if (chkResepPulang.isSelected() == true) {
+                    resep_Pulang = "Yes";
                 }
                 Sequel.queryu("delete from set_service_ranap");
-                if(Sequel.menyimpantf("set_service_ranap","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",17,new String[]{
-                    NamaService.getText(),BesarBiaya.getText(),laborat,radiologi,operasi,obat,ranap_dokter,ranap_paramedis,
-                    ralan_dokter,ralan_paramedis,tambahan,potongan,kamar,registrasi,harian,retur_Obat,resep_Pulang
-                })==true){
+                if (Sequel.menyimpantf("set_service_ranap",
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                        new String[]{
+                            NamaService.getText(), BesarBiaya.getText(), laborat,
+                            radiologi, operasi, obat, ranap_dokter,
+                            ranap_paramedis,
+                            ralan_dokter, ralan_paramedis, tambahan, potongan,
+                            kamar, registrasi, harian, retur_Obat, resep_Pulang
+                        }) == true) {
                     tampil2();
                     emptTeks2();
                 }
             }
-        }else if(TabSetting.getSelectedIndex()==2){
-            if(NamaService1.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService1,"Nama Service");
-            }else if(BesarBiaya1.getText().trim().isEmpty()){
-                Valid.textKosong(NamaService1,"Nama Service");
-            }else if((chkLaborat1.isSelected()==false)&&(chkRadiologi1.isSelected()==false)&&
-                    (chkOperasi1.isSelected()==false)&&(chkObat1.isSelected()==false)&&
-                    (chkRanapDokter1.isSelected()==false)&&(chkRanapParamedis1.isSelected()==false)&&
-                    (chkRalanDokter1.isSelected()==false)&&(chkRalanParamedis1.isSelected()==false)&&
-                    (chkTambahan1.isSelected()==false)&&(chkPotongan1.isSelected()==false)&&
-                    (chkKamar1.isSelected()==false)&&(chkRegistrasi1.isSelected()==false)&&
-                    (chkHarian1.isSelected()==false)&&(chkRetur1.isSelected()==false)&&
-                    (chkResepPulang1.isSelected()==false)){
-                JOptionPane.showMessageDialog(null,"Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
+        } else if (TabSetting.getSelectedIndex() == 2) {
+            if (NamaService1.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService1, "Nama Service");
+            } else if (BesarBiaya1.getText().trim().isEmpty()) {
+                Valid.textKosong(NamaService1, "Nama Service");
+            } else if ((chkLaborat1.isSelected() == false) && (chkRadiologi1.
+                    isSelected() == false)
+                    && (chkOperasi1.isSelected() == false) && (chkObat1.
+                    isSelected() == false)
+                    && (chkRanapDokter1.isSelected() == false) && (chkRanapParamedis1.
+                    isSelected() == false)
+                    && (chkRalanDokter1.isSelected() == false) && (chkRalanParamedis1.
+                    isSelected() == false)
+                    && (chkTambahan1.isSelected() == false) && (chkPotongan1.
+                    isSelected() == false)
+                    && (chkKamar1.isSelected() == false) && (chkRegistrasi1.
+                    isSelected() == false)
+                    && (chkHarian1.isSelected() == false) && (chkRetur1.
+                    isSelected() == false)
+                    && (chkResepPulang1.isSelected() == false)) {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Minimal harus ada 1 pilihan biaya yang dipakai ...!!!!");
                 chkLaborat.requestFocus();
-            }else{
-                laborat="No";radiologi="No";operasi="No";obat="No";
-                ranap_dokter="No";ranap_paramedis="No";ralan_dokter="No";
-                ralan_paramedis="No";tambahan="No";potongan="No";
-                kamar="No";registrasi="No";harian="No";retur_Obat="No";resep_Pulang="No";
-                if(chkLaborat1.isSelected()==true){
-		    laborat="Yes";
-                }if(chkRadiologi1.isSelected()==true){
-                    radiologi="Yes";
-                }if(chkOperasi1.isSelected()==true){
-                    operasi="Yes";
-                }if(chkObat1.isSelected()==true){
-                    obat="Yes";
-                }if(chkRanapDokter1.isSelected()==true){
-                    ranap_dokter="Yes";
-                }if(chkRanapParamedis1.isSelected()==true){
-                    ranap_paramedis="Yes";
-                }if(chkRalanDokter1.isSelected()==true){
-                    ralan_dokter="Yes";
-                }if(chkRalanParamedis1.isSelected()==true){
-                    ralan_paramedis="Yes";
-                }if(chkTambahan1.isSelected()==true){
-                    tambahan="Yes";
-                }if(chkPotongan1.isSelected()==true){
-                    potongan="Yes";
-                }if(chkKamar1.isSelected()==true){
-                    kamar="Yes";
-                }if(chkRegistrasi1.isSelected()==true){
-                    registrasi="Yes";
-                }if(chkHarian1.isSelected()==true){
-                    harian="Yes";
-                }if(chkRetur1.isSelected()==true){
-                    retur_Obat="Yes";
-                }if(chkResepPulang1.isSelected()==true){
-                    resep_Pulang="Yes";
+            } else {
+                laborat = "No";
+                radiologi = "No";
+                operasi = "No";
+                obat = "No";
+                ranap_dokter = "No";
+                ranap_paramedis = "No";
+                ralan_dokter = "No";
+                ralan_paramedis = "No";
+                tambahan = "No";
+                potongan = "No";
+                kamar = "No";
+                registrasi = "No";
+                harian = "No";
+                retur_Obat = "No";
+                resep_Pulang = "No";
+                if (chkLaborat1.isSelected() == true) {
+                    laborat = "Yes";
+                }
+                if (chkRadiologi1.isSelected() == true) {
+                    radiologi = "Yes";
+                }
+                if (chkOperasi1.isSelected() == true) {
+                    operasi = "Yes";
+                }
+                if (chkObat1.isSelected() == true) {
+                    obat = "Yes";
+                }
+                if (chkRanapDokter1.isSelected() == true) {
+                    ranap_dokter = "Yes";
+                }
+                if (chkRanapParamedis1.isSelected() == true) {
+                    ranap_paramedis = "Yes";
+                }
+                if (chkRalanDokter1.isSelected() == true) {
+                    ralan_dokter = "Yes";
+                }
+                if (chkRalanParamedis1.isSelected() == true) {
+                    ralan_paramedis = "Yes";
+                }
+                if (chkTambahan1.isSelected() == true) {
+                    tambahan = "Yes";
+                }
+                if (chkPotongan1.isSelected() == true) {
+                    potongan = "Yes";
+                }
+                if (chkKamar1.isSelected() == true) {
+                    kamar = "Yes";
+                }
+                if (chkRegistrasi1.isSelected() == true) {
+                    registrasi = "Yes";
+                }
+                if (chkHarian1.isSelected() == true) {
+                    harian = "Yes";
+                }
+                if (chkRetur1.isSelected() == true) {
+                    retur_Obat = "Yes";
+                }
+                if (chkResepPulang1.isSelected() == true) {
+                    resep_Pulang = "Yes";
                 }
                 Sequel.queryu("delete from set_service_ranap_piutang");
-                if(Sequel.menyimpantf("set_service_ranap_piutang","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",17,new String[]{
-                    NamaService1.getText(),BesarBiaya1.getText(),laborat,radiologi,operasi,obat,ranap_dokter,ranap_paramedis,
-                    ralan_dokter,ralan_paramedis,tambahan,potongan,kamar,registrasi,harian,retur_Obat,resep_Pulang
-                })==true){
+                if (Sequel.menyimpantf("set_service_ranap_piutang",
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                        new String[]{
+                            NamaService1.getText(), BesarBiaya1.getText(),
+                            laborat, radiologi, operasi, obat, ranap_dokter,
+                            ranap_paramedis,
+                            ralan_dokter, ralan_paramedis, tambahan, potongan,
+                            kamar, registrasi, harian, retur_Obat, resep_Pulang
+                        }) == true) {
                     tampil3();
                     emptTeks3();
                 }
             }
         }
-            
+
     }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
     }//GEN-LAST:event_BtnEditKeyPressed
 
     private void cmbYesRincianRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesRincianRalanKeyPressed
-        Valid.pindah(evt, cmbYesRanap,cmbYesRincianRanap);
+        Valid.pindah(evt, cmbYesRanap, cmbYesRincianRanap);
     }//GEN-LAST:event_cmbYesRincianRalanKeyPressed
 
     private void cmbYesRincianRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesRincianRanapKeyPressed
-        Valid.pindah(evt, cmbYesRincianRalan,cmbYesPPNRalan);
+        Valid.pindah(evt, cmbYesRincianRalan, cmbYesPPNRalan);
     }//GEN-LAST:event_cmbYesRincianRanapKeyPressed
 
     private void cmbYesCentangDokterRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCentangDokterRalanKeyPressed
-        Valid.pindah(evt, cmbYesAdministrasiRanap,cmbYesCentangDokterRanap);
+        Valid.pindah(evt, cmbYesAdministrasiRanap, cmbYesCentangDokterRanap);
     }//GEN-LAST:event_cmbYesCentangDokterRalanKeyPressed
 
     private void cmbYesCentangDokterRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCentangDokterRanapKeyPressed
-        Valid.pindah(evt, cmbYesCentangDokterRalan,cmbYesCentangObatRalan);
+        Valid.pindah(evt, cmbYesCentangDokterRalan, cmbYesCentangObatRalan);
     }//GEN-LAST:event_cmbYesCentangDokterRanapKeyPressed
 
     private void cmbYesAdministrasiRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesAdministrasiRanapKeyPressed
-        Valid.pindah(evt, cmbYesRincianOperasi,cmbYesCentangDokterRalan);
+        Valid.pindah(evt, cmbYesRincianOperasi, cmbYesCentangDokterRalan);
     }//GEN-LAST:event_cmbYesAdministrasiRanapKeyPressed
 
     private void cmbYesRincianOperasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesRincianOperasiKeyPressed
-        Valid.pindah(evt, NotaToko,cmbYesAdministrasiRanap);
+        Valid.pindah(evt, NotaToko, cmbYesAdministrasiRanap);
     }//GEN-LAST:event_cmbYesRincianOperasiKeyPressed
 
     private void cmbYesPPNRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesPPNRalanKeyPressed
-        Valid.pindah(evt, cmbYesRincianRanap,cmbYesPPNRanap);
+        Valid.pindah(evt, cmbYesRincianRanap, cmbYesPPNRanap);
     }//GEN-LAST:event_cmbYesPPNRalanKeyPressed
 
     private void cmbYesPPNRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesPPNRanapKeyPressed
-        Valid.pindah(evt, cmbYesPPNRalan,cmbYesTombolNotaRalan);
+        Valid.pindah(evt, cmbYesPPNRalan, cmbYesTombolNotaRalan);
     }//GEN-LAST:event_cmbYesPPNRanapKeyPressed
 
     private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
@@ -2063,23 +2300,23 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void cmbYesTombolNotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolNotaRalanKeyPressed
-        Valid.pindah(evt, cmbYesPPNRanap,cmbYesTombolNotaRanap);
+        Valid.pindah(evt, cmbYesPPNRanap, cmbYesTombolNotaRanap);
     }//GEN-LAST:event_cmbYesTombolNotaRalanKeyPressed
 
     private void cmbYesTombolNotaRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolNotaRanapKeyPressed
-        Valid.pindah(evt, cmbYesTombolNotaRalan,cmbYesTombolPenjualan);
+        Valid.pindah(evt, cmbYesTombolNotaRalan, cmbYesTombolPenjualan);
     }//GEN-LAST:event_cmbYesTombolNotaRanapKeyPressed
 
     private void cmbYesTombolPenjualanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolPenjualanKeyPressed
-        Valid.pindah(evt, cmbYesTombolNotaRanap,cmbYesTombolPenyerahanDarah);
+        Valid.pindah(evt, cmbYesTombolNotaRanap, cmbYesTombolPenyerahanDarah);
     }//GEN-LAST:event_cmbYesTombolPenjualanKeyPressed
 
     private void TabSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabSettingMouseClicked
-        if(TabSetting.getSelectedIndex()==0){
+        if (TabSetting.getSelectedIndex() == 0) {
             tampil();
-        }else if(TabSetting.getSelectedIndex()==1){
+        } else if (TabSetting.getSelectedIndex() == 1) {
             tampil2();
-        }else if(TabSetting.getSelectedIndex()==2){
+        } else if (TabSetting.getSelectedIndex() == 2) {
             tampil3();
         }
     }//GEN-LAST:event_TabSettingMouseClicked
@@ -2165,7 +2402,7 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_ChkInput2ActionPerformed
 
     private void tbAdmin2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdmin2MouseClicked
-        if(tabMode2.getRowCount()!=0){
+        if (tabMode2.getRowCount() != 0) {
             try {
                 getData2();
             } catch (java.lang.NullPointerException e) {
@@ -2174,8 +2411,9 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_tbAdmin2MouseClicked
 
     private void tbAdmin2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdmin2KeyPressed
-        if(tabMode2.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode2.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData2();
                 } catch (java.lang.NullPointerException e) {
@@ -2185,7 +2423,7 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_tbAdmin2KeyPressed
 
     private void tbAdmin3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdmin3MouseClicked
-        if(tabMode3.getRowCount()!=0){
+        if (tabMode3.getRowCount() != 0) {
             try {
                 getData3();
             } catch (java.lang.NullPointerException e) {
@@ -2194,8 +2432,9 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_tbAdmin3MouseClicked
 
     private void tbAdmin3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdmin3KeyPressed
-        if(tabMode3.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode3.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData3();
                 } catch (java.lang.NullPointerException e) {
@@ -2285,40 +2524,43 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }//GEN-LAST:event_chkPotongan1ActionPerformed
 
     private void cmbYesTombolPenyerahanDarahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolPenyerahanDarahKeyPressed
-        Valid.pindah(evt, cmbYesTombolPenjualan,cmbYesCetakPenjualan);
+        Valid.pindah(evt, cmbYesTombolPenjualan, cmbYesCetakPenjualan);
     }//GEN-LAST:event_cmbYesTombolPenyerahanDarahKeyPressed
 
     private void cmbYesCetakPenjualanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCetakPenjualanKeyPressed
-        Valid.pindah(evt, cmbYesTombolPenyerahanDarah,cmbYesTombolNotaPenjualan);
+        Valid.
+                pindah(evt, cmbYesTombolPenyerahanDarah,
+                        cmbYesTombolNotaPenjualan);
     }//GEN-LAST:event_cmbYesCetakPenjualanKeyPressed
 
     private void cmbYesTombolNotaPenjualanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolNotaPenjualanKeyPressed
-        Valid.pindah(evt, cmbYesCetakPenjualan,cmbYesCetakPenjualanToko);
+        Valid.pindah(evt, cmbYesCetakPenjualan, cmbYesCetakPenjualanToko);
     }//GEN-LAST:event_cmbYesTombolNotaPenjualanKeyPressed
 
     private void cmbYesCentangObatRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCentangObatRalanKeyPressed
-        Valid.pindah(evt, cmbYesCentangDokterRanap,cmbYesCentangObatRanap);
+        Valid.pindah(evt, cmbYesCentangDokterRanap, cmbYesCentangObatRanap);
     }//GEN-LAST:event_cmbYesCentangObatRalanKeyPressed
 
     private void cmbYesCentangObatRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCentangObatRanapKeyPressed
-        Valid.pindah(evt, cmbYesCentangObatRalan,cmbYesRalan);
+        Valid.pindah(evt, cmbYesCentangObatRalan, cmbYesRalan);
     }//GEN-LAST:event_cmbYesCentangObatRanapKeyPressed
 
     private void NotaTokoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NotaTokoKeyPressed
-        Valid.pindah(evt, NotaLab,cmbYesRincianOperasi);
+        Valid.pindah(evt, NotaLab, cmbYesRincianOperasi);
     }//GEN-LAST:event_NotaTokoKeyPressed
 
     private void cmbYesTombolNotaPenjualanTokoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesTombolNotaPenjualanTokoKeyPressed
-        Valid.pindah(evt, cmbYesCetakPenjualanToko,BtnSimpan);
+        Valid.pindah(evt, cmbYesCetakPenjualanToko, BtnSimpan);
     }//GEN-LAST:event_cmbYesTombolNotaPenjualanTokoKeyPressed
 
     private void cmbYesCetakPenjualanTokoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbYesCetakPenjualanTokoKeyPressed
-        Valid.pindah(evt, cmbYesTombolNotaPenjualan,cmbYesTombolNotaPenjualanToko);
+        Valid.pindah(evt, cmbYesTombolNotaPenjualan,
+                cmbYesTombolNotaPenjualanToko);
     }//GEN-LAST:event_cmbYesCetakPenjualanTokoKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgSetNota dialog = new DlgSetNota(new javax.swing.JFrame(), true);
@@ -2327,6 +2569,7 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2470,338 +2713,428 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{    
-            ps=koneksi.prepareStatement("select * from set_nota ");
+        try {
+            ps = koneksi.prepareStatement("select * from set_nota ");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{" Lebar Nota Rawat Jalan",rs.getString(1)});
-                    tabMode.addRow(new Object[]{" Lebar Kwitansi Rawat Jalan",rs.getString(2)});
-                    tabMode.addRow(new Object[]{" Lebar Nota 1 Rawat Inap",rs.getString(3)});
-                    tabMode.addRow(new Object[]{" Lebar Nota 2 Rawat Inap",rs.getString(4)});
-                    tabMode.addRow(new Object[]{" Lebar Kwitansi Rawat Inap",rs.getString(5)});
-                    tabMode.addRow(new Object[]{" Lebar Nota Apotek & UTD",rs.getString(6)});
-                    tabMode.addRow(new Object[]{" Lebar Nota Lab & Radiologi",rs.getString(7)});
-                    tabMode.addRow(new Object[]{" Lebar Nota Toko",rs.getString(8)});
-                    tabMode.addRow(new Object[]{" Cetak Nota/Kwitansi Saat Menyimpan di Billing Rawat Jalan",rs.getString(9)});
-                    tabMode.addRow(new Object[]{" Cetak Nota/Kwitansi Saat Menyimpan di Billing Rawat Inap",rs.getString(10)});
-                    tabMode.addRow(new Object[]{" Tampilkan Rincian Tindakan Dokter Ralan",rs.getString(11)});
-                    tabMode.addRow(new Object[]{" Tampilkan Rincian Tindakan Dokter Ranap",rs.getString(12)});
-                    tabMode.addRow(new Object[]{" Centang Dokter di Nota Ralan",rs.getString(13)});
-                    tabMode.addRow(new Object[]{" Centang Dokter di Nota Ranap",rs.getString(14)});
-                    tabMode.addRow(new Object[]{" Tampilkan Administrasi di Billing Ranap",rs.getString(15)});
-                    tabMode.addRow(new Object[]{" Tampilkan Rincian Operasi",rs.getString(16)});
-                    tabMode.addRow(new Object[]{" Tampilkan PPN Obat 11 % di Nota Ralan",rs.getString(17)});
-                    tabMode.addRow(new Object[]{" Tampilkan PPN Obat 11 % di Nota Ranap",rs.getString(18)});
-                    tabMode.addRow(new Object[]{" Tampilkan Tombol Nota di Billing Rawat Jalan",rs.getString(19)});
-                    tabMode.addRow(new Object[]{" Tampilkan Tombol Nota di Billing Rawat Inap",rs.getString(20)});
-                    tabMode.addRow(new Object[]{" Verifikasi Penjualan Obat Bebas di Kasir",rs.getString(21)});
-                    tabMode.addRow(new Object[]{" Verifikasi Penjualan Darah UTD di Kasir",rs.getString(22)});
-                    tabMode.addRow(new Object[]{" Cetak Nota/Kwitansi Saat Menyimpan di Penjualan Obat Bebas",rs.getString(23)});
-                    tabMode.addRow(new Object[]{" Tampilkan Tombol Nota di Penjualan Obat Bebas",rs.getString(24)});
-                    tabMode.addRow(new Object[]{" Centang Obat di Nota Ralan",rs.getString(25)});
-                    tabMode.addRow(new Object[]{" Centang Obat di Nota Ranap",rs.getString(26)});
-                    tabMode.addRow(new Object[]{" Cetak Nota/Kwitansi Saat Menyimpan di Penjualan Toko",rs.getString(27)});
-                    tabMode.addRow(new Object[]{" Tampilkan Tombol Nota di Penjualan Toko",rs.getString(28)});
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{" Lebar Nota Rawat Jalan", rs.
+                        getString(1)});
+                    tabMode.addRow(new Object[]{" Lebar Kwitansi Rawat Jalan",
+                        rs.getString(2)});
+                    tabMode.addRow(new Object[]{" Lebar Nota 1 Rawat Inap", rs.
+                        getString(3)});
+                    tabMode.addRow(new Object[]{" Lebar Nota 2 Rawat Inap", rs.
+                        getString(4)});
+                    tabMode.addRow(new Object[]{" Lebar Kwitansi Rawat Inap",
+                        rs.getString(5)});
+                    tabMode.addRow(new Object[]{" Lebar Nota Apotek & UTD", rs.
+                        getString(6)});
+                    tabMode.addRow(new Object[]{" Lebar Nota Lab & Radiologi",
+                        rs.getString(7)});
+                    tabMode.addRow(new Object[]{" Lebar Nota Toko", rs.
+                        getString(8)});
+                    tabMode.addRow(new Object[]{
+                        " Cetak Nota/Kwitansi Saat Menyimpan di Billing Rawat Jalan",
+                        rs.getString(9)});
+                    tabMode.addRow(new Object[]{
+                        " Cetak Nota/Kwitansi Saat Menyimpan di Billing Rawat Inap",
+                        rs.getString(10)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Rincian Tindakan Dokter Ralan", rs.
+                        getString(11)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Rincian Tindakan Dokter Ranap", rs.
+                        getString(12)});
+                    tabMode.addRow(new Object[]{" Centang Dokter di Nota Ralan",
+                        rs.getString(13)});
+                    tabMode.addRow(new Object[]{" Centang Dokter di Nota Ranap",
+                        rs.getString(14)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Administrasi di Billing Ranap", rs.
+                        getString(15)});
+                    tabMode.addRow(new Object[]{" Tampilkan Rincian Operasi",
+                        rs.getString(16)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan PPN Obat 11 % di Nota Ralan", rs.getString(
+                        17)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan PPN Obat 11 % di Nota Ranap", rs.getString(
+                        18)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Tombol Nota di Billing Rawat Jalan", rs.
+                        getString(19)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Tombol Nota di Billing Rawat Inap", rs.
+                        getString(20)});
+                    tabMode.addRow(new Object[]{
+                        " Verifikasi Penjualan Obat Bebas di Kasir", rs.
+                        getString(21)});
+                    tabMode.addRow(new Object[]{
+                        " Verifikasi Penjualan Darah UTD di Kasir", rs.
+                        getString(22)});
+                    tabMode.addRow(new Object[]{
+                        " Cetak Nota/Kwitansi Saat Menyimpan di Penjualan Obat Bebas",
+                        rs.getString(23)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Tombol Nota di Penjualan Obat Bebas", rs.
+                        getString(24)});
+                    tabMode.addRow(new Object[]{" Centang Obat di Nota Ralan",
+                        rs.getString(25)});
+                    tabMode.addRow(new Object[]{" Centang Obat di Nota Ranap",
+                        rs.getString(26)});
+                    tabMode.addRow(new Object[]{
+                        " Cetak Nota/Kwitansi Saat Menyimpan di Penjualan Toko",
+                        rs.getString(27)});
+                    tabMode.addRow(new Object[]{
+                        " Tampilkan Tombol Nota di Penjualan Toko", rs.
+                        getString(28)});
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     /**
      *
      */
     public void tampil2() {
         Valid.tabelKosong(tabMode2);
-        try{    
-            ps=koneksi.prepareStatement("select * from set_service_ranap ");
+        try {
+            ps = koneksi.prepareStatement("select * from set_service_ranap ");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode2.addRow(new Object[]{" Nama Service/Administrasi",rs.getString(1)});
-                    tabMode2.addRow(new Object[]{" Besar Biaya(%)",rs.getString(2)});
-                    tabMode2.addRow(new Object[]{" Biaya Diambil Dari :",""});
-                    tabMode2.addRow(new Object[]{"    Laborat",rs.getString(3)});
-                    tabMode2.addRow(new Object[]{"    Radiologi",rs.getString(4)});
-                    tabMode2.addRow(new Object[]{"    Operasi",rs.getString(5)});
-                    tabMode2.addRow(new Object[]{"    Obat",rs.getString(6)});
-                    tabMode2.addRow(new Object[]{"    Ranap Dokter",rs.getString(7)});
-                    tabMode2.addRow(new Object[]{"    Ranap Paramedis",rs.getString(8)});
-                    tabMode2.addRow(new Object[]{"    Ralan Dokter",rs.getString(9)});
-                    tabMode2.addRow(new Object[]{"    Ralan Paramedis",rs.getString(10)});
-                    tabMode2.addRow(new Object[]{"    Tambahan",rs.getString(11)});
-                    tabMode2.addRow(new Object[]{"    Potongan",rs.getString(12)});
-                    tabMode2.addRow(new Object[]{"    Kamar",rs.getString(13)});
-                    tabMode2.addRow(new Object[]{"    Registrasi",rs.getString(14)});
-                    tabMode2.addRow(new Object[]{"    Harian",rs.getString(15)});
-                    tabMode2.addRow(new Object[]{"    Retur Obat",rs.getString(16)});
-                    tabMode2.addRow(new Object[]{"    Resep Pulang",rs.getString(17)});
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode2.addRow(new Object[]{" Nama Service/Administrasi",
+                        rs.getString(1)});
+                    tabMode2.addRow(new Object[]{" Besar Biaya(%)", rs.
+                        getString(2)});
+                    tabMode2.addRow(new Object[]{" Biaya Diambil Dari :", ""});
+                    tabMode2.
+                            addRow(new Object[]{"    Laborat", rs.getString(3)});
+                    tabMode2.addRow(new Object[]{"    Radiologi", rs.
+                        getString(4)});
+                    tabMode2.
+                            addRow(new Object[]{"    Operasi", rs.getString(5)});
+                    tabMode2.addRow(new Object[]{"    Obat", rs.getString(6)});
+                    tabMode2.addRow(new Object[]{"    Ranap Dokter", rs.
+                        getString(7)});
+                    tabMode2.addRow(new Object[]{"    Ranap Paramedis", rs.
+                        getString(8)});
+                    tabMode2.addRow(new Object[]{"    Ralan Dokter", rs.
+                        getString(9)});
+                    tabMode2.addRow(new Object[]{"    Ralan Paramedis", rs.
+                        getString(10)});
+                    tabMode2.addRow(new Object[]{"    Tambahan", rs.
+                        getString(11)});
+                    tabMode2.addRow(new Object[]{"    Potongan", rs.
+                        getString(12)});
+                    tabMode2.addRow(new Object[]{"    Kamar", rs.getString(13)});
+                    tabMode2.addRow(new Object[]{"    Registrasi", rs.getString(
+                        14)});
+                    tabMode2.
+                            addRow(new Object[]{"    Harian", rs.getString(15)});
+                    tabMode2.addRow(new Object[]{"    Retur Obat", rs.getString(
+                        16)});
+                    tabMode2.addRow(new Object[]{"    Resep Pulang", rs.
+                        getString(17)});
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     /**
      *
      */
     public void tampil3() {
         Valid.tabelKosong(tabMode3);
-        try{    
-            ps=koneksi.prepareStatement("select * from set_service_ranap_piutang ");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select * from set_service_ranap_piutang ");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode3.addRow(new Object[]{" Nama Service/Administrasi",rs.getString(1)});
-                    tabMode3.addRow(new Object[]{" Besar Biaya(%)",rs.getString(2)});
-                    tabMode3.addRow(new Object[]{" Biaya Diambil Dari :",""});
-                    tabMode3.addRow(new Object[]{"    Laborat",rs.getString(3)});
-                    tabMode3.addRow(new Object[]{"    Radiologi",rs.getString(4)});
-                    tabMode3.addRow(new Object[]{"    Operasi",rs.getString(5)});
-                    tabMode3.addRow(new Object[]{"    Obat",rs.getString(6)});
-                    tabMode3.addRow(new Object[]{"    Ranap Dokter",rs.getString(7)});
-                    tabMode3.addRow(new Object[]{"    Ranap Paramedis",rs.getString(8)});
-                    tabMode3.addRow(new Object[]{"    Ralan Dokter",rs.getString(9)});
-                    tabMode3.addRow(new Object[]{"    Ralan Paramedis",rs.getString(10)});
-                    tabMode3.addRow(new Object[]{"    Tambahan",rs.getString(11)});
-                    tabMode3.addRow(new Object[]{"    Potongan",rs.getString(12)});
-                    tabMode3.addRow(new Object[]{"    Kamar",rs.getString(13)});
-                    tabMode3.addRow(new Object[]{"    Registrasi",rs.getString(14)});
-                    tabMode3.addRow(new Object[]{"    Harian",rs.getString(15)});
-                    tabMode3.addRow(new Object[]{"    Retur Obat",rs.getString(16)});
-                    tabMode3.addRow(new Object[]{"    Resep Pulang",rs.getString(17)});
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode3.addRow(new Object[]{" Nama Service/Administrasi",
+                        rs.getString(1)});
+                    tabMode3.addRow(new Object[]{" Besar Biaya(%)", rs.
+                        getString(2)});
+                    tabMode3.addRow(new Object[]{" Biaya Diambil Dari :", ""});
+                    tabMode3.
+                            addRow(new Object[]{"    Laborat", rs.getString(3)});
+                    tabMode3.addRow(new Object[]{"    Radiologi", rs.
+                        getString(4)});
+                    tabMode3.
+                            addRow(new Object[]{"    Operasi", rs.getString(5)});
+                    tabMode3.addRow(new Object[]{"    Obat", rs.getString(6)});
+                    tabMode3.addRow(new Object[]{"    Ranap Dokter", rs.
+                        getString(7)});
+                    tabMode3.addRow(new Object[]{"    Ranap Paramedis", rs.
+                        getString(8)});
+                    tabMode3.addRow(new Object[]{"    Ralan Dokter", rs.
+                        getString(9)});
+                    tabMode3.addRow(new Object[]{"    Ralan Paramedis", rs.
+                        getString(10)});
+                    tabMode3.addRow(new Object[]{"    Tambahan", rs.
+                        getString(11)});
+                    tabMode3.addRow(new Object[]{"    Potongan", rs.
+                        getString(12)});
+                    tabMode3.addRow(new Object[]{"    Kamar", rs.getString(13)});
+                    tabMode3.addRow(new Object[]{"    Registrasi", rs.getString(
+                        14)});
+                    tabMode3.
+                            addRow(new Object[]{"    Harian", rs.getString(15)});
+                    tabMode3.addRow(new Object[]{"    Retur Obat", rs.getString(
+                        16)});
+                    tabMode3.addRow(new Object[]{"    Resep Pulang", rs.
+                        getString(17)});
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void getData() {
-        int row=tbAdmin.getSelectedRow();
-        if(row!= -1){
-            NotaRalan.setText(tbAdmin.getValueAt(0,1).toString());            
-            KwitansiRalan.setText(tbAdmin.getValueAt(1,1).toString()); 
-            Nota1Ranap.setText(tbAdmin.getValueAt(2,1).toString()); 
-            Nota2Ranap.setText(tbAdmin.getValueAt(3,1).toString()); 
-            KwitansiRanap.setText(tbAdmin.getValueAt(4,1).toString()); 
-            NotaApotek.setText(tbAdmin.getValueAt(5,1).toString());
-            NotaLab.setText(tbAdmin.getValueAt(6,1).toString());  
-            NotaToko.setText(tbAdmin.getValueAt(7,1).toString());  
-            cmbYesRalan.setSelectedItem(tbAdmin.getValueAt(8,1).toString());
-            cmbYesRanap.setSelectedItem(tbAdmin.getValueAt(9,1).toString());
-            cmbYesRincianRalan.setSelectedItem(tbAdmin.getValueAt(10,1).toString());
-            cmbYesRincianRanap.setSelectedItem(tbAdmin.getValueAt(11,1).toString());
-            cmbYesCentangDokterRalan.setSelectedItem(tbAdmin.getValueAt(12,1).toString());
-            cmbYesCentangDokterRanap.setSelectedItem(tbAdmin.getValueAt(13,1).toString());
-            cmbYesAdministrasiRanap.setSelectedItem(tbAdmin.getValueAt(14,1).toString());
-            cmbYesRincianOperasi.setSelectedItem(tbAdmin.getValueAt(15,1).toString());
-            cmbYesPPNRalan.setSelectedItem(tbAdmin.getValueAt(16,1).toString());
-            cmbYesPPNRanap.setSelectedItem(tbAdmin.getValueAt(17,1).toString());
-            cmbYesTombolNotaRalan.setSelectedItem(tbAdmin.getValueAt(18,1).toString());
-            cmbYesTombolNotaRanap.setSelectedItem(tbAdmin.getValueAt(19,1).toString());
-            cmbYesTombolPenjualan.setSelectedItem(tbAdmin.getValueAt(20,1).toString());
-            cmbYesTombolPenyerahanDarah.setSelectedItem(tbAdmin.getValueAt(21,1).toString());
-            cmbYesCetakPenjualan.setSelectedItem(tbAdmin.getValueAt(22,1).toString());
-            cmbYesTombolNotaPenjualan.setSelectedItem(tbAdmin.getValueAt(23,1).toString());
-            cmbYesCentangObatRalan.setSelectedItem(tbAdmin.getValueAt(24,1).toString());
-            cmbYesCentangObatRanap.setSelectedItem(tbAdmin.getValueAt(25,1).toString());
-            cmbYesCetakPenjualanToko.setSelectedItem(tbAdmin.getValueAt(26,1).toString());
-            cmbYesTombolNotaPenjualanToko.setSelectedItem(tbAdmin.getValueAt(27,1).toString());
+        int row = tbAdmin.getSelectedRow();
+        if (row != -1) {
+            NotaRalan.setText(tbAdmin.getValueAt(0, 1).toString());
+            KwitansiRalan.setText(tbAdmin.getValueAt(1, 1).toString());
+            Nota1Ranap.setText(tbAdmin.getValueAt(2, 1).toString());
+            Nota2Ranap.setText(tbAdmin.getValueAt(3, 1).toString());
+            KwitansiRanap.setText(tbAdmin.getValueAt(4, 1).toString());
+            NotaApotek.setText(tbAdmin.getValueAt(5, 1).toString());
+            NotaLab.setText(tbAdmin.getValueAt(6, 1).toString());
+            NotaToko.setText(tbAdmin.getValueAt(7, 1).toString());
+            cmbYesRalan.setSelectedItem(tbAdmin.getValueAt(8, 1).toString());
+            cmbYesRanap.setSelectedItem(tbAdmin.getValueAt(9, 1).toString());
+            cmbYesRincianRalan.setSelectedItem(tbAdmin.getValueAt(10, 1).
+                    toString());
+            cmbYesRincianRanap.setSelectedItem(tbAdmin.getValueAt(11, 1).
+                    toString());
+            cmbYesCentangDokterRalan.setSelectedItem(tbAdmin.getValueAt(12, 1).
+                    toString());
+            cmbYesCentangDokterRanap.setSelectedItem(tbAdmin.getValueAt(13, 1).
+                    toString());
+            cmbYesAdministrasiRanap.setSelectedItem(tbAdmin.getValueAt(14, 1).
+                    toString());
+            cmbYesRincianOperasi.setSelectedItem(tbAdmin.getValueAt(15, 1).
+                    toString());
+            cmbYesPPNRalan.setSelectedItem(tbAdmin.getValueAt(16, 1).toString());
+            cmbYesPPNRanap.setSelectedItem(tbAdmin.getValueAt(17, 1).toString());
+            cmbYesTombolNotaRalan.setSelectedItem(tbAdmin.getValueAt(18, 1).
+                    toString());
+            cmbYesTombolNotaRanap.setSelectedItem(tbAdmin.getValueAt(19, 1).
+                    toString());
+            cmbYesTombolPenjualan.setSelectedItem(tbAdmin.getValueAt(20, 1).
+                    toString());
+            cmbYesTombolPenyerahanDarah.setSelectedItem(tbAdmin.
+                    getValueAt(21, 1).toString());
+            cmbYesCetakPenjualan.setSelectedItem(tbAdmin.getValueAt(22, 1).
+                    toString());
+            cmbYesTombolNotaPenjualan.setSelectedItem(tbAdmin.getValueAt(23, 1).
+                    toString());
+            cmbYesCentangObatRalan.setSelectedItem(tbAdmin.getValueAt(24, 1).
+                    toString());
+            cmbYesCentangObatRanap.setSelectedItem(tbAdmin.getValueAt(25, 1).
+                    toString());
+            cmbYesCetakPenjualanToko.setSelectedItem(tbAdmin.getValueAt(26, 1).
+                    toString());
+            cmbYesTombolNotaPenjualanToko.setSelectedItem(tbAdmin.getValueAt(27,
+                    1).toString());
         }
     }
-    
+
     private void getData2() {
-        int row=tbAdmin2.getSelectedRow();
-        if(row!= -1){
-            NamaService.setText(tbAdmin2.getValueAt(0,1).toString());            
-            BesarBiaya.setText(tbAdmin2.getValueAt(1,1).toString());    
-            if(tbAdmin2.getValueAt(3,1).toString().equals("Yes")){
+        int row = tbAdmin2.getSelectedRow();
+        if (row != -1) {
+            NamaService.setText(tbAdmin2.getValueAt(0, 1).toString());
+            BesarBiaya.setText(tbAdmin2.getValueAt(1, 1).toString());
+            if (tbAdmin2.getValueAt(3, 1).toString().equals("Yes")) {
                 chkLaborat.setSelected(true);
-            }else if(tbAdmin2.getValueAt(3,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(3, 1).toString().equals("No")) {
                 chkLaborat.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(4,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(4, 1).toString().equals("Yes")) {
                 chkRadiologi.setSelected(true);
-            }else if(tbAdmin2.getValueAt(4,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(4, 1).toString().equals("No")) {
                 chkRadiologi.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(5,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(5, 1).toString().equals("Yes")) {
                 chkOperasi.setSelected(true);
-            }else if(tbAdmin2.getValueAt(5,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(5, 1).toString().equals("No")) {
                 chkOperasi.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(6,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(6, 1).toString().equals("Yes")) {
                 chkObat.setSelected(true);
-            }else if(tbAdmin2.getValueAt(6,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(6, 1).toString().equals("No")) {
                 chkObat.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(7,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(7, 1).toString().equals("Yes")) {
                 chkRanapDokter.setSelected(true);
-            }else if(tbAdmin2.getValueAt(7,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(7, 1).toString().equals("No")) {
                 chkRanapDokter.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(8,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(8, 1).toString().equals("Yes")) {
                 chkRanapParamedis.setSelected(true);
-            }else if(tbAdmin2.getValueAt(8,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(8, 1).toString().equals("No")) {
                 chkRanapParamedis.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(9,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(9, 1).toString().equals("Yes")) {
                 chkRalanDokter.setSelected(true);
-            }else if(tbAdmin2.getValueAt(9,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(9, 1).toString().equals("No")) {
                 chkRalanDokter.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(10,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(10, 1).toString().equals("Yes")) {
                 chkRalanParamedis.setSelected(true);
-            }else if(tbAdmin2.getValueAt(10,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(10, 1).toString().equals("No")) {
                 chkRalanParamedis.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(11,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(11, 1).toString().equals("Yes")) {
                 chkTambahan.setSelected(true);
-            }else if(tbAdmin2.getValueAt(11,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(11, 1).toString().equals("No")) {
                 chkTambahan.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(12,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(12, 1).toString().equals("Yes")) {
                 chkPotongan.setSelected(true);
-            }else if(tbAdmin2.getValueAt(12,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(12, 1).toString().equals("No")) {
                 chkPotongan.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(13,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(13, 1).toString().equals("Yes")) {
                 chkKamar.setSelected(true);
-            }else if(tbAdmin2.getValueAt(13,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(13, 1).toString().equals("No")) {
                 chkKamar.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(14,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(14, 1).toString().equals("Yes")) {
                 chkRegistrasi.setSelected(true);
-            }else if(tbAdmin2.getValueAt(14,11).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(14, 11).toString().equals("No")) {
                 chkRegistrasi.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(15,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(15, 1).toString().equals("Yes")) {
                 chkHarian.setSelected(true);
-            }else if(tbAdmin2.getValueAt(15,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(15, 1).toString().equals("No")) {
                 chkHarian.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(16,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(16, 1).toString().equals("Yes")) {
                 chkRetur.setSelected(true);
-            }else if(tbAdmin2.getValueAt(16,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(16, 1).toString().equals("No")) {
                 chkRetur.setSelected(false);
             }
-            if(tbAdmin2.getValueAt(17,1).toString().equals("Yes")){
+            if (tbAdmin2.getValueAt(17, 1).toString().equals("Yes")) {
                 chkResepPulang.setSelected(true);
-            }else if(tbAdmin2.getValueAt(17,1).toString().equals("No")){
+            } else if (tbAdmin2.getValueAt(17, 1).toString().equals("No")) {
                 chkResepPulang.setSelected(false);
             }
         }
     }
-    
+
     private void getData3() {
-        int row=tbAdmin3.getSelectedRow();
-        if(row!= -1){
-            NamaService1.setText(tbAdmin3.getValueAt(0,1).toString());            
-            BesarBiaya1.setText(tbAdmin3.getValueAt(1,1).toString());    
-            if(tbAdmin3.getValueAt(3,1).toString().equals("Yes")){
+        int row = tbAdmin3.getSelectedRow();
+        if (row != -1) {
+            NamaService1.setText(tbAdmin3.getValueAt(0, 1).toString());
+            BesarBiaya1.setText(tbAdmin3.getValueAt(1, 1).toString());
+            if (tbAdmin3.getValueAt(3, 1).toString().equals("Yes")) {
                 chkLaborat1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(3,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(3, 1).toString().equals("No")) {
                 chkLaborat1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(4,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(4, 1).toString().equals("Yes")) {
                 chkRadiologi1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(4,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(4, 1).toString().equals("No")) {
                 chkRadiologi1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(5,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(5, 1).toString().equals("Yes")) {
                 chkOperasi1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(5,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(5, 1).toString().equals("No")) {
                 chkOperasi1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(6,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(6, 1).toString().equals("Yes")) {
                 chkObat1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(6,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(6, 1).toString().equals("No")) {
                 chkObat1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(7,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(7, 1).toString().equals("Yes")) {
                 chkRanapDokter1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(7,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(7, 1).toString().equals("No")) {
                 chkRanapDokter1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(8,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(8, 1).toString().equals("Yes")) {
                 chkRanapParamedis1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(8,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(8, 1).toString().equals("No")) {
                 chkRanapParamedis1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(9,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(9, 1).toString().equals("Yes")) {
                 chkRalanDokter1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(9,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(9, 1).toString().equals("No")) {
                 chkRalanDokter1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(10,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(10, 1).toString().equals("Yes")) {
                 chkRalanParamedis1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(10,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(10, 1).toString().equals("No")) {
                 chkRalanParamedis1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(11,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(11, 1).toString().equals("Yes")) {
                 chkTambahan1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(11,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(11, 1).toString().equals("No")) {
                 chkTambahan1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(12,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(12, 1).toString().equals("Yes")) {
                 chkPotongan1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(12,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(12, 1).toString().equals("No")) {
                 chkPotongan1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(13,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(13, 1).toString().equals("Yes")) {
                 chkKamar1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(13,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(13, 1).toString().equals("No")) {
                 chkKamar1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(14,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(14, 1).toString().equals("Yes")) {
                 chkRegistrasi1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(14,11).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(14, 11).toString().equals("No")) {
                 chkRegistrasi1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(15,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(15, 1).toString().equals("Yes")) {
                 chkHarian1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(15,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(15, 1).toString().equals("No")) {
                 chkHarian1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(16,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(16, 1).toString().equals("Yes")) {
                 chkRetur1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(16,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(16, 1).toString().equals("No")) {
                 chkRetur1.setSelected(false);
             }
-            if(tbAdmin3.getValueAt(17,1).toString().equals("Yes")){
+            if (tbAdmin3.getValueAt(17, 1).toString().equals("Yes")) {
                 chkResepPulang1.setSelected(true);
-            }else if(tbAdmin3.getValueAt(17,1).toString().equals("No")){
+            } else if (tbAdmin3.getValueAt(17, 1).toString().equals("No")) {
                 chkResepPulang1.setSelected(false);
             }
         }
@@ -2832,12 +3165,12 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         cmbYesTombolNotaRanap.setSelectedItem("No");
         cmbYesTombolPenjualan.setSelectedItem("No");
         cmbYesTombolPenyerahanDarah.setSelectedItem("No");
-        cmbYesCetakPenjualan.setSelectedItem("No");        
-        cmbYesTombolNotaPenjualan.setSelectedItem("No");   
+        cmbYesCetakPenjualan.setSelectedItem("No");
+        cmbYesTombolNotaPenjualan.setSelectedItem("No");
         cmbYesCentangObatRalan.setSelectedItem("No");
         NotaRalan.requestFocus();
     }
-    
+
     public void emptTeks2() {
         NamaService.setText("");
         BesarBiaya.setText("");
@@ -2857,7 +3190,7 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         chkRetur.setSelected(false);
         chkResepPulang.setSelected(false);
     }
-    
+
     public void emptTeks3() {
         NamaService1.setText("");
         BesarBiaya1.setText("");
@@ -2877,46 +3210,49 @@ private void NotaRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         chkRetur1.setSelected(false);
         chkResepPulang1.setSelected(false);
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,300));
-            ScrollInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 300));
+            ScrollInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            ScrollInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            ScrollInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
-    private void isForm2(){
-        if(ChkInput2.isSelected()==true){
+
+    private void isForm2() {
+        if (ChkInput2.isSelected() == true) {
             ChkInput2.setVisible(false);
-            PanelInput2.setPreferredSize(new Dimension(WIDTH,187));
-            FormInput2.setVisible(true);      
+            PanelInput2.setPreferredSize(new Dimension(WIDTH, 187));
+            FormInput2.setVisible(true);
             ChkInput2.setVisible(true);
-        }else if(ChkInput2.isSelected()==false){           
-            ChkInput2.setVisible(false);            
-            PanelInput2.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput2.setVisible(false);      
+        } else if (ChkInput2.isSelected() == false) {
+            ChkInput2.setVisible(false);
+            PanelInput2.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput2.setVisible(false);
             ChkInput2.setVisible(true);
         }
     }
-    
-    private void isForm3(){
-        if(ChkInput3.isSelected()==true){
+
+    private void isForm3() {
+        if (ChkInput3.isSelected() == true) {
             ChkInput3.setVisible(false);
-            PanelInput3.setPreferredSize(new Dimension(WIDTH,187));
-            FormInput3.setVisible(true);      
+            PanelInput3.setPreferredSize(new Dimension(WIDTH, 187));
+            FormInput3.setVisible(true);
             ChkInput3.setVisible(true);
-        }else if(ChkInput3.isSelected()==false){           
-            ChkInput3.setVisible(false);            
-            PanelInput3.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput3.setVisible(false);      
+        } else if (ChkInput3.isSelected() == false) {
+            ChkInput3.setVisible(false);
+            PanelInput3.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput3.setVisible(false);
             ChkInput3.setVisible(true);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgSetNota.class.
+            getName());
 }

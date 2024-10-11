@@ -3,121 +3,147 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgBangsal.java
  *
  * Created on May 22, 2010, 9:58:42 PM
  */
-
 package kepegawaian;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
+    private int i = 0;
 
-    /** Creates new form DlgBangsal
+    /**
+     * Creates new form DlgBangsal
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgMasterBerkasPegawai(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,10);
-        setSize(545,599);
+        this.setLocation(10, 10);
+        setSize(545, 599);
 
-        Object[] row={"P","Kode Berkas","Kategori Berkas","Nama Berkas","No.Urut"};
-        
-        tabMode=new DefaultTableModel(null,row){
-             Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-                 boolean a = false;
-                 if (colIndex==0) {
-                     a=true;
-                 }
-                 return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+        Object[] row = {"P", "Kode Berkas", "Kategori Berkas", "Nama Berkas",
+            "No.Urut"};
+
+        tabMode = new DefaultTableModel(null, row) {
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if (colIndex == 0) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
 
         tbBangsal.setModel(tabMode);
         //tampil();
 
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 5; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(190);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(280);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(50);
             }
         }
 
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)10).getKata(TKd));
+        TKd.setDocument(new batasInput((byte) 10).getKata(TKd));
         TNm.setDocument(new batasInput(300).getKata(TNm));
-        TUrut.setDocument(new batasInput((byte)3).getKata(TUrut));
+        TUrut.setDocument(new batasInput((byte) 3).getKata(TUrut));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        } 
+        }
         TKd.requestFocus();
-        
+
     }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -447,37 +473,39 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TKdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-        Valid.pindah(evt,TCari,CmbKategori);
+        Valid.pindah(evt, TCari, CmbKategori);
 }//GEN-LAST:event_TKdKeyPressed
 
     private void TNmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNmKeyPressed
-        Valid.pindah(evt,CmbKategori,TUrut);
+        Valid.pindah(evt, CmbKategori, TUrut);
 }//GEN-LAST:event_TNmKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TKd.getText().trim().isEmpty()){
-            Valid.textKosong(TKd,"Kode Berkas");
-        }else if(TNm.getText().trim().isEmpty()){
-            Valid.textKosong(TNm,"Nama Berkas");
-        }else if(TUrut.getText().trim().isEmpty()){
-            Valid.textKosong(TUrut,"Urutan Berkas");
-        }else{
-            if(Sequel.menyimpantf("master_berkas_pegawai","?,?,?,?","Kode Berkas",4,new String[]{
-                    TKd.getText(),CmbKategori.getSelectedItem().toString(),TNm.getText(),TUrut.getText()
-                })==true){
+        if (TKd.getText().trim().isEmpty()) {
+            Valid.textKosong(TKd, "Kode Berkas");
+        } else if (TNm.getText().trim().isEmpty()) {
+            Valid.textKosong(TNm, "Nama Berkas");
+        } else if (TUrut.getText().trim().isEmpty()) {
+            Valid.textKosong(TUrut, "Urutan Berkas");
+        } else {
+            if (Sequel.menyimpantf("master_berkas_pegawai", "?,?,?,?",
+                    "Kode Berkas", 4, new String[]{
+                        TKd.getText(), CmbKategori.getSelectedItem().toString(),
+                        TNm.getText(), TUrut.getText()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }else{
+            } else {
                 TKd.requestFocus();
-            }            
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TUrut,BtnBatal);
+        } else {
+            Valid.pindah(evt, TUrut, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -486,52 +514,61 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        for(i=0;i<tbBangsal.getRowCount();i++){ 
-            if(tbBangsal.getValueAt(i,0).toString().equals("true")){
-                Sequel.meghapus("master_berkas_pegawai","kode",tbBangsal.getValueAt(i,1).toString());
+        for (i = 0; i < tbBangsal.getRowCount(); i++) {
+            if (tbBangsal.getValueAt(i, 0).toString().equals("true")) {
+                Sequel.meghapus("master_berkas_pegawai", "kode", tbBangsal.
+                        getValueAt(i, 1).toString());
             }
-        } 
+        }
         tampil();
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TKd.getText().trim().isEmpty()){
-            Valid.textKosong(TKd,"Kode Berkas");
-        }else if(TNm.getText().trim().isEmpty()){
-            Valid.textKosong(TNm,"Nama Berkas");
-        }else if(TUrut.getText().trim().isEmpty()){
-            Valid.textKosong(TUrut,"Urutan Berkas");
-        }else{
-            if(tbBangsal.getSelectedRow()>-1){
-                Sequel.mengedit("master_berkas_pegawai","kode=?","kode=?,kategori=?,nama_berkas=?,no_urut=?",5,new String[]{
-                    TKd.getText(),CmbKategori.getSelectedItem().toString(),TNm.getText(),
-                    TUrut.getText(),tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 1).toString()
-                });
-                if(tabMode.getRowCount()!=0){tampil();}
+        if (TKd.getText().trim().isEmpty()) {
+            Valid.textKosong(TKd, "Kode Berkas");
+        } else if (TNm.getText().trim().isEmpty()) {
+            Valid.textKosong(TNm, "Nama Berkas");
+        } else if (TUrut.getText().trim().isEmpty()) {
+            Valid.textKosong(TUrut, "Urutan Berkas");
+        } else {
+            if (tbBangsal.getSelectedRow() > -1) {
+                Sequel.mengedit("master_berkas_pegawai", "kode=?",
+                        "kode=?,kategori=?,nama_berkas=?,no_urut=?", 5,
+                        new String[]{
+                            TKd.getText(), CmbKategori.getSelectedItem().
+                            toString(), TNm.getText(),
+                            TUrut.getText(), tbBangsal.getValueAt(tbBangsal.
+                            getSelectedRow(), 1).toString()
+                        });
+                if (tabMode.getRowCount() != 0) {
+                    tampil();
+                }
                 emptTeks();
-            }            
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -541,46 +578,51 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
-            param.put("parameter","%"+TCari.getText().trim()+"%");     
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReport("rptMasterBerkasPegawai.jasper",param,"::[ Master Berkas Pegawai ]::");
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReport("rptMasterBerkasPegawai.jasper", param,
+                    "::[ Master Berkas Pegawai ]::");
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        Valid.pindah(evt,BtnEdit,BtnKeluar);
+        Valid.pindah(evt, BtnEdit, BtnKeluar);
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbBangsal.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -590,9 +632,9 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -607,36 +649,37 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TKd);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
             }
-           
+
         }
 }//GEN-LAST:event_tbBangsalMouseClicked
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
-            
+
         }
 }//GEN-LAST:event_tbBangsalKeyPressed
 
@@ -646,24 +689,26 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void CmbKategoriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CmbKategoriKeyPressed
-        Valid.pindah(evt,TKd,TNm);
+        Valid.pindah(evt, TKd, TNm);
     }//GEN-LAST:event_CmbKategoriKeyPressed
 
     private void TUrutKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TUrutKeyPressed
-        Valid.pindah(evt,TNm,BtnSimpan);
+        Valid.pindah(evt, TNm, BtnSimpan);
     }//GEN-LAST:event_TUrutKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgMasterBerkasPegawai dialog = new DlgMasterBerkasPegawai(new javax.swing.JFrame(), true);
+            DlgMasterBerkasPegawai dialog = new DlgMasterBerkasPegawai(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -701,35 +746,36 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select * from master_berkas_pegawai where kode like ? "+
-                    "or kategori like ? or nama_berkas like ? order by kategori,no_urut");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select * from master_berkas_pegawai where kode like ? "
+                    + "or kategori like ? or nama_berkas like ? order by kategori,no_urut");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        false,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)
+                        false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4)
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif Bangsal : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif Bangsal : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-                
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -741,28 +787,35 @@ public class DlgMasterBerkasPegawai extends javax.swing.JDialog {
         TUrut.setText("");
         TCari.setText("");
         TKd.requestFocus();
-        Valid.autoNomer(" master_berkas_pegawai ","MBP",4,TKd);
+        Valid.autoNomer(" master_berkas_pegawai ", "MBP", 4, TKd);
     }
 
     private void getData() {
-        if(tbBangsal.getSelectedRow()!= -1){
-            TKd.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),1).toString());
-            CmbKategori.setSelectedItem(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),2).toString());
-            TNm.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),3).toString());
-            TUrut.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),4).toString());
+        if (tbBangsal.getSelectedRow() != -1) {
+            TKd.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 1).
+                    toString());
+            CmbKategori.setSelectedItem(tbBangsal.getValueAt(tbBangsal.
+                    getSelectedRow(), 2).toString());
+            TNm.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 3).
+                    toString());
+            TUrut.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 4).
+                    toString());
         }
     }
-    
+
     /**
      *
      * @return
      */
-    public JTextField getTextField(){
+    public JTextField getTextField() {
         return TKd;
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbBangsal;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgMasterBerkasPegawai.class.getName());
 
 }

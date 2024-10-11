@@ -3,101 +3,125 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgBangsal.java
  *
  * Created on May 22, 2010, 9:58:42 PM
  */
-
 package kepegawaian;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class SKPKategoriPenilaian extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
+    private int i = 0;
 
-    /** Creates new form DlgBangsal
+    /**
+     * Creates new form DlgBangsal
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SKPKategoriPenilaian(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,10);
-        setSize(545,599);
+        this.setLocation(10, 10);
+        setSize(545, 599);
 
-        tabMode=new DefaultTableModel(null,new String[]{"Kode","Kategori","Sasaran"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new String[]{"Kode", "Kategori",
+            "Sasaran"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbBangsal.setModel(tabMode);
         //tampil();
 
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(400);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(400);
             }
         }
 
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Kode.setDocument(new batasInput((byte)5).getKata(Kode));
+        Kode.setDocument(new batasInput((byte) 5).getKata(Kode));
         Kategori.setDocument(new batasInput(100).getKata(Kategori));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        } 
+        }
         Kode.requestFocus();
-        
+
     }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -410,38 +434,41 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void KodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodeKeyPressed
-        Valid.pindah(evt,TCari,Kategori);
+        Valid.pindah(evt, TCari, Kategori);
 }//GEN-LAST:event_KodeKeyPressed
 
     private void KategoriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KategoriKeyPressed
-        Valid.pindah(evt,Kode,Sasaran);
+        Valid.pindah(evt, Kode, Sasaran);
 }//GEN-LAST:event_KategoriKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Kode.getText().trim().isEmpty()){
-            Valid.textKosong(Kode,"Kode");
-        }else if(Kategori.getText().trim().isEmpty()){
-            Valid.textKosong(Kategori,"Kategori");
-        }else{
-            if(Sequel.menyimpantf("skp_kategori_penilaian","?,?,?","Kode",3,new String[]{
-                    Kode.getText(),Kategori.getText(),Sasaran.getSelectedItem().toString().substring(0,1)
-                })==true){
+        if (Kode.getText().trim().isEmpty()) {
+            Valid.textKosong(Kode, "Kode");
+        } else if (Kategori.getText().trim().isEmpty()) {
+            Valid.textKosong(Kategori, "Kategori");
+        } else {
+            if (Sequel.menyimpantf("skp_kategori_penilaian", "?,?,?", "Kode", 3,
+                    new String[]{
+                        Kode.getText(), Kategori.getText(), Sasaran.
+                        getSelectedItem().toString().substring(0, 1)
+                    }) == true) {
                 tabMode.addRow(new String[]{
-                    Kode.getText(),Kategori.getText(),Sasaran.getSelectedItem().toString()
+                    Kode.getText(), Kategori.getText(), Sasaran.
+                    getSelectedItem().toString()
                 });
-                LCount.setText(""+tabMode.getRowCount());
+                LCount.setText("" + tabMode.getRowCount());
                 emptTeks();
-            }else{
+            } else {
                 Kode.requestFocus();
-            }            
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Sasaran,BtnBatal);
+        } else {
+            Valid.pindah(evt, Sasaran, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -450,52 +477,64 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Valid.hapusTabletf(tabMode,Kode,"skp_kategori_penilaian","kode_kategori")==true){
-            if(tbBangsal.getSelectedRow()!= -1){
+        if (Valid.hapusTabletf(tabMode, Kode, "skp_kategori_penilaian",
+                "kode_kategori") == true) {
+            if (tbBangsal.getSelectedRow() != -1) {
                 tabMode.removeRow(tbBangsal.getSelectedRow());
                 emptTeks();
-                LCount.setText(""+tabMode.getRowCount());
+                LCount.setText("" + tabMode.getRowCount());
             }
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(Kode.getText().trim().isEmpty()){
-            Valid.textKosong(Kode,"Kode");
-        }else if(Kategori.getText().trim().isEmpty()){
-            Valid.textKosong(Kategori,"Kategori");
-        }else{
-            if(tbBangsal.getSelectedRow()>-1){
-                if(Sequel.mengedittf("skp_kategori_penilaian","kode_kategori=?","kode_kategori=?,nama_kategori=?,sasaran=?",4,new String[]{
-                    Kode.getText(),Kategori.getText(),Sasaran.getSelectedItem().toString().substring(0,1),tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 0).toString()
-                })==true){
-                    tbBangsal.setValueAt(Kode.getText(),tbBangsal.getSelectedRow(),0);
-                    tbBangsal.setValueAt(Kategori.getText(),tbBangsal.getSelectedRow(),1);
-                    tbBangsal.setValueAt(Sasaran.getSelectedItem().toString(),tbBangsal.getSelectedRow(),2);
+        if (Kode.getText().trim().isEmpty()) {
+            Valid.textKosong(Kode, "Kode");
+        } else if (Kategori.getText().trim().isEmpty()) {
+            Valid.textKosong(Kategori, "Kategori");
+        } else {
+            if (tbBangsal.getSelectedRow() > -1) {
+                if (Sequel.mengedittf("skp_kategori_penilaian",
+                        "kode_kategori=?",
+                        "kode_kategori=?,nama_kategori=?,sasaran=?", 4,
+                        new String[]{
+                            Kode.getText(), Kategori.getText(), Sasaran.
+                            getSelectedItem().toString().substring(0, 1),
+                            tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 0).
+                                    toString()
+                        }) == true) {
+                    tbBangsal.setValueAt(Kode.getText(), tbBangsal.
+                            getSelectedRow(), 0);
+                    tbBangsal.setValueAt(Kategori.getText(), tbBangsal.
+                            getSelectedRow(), 1);
+                    tbBangsal.setValueAt(Sasaran.getSelectedItem().toString(),
+                            tbBangsal.getSelectedRow(), 2);
                     emptTeks();
                 }
-            }            
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -505,46 +544,51 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
-            param.put("parameter","%"+TCari.getText().trim()+"%");     
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReport("rptSKPKategoriPenilaian.jasper",param,"::[ Kategori Penilaian Pasien ]::");
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReport("rptSKPKategoriPenilaian.jasper", param,
+                    "::[ Kategori Penilaian Pasien ]::");
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        Valid.pindah(evt,BtnEdit,BtnKeluar);
+        Valid.pindah(evt, BtnEdit, BtnKeluar);
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbBangsal.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -554,9 +598,9 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -571,36 +615,37 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, Kode);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
             }
-           
+
         }
 }//GEN-LAST:event_tbBangsalMouseClicked
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
-            
+
         }
 }//GEN-LAST:event_tbBangsalKeyPressed
 
@@ -609,20 +654,22 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void SasaranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SasaranKeyPressed
-        Valid.pindah(evt,Kode,Kategori);
+        Valid.pindah(evt, Kode, Kategori);
     }//GEN-LAST:event_SasaranKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SKPKategoriPenilaian dialog = new SKPKategoriPenilaian(new javax.swing.JFrame(), true);
+            SKPKategoriPenilaian dialog = new SKPKategoriPenilaian(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -658,42 +705,48 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select * from skp_kategori_penilaian where skp_kategori_penilaian.kode_kategori like ? "+
-                    "or skp_kategori_penilaian.nama_kategori like ? or skp_kategori_penilaian.sasaran like ? "+
-                    "order by skp_kategori_penilaian.sasaran");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select * from skp_kategori_penilaian where skp_kategori_penilaian.kode_kategori like ? "
+                    + "or skp_kategori_penilaian.nama_kategori like ? or skp_kategori_penilaian.sasaran like ? "
+                    + "order by skp_kategori_penilaian.sasaran");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3).
-                        replaceAll("1","1. Mengidentifikasi Pasien Dengan Benar").
-                        replaceAll("2","2. Meningkatkan Komunikasi Yang Efektif").
-                        replaceAll("3","3. Meningkatkan Keamanan Obat-obatan Yang Harus Diwaspadai").
-                        replaceAll("4","4. Memastikan Lokasi Pembedahan Yang Benar, Prosedur Yang Benar, Pembedahan Pada Pasien Yang Benar").
-                        replaceAll("5","5. Mengurangi Risiko Infeksi Akibat Perawatan Kesehatan").
-                        replaceAll("6","6. Mengurangi Risiko Cidera Pasien Akibat Terjatuh")
+                        rs.getString(1), rs.getString(2), rs.getString(3).
+                        replaceAll("1",
+                        "1. Mengidentifikasi Pasien Dengan Benar").
+                        replaceAll("2",
+                        "2. Meningkatkan Komunikasi Yang Efektif").
+                        replaceAll("3",
+                        "3. Meningkatkan Keamanan Obat-obatan Yang Harus Diwaspadai").
+                        replaceAll("4",
+                        "4. Memastikan Lokasi Pembedahan Yang Benar, Prosedur Yang Benar, Pembedahan Pada Pasien Yang Benar").
+                        replaceAll("5",
+                        "5. Mengurangi Risiko Infeksi Akibat Perawatan Kesehatan").
+                        replaceAll("6",
+                        "6. Mengurangi Risiko Cidera Pasien Akibat Terjatuh")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif Bangsal : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif Bangsal : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-                
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -701,18 +754,22 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
         Kategori.setText("");
         TCari.setText("");
         Kode.requestFocus();
-        Valid.autoNomer(" skp_kategori_penilaian ","K",4,Kode);
+        Valid.autoNomer(" skp_kategori_penilaian ", "K", 4, Kode);
     }
 
     private void getData() {
-        if(tbBangsal.getSelectedRow()!= -1){
-            Kode.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),0).toString());
-            Kategori.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),1).toString());
-            Sasaran.setSelectedItem(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),2).toString());
+        if (tbBangsal.getSelectedRow() != -1) {
+            Kode.setText(tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 0).
+                    toString());
+            Kategori.setText(
+                    tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 1).
+                            toString());
+            Sasaran.setSelectedItem(tbBangsal.getValueAt(tbBangsal.
+                    getSelectedRow(), 2).toString());
         }
     }
-    
-    public JTextField getTextField(){
+
+    public JTextField getTextField() {
         return Kode;
     }
 
@@ -720,8 +777,11 @@ public class SKPKategoriPenilaian extends javax.swing.JDialog {
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbBangsal;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SKPKategoriPenilaian.class.getName());
 
 }

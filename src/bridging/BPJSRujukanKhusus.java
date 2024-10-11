@@ -3,207 +3,270 @@
  * and open the template in the editor.
  */
 
-/*
- * DlgResepObat.java
- *
- * Created on 31 Mei 10, 11:27:40
+ /*
+* DlgResepObat.java
+*
+* Created on 31 Mei 10, 11:27:40
  */
-
 package bridging;
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.security.*;
-import java.security.cert.*;
-import java.sql.*;
-import java.util.*;
-import javax.net.ssl.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.conn.scheme.*;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.junit.*;
-import org.springframework.http.*;
-import org.springframework.http.client.*;
-import org.springframework.web.client.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.WarnaTable2;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.junit.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
- *
  * @author perpustakaan
  */
 public class BPJSRujukanKhusus extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabMode2,tabMode3;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,ps2;
-    private ResultSet rs,rs2;
-    private int jml=0,i=0,index=0;
-    private WarnaTable2 warna=new WarnaTable2();
-    private boolean [] pilih;
-    private String[] nama,kode;
-    private HttpHeaders headers;
-    private HttpEntity requestEntity;
-    private ObjectMapper mapper = new ObjectMapper();
-    private JsonNode root;
-    private JsonNode nameNode;
-    private JsonNode response;
-    private ApiBPJS api=new ApiBPJS();
-    private String URL="",link="",utc="",requestJson="",dx="",pros="",user="",idrujukan="";
 
-    /** Creates new form DlgResepObat 
-     *@param parent
-     *@param modal*/
+    private final DefaultTableModel tabMode, tabMode2, tabMode3;
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private PreparedStatement ps, ps2;
+
+    private ResultSet rs, rs2;
+
+    private int jml = 0, i = 0, index = 0;
+
+    private WarnaTable2 warna = new WarnaTable2();
+
+    private boolean[] pilih;
+
+    private String[] nama, kode;
+
+    private HttpHeaders headers;
+
+    private HttpEntity requestEntity;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    private JsonNode root;
+
+    private JsonNode nameNode;
+
+    private JsonNode response;
+
+    private ApiBPJS api = new ApiBPJS();
+
+    private String URL = "", link = "", utc = "", requestJson = "", dx = "", pros = "", user = "", idrujukan = "";
+
+    /**
+     * Creates new form DlgResepObat
+     *
+     * @param parent
+     * @param modal
+     */
     public BPJSRujukanKhusus(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rujukan","No.Peserta","Nama Pasien","Tgl.Ruj.Awal","Tgl.Ruj.Akhir"}){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        this.setLocation(8, 1);
+        setSize(628, 674);
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rujukan", "No.Peserta", "Nama Pasien",
+                    "Tgl.Ruj.Awal", "Tgl.Ruj.Akhir"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbProgramPRB.setModel(tabMode);
 
-        tbProgramPRB.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbProgramPRB.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbProgramPRB.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 5; i++) {
             TableColumn column = tbProgramPRB.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(125);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(80);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
             }
         }
         tbProgramPRB.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabMode2=new DefaultTableModel(null,new Object[]{
-            "P","Kode ICD X","Nama Penyakit"}){
-             Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-                 boolean a = false;
-                 if (colIndex==0) {
-                     a=true;
-                 }
-                 return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+
+        tabMode2 = new DefaultTableModel(null, new Object[]{"P", "Kode ICD X",
+            "Nama Penyakit"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if (colIndex == 0) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbDiagnosa.setModel(tabMode2);
 
         for (int i = 0; i < 3; i++) {
             TableColumn column = tbDiagnosa.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(410);
             }
         }
-        warna.kolom=0;
-        tbDiagnosa.setDefaultRenderer(Object.class,warna);
-        tbDiagnosa.setPreferredScrollableViewportSize(new Dimension(500,500));
+        warna.kolom = 0;
+        tbDiagnosa.setDefaultRenderer(Object.class, warna);
+        tbDiagnosa.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDiagnosa.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
-        tabMode3=new DefaultTableModel(null,new Object[]{
-            "P","Kode Prosedur","Nama Prosedur"}){
-             Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-                 boolean a = false;
-                 if (colIndex==0) {
-                     a=true;
-                 }
-                 return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+
+        tabMode3 = new DefaultTableModel(null,
+                new Object[]{"P", "Kode Prosedur", "Nama Prosedur"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if (colIndex == 0) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbProsedur.setModel(tabMode3);
-        tbProsedur.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbProsedur.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbProsedur.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 3; i++) {
             TableColumn column = tbProsedur.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(410);
             }
         }
-        warna.kolom=0;
-        tbProsedur.setDefaultRenderer(Object.class,warna);
+        warna.kolom = 0;
+        tbProsedur.setDefaultRenderer(Object.class, warna);
 
-        NoPeserta.setDocument(new batasInput((byte)17).getKata(NoPeserta));
+        NoPeserta.setDocument(new batasInput((byte) 17).getKata(NoPeserta));
         NoRujukan.setDocument(new batasInput(200).getKata(NoRujukan));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
+        }
         ChkInput.setSelected(false);
         isForm();
-        
+
         try {
-            user=akses.getkode().replace(" ","").substring(0,9);
+            user = akses.getkode().replace(" ", "").substring(0, 9);
         } catch (Exception e) {
-            user=akses.getkode();
+            user = akses.getkode();
         }
-        
+
         try {
-            link=koneksiDB.URLAPIBPJS();
+            link = koneksiDB.URLAPIBPJS();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -634,55 +697,64 @@ public class BPJSRujukanKhusus extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            int row=tabMode.getRowCount();
-            for(int r=0;r<row;r++){  
-                Sequel.menyimpan("temporary","'"+r+"','"+
-                                tabMode.getValueAt(r,0).toString()+"','"+
-                                tabMode.getValueAt(r,1).toString()+"','"+
-                                tabMode.getValueAt(r,2).toString()+"','"+
-                                tabMode.getValueAt(r,3).toString()+"','"+
-                                tabMode.getValueAt(r,4).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Data"); 
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            int row = tabMode.getRowCount();
+            for (int r = 0; r < row; r++) {
+                Sequel.menyimpan("temporary", "'" + r + "','"
+                        + tabMode.getValueAt(r, 0).toString() + "','"
+                        + tabMode.getValueAt(r, 1).toString() + "','"
+                        + tabMode.getValueAt(r, 2).toString() + "','"
+                        + tabMode.getValueAt(r, 3).toString() + "','"
+                        + tabMode.getValueAt(r, 4).toString() + "','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                        getalamatip() + "'", "Data");
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptCariBPJSRujukanKhusus.jasper","report","[ Data Rujukan Khusus BPJS ]","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptCariBPJSRujukanKhusus.jasper", "report",
+                    "[ Data Rujukan Khusus BPJS ]",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
             this.setCursor(Cursor.getDefaultCursor());
-        } 
+        }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnSimpan, BtnKeluar);
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -692,29 +764,29 @@ public class BPJSRujukanKhusus extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();        
+        tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, Diagnosa);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbProgramPRBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProgramPRBMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -723,8 +795,9 @@ public class BPJSRujukanKhusus extends javax.swing.JDialog {
 }//GEN-LAST:event_tbProgramPRBMouseClicked
 
     private void tbProgramPRBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbProgramPRBKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -734,97 +807,128 @@ public class BPJSRujukanKhusus extends javax.swing.JDialog {
 }//GEN-LAST:event_tbProgramPRBKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoRujukan.getText().trim().isEmpty()){
-            Valid.textKosong(NoRujukan,"No.Rujukan");
-        }else{
-            try{
-                dx="";
-                jml=0;        
-                for(i=0;i<tbDiagnosa.getRowCount();i++){
-                    if(tbDiagnosa.getValueAt(i,0).toString().equals("true")){
+        if (NoRujukan.getText().trim().isEmpty()) {
+            Valid.textKosong(NoRujukan, "No.Rujukan");
+        } else {
+            try {
+                dx = "";
+                jml = 0;
+                for (i = 0; i < tbDiagnosa.getRowCount(); i++) {
+                    if (tbDiagnosa.getValueAt(i, 0).toString().equals("true")) {
                         jml++;
-                        if(jml==1){
-                            dx=dx+"{\"kode\":\"P;"+tbDiagnosa.getValueAt(i,1).toString()+"\"},";
-                        }else{
-                            dx=dx+"{\"kode\":\"S;"+tbDiagnosa.getValueAt(i,1).toString()+"\"},";
+                        if (jml == 1) {
+                            dx = dx + "{\"kode\":\"P;" + tbDiagnosa.
+                                    getValueAt(i, 1).toString() + "\"},";
+                        } else {
+                            dx = dx + "{\"kode\":\"S;" + tbDiagnosa.
+                                    getValueAt(i, 1).toString() + "\"},";
                         }
                     }
                 }
-                if(jml>0){
-                    dx="["+dx.substring(0,dx.length()-1)+"]";
-                }   
-      
-                jml=0;  
-                pros="";
-                for(i=0;i<tbProsedur.getRowCount();i++){
-                    if(tbProsedur.getValueAt(i,0).toString().equals("true")){
+                if (jml > 0) {
+                    dx = "[" + dx.substring(0, dx.length() - 1) + "]";
+                }
+
+                jml = 0;
+                pros = "";
+                for (i = 0; i < tbProsedur.getRowCount(); i++) {
+                    if (tbProsedur.getValueAt(i, 0).toString().equals("true")) {
                         jml++;
-                        pros=pros+"{\"kode\":\""+tbProsedur.getValueAt(i,1).toString()+"\"},";
+                        pros = pros + "{\"kode\":\"" + tbProsedur.getValueAt(i,
+                                1).toString() + "\"},";
                     }
                 }
-                if(jml>0){
-                    pros="["+pros.substring(0,pros.length()-1)+"]";
+                if (jml > 0) {
+                    pros = "[" + pros.substring(0, pros.length() - 1) + "]";
                 }
-                    
+
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-                utc=String.valueOf(api.GetUTCdatetimeAsString());
-                headers.add("X-Timestamp",utc);
-                headers.add("X-Signature",api.getHmac(utc));
-                headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
+                headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("X-Timestamp", utc);
+                headers.add("X-Signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
                 requestEntity = new HttpEntity(headers);
-                URL = link+"/Rujukan/Khusus/insert";
-                requestJson ="{" +
-                                "\"noRujukan\":\""+NoRujukan.getText()+"\"," +
-                                "\"diagnosa\":"+dx+"," +
-                                "\"procedure\":"+pros+"," +
-                                "\"user\":\""+user+"\"" +
-                             "}";
-                requestEntity = new HttpEntity(requestJson,headers);
-                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                URL = link + "/Rujukan/Khusus/insert";
+                requestJson = "{"
+                        + "\"noRujukan\":\"" + NoRujukan.getText() + "\","
+                        + "\"diagnosa\":" + dx + ","
+                        + "\"procedure\":" + pros + ","
+                        + "\"user\":\"" + user + "\""
+                        + "}";
+                requestEntity = new HttpEntity(requestJson, headers);
+                root = mapper.readTree(api.getRest().exchange(URL,
+                        HttpMethod.POST, requestEntity, String.class).getBody());
                 nameNode = root.path("metaData");
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText()); 
-                if(nameNode.path("code").asText().equals("200")){
-                    response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                    Sequel.menyimpan("bridging_rujukan_bpjs_khusus","?,?,?,?,?",5,new String[]{
-                        NoRujukan.getText(),NoPeserta.getText(),NmPasien.getText(),response.path("rujukan").path("tglrujukan_awal").asText(),response.path("rujukan").path("tglrujukan_berakhir").asText()
-                    }); 
-                    if(jml>0){
-                        jml=0;
-                        for(i=0;i<tbDiagnosa.getRowCount();i++){
-                            if(tbDiagnosa.getValueAt(i,0).toString().equals("true")){
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+                if (nameNode.path("code").asText().equals("200")) {
+                    response = mapper.readTree(api.Decrypt(
+                            root.path("response").asText(), utc));
+                    Sequel.
+                            menyimpan("bridging_rujukan_bpjs_khusus",
+                                    "?,?,?,?,?", 5, new String[]{
+                                NoRujukan.getText(), NoPeserta.getText(),
+                                NmPasien.getText(), response.path("rujukan").
+                                path("tglrujukan_awal").asText(), response.path(
+                                "rujukan").path("tglrujukan_berakhir").asText()
+                            });
+                    if (jml > 0) {
+                        jml = 0;
+                        for (i = 0; i < tbDiagnosa.getRowCount(); i++) {
+                            if (tbDiagnosa.getValueAt(i, 0).toString().equals(
+                                    "true")) {
                                 jml++;
-                                if(jml==1){
-                                    Sequel.menyimpan("bridging_rujukan_bpjs_khusus_diagnosa","?,?,?,?",4,new String[]{
-                                        NoRujukan.getText(),"P",tbDiagnosa.getValueAt(i,1).toString(),tbDiagnosa.getValueAt(i,2).toString()
-                                    });  
-                                }else{
-                                    Sequel.menyimpan("bridging_rujukan_bpjs_khusus_diagnosa","?,?,?,?",4,new String[]{
-                                        NoRujukan.getText(),"S",tbDiagnosa.getValueAt(i,1).toString(),tbDiagnosa.getValueAt(i,2).toString()
-                                    }); 
+                                if (jml == 1) {
+                                    Sequel.menyimpan(
+                                            "bridging_rujukan_bpjs_khusus_diagnosa",
+                                            "?,?,?,?", 4, new String[]{
+                                                NoRujukan.getText(), "P",
+                                                tbDiagnosa.getValueAt(i, 1).
+                                                        toString(), tbDiagnosa.
+                                                        getValueAt(i, 2).
+                                                        toString()
+                                            });
+                                } else {
+                                    Sequel.menyimpan(
+                                            "bridging_rujukan_bpjs_khusus_diagnosa",
+                                            "?,?,?,?", 4, new String[]{
+                                                NoRujukan.getText(), "S",
+                                                tbDiagnosa.getValueAt(i, 1).
+                                                        toString(), tbDiagnosa.
+                                                        getValueAt(i, 2).
+                                                        toString()
+                                            });
                                 }
                             }
                         }
-                        for(i=0;i<tbProsedur.getRowCount();i++){
-                            if(tbProsedur.getValueAt(i,0).toString().equals("true")){
-                                Sequel.menyimpan("bridging_rujukan_bpjs_khusus_prosedur","?,?,?",3,new String[]{
-                                    NoRujukan.getText(),tbProsedur.getValueAt(i,1).toString(),tbProsedur.getValueAt(i,2).toString()
-                                });  
+                        for (i = 0; i < tbProsedur.getRowCount(); i++) {
+                            if (tbProsedur.getValueAt(i, 0).toString().equals(
+                                    "true")) {
+                                Sequel.menyimpan(
+                                        "bridging_rujukan_bpjs_khusus_prosedur",
+                                        "?,?,?", 3, new String[]{
+                                            NoRujukan.getText(), tbProsedur.
+                                            getValueAt(i, 1).toString(),
+                                            tbProsedur.getValueAt(i, 2).
+                                                    toString()
+                                        });
                             }
                         }
                     }
                     emptTeks();
                     tampil();
-                }  
-            } catch (Exception ex) {
-                System.out.println("Notifikasi : "+ex);
-                if(ex.toString().contains("UnknownHostException")){
-                    JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+                }
+            } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | RestClientException ex) {
+                System.out.println("Notifikasi : " + ex);
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Koneksi ke server BPJS terputus...!");
                 }
             }
         }
@@ -832,10 +936,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Diagnosa,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Diagnosa, BtnKeluar);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -850,55 +954,57 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_tbDiagnosaMouseClicked
 
     private void BtnCari2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt, TCari,Pemeriksaan);
         }
     }//GEN-LAST:event_BtnCari2KeyPressed
 
     private void BtnCari2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari2ActionPerformed
-       if(Diagnosa.getText().trim().isEmpty()){
-           JOptionPane.showMessageDialog(null,"Silahkan masukkan pencarian diagnosa ..!!");
-       }else{
-           tampilDiagnosa();
-       }
+        if (Diagnosa.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan masukkan pencarian diagnosa ..!!");
+        } else {
+            tampilDiagnosa();
+        }
     }//GEN-LAST:event_BtnCari2ActionPerformed
 
     private void DiagnosaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari2ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Diagnosa.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_TAB){
+        } else if (evt.getKeyCode() == KeyEvent.VK_TAB) {
             Prosedur.requestFocus();
         }
     }//GEN-LAST:event_DiagnosaKeyPressed
 
     private void NoRujukanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoRujukanKeyPressed
-        Valid.pindah(evt,TCari,BtnCari);
+        Valid.pindah(evt, TCari, BtnCari);
     }//GEN-LAST:event_NoRujukanKeyPressed
 
     private void ProsedurKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProsedurKeyPressed
-         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari3ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari3.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Prosedur.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_TAB){
+        } else if (evt.getKeyCode() == KeyEvent.VK_TAB) {
             BtnSimpan.requestFocus();
         }
     }//GEN-LAST:event_ProsedurKeyPressed
 
     private void BtnCari3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari3ActionPerformed
-        if(Diagnosa.getText().trim().isEmpty()){
-           JOptionPane.showMessageDialog(null,"Silahkan masukkan pencarian prosedur ..!!");
-       }else{
-           tampilProsedur();
-       }
+        if (Diagnosa.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan masukkan pencarian prosedur ..!!");
+        } else {
+            tampilProsedur();
+        }
     }//GEN-LAST:event_BtnCari3ActionPerformed
 
     private void BtnCari3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari3KeyPressed
@@ -914,75 +1020,90 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_ChkInputKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbProgramPRB.getSelectedRow()!= -1){
-            idrujukan="";
+        if (tbProgramPRB.getSelectedRow() != -1) {
+            idrujukan = "";
             try {
                 headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                headers.add("X-Cons-Id",koneksiDB.CONSIDAPIBPJS());
-                utc=String.valueOf(api.GetUTCdatetimeAsString());
-                headers.add("X-Timestamp",utc);
-                headers.add("X-Signature",api.getHmac(utc));
-                headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
+                headers.add("X-Cons-Id", koneksiDB.CONSIDAPIBPJS());
+                utc = String.valueOf(api.GetUTCdatetimeAsString());
+                headers.add("X-Timestamp", utc);
+                headers.add("X-Signature", api.getHmac(utc));
+                headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
                 requestEntity = new HttpEntity(headers);
-                URL = link+"/Rujukan/Khusus/List/Bulan/"+Integer.valueOf(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),3).toString().substring(5,7))+"/Tahun/"+tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),3).toString().substring(0,4);	
+                URL = link + "/Rujukan/Khusus/List/Bulan/" + Integer.valueOf(
+                        tbProgramPRB.
+                                getValueAt(tbProgramPRB.getSelectedRow(), 3).
+                                toString().substring(5, 7)) + "/Tahun/" + tbProgramPRB.
+                        getValueAt(tbProgramPRB.getSelectedRow(), 3).toString().
+                        substring(0, 4);
                 System.out.println(URL);
-                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+                root = mapper.readTree(api.getRest().exchange(URL,
+                        HttpMethod.GET, requestEntity, String.class).getBody());
                 nameNode = root.path("metaData");
-                if(nameNode.path("code").asText().equals("200")){
+                if (nameNode.path("code").asText().equals("200")) {
                     Valid.tabelKosong(tabMode);
-                    response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
+                    response = mapper.readTree(api.Decrypt(
+                            root.path("response").asText(), utc));
                     //response = root.path("response");
-                    if(response.path("rujukan").isArray()){
-                        for(JsonNode list:response.path("rujukan")){
-                            if(list.path("norujukan").asText().equals(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString())){
-                                idrujukan=list.path("idrujukan").asText();
+                    if (response.path("rujukan").isArray()) {
+                        for (JsonNode list : response.path("rujukan")) {
+                            if (list.path("norujukan").asText().equals(
+                                    tbProgramPRB.getValueAt(tbProgramPRB.
+                                            getSelectedRow(), 0).toString())) {
+                                idrujukan = list.path("idrujukan").asText();
                             }
                         }
                     }
-                }else {
-                    JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-                }   
-            } catch (Exception ex) {
-                System.out.println("Notifikasi : "+ex);
-                if(ex.toString().contains("UnknownHostException")){
-                    JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            nameNode.path("message").asText());
+                }
+            } catch (HeadlessException | IOException | NumberFormatException | InvalidAlgorithmParameterException | InvalidKeyException | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | RestClientException ex) {
+                System.out.println("Notifikasi : " + ex);
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Koneksi ke server BPJS terputus...!");
                 }
             }
-            if(!idrujukan.isEmpty()){
+            if (!idrujukan.isEmpty()) {
                 try {
                     bodyWithDeleteRequest();
-                }catch (Exception ex) {
-                    System.out.println("Notifikasi Bridging : "+ex);
-                    if(ex.toString().contains("UnknownHostException")){
-                        JOptionPane.showMessageDialog(null,"Koneksi ke server BPJS terputus...!");
+                } catch (Exception ex) {
+                    System.out.println("Notifikasi Bridging : " + ex);
+                    if (ex.toString().contains("UnknownHostException")) {
+                        JOptionPane.showMessageDialog(null,
+                                "Koneksi ke server BPJS terputus...!");
                     }
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(null,"Silahkan pilih dulu data yang mau dihapus..!!");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan pilih dulu data yang mau dihapus..!!");
         }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt, BtnBatal, BtnEdit);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSRujukanKhusus dialog = new BPJSRujukanKhusus(new javax.swing.JFrame(), true);
+            BPJSRujukanKhusus dialog = new BPJSRujukanKhusus(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1035,93 +1156,107 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{     
-            ps=koneksi.prepareStatement("SELECT * FROM bridging_rujukan_bpjs_khusus where tglrujukan_awal between ? and ? "+
-                    (TCari.getText().trim().isEmpty()?"":"and (no_rujukan like ? or nokapst like ? or nmpst like ?)")+" order by tglrujukan_awal");
+        try {
+            ps = koneksi
+                    .prepareStatement(
+                            "SELECT * FROM bridging_rujukan_bpjs_khusus where tglrujukan_awal between ? and ? "
+                            + (TCari.getText().trim().isEmpty() ? ""
+                            : "and (no_rujukan like ? or nokapst like ? or nmpst like ?)")
+                            + " order by tglrujukan_awal");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
-                    ps.setString(5,"%"+TCari.getText().trim()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText().trim() + "%");
+                    ps.setString(4, "%" + TCari.getText().trim() + "%");
+                    ps.setString(5, "%" + TCari.getText().trim() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_rujukan"),rs.getString("nokapst"),rs.getString("nmpst"),rs.getString("tglrujukan_awal"),rs.getString("tglrujukan_berakhir")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new Object[]{rs.getString("no_rujukan"), rs.
+                                getString("nokapst"), rs.getString("nmpst"),
+                                rs.getString("tglrujukan_awal"), rs.getString(
+                                "tglrujukan_berakhir")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            LCount.setText(""+tabMode.getRowCount());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }       
+            LCount.setText("" + tabMode.getRowCount());
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
     }
 
     private void getData() {
-        if(tbProgramPRB.getSelectedRow()!= -1){
-            NoRujukan.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString()); 
-            NoPeserta.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),1).toString()); 
-            NmPasien.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),2).toString());
+        if (tbProgramPRB.getSelectedRow() != -1) {
+            NoRujukan.setText(tbProgramPRB.getValueAt(tbProgramPRB.
+                    getSelectedRow(), 0).toString());
+            NoPeserta.setText(tbProgramPRB.getValueAt(tbProgramPRB.
+                    getSelectedRow(), 1).toString());
+            NmPasien.setText(tbProgramPRB.getValueAt(tbProgramPRB.
+                    getSelectedRow(), 2).toString());
             Valid.tabelKosong(tabMode2);
             Valid.tabelKosong(tabMode3);
-            try{     
-                ps=koneksi.prepareStatement("select * from bridging_rujukan_bpjs_khusus_diagnosa where no_rujukan=? order by status");
+            try {
+                ps = koneksi.prepareStatement(
+                        "select * from bridging_rujukan_bpjs_khusus_diagnosa where no_rujukan=? order by status");
                 try {
-                    ps.setString(1,tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    while(rs.next()){
-                        tabMode2.addRow(new Object[]{
-                            true,rs.getString("kode_diagnosa"),rs.getString("nama_diagnosa")
-                        });
+                    ps.setString(1, tbProgramPRB.getValueAt(tbProgramPRB.
+                            getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        tabMode2.addRow(
+                                new Object[]{true, rs.getString("kode_diagnosa"),
+                                    rs.getString("nama_diagnosa")});
                     }
                 } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-                
-                ps=koneksi.prepareStatement("select * from bridging_rujukan_bpjs_khusus_prosedur where no_rujukan=?");
+
+                ps = koneksi.prepareStatement(
+                        "select * from bridging_rujukan_bpjs_khusus_prosedur where no_rujukan=?");
                 try {
-                    ps.setString(1,tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    while(rs.next()){
-                        tabMode3.addRow(new Object[]{
-                            true,rs.getString("kode_prosedur"),rs.getString("nama_prosedur")
-                        });
+                    ps.setString(1, tbProgramPRB.getValueAt(tbProgramPRB.
+                            getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        tabMode3.addRow(
+                                new Object[]{true, rs.getString("kode_prosedur"),
+                                    rs.getString("nama_prosedur")});
                     }
                 } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            } 
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            }
         }
     }
-   
-    public void setNoRm(String nokartu,String norm,String namapasien,String norujukan) {
+
+    public void setNoRm(String nokartu, String norm, String namapasien,
+            String norujukan) {
         NoPeserta.setText(nokartu);
         NoRM.setText(norm);
         NmPasien.setText(namapasien);
@@ -1131,147 +1266,152 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         isForm();
         tampil();
     }
-    
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,270));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 270));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
 
     private void tampilDiagnosa() {
         try {
-            jml=0;
-            for(i=0;i<tbDiagnosa.getRowCount();i++){
-                if(Valid.SetAngka(tbDiagnosa.getValueAt(i,0).toString())>0){
+            jml = 0;
+            for (i = 0; i < tbDiagnosa.getRowCount(); i++) {
+                if (Valid.SetAngka(tbDiagnosa.getValueAt(i, 0).toString()) > 0) {
                     jml++;
                 }
-            }   
-            pilih=null;
-            pilih=new boolean[jml];
-            kode=null;
-            kode=new String[jml];
-            nama=null;
-            nama=new String[jml];
-            index=0; 
-            for(i=0;i<tbDiagnosa.getRowCount();i++){
-                if(tbDiagnosa.getValueAt(i,0).toString().equals("true")){
-                    pilih[index]=true;
-                    kode[index]=tbDiagnosa.getValueAt(i,1).toString();
-                    nama[index]=tbDiagnosa.getValueAt(i,2).toString();
+            }
+            pilih = null;
+            pilih = new boolean[jml];
+            kode = null;
+            kode = new String[jml];
+            nama = null;
+            nama = new String[jml];
+            index = 0;
+            for (i = 0; i < tbDiagnosa.getRowCount(); i++) {
+                if (tbDiagnosa.getValueAt(i, 0).toString().equals("true")) {
+                    pilih[index] = true;
+                    kode[index] = tbDiagnosa.getValueAt(i, 1).toString();
+                    nama[index] = tbDiagnosa.getValueAt(i, 2).toString();
                 }
             }
-            
-            Valid.tabelKosong(tabMode2); 
-            for(i=0;i<jml;i++){
-                tabMode2.addRow(new Object[] {
-                    pilih[i],kode[i],nama[i]
-                });
+
+            Valid.tabelKosong(tabMode2);
+            for (i = 0; i < jml; i++) {
+                tabMode2.addRow(new Object[]{pilih[i], kode[i], nama[i]});
             }
-            
+
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-	    utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-Timestamp",utc);
-	    headers.add("X-Signature",api.getHmac(utc));
-            headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utc);
+            headers.add("X-Signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
             requestEntity = new HttpEntity(headers);
-            URL = link+"/referensi/diagnosa/"+Diagnosa.getText();
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            URL = link + "/referensi/diagnosa/" + Diagnosa.getText();
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
-            if(nameNode.path("code").asText().equals("200")){
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                //response = root.path("response");
-                if(response.path("diagnosa").isArray()){
-                    for(JsonNode list:response.path("diagnosa")){
-                        tabMode2.addRow(new Object[]{
-                            false,list.path("kode").asText(),list.path("nama").asText()
-                        });
+            if (nameNode.path("code").asText().equals("200")) {
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc));
+                // response = root.path("response");
+                if (response.path("diagnosa").isArray()) {
+                    for (JsonNode list : response.path("diagnosa")) {
+                        tabMode2.addRow(new Object[]{false, list.path("kode").
+                            asText(), list.path("nama").asText()});
                     }
                 }
-            }else {
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-            }   
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server BPJS terputus...!");
             }
         }
     }
 
     private void tampilProsedur() {
         try {
-            jml=0;
-            for(i=0;i<tbProsedur.getRowCount();i++){
-                if(Valid.SetAngka(tbProsedur.getValueAt(i,0).toString())>0){
+            jml = 0;
+            for (i = 0; i < tbProsedur.getRowCount(); i++) {
+                if (Valid.SetAngka(tbProsedur.getValueAt(i, 0).toString()) > 0) {
                     jml++;
                 }
-            }   
-            pilih=null;
-            pilih=new boolean[jml];
-            kode=null;
-            kode=new String[jml];
-            nama=null;
-            nama=new String[jml];
-            index=0; 
-            for(i=0;i<tbProsedur.getRowCount();i++){
-                if(tbProsedur.getValueAt(i,0).toString().equals("true")){
-                    pilih[index]=true;
-                    kode[index]=tbProsedur.getValueAt(i,1).toString();
-                    nama[index]=tbProsedur.getValueAt(i,2).toString();
+            }
+            pilih = null;
+            pilih = new boolean[jml];
+            kode = null;
+            kode = new String[jml];
+            nama = null;
+            nama = new String[jml];
+            index = 0;
+            for (i = 0; i < tbProsedur.getRowCount(); i++) {
+                if (tbProsedur.getValueAt(i, 0).toString().equals("true")) {
+                    pilih[index] = true;
+                    kode[index] = tbProsedur.getValueAt(i, 1).toString();
+                    nama[index] = tbProsedur.getValueAt(i, 2).toString();
                 }
             }
-            
-            Valid.tabelKosong(tabMode3); 
-            
-            for(i=0;i<jml;i++){
-                tabMode3.addRow(new Object[] {
-                    pilih[i],kode[i],nama[i]
-                });
+
+            Valid.tabelKosong(tabMode3);
+
+            for (i = 0; i < jml; i++) {
+                tabMode3.addRow(new Object[]{pilih[i], kode[i], nama[i]});
             }
-            
+
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-	    utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-Timestamp",utc);
-	    headers.add("X-Signature",api.getHmac(utc));
-            headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utc);
+            headers.add("X-Signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
             requestEntity = new HttpEntity(headers);
-            URL = link+"/referensi/procedure/"+Prosedur.getText();	
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            URL = link + "/referensi/procedure/" + Prosedur.getText();
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
-            if(nameNode.path("code").asText().equals("200")){
-                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                //response = root.path("response");
-                if(response.path("procedure").isArray()){
-                    for(JsonNode list:response.path("procedure")){
-                        tabMode3.addRow(new Object[]{
-                            false,list.path("kode").asText(),list.path("nama").asText()
-                        });
+            if (nameNode.path("code").asText().equals("200")) {
+                response = mapper.readTree(api.Decrypt(root.path("response").
+                        asText(), utc));
+                // response = root.path("response");
+                if (response.path("procedure").isArray()) {
+                    for (JsonNode list : response.path("procedure")) {
+                        tabMode3.addRow(new Object[]{false, list.path("kode").
+                            asText(), list.path("nama").asText()});
                     }
                 }
-            }else {
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());                
-            }   
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
+                | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server BPJS terputus...!");
             }
         }
     }
-    
+
     private void emptTeks() {
         NoRujukan.setText("");
         NoPeserta.setText("");
@@ -1283,14 +1423,13 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Valid.tabelKosong(tabMode3);
         NoRujukan.requestFocus();
     }
-    
+
     /**
      *
      */
     public static class HttpEntityEnclosingDeleteRequest extends HttpEntityEnclosingRequestBase {
 
         /**
-         *
          * @param uri
          */
         public HttpEntityEnclosingDeleteRequest(final URI uri) {
@@ -1303,73 +1442,100 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             return "DELETE";
         }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-      return super.clone(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone(); // Generated from
+            // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        }
+
     }
-    }
-       
+
     /**
-     *
      * @throws Exception
      */
     @Test
     public void bodyWithDeleteRequest() throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         SSLContext sslContext = SSLContext.getInstance("SSL");
-        javax.net.ssl.TrustManager[] trustManagers= {
-            new X509TrustManager() {
-                public X509Certificate[] getAcceptedIssuers() {return null;}
-                public void checkServerTrusted(X509Certificate[] arg0, String arg1)throws CertificateException {}
-                public void checkClientTrusted(X509Certificate[] arg0, String arg1)throws CertificateException {}
-            }
-        };
-        sslContext.init(null,trustManagers , new SecureRandom());
-        SSLSocketFactory sslFactory=new SSLSocketFactory(sslContext,SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        Scheme scheme=new Scheme("https",443,sslFactory);
-    
-        HttpComponentsClientHttpRequestFactory factory=new HttpComponentsClientHttpRequestFactory(){
+        javax.net.ssl.TrustManager[] trustManagers = {new X509TrustManager() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
+                    CertificateException {
+            }
+
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
+                    CertificateException {
+            }
+
+        }};
+        sslContext.init(null, trustManagers, new SecureRandom());
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
+                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        Scheme scheme = new Scheme("https", 443, sslFactory);
+
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
+            @Override
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
+                    URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
-                    return new BPJSRujukanKeluar.HttpEntityEnclosingDeleteRequest(uri);
+                    return new BPJSRujukanKeluar.HttpEntityEnclosingDeleteRequest(
+                            uri);
                 }
                 return super.createHttpUriRequest(httpMethod, uri);
             }
+
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
+                register(scheme);
         restTemplate.setRequestFactory(factory);
-        
+
         try {
-            URL = link+"/Rujukan/Khusus/delete";	
+            URL = link + "/Rujukan/Khusus/delete";
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-            utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("X-Timestamp",utc);
-	    headers.add("X-Signature",api.getHmac(utc));
-            headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
-            requestJson ="{" +
-                            "\"request\": {" +
-                                "\"t_rujukan\": {" +
-                                    "\"idRujukan\": \""+idrujukan+"\"," +
-                                    "\"noRujukan\": \""+tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString()+"\"," +
-                                    "\"user\": \""+user+"\"" +
-                                "}" +
-                            "}" +
-                         "}";            
-            root = mapper.readTree(restTemplate.exchange(URL, HttpMethod.DELETE,new HttpEntity<String>(requestJson,headers), String.class).getBody());
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utc);
+            headers.add("X-Signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+            requestJson = "{" + "\"request\": {" + "\"t_rujukan\": {" + "\"idRujukan\": \"" + idrujukan + "\","
+                    + "\"noRujukan\": \"" + tbProgramPRB.getValueAt(
+                            tbProgramPRB.getSelectedRow(), 0).toString() + "\","
+                    + "\"user\": \"" + user + "\"" + "}" + "}" + "}";
+            root = mapper.readTree(restTemplate
+                    .exchange(URL, HttpMethod.DELETE, new HttpEntity<String>(
+                            requestJson, headers), String.class)
+                    .getBody());
             nameNode = root.path("metaData");
-            System.out.println("code : "+nameNode.path("code").asText());
-            System.out.println("message : "+nameNode.path("message").asText());
-            if(nameNode.path("code").asText().equals("200")){
-                Sequel.meghapus("bridging_rujukan_bpjs_khusus_diagnosa","no_rujukan",tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString());
-                Sequel.meghapus("bridging_rujukan_bpjs_khusus_prosedur","no_rujukan",tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),0).toString());
+            System.out.println("code : " + nameNode.path("code").asText());
+            System.out.println("message : " + nameNode.path("message").asText());
+            if (nameNode.path("code").asText().equals("200")) {
+                Sequel.meghapus("bridging_rujukan_bpjs_khusus_diagnosa",
+                        "no_rujukan",
+                        tbProgramPRB.
+                                getValueAt(tbProgramPRB.getSelectedRow(), 0).
+                                toString());
+                Sequel.meghapus("bridging_rujukan_bpjs_khusus_prosedur",
+                        "no_rujukan",
+                        tbProgramPRB.
+                                getValueAt(tbProgramPRB.getSelectedRow(), 0).
+                                toString());
                 tampil();
-            }else{
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText());
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
             }
-        } catch (Exception e) {            
+        } catch (HeadlessException | IOException | RestClientException e) {
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(BPJSRujukanKhusus.class.
+            getName());
+
 }

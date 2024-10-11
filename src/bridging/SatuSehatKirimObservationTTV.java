@@ -1,782 +1,922 @@
 /*
   By Mas Elkhanza
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
-    private final DefaultTableModel tabModeSuhu,tabModeRespirasi,tabModeNadi,tabModeSpO2,tabModeGCS,tabModeKesadaran,
-                  tabModeTensi,tabModeTB,tabModeBB,tabModeLP;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+
+    private final DefaultTableModel tabModeSuhu, tabModeRespirasi, tabModeNadi, tabModeSpO2, tabModeGCS,
+            tabModeKesadaran, tabModeTensi, tabModeTB, tabModeBB, tabModeLP;
+
+    private sekuel Sequel = new sekuel();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
-    private ResultSet rs;   
-    private int i=0;
-    private String link="",json="",iddokter="",idpasien="",sistole="0",diastole="0";
-    private ApiSatuSehat api=new ApiSatuSehat();
-    private HttpHeaders headers ;
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    private String link = "", json = "", iddokter = "", idpasien = "", sistole = "0", diastole = "0", cekbok = "";
+
+    private ApiSatuSehat api = new ApiSatuSehat();
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private String[] arrSplit;
-    private SatuSehatCekNIK cekViaSatuSehat=new SatuSehatCekNIK();  
-    private StringBuilder htmlContent;  
-    
-    /** Creates new form DlgKamar
+
+    private SatuSehatCekNIK cekViaSatuSehat = new SatuSehatCekNIK();
+
+    private StringBuilder htmlContent;
+
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SatuSehatKirimObservationTTV(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabModeSuhu=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","Suhu (°C)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation Suhu"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+        tabModeSuhu = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "Suhu (°C)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation Suhu"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbSuhu.setModel(tabModeSuhu);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbSuhu.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbSuhu.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSuhu.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbSuhu.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(60);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbSuhu.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeRespirasi=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","Resp(/menit)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation Respirasi"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeRespirasi = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "Resp(/menit)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation Respirasi"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbRespirasi.setModel(tabModeRespirasi);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbRespirasi.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbRespirasi.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRespirasi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbRespirasi.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(70);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbRespirasi.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeNadi=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","Nadi(/menit)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation Nadi"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeNadi = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "Nadi(/menit)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation Nadi"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbNadi.setModel(tabModeNadi);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbNadi.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbNadi.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbNadi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbNadi.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(70);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbNadi.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeSpO2=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","SpO2(%)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation SpO2"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeSpO2 = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "SpO2(%)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation SpO2"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbSpO2.setModel(tabModeSpO2);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbSpO2.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbSpO2.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpO2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbSpO2.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(55);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbSpO2.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeGCS=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","GCS","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation GCS"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeGCS = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "GCS", "Petugas/Dokter/Praktisi",
+                    "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation GCS"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbGCS.setModel(tabModeGCS);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbGCS.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbGCS.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbGCS.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbGCS.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(40);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbGCS.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeKesadaran=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","Kesadaran","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation Kesadaran"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeKesadaran = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "Kesadaran",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation Kesadaran"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbKesadaran.setModel(tabModeKesadaran);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKesadaran.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKesadaran.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKesadaran.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbKesadaran.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(80);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbKesadaran.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeTensi=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","Tensi(mmHg)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation Tensi"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeTensi = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "Tensi(mmHg)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation Tensi"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbTensi.setModel(tabModeTensi);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbTensi.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbTensi.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTensi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbTensi.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(75);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbTensi.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeTB=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","TB(Cm)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation TB"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeTB = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "TB(Cm)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation TB"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbTB.setModel(tabModeTB);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbTB.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbTB.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTB.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbTB.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(45);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbTB.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeBB=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","BB(Kg)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation BB"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeBB = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "BB(Kg)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation BB"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbBB.setModel(tabModeBB);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbBB.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbBB.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBB.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbBB.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(45);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbBB.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeLP=new DefaultTableModel(null,new String[]{
-                "P","Tanggal Registrasi","No.Rawat","No.RM","Nama Pasien","No.KTP Pasien","Stts Rawat","Stts Lanjut",
-                "Tanggal Pulang","ID Encounter","LP(Cm)","Petugas/Dokter/Praktisi","No.KTP Praktisi","Tanggal","Jam",
-                "ID Observation LP"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeLP = new DefaultTableModel(null,
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
+                    "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
+                    "ID Encounter", "LP(Cm)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
+                    "Jam", "ID Observation LP"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
-             Class[] types = new Class[] {
-                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, 
-                 java.lang.String.class
-             };
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            }
+
+            Class[] types = new Class[]{java.lang.Boolean.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbLP.setModel(tabModeLP);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbLP.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbLP.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbLP.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
             TableColumn column = tbLP.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(105);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(70);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(110);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(63);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(63);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(110);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(215);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(45);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(150);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(110);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(65);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(55);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(215);
             }
         }
         tbLP.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         TabRawatMouseClicked(null);
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         TabRawatMouseClicked(null);
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         TabRawatMouseClicked(null);
                     }
                 }
+
             });
-        } 
-        
+        }
+
         try {
-            link=koneksiDB.URLFHIRSATUSEHAT();
+            link = koneksiDB.URLFHIRSATUSEHAT();
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        }    
-        
+            System.out.println("Notif : " + e);
+        }
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -785,6 +925,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         ppPilihSemua = new javax.swing.JMenuItem();
         ppBersihkan = new javax.swing.JMenuItem();
+        ppPilih200 = new javax.swing.JMenuItem();
         LoadHTML = new widget.editorpane();
         internalFrame1 = new widget.InternalFrame();
         jPanel3 = new javax.swing.JPanel();
@@ -804,6 +945,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         jLabel16 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        cekBoxBelumKirim = new widget.CekBox();
         TabRawat = new javax.swing.JTabbedPane();
         Scroll = new widget.ScrollPane();
         tbSuhu = new widget.Table();
@@ -859,6 +1001,22 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
             }
         });
         jPopupMenu1.add(ppBersihkan);
+
+        ppPilih200.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilih200.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppPilih200.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilih200.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilih200.setText("Pilih 200");
+        ppPilih200.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilih200.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilih200.setName("ppPilih200"); // NOI18N
+        ppPilih200.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilih200.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppPilih200ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(ppPilih200);
 
         LoadHTML.setBorder(null);
         LoadHTML.setName("LoadHTML"); // NOI18N
@@ -980,7 +1138,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2022" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-02-2024" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -993,7 +1151,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2022" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-02-2024" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -1030,6 +1188,10 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
             }
         });
         panelGlass9.add(BtnCari);
+
+        cekBoxBelumKirim.setText("Belum Kirim");
+        cekBoxBelumKirim.setName("cekBoxBelumKirim"); // NOI18N
+        panelGlass9.add(cekBoxBelumKirim);
 
         jPanel3.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -1158,896 +1320,1123 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         switch (TabRawat.getSelectedIndex()) {
             case 0:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Suhu (°C)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Suhu (°C)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeSuhu.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbSuhu.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSuhu.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVSuhu.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV SUHU TUBUH<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataSatuSehatObservationTTVSuhu.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV SUHU TUBUH<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 1:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Resp(/menit)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Resp(/menit)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeRespirasi.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbRespirasi.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 1).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 2).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 3).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 4).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 5).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 6).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 7).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 8).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 9).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 10).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 11).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 12).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 13).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 14).toString() + "</td>"
+                                + "<td valign='top'>" + tbRespirasi.
+                                        getValueAt(i, 15).toString() + "</td>"
+                                + "</tr>");
                     }
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVRespirasi.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV RESPIRASI<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File(
+                            "DataSatuSehatObservationTTVRespirasi.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV RESPIRASI<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 2:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nadi(/menit)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nadi(/menit)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeNadi.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbNadi.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbNadi.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVNadi.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV NADI<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataSatuSehatObservationTTVNadi.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV NADI<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 3:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>SpO2(%)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>SpO2(%)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeSpO2.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbSpO2.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbSpO2.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVSpO2.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV SPO2<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataSatuSehatObservationTTVSpO2.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV SPO2<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 4:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>GCS</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>GCS</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeGCS.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbGCS.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbGCS.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVGcs.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV GCS<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataSatuSehatObservationTTVGcs.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV GCS<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 5:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kesadaran</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kesadaran</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeKesadaran.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbKesadaran.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 1).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 2).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 3).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 4).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 5).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 6).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 7).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 8).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 9).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 10).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 11).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 12).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 13).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 14).toString() + "</td>"
+                                + "<td valign='top'>" + tbKesadaran.
+                                        getValueAt(i, 15).toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVKesadaran.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV KESADARAN<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File(
+                            "DataSatuSehatObservationTTVKesadaran.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV KESADARAN<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 6:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tensi(mmHg)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tensi(mmHg)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeTensi.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbTensi.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 10).toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 11).toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 12).toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 13).toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 14).toString() + "</td>"
+                                + "<td valign='top'>" + tbTensi.
+                                        getValueAt(i, 15).toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVTensi.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV TENSI<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataSatuSehatObservationTTVTensi.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV TENSI<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 7:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>TB(Cm)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>TB(Cm)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeTB.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbTB.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbTB.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVTinggiBadan.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV TINGGI BADAN<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File(
+                            "DataSatuSehatObservationTTVTinggiBadan.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV TINGGI BADAN<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 8:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>BB(Kg)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>BB(Kg)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeBB.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbBB.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbBB.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='bbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='bbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVBeratBadan.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='bbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV BERAT BADAN<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File(
+                            "DataSatuSehatObservationTTVBeratBadan.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='bbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV BERAT BADAN<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             case 9:
-                try{
+                try {
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>LP(Cm)</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Registrasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Stts Lanjut</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal Pulang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Encounter</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>LP(Cm)</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Petugas/Dokter/Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.KTP Praktisi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Jam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>ID Observation Suhu</b></td>"
+                            + "</tr>"
                     );
                     for (i = 0; i < tabModeLP.getRowCount(); i++) {
                         htmlContent.append(
-                            "<tr class='isi'>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,1).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,2).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,3).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,4).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,5).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,6).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,7).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,8).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,9).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,10).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,11).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,12).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,13).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,14).toString()+"</td>"+
-                                "<td valign='top'>"+tbLP.getValueAt(i,15).toString()+"</td>"+
-                            "</tr>");
+                                "<tr class='isi'>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 1).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 2).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 3).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 4).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 5).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 6).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 7).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 8).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 9).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 10).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 11).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 12).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 13).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 14).
+                                        toString() + "</td>"
+                                + "<td valign='top'>" + tbLP.getValueAt(i, 15).
+                                        toString() + "</td>"
+                                + "</tr>");
                     }
-                    
+
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='lpl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='1500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='lpl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                    bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                    );
-                    bg.close();
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
+                        bg.write(
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        );
+                    }
 
-                    File f = new File("DataSatuSehatObservationTTVLingkarPerut.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='lpl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV LINGKAR PERUT<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File(
+                            "DataSatuSehatObservationTTVLingkarPerut.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='1500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='lpl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENGIRIMAN SATU SEHAT OBSERVATION-TTV LINGKAR PERUT<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
                 break;
+
             default:
                 break;
         }
-        this.setCursor(Cursor.getDefaultCursor());    
+        this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbSuhu.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -2059,815 +2448,1255 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCari,BtnPrint);
+        } else {
+            Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            for(i=0;i<tbSuhu.getRowCount();i++){
-                if(tbSuhu.getValueAt(i,0).toString().equals("true")&&(!tbSuhu.getValueAt(i,5).toString().isEmpty())&&(!tbSuhu.getValueAt(i,12).toString().isEmpty())&&tbSuhu.getValueAt(i,15).toString().isEmpty()){
+        if (TabRawat.getSelectedIndex() == 0) {
+            for (i = 0; i < tbSuhu.getRowCount(); i++) {
+                if (tbSuhu.getValueAt(i, 0).toString().equals("true") && (!tbSuhu.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbSuhu.
+                        getValueAt(i, 12).toString().isEmpty()) && tbSuhu.
+                        getValueAt(i, 15).toString().isEmpty()) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbSuhu.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbSuhu.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8310-5\"," +
-                                                    "\"display\": \"Body temperature\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbSuhu.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Suhu Badan di "+tbSuhu.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbSuhu.getValueAt(i,4).toString()+" Pada Tanggal "+tbSuhu.getValueAt(i,13).toString()+" Jam "+tbSuhu.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbSuhu.getValueAt(i,13).toString()+"T"+tbSuhu.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbSuhu.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"degree Celsius\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"Cel\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvsuhu","?,?,?,?,?","Observation Suhu",5,new String[]{
-                                    tbSuhu.getValueAt(i,2).toString(),tbSuhu.getValueAt(i,13).toString(),tbSuhu.getValueAt(i,14).toString(),tbSuhu.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbSuhu.setValueAt(response.asText(),i,15);
-                                    tbSuhu.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==1){
-            for(i=0;i<tbRespirasi.getRowCount();i++){
-                if(tbRespirasi.getValueAt(i,0).toString().equals("true")&&(!tbRespirasi.getValueAt(i,5).toString().isEmpty())&&(!tbRespirasi.getValueAt(i,12).toString().isEmpty())&&tbRespirasi.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbRespirasi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbRespirasi.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"9279-1\"," +
-                                                    "\"display\": \"Respiratory rate\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbRespirasi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Respirasi di "+tbRespirasi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbRespirasi.getValueAt(i,4).toString()+" Pada Tanggal "+tbRespirasi.getValueAt(i,13).toString()+" Jam "+tbRespirasi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbRespirasi.getValueAt(i,13).toString()+"T"+tbRespirasi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbRespirasi.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"breaths/minute\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"/min\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvrespirasi","?,?,?,?,?","Observation Respirasi",5,new String[]{
-                                    tbRespirasi.getValueAt(i,2).toString(),tbRespirasi.getValueAt(i,13).toString(),tbRespirasi.getValueAt(i,14).toString(),tbRespirasi.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbRespirasi.setValueAt(response.asText(),i,15);
-                                    tbRespirasi.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==2){
-            for(i=0;i<tbNadi.getRowCount();i++){
-                if(tbNadi.getValueAt(i,0).toString().equals("true")&&(!tbNadi.getValueAt(i,5).toString().isEmpty())&&(!tbNadi.getValueAt(i,12).toString().isEmpty())&&tbNadi.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbNadi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbNadi.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8867-4\"," +
-                                                    "\"display\": \"Heart rate\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbNadi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Nadi di "+tbNadi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbNadi.getValueAt(i,4).toString()+" Pada Tanggal "+tbNadi.getValueAt(i,13).toString()+" Jam "+tbNadi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbNadi.getValueAt(i,13).toString()+"T"+tbNadi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbNadi.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"breaths/minute\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"/min\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvnadi","?,?,?,?,?","Observation Nadi",5,new String[]{
-                                    tbNadi.getValueAt(i,2).toString(),tbNadi.getValueAt(i,13).toString(),tbNadi.getValueAt(i,14).toString(),tbNadi.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbNadi.setValueAt(response.asText(),i,15);
-                                    tbNadi.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==3){
-            for(i=0;i<tbSpO2.getRowCount();i++){
-                if(tbSpO2.getValueAt(i,0).toString().equals("true")&&(!tbSpO2.getValueAt(i,5).toString().isEmpty())&&(!tbSpO2.getValueAt(i,12).toString().isEmpty())&&tbSpO2.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbSpO2.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbSpO2.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"59408-5\"," +
-                                                    "\"display\": \"Oxygen saturation\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbSpO2.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik SpO2  di "+tbSpO2.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien"+tbSpO2.getValueAt(i,4).toString()+" Pada Tanggal "+tbSpO2.getValueAt(i,13).toString()+" Jam "+tbSpO2.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbSpO2.getValueAt(i,13).toString()+"T"+tbSpO2.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbSpO2.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"percent saturation\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"%\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvspo2","?,?,?,?,?","Observation SpO2",5,new String[]{
-                                    tbSpO2.getValueAt(i,2).toString(),tbSpO2.getValueAt(i,13).toString(),tbSpO2.getValueAt(i,14).toString(),tbSpO2.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbSpO2.setValueAt(response.asText(),i,15);
-                                    tbSpO2.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==4){
-            for(i=0;i<tbGCS.getRowCount();i++){
-                if(tbGCS.getValueAt(i,0).toString().equals("true")&&(!tbGCS.getValueAt(i,5).toString().isEmpty())&&(!tbGCS.getValueAt(i,12).toString().isEmpty())&&tbGCS.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbGCS.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbGCS.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"9269-2\"," +
-                                                    "\"display\": \"Glasgow coma score total\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbGCS.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik GCS di "+tbGCS.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbGCS.getValueAt(i,4).toString()+" Pada Tanggal "+tbGCS.getValueAt(i,13).toString()+" Jam "+tbGCS.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbGCS.getValueAt(i,13).toString()+"T"+tbGCS.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbGCS.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"{score}\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf("satu_sehat_observationttvgcs","?,?,?,?,?","Observation GCS",5,new String[]{
-                                    tbGCS.getValueAt(i,2).toString(),tbGCS.getValueAt(i,13).toString(),tbGCS.getValueAt(i,14).toString(),tbGCS.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbGCS.setValueAt(response.asText(),i,15);
-                                    tbGCS.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==5){
-            for(i=0;i<tbKesadaran.getRowCount();i++){
-                if(tbKesadaran.getValueAt(i,0).toString().equals("true")&&(!tbKesadaran.getValueAt(i,5).toString().isEmpty())&&(!tbKesadaran.getValueAt(i,12).toString().isEmpty())&&tbKesadaran.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbKesadaran.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbKesadaran.getValueAt(i,5).toString());
-                        try{
-                            headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"exam\"," +
-                                                        "\"display\": \"Exam\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://snomed.info/sct\"," +
-                                                    "\"code\": \"1104441000000107\"," +
-                                                    "\"display\": \"ACVPU (Alert Confusion Voice Pain Unresponsive) scale score\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbKesadaran.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Kesadaran di "+tbKesadaran.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbKesadaran.getValueAt(i,4).toString()+" Pada Tanggal "+tbKesadaran.getValueAt(i,13).toString()+" Jam "+tbKesadaran.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbKesadaran.getValueAt(i,13).toString()+"T"+tbKesadaran.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueCodeableConcept\": {" +
-                                            "\"text\": \""+tbKesadaran.getValueAt(i,10).toString().replaceAll("Compos Mentis","Alert").replaceAll("Somnolence","Voice").replaceAll("Sopor","Pain").replaceAll("Coma","Unresponsive")+"\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            root = mapper.readTree(json);
-                            response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvkesadaran","?,?,?,?,?","Observation Kesadaran",5,new String[]{
-                                    tbKesadaran.getValueAt(i,2).toString(),tbKesadaran.getValueAt(i,13).toString(),tbKesadaran.getValueAt(i,14).toString(),tbKesadaran.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbKesadaran.setValueAt(response.asText(),i,15);
-                                    tbKesadaran.setValueAt(false,i,0);
-                                }
-                            }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    }
-                }
-            }
-        }else if(TabRawat.getSelectedIndex()==6){
-            for(i=0;i<tbTensi.getRowCount();i++){
-                if(tbTensi.getValueAt(i,0).toString().equals("true")&&(!tbTensi.getValueAt(i,5).toString().isEmpty())&&(!tbTensi.getValueAt(i,12).toString().isEmpty())&&tbTensi.getValueAt(i,15).toString().isEmpty()){
-                    try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbTensi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbTensi.getValueAt(i,5).toString());
-                        arrSplit = tbTensi.getValueAt(i,10).toString().split("/");
-                        sistole="0";
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbSuhu.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbSuhu.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
                         try {
-                            if(!arrSplit[0].isEmpty()){
-                                sistole=arrSplit[0];
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8310-5\","
+                                    + "\"display\": \"Body temperature\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbSuhu.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Suhu Badan di " + tbSuhu.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbSuhu.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbSuhu.
+                                    getValueAt(i, 13).toString() + " Jam " + tbSuhu.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbSuhu.
+                                            getValueAt(i, 13).toString() + "T" + tbSuhu.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbSuhu.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"degree Celsius\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"Cel\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvsuhu",
+                                        "?,?,?,?,?", "Observation Suhu", 5,
+                                        new String[]{
+                                            tbSuhu.getValueAt(i, 2).toString(),
+                                            tbSuhu.getValueAt(i, 13).toString(),
+                                            tbSuhu.getValueAt(i, 14).toString(),
+                                            tbSuhu.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbSuhu.setValueAt(response.asText(), i, 15);
+                                    tbSuhu.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            for (i = 0; i < tbRespirasi.getRowCount(); i++) {
+                if (tbRespirasi.getValueAt(i, 0).toString().equals("true") && (!tbRespirasi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbRespirasi.
+                        getValueAt(i, 12).toString().isEmpty()) && tbRespirasi.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbRespirasi.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbRespirasi.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"9279-1\","
+                                    + "\"display\": \"Respiratory rate\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbRespirasi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Respirasi di " + tbRespirasi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbRespirasi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbRespirasi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbRespirasi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbRespirasi.
+                                            getValueAt(i, 13).toString() + "T" + tbRespirasi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbRespirasi.getValueAt(i,
+                                            10).toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"breaths/minute\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"/min\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvrespirasi",
+                                        "?,?,?,?,?", "Observation Respirasi", 5,
+                                        new String[]{
+                                            tbRespirasi.getValueAt(i, 2).
+                                                    toString(), tbRespirasi.
+                                                    getValueAt(i, 13).toString(),
+                                            tbRespirasi.getValueAt(i, 14).
+                                                    toString(), tbRespirasi.
+                                                    getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbRespirasi.setValueAt(response.asText(), i,
+                                            15);
+                                    tbRespirasi.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 2) {
+            for (i = 0; i < tbNadi.getRowCount(); i++) {
+                if (tbNadi.getValueAt(i, 0).toString().equals("true") && (!tbNadi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbNadi.
+                        getValueAt(i, 12).toString().isEmpty()) && tbNadi.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbNadi.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbNadi.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8867-4\","
+                                    + "\"display\": \"Heart rate\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbNadi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Nadi di " + tbNadi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbNadi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbNadi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbNadi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbNadi.
+                                            getValueAt(i, 13).toString() + "T" + tbNadi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbNadi.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"breaths/minute\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"/min\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvnadi",
+                                        "?,?,?,?,?", "Observation Nadi", 5,
+                                        new String[]{
+                                            tbNadi.getValueAt(i, 2).toString(),
+                                            tbNadi.getValueAt(i, 13).toString(),
+                                            tbNadi.getValueAt(i, 14).toString(),
+                                            tbNadi.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbNadi.setValueAt(response.asText(), i, 15);
+                                    tbNadi.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 3) {
+            for (i = 0; i < tbSpO2.getRowCount(); i++) {
+                if (tbSpO2.getValueAt(i, 0).toString().equals("true") && (!tbSpO2.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbSpO2.
+                        getValueAt(i, 12).toString().isEmpty()) && tbSpO2.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbSpO2.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbSpO2.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"59408-5\","
+                                    + "\"display\": \"Oxygen saturation\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbSpO2.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik SpO2  di " + tbSpO2.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien" + tbSpO2.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbSpO2.
+                                    getValueAt(i, 13).toString() + " Jam " + tbSpO2.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbSpO2.
+                                            getValueAt(i, 13).toString() + "T" + tbSpO2.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbSpO2.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"percent saturation\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"%\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvspo2",
+                                        "?,?,?,?,?", "Observation SpO2", 5,
+                                        new String[]{
+                                            tbSpO2.getValueAt(i, 2).toString(),
+                                            tbSpO2.getValueAt(i, 13).toString(),
+                                            tbSpO2.getValueAt(i, 14).toString(),
+                                            tbSpO2.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbSpO2.setValueAt(response.asText(), i, 15);
+                                    tbSpO2.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 4) {
+            for (i = 0; i < tbGCS.getRowCount(); i++) {
+                if (tbGCS.getValueAt(i, 0).toString().equals("true") && (!tbGCS.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbGCS.
+                        getValueAt(i, 12).toString().isEmpty()) && tbGCS.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbGCS.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbGCS.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"9269-2\","
+                                    + "\"display\": \"Glasgow coma score total\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbGCS.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik GCS di " + tbGCS.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbGCS.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbGCS.
+                                    getValueAt(i, 13).toString() + " Jam " + tbGCS.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbGCS.
+                                            getValueAt(i, 13).toString() + "T" + tbGCS.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbGCS.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"{score}\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf(
+                                        "satu_sehat_observationttvgcs",
+                                        "?,?,?,?,?", "Observation GCS", 5,
+                                        new String[]{
+                                            tbGCS.getValueAt(i, 2).toString(),
+                                            tbGCS.getValueAt(i, 13).toString(),
+                                            tbGCS.getValueAt(i, 14).toString(),
+                                            tbGCS.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbGCS.setValueAt(response.asText(), i, 15);
+                                    tbGCS.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 5) {
+            for (i = 0; i < tbKesadaran.getRowCount(); i++) {
+                if (tbKesadaran.getValueAt(i, 0).toString().equals("true") && (!tbKesadaran.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbKesadaran.
+                        getValueAt(i, 12).toString().isEmpty()) && tbKesadaran.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbKesadaran.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbKesadaran.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
+                            headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"exam\","
+                                    + "\"display\": \"Exam\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://snomed.info/sct\","
+                                    + "\"code\": \"1104441000000107\","
+                                    + "\"display\": \"ACVPU (Alert Confusion Voice Pain Unresponsive) scale score\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbKesadaran.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Kesadaran di " + tbKesadaran.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbKesadaran.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbKesadaran.
+                                    getValueAt(i, 13).toString() + " Jam " + tbKesadaran.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbKesadaran.
+                                            getValueAt(i, 13).toString() + "T" + tbKesadaran.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueCodeableConcept\": {"
+                                    + "\"text\": \"" + tbKesadaran.getValueAt(i,
+                                            10).toString().replaceAll(
+                                                    "Compos Mentis", "Alert").
+                                            replaceAll("Somnolence", "Voice").
+                                            replaceAll("Sopor", "Pain").
+                                            replaceAll("Coma", "Unresponsive") + "\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            root = mapper.readTree(json);
+                            response = root.path("id");
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvkesadaran",
+                                        "?,?,?,?,?", "Observation Kesadaran", 5,
+                                        new String[]{
+                                            tbKesadaran.getValueAt(i, 2).
+                                                    toString(), tbKesadaran.
+                                                    getValueAt(i, 13).toString(),
+                                            tbKesadaran.getValueAt(i, 14).
+                                                    toString(), tbKesadaran.
+                                                    getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbKesadaran.setValueAt(response.asText(), i,
+                                            15);
+                                    tbKesadaran.setValueAt(false, i, 0);
+                                }
+                            }
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    }
+                }
+            }
+        } else if (TabRawat.getSelectedIndex() == 6) {
+            for (i = 0; i < tbTensi.getRowCount(); i++) {
+                if (tbTensi.getValueAt(i, 0).toString().equals("true") && (!tbTensi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbTensi.
+                        getValueAt(i, 12).toString().isEmpty()) && tbTensi.
+                        getValueAt(i, 15).toString().isEmpty()) {
+                    try {
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbTensi.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbTensi.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        arrSplit = tbTensi.getValueAt(i, 10).toString().split(
+                                "/");
+                        sistole = "0";
+                        try {
+                            if (!arrSplit[0].isEmpty()) {
+                                sistole = arrSplit[0];
                             }
                         } catch (Exception e) {
-                            sistole="0";
+                            sistole = "0";
                         }
-                        diastole="0";
+                        diastole = "0";
                         try {
-                            if(!arrSplit[1].isEmpty()){
-                                diastole=arrSplit[1];
+                            if (!arrSplit[1].isEmpty()) {
+                                diastole = arrSplit[1];
                             }
                         } catch (Exception e) {
-                            diastole="0";
+                            diastole = "0";
                         }
-                        try{
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"35094-2\"," +
-                                                    "\"display\": \"Blood pressure panel\"" +
-                                                "}" +
-                                            "]," +
-                                            "\"text\": \"Blood pressure systolic & diastolic\"" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbTensi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Tensi di "+tbTensi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbTensi.getValueAt(i,4).toString()+" Pada Tanggal "+tbTensi.getValueAt(i,13).toString()+" Jam "+tbTensi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbTensi.getValueAt(i,13).toString()+"T"+tbTensi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"component\" : ["+
-                                            "{" +
-                                                "\"code\" : {" +
-                                                    "\"coding\" : ["+
-                                                        "{" +
-                                                            "\"system\" : \"http://loinc.org\"," +
-                                                            "\"code\" : \"8480-6\"," +
-                                                            "\"display\" : \"Systolic blood pressure\"" +
-                                                        "}" +
-                                                    "]" +
-                                                "}," +
-                                                "\"valueQuantity\" : {" +
-                                                    "\"value\" : "+sistole+"," +
-                                                    "\"unit\" : \"mmHg\"," +
-                                                    "\"system\" : \"http://unitsofmeasure.org\"," +
-                                                    "\"code\" : \"mm[Hg]\"" +
-                                                "}" +
-                                            "}," +
-                                            "{" +
-                                                "\"code\" : {" +
-                                                    "\"coding\" : ["+
-                                                        "{" +
-                                                            "\"system\" : \"http://loinc.org\"," +
-                                                            "\"code\" : \"8462-4\"," +
-                                                            "\"display\" : \"Diastolic blood pressure\"" +
-                                                        "}"+
-                                                    "]" +
-                                                "}," +
-                                                "\"valueQuantity\" : {" +
-                                                    "\"value\" : "+diastole+"," +
-                                                    "\"unit\" : \"mmHg\"," +
-                                                    "\"system\" : \"http://unitsofmeasure.org\"," +
-                                                    "\"code\" : \"mm[Hg]\"" +
-                                                "}" +
-                                            "}"+
-                                        "]" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"35094-2\","
+                                    + "\"display\": \"Blood pressure panel\""
+                                    + "}"
+                                    + "],"
+                                    + "\"text\": \"Blood pressure systolic & diastolic\""
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbTensi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Tensi di " + tbTensi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbTensi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbTensi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbTensi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbTensi.
+                                            getValueAt(i, 13).toString() + "T" + tbTensi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"component\" : ["
+                                    + "{"
+                                    + "\"code\" : {"
+                                    + "\"coding\" : ["
+                                    + "{"
+                                    + "\"system\" : \"http://loinc.org\","
+                                    + "\"code\" : \"8480-6\","
+                                    + "\"display\" : \"Systolic blood pressure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"valueQuantity\" : {"
+                                    + "\"value\" : " + sistole + ","
+                                    + "\"unit\" : \"mmHg\","
+                                    + "\"system\" : \"http://unitsofmeasure.org\","
+                                    + "\"code\" : \"mm[Hg]\""
+                                    + "}"
+                                    + "},"
+                                    + "{"
+                                    + "\"code\" : {"
+                                    + "\"coding\" : ["
+                                    + "{"
+                                    + "\"system\" : \"http://loinc.org\","
+                                    + "\"code\" : \"8462-4\","
+                                    + "\"display\" : \"Diastolic blood pressure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"valueQuantity\" : {"
+                                    + "\"value\" : " + diastole + ","
+                                    + "\"unit\" : \"mmHg\","
+                                    + "\"system\" : \"http://unitsofmeasure.org\","
+                                    + "\"code\" : \"mm[Hg]\""
+                                    + "}"
+                                    + "}"
+                                    + "]"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
                             root = mapper.readTree(json);
                             response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvtensi","?,?,?,?,?","Observation Tensi",5,new String[]{
-                                    tbTensi.getValueAt(i,2).toString(),tbTensi.getValueAt(i,13).toString(),tbTensi.getValueAt(i,14).toString(),tbTensi.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbTensi.setValueAt(response.asText(),i,15);
-                                    tbTensi.setValueAt(false,i,0);
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvtensi",
+                                        "?,?,?,?,?", "Observation Tensi", 5,
+                                        new String[]{
+                                            tbTensi.getValueAt(i, 2).toString(),
+                                            tbTensi.getValueAt(i, 13).toString(),
+                                            tbTensi.getValueAt(i, 14).toString(),
+                                            tbTensi.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbTensi.setValueAt(response.asText(), i, 15);
+                                    tbTensi.setValueAt(false, i, 0);
                                 }
                             }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==7){
-            for(i=0;i<tbTB.getRowCount();i++){
-                if(tbTB.getValueAt(i,0).toString().equals("true")&&(!tbTB.getValueAt(i,5).toString().isEmpty())&&(!tbTB.getValueAt(i,12).toString().isEmpty())&&tbTB.getValueAt(i,15).toString().isEmpty()){
+        } else if (TabRawat.getSelectedIndex() == 7) {
+            for (i = 0; i < tbTB.getRowCount(); i++) {
+                if (tbTB.getValueAt(i, 0).toString().equals("true") && (!tbTB.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbTB.
+                        getValueAt(i, 12).toString().isEmpty()) && tbTB.
+                        getValueAt(i, 15).toString().isEmpty()) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbTB.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbTB.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbTB.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbTB.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8302-2\"," +
-                                                    "\"display\": \"Body height\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbTB.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Tinggi Badan di "+tbTB.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbTB.getValueAt(i,4).toString()+" Pada Tanggal "+tbTB.getValueAt(i,13).toString()+" Jam "+tbTB.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbTB.getValueAt(i,13).toString()+"T"+tbTB.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbTB.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"centimeter\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"cm\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8302-2\","
+                                    + "\"display\": \"Body height\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbTB.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Tinggi Badan di " + tbTB.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbTB.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbTB.
+                                    getValueAt(i, 13).toString() + " Jam " + tbTB.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbTB.
+                                            getValueAt(i, 13).toString() + "T" + tbTB.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbTB.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"centimeter\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"cm\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
                             root = mapper.readTree(json);
                             response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvtb","?,?,?,?,?","Observation TB",5,new String[]{
-                                    tbTB.getValueAt(i,2).toString(),tbTB.getValueAt(i,13).toString(),tbTB.getValueAt(i,14).toString(),tbTB.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbTB.setValueAt(response.asText(),i,15);
-                                    tbTB.setValueAt(false,i,0);
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvtb",
+                                        "?,?,?,?,?", "Observation TB", 5,
+                                        new String[]{
+                                            tbTB.getValueAt(i, 2).toString(),
+                                            tbTB.getValueAt(i, 13).toString(),
+                                            tbTB.getValueAt(i, 14).toString(),
+                                            tbTB.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbTB.setValueAt(response.asText(), i, 15);
+                                    tbTB.setValueAt(false, i, 0);
                                 }
                             }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==8){
-            for(i=0;i<tbBB.getRowCount();i++){
-                if(tbBB.getValueAt(i,0).toString().equals("true")&&(!tbBB.getValueAt(i,5).toString().isEmpty())&&(!tbBB.getValueAt(i,12).toString().isEmpty())&&tbBB.getValueAt(i,15).toString().isEmpty()){
+        } else if (TabRawat.getSelectedIndex() == 8) {
+            for (i = 0; i < tbBB.getRowCount(); i++) {
+                if (tbBB.getValueAt(i, 0).toString().equals("true") && (!tbBB.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbBB.
+                        getValueAt(i, 12).toString().isEmpty()) && tbBB.
+                        getValueAt(i, 15).toString().isEmpty()) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbBB.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbBB.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbBB.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbBB.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"29463-7\"," +
-                                                    "\"display\": \"Body Weight\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbBB.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Berat Badan di "+tbBB.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbBB.getValueAt(i,4).toString()+" Pada Tanggal "+tbBB.getValueAt(i,13).toString()+" Jam "+tbBB.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbBB.getValueAt(i,13).toString()+"T"+tbBB.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbBB.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"kilogram\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"kg\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"29463-7\","
+                                    + "\"display\": \"Body Weight\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbBB.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Berat Badan di " + tbBB.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbBB.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbBB.
+                                    getValueAt(i, 13).toString() + " Jam " + tbBB.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbBB.
+                                            getValueAt(i, 13).toString() + "T" + tbBB.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbBB.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"kilogram\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"kg\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
                             root = mapper.readTree(json);
                             response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvbb","?,?,?,?,?","Observation BB",5,new String[]{
-                                    tbBB.getValueAt(i,2).toString(),tbBB.getValueAt(i,13).toString(),tbBB.getValueAt(i,14).toString(),tbBB.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbBB.setValueAt(response.asText(),i,15);
-                                    tbBB.setValueAt(false,i,0);
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvbb",
+                                        "?,?,?,?,?", "Observation BB", 5,
+                                        new String[]{
+                                            tbBB.getValueAt(i, 2).toString(),
+                                            tbBB.getValueAt(i, 13).toString(),
+                                            tbBB.getValueAt(i, 14).toString(),
+                                            tbBB.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbBB.setValueAt(response.asText(), i, 15);
+                                    tbBB.setValueAt(false, i, 0);
                                 }
                             }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==9){
-            for(i=0;i<tbLP.getRowCount();i++){
-                if(tbLP.getValueAt(i,0).toString().equals("true")&&(!tbLP.getValueAt(i,5).toString().isEmpty())&&(!tbLP.getValueAt(i,12).toString().isEmpty())&&tbLP.getValueAt(i,15).toString().isEmpty()){
+        } else if (TabRawat.getSelectedIndex() == 9) {
+            for (i = 0; i < tbLP.getRowCount(); i++) {
+                if (tbLP.getValueAt(i, 0).toString().equals("true") && (!tbLP.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbLP.
+                        getValueAt(i, 12).toString().isEmpty()) && tbLP.
+                        getValueAt(i, 15).toString().isEmpty()) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbLP.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbLP.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbLP.
+                                getValueAt(i, 12).toString());
+                        Thread.sleep(1500);
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbLP.
+                                getValueAt(i, 5).toString());
+                        Thread.sleep(1500);
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8280-0\"," +
-                                                    "\"display\": \"Waist Circumference at umbilicus by Tape measure\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbLP.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Lingkar Perut di "+tbLP.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbLP.getValueAt(i,4).toString()+" Pada Tanggal "+tbLP.getValueAt(i,13).toString()+" Jam "+tbLP.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbLP.getValueAt(i,13).toString()+"T"+tbLP.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbLP.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"centimeter\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"cm\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation");
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation", HttpMethod.POST, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8280-0\","
+                                    + "\"display\": \"Waist Circumference at umbilicus by Tape measure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbLP.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Lingkar Perut di " + tbLP.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbLP.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbLP.
+                                    getValueAt(i, 13).toString() + " Jam " + tbLP.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbLP.
+                                            getValueAt(i, 13).toString() + "T" + tbLP.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbLP.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"centimeter\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"cm\""
+                                    + "}"
+                                    + "}";
+                            System.out.println("URL : " + link + "/Observation");
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(link + "/Observation",
+                                    HttpMethod.POST, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
                             root = mapper.readTree(json);
                             response = root.path("id");
-                            if(!response.asText().isEmpty()){
-                                if(Sequel.menyimpantf2("satu_sehat_observationttvlp","?,?,?,?,?","Observation LP",5,new String[]{
-                                    tbLP.getValueAt(i,2).toString(),tbLP.getValueAt(i,13).toString(),tbLP.getValueAt(i,14).toString(),tbLP.getValueAt(i,7).toString(),response.asText()
-                                })==true){
-                                    tbLP.setValueAt(response.asText(),i,15);
-                                    tbLP.setValueAt(false,i,0);
+                            if (!response.asText().isEmpty()) {
+                                if (Sequel.menyimpantf2(
+                                        "satu_sehat_observationttvlp",
+                                        "?,?,?,?,?", "Observation LP", 5,
+                                        new String[]{
+                                            tbLP.getValueAt(i, 2).toString(),
+                                            tbLP.getValueAt(i, 13).toString(),
+                                            tbLP.getValueAt(i, 14).toString(),
+                                            tbLP.getValueAt(i, 7).toString(),
+                                            response.asText()
+                                        }) == true) {
+                                    tbLP.setValueAt(response.asText(), i, 15);
+                                    tbLP.setValueAt(false, i, 0);
                                 }
                             }
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            Thread.sleep(1500);
+                        } catch (HttpClientErrorException | HttpServerErrorException ea) {
+                            // Handle client and server errors
+                            System.err.println(
+                                    "Error Response Status Code: " + ea.
+                                            getStatusCode());
+
+                            // You can further parse the error response body if needed
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.
+                                    getResponseBodyAsString());
+                            ObjectWriter writer = mapper.
+                                    writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.
+                                    writeValueAsString(errorResponse);
+                            System.err.println(
+                                    "Error Response JSON: \n" + prettyErrorResponse);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
@@ -2877,45 +3706,55 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     private void ppPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemuaActionPerformed
         switch (TabRawat.getSelectedIndex()) {
             case 0:
-                for(i=0;i<tbSuhu.getRowCount();i++){
-                    tbSuhu.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbSuhu.getRowCount(); i++) {
+                    tbSuhu.setValueAt(true, i, 0);
+                }
+                break;
             case 1:
-                for(i=0;i<tbRespirasi.getRowCount();i++){
-                    tbRespirasi.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbRespirasi.getRowCount(); i++) {
+                    tbRespirasi.setValueAt(true, i, 0);
+                }
+                break;
             case 2:
-                for(i=0;i<tbNadi.getRowCount();i++){
-                    tbNadi.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbNadi.getRowCount(); i++) {
+                    tbNadi.setValueAt(true, i, 0);
+                }
+                break;
             case 3:
-                for(i=0;i<tbSpO2.getRowCount();i++){
-                    tbSpO2.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbSpO2.getRowCount(); i++) {
+                    tbSpO2.setValueAt(true, i, 0);
+                }
+                break;
             case 4:
-                for(i=0;i<tbGCS.getRowCount();i++){
-                    tbGCS.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbGCS.getRowCount(); i++) {
+                    tbGCS.setValueAt(true, i, 0);
+                }
+                break;
             case 5:
-                for(i=0;i<tbKesadaran.getRowCount();i++){
-                    tbKesadaran.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbKesadaran.getRowCount(); i++) {
+                    tbKesadaran.setValueAt(true, i, 0);
+                }
+                break;
             case 6:
-                for(i=0;i<tbTensi.getRowCount();i++){
-                    tbTensi.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbTensi.getRowCount(); i++) {
+                    tbTensi.setValueAt(true, i, 0);
+                }
+                break;
             case 7:
-                for(i=0;i<tbTB.getRowCount();i++){
-                    tbTB.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbTB.getRowCount(); i++) {
+                    tbTB.setValueAt(true, i, 0);
+                }
+                break;
             case 8:
-                for(i=0;i<tbBB.getRowCount();i++){
-                    tbBB.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbBB.getRowCount(); i++) {
+                    tbBB.setValueAt(true, i, 0);
+                }
+                break;
             case 9:
-                for(i=0;i<tbLP.getRowCount();i++){
-                    tbLP.setValueAt(true,i,0);
-                }   break;
+                for (i = 0; i < tbLP.getRowCount(); i++) {
+                    tbLP.setValueAt(true, i, 0);
+                }
+                break;
             default:
                 break;
         }
@@ -2924,755 +3763,1003 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
         switch (TabRawat.getSelectedIndex()) {
             case 0:
-                for(i=0;i<tbSuhu.getRowCount();i++){
-                    tbSuhu.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbSuhu.getRowCount(); i++) {
+                    tbSuhu.setValueAt(false, i, 0);
+                }
+                break;
             case 1:
-                for(i=0;i<tbRespirasi.getRowCount();i++){
-                    tbRespirasi.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbRespirasi.getRowCount(); i++) {
+                    tbRespirasi.setValueAt(false, i, 0);
+                }
+                break;
             case 2:
-                for(i=0;i<tbNadi.getRowCount();i++){
-                    tbNadi.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbNadi.getRowCount(); i++) {
+                    tbNadi.setValueAt(false, i, 0);
+                }
+                break;
             case 3:
-                for(i=0;i<tbSpO2.getRowCount();i++){
-                    tbSpO2.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbSpO2.getRowCount(); i++) {
+                    tbSpO2.setValueAt(false, i, 0);
+                }
+                break;
             case 4:
-                for(i=0;i<tbGCS.getRowCount();i++){
-                    tbGCS.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbGCS.getRowCount(); i++) {
+                    tbGCS.setValueAt(false, i, 0);
+                }
+                break;
             case 5:
-                for(i=0;i<tbKesadaran.getRowCount();i++){
-                    tbKesadaran.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbKesadaran.getRowCount(); i++) {
+                    tbKesadaran.setValueAt(false, i, 0);
+                }
+                break;
             case 6:
-                for(i=0;i<tbTensi.getRowCount();i++){
-                    tbTensi.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbTensi.getRowCount(); i++) {
+                    tbTensi.setValueAt(false, i, 0);
+                }
+                break;
             case 7:
-                for(i=0;i<tbTB.getRowCount();i++){
-                    tbTB.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbTB.getRowCount(); i++) {
+                    tbTB.setValueAt(false, i, 0);
+                }
+                break;
             case 8:
-                for(i=0;i<tbBB.getRowCount();i++){
-                    tbBB.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbBB.getRowCount(); i++) {
+                    tbBB.setValueAt(false, i, 0);
+                }
+                break;
             case 9:
-                for(i=0;i<tbLP.getRowCount();i++){
-                    tbLP.setValueAt(false,i,0);
-                }   break;
+                for (i = 0; i < tbLP.getRowCount(); i++) {
+                    tbLP.setValueAt(false, i, 0);
+                }
+                break;
             default:
                 break;
         }
     }//GEN-LAST:event_ppBersihkanActionPerformed
 
     private void BtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUpdateActionPerformed
-        if(TabRawat.getSelectedIndex()==0){
-            for(i=0;i<tbSuhu.getRowCount();i++){
-                if(tbSuhu.getValueAt(i,0).toString().equals("true")&&(!tbSuhu.getValueAt(i,5).toString().isEmpty())&&(!tbSuhu.getValueAt(i,12).toString().isEmpty())&&(!tbSuhu.getValueAt(i,15).toString().isEmpty())){
+        if (TabRawat.getSelectedIndex() == 0) {
+            for (i = 0; i < tbSuhu.getRowCount(); i++) {
+                if (tbSuhu.getValueAt(i, 0).toString().equals("true") && (!tbSuhu.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbSuhu.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbSuhu.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbSuhu.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbSuhu.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbSuhu.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbSuhu.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbSuhu.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8310-5\"," +
-                                                    "\"display\": \"Body temperature\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbSuhu.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Suhu Badan di "+tbSuhu.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbSuhu.getValueAt(i,4).toString()+" Pada Tanggal "+tbSuhu.getValueAt(i,13).toString()+" Jam "+tbSuhu.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbSuhu.getValueAt(i,13).toString()+"T"+tbSuhu.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbSuhu.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"degree Celsius\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"Cel\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbSuhu.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbSuhu.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbSuhu.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbSuhu.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8310-5\","
+                                    + "\"display\": \"Body temperature\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbSuhu.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Suhu Badan di " + tbSuhu.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbSuhu.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbSuhu.
+                                    getValueAt(i, 13).toString() + " Jam " + tbSuhu.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbSuhu.
+                                            getValueAt(i, 13).toString() + "T" + tbSuhu.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbSuhu.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"degree Celsius\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"Cel\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbSuhu.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbSuhu.
+                                            getValueAt(i, 15).toString(),
+                                    HttpMethod.PUT, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbSuhu.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==1){
-            for(i=0;i<tbRespirasi.getRowCount();i++){
-                if(tbRespirasi.getValueAt(i,0).toString().equals("true")&&(!tbRespirasi.getValueAt(i,5).toString().isEmpty())&&(!tbRespirasi.getValueAt(i,12).toString().isEmpty())&&(!tbRespirasi.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            for (i = 0; i < tbRespirasi.getRowCount(); i++) {
+                if (tbRespirasi.getValueAt(i, 0).toString().equals("true") && (!tbRespirasi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbRespirasi.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbRespirasi.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbRespirasi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbRespirasi.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbRespirasi.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbRespirasi.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbRespirasi.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"9279-1\"," +
-                                                    "\"display\": \"Respiratory rate\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbRespirasi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Respirasi di "+tbRespirasi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbRespirasi.getValueAt(i,4).toString()+" Pada Tanggal "+tbRespirasi.getValueAt(i,13).toString()+" Jam "+tbRespirasi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbRespirasi.getValueAt(i,13).toString()+"T"+tbRespirasi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbRespirasi.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"breaths/minute\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"/min\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbRespirasi.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbRespirasi.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbRespirasi.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbRespirasi.getValueAt(i,
+                                            15).toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"9279-1\","
+                                    + "\"display\": \"Respiratory rate\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbRespirasi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Respirasi di " + tbRespirasi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbRespirasi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbRespirasi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbRespirasi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbRespirasi.
+                                            getValueAt(i, 13).toString() + "T" + tbRespirasi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbRespirasi.getValueAt(i,
+                                            10).toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"breaths/minute\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"/min\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbRespirasi.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbRespirasi.
+                                            getValueAt(i, 15).toString(),
+                                    HttpMethod.PUT, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbRespirasi.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==2){
-            for(i=0;i<tbNadi.getRowCount();i++){
-                if(tbNadi.getValueAt(i,0).toString().equals("true")&&(!tbNadi.getValueAt(i,5).toString().isEmpty())&&(!tbNadi.getValueAt(i,12).toString().isEmpty())&&(!tbNadi.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 2) {
+            for (i = 0; i < tbNadi.getRowCount(); i++) {
+                if (tbNadi.getValueAt(i, 0).toString().equals("true") && (!tbNadi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbNadi.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbNadi.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbNadi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbNadi.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbNadi.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbNadi.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbNadi.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8867-4\"," +
-                                                    "\"display\": \"Heart rate\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbNadi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Nadi di "+tbNadi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbNadi.getValueAt(i,4).toString()+" Pada Tanggal "+tbNadi.getValueAt(i,13).toString()+" Jam "+tbNadi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbNadi.getValueAt(i,13).toString()+"T"+tbNadi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbNadi.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"breaths/minute\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"/min\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbNadi.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbNadi.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbNadi.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbNadi.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8867-4\","
+                                    + "\"display\": \"Heart rate\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbNadi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Nadi di " + tbNadi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbNadi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbNadi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbNadi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbNadi.
+                                            getValueAt(i, 13).toString() + "T" + tbNadi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbNadi.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"breaths/minute\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"/min\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbNadi.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbNadi.
+                                            getValueAt(i, 15).toString(),
+                                    HttpMethod.PUT, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbNadi.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==3){
-            for(i=0;i<tbSpO2.getRowCount();i++){
-                if(tbSpO2.getValueAt(i,0).toString().equals("true")&&(!tbSpO2.getValueAt(i,5).toString().isEmpty())&&(!tbSpO2.getValueAt(i,12).toString().isEmpty())&&(!tbSpO2.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 3) {
+            for (i = 0; i < tbSpO2.getRowCount(); i++) {
+                if (tbSpO2.getValueAt(i, 0).toString().equals("true") && (!tbSpO2.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbSpO2.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbSpO2.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbSpO2.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbSpO2.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbSpO2.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbSpO2.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbSpO2.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"59408-5\"," +
-                                                    "\"display\": \"Oxygen saturation\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbSpO2.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik SpO2 di "+tbSpO2.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbSpO2.getValueAt(i,4).toString()+" Pada Tanggal "+tbSpO2.getValueAt(i,13).toString()+" Jam "+tbSpO2.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbSpO2.getValueAt(i,13).toString()+"T"+tbSpO2.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbSpO2.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"percent saturation\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"%\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbSpO2.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbSpO2.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbSpO2.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbSpO2.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"59408-5\","
+                                    + "\"display\": \"Oxygen saturation\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbSpO2.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik SpO2 di " + tbSpO2.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbSpO2.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbSpO2.
+                                    getValueAt(i, 13).toString() + " Jam " + tbSpO2.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbSpO2.
+                                            getValueAt(i, 13).toString() + "T" + tbSpO2.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbSpO2.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"percent saturation\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"%\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbSpO2.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbSpO2.
+                                            getValueAt(i, 15).toString(),
+                                    HttpMethod.PUT, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbSpO2.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==4){
-            for(i=0;i<tbGCS.getRowCount();i++){
-                if(tbGCS.getValueAt(i,0).toString().equals("true")&&(!tbGCS.getValueAt(i,5).toString().isEmpty())&&(!tbGCS.getValueAt(i,12).toString().isEmpty())&&(!tbGCS.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 4) {
+            for (i = 0; i < tbGCS.getRowCount(); i++) {
+                if (tbGCS.getValueAt(i, 0).toString().equals("true") && (!tbGCS.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbGCS.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbGCS.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbGCS.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbGCS.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbGCS.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbGCS.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbGCS.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"9269-2\"," +
-                                                    "\"display\": \"Glasgow coma score total\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbGCS.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik GCS di "+tbGCS.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbGCS.getValueAt(i,4).toString()+" Pada Tanggal "+tbGCS.getValueAt(i,13).toString()+" Jam "+tbGCS.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbGCS.getValueAt(i,13).toString()+"T"+tbGCS.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbGCS.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"{score}\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbGCS.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbGCS.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbGCS.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbGCS.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"9269-2\","
+                                    + "\"display\": \"Glasgow coma score total\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbGCS.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik GCS di " + tbGCS.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbGCS.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbGCS.
+                                    getValueAt(i, 13).toString() + " Jam " + tbGCS.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbGCS.
+                                            getValueAt(i, 13).toString() + "T" + tbGCS.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbGCS.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"{score}\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbGCS.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbGCS.getValueAt(i,
+                                            15).toString(), HttpMethod.PUT,
+                                    requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbGCS.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==5){
-            for(i=0;i<tbKesadaran.getRowCount();i++){
-                if(tbKesadaran.getValueAt(i,0).toString().equals("true")&&(!tbKesadaran.getValueAt(i,5).toString().isEmpty())&&(!tbKesadaran.getValueAt(i,12).toString().isEmpty())&&(!tbKesadaran.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 5) {
+            for (i = 0; i < tbKesadaran.getRowCount(); i++) {
+                if (tbKesadaran.getValueAt(i, 0).toString().equals("true") && (!tbKesadaran.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbKesadaran.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbKesadaran.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbKesadaran.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbKesadaran.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbKesadaran.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbKesadaran.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbKesadaran.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"exam\"," +
-                                                        "\"display\": \"Exam\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://snomed.info/sct\"," +
-                                                    "\"code\": \"1104441000000107\"," +
-                                                    "\"display\": \"ACVPU (Alert Confusion Voice Pain Unresponsive) scale score\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbKesadaran.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Kesadaran di "+tbKesadaran.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbKesadaran.getValueAt(i,4).toString()+" Pada Tanggal "+tbKesadaran.getValueAt(i,13).toString()+" Jam "+tbKesadaran.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbKesadaran.getValueAt(i,13).toString()+"T"+tbKesadaran.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueCodeableConcept\": {" +
-                                            "\"text\": \""+tbKesadaran.getValueAt(i,10).toString().replaceAll("Compos Mentis","Alert").replaceAll("Somnolence","Voice").replaceAll("Sopor","Pain").replaceAll("Coma","Unresponsive")+"\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbKesadaran.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbKesadaran.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbKesadaran.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbKesadaran.getValueAt(i,
+                                            15).toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"exam\","
+                                    + "\"display\": \"Exam\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://snomed.info/sct\","
+                                    + "\"code\": \"1104441000000107\","
+                                    + "\"display\": \"ACVPU (Alert Confusion Voice Pain Unresponsive) scale score\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbKesadaran.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Kesadaran di " + tbKesadaran.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbKesadaran.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbKesadaran.
+                                    getValueAt(i, 13).toString() + " Jam " + tbKesadaran.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbKesadaran.
+                                            getValueAt(i, 13).toString() + "T" + tbKesadaran.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueCodeableConcept\": {"
+                                    + "\"text\": \"" + tbKesadaran.getValueAt(i,
+                                            10).toString().replaceAll(
+                                                    "Compos Mentis", "Alert").
+                                            replaceAll("Somnolence", "Voice").
+                                            replaceAll("Sopor", "Pain").
+                                            replaceAll("Coma", "Unresponsive") + "\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbKesadaran.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbKesadaran.
+                                            getValueAt(i, 15).toString(),
+                                    HttpMethod.PUT, requestEntity, String.class).
+                                    getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbKesadaran.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==6){
-            for(i=0;i<tbTensi.getRowCount();i++){
-                if(tbTensi.getValueAt(i,0).toString().equals("true")&&(!tbTensi.getValueAt(i,5).toString().isEmpty())&&(!tbTensi.getValueAt(i,12).toString().isEmpty())&&(!tbTensi.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 6) {
+            for (i = 0; i < tbTensi.getRowCount(); i++) {
+                if (tbTensi.getValueAt(i, 0).toString().equals("true") && (!tbTensi.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbTensi.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbTensi.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbTensi.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbTensi.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbTensi.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbTensi.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbTensi.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"35094-2\"," +
-                                                    "\"display\": \"Blood pressure panel\"" +
-                                                "}" +
-                                            "]," +
-                                            "\"text\": \"Blood pressure systolic & diastolic\"" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbTensi.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Tensi di "+tbTensi.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbTensi.getValueAt(i,4).toString()+" Pada Tanggal "+tbTensi.getValueAt(i,13).toString()+" Jam "+tbTensi.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbTensi.getValueAt(i,13).toString()+"T"+tbTensi.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"component\" : ["+
-                                            "{" +
-                                                "\"code\" : {" +
-                                                    "\"coding\" : ["+
-                                                        "{" +
-                                                            "\"system\" : \"http://loinc.org\"," +
-                                                            "\"code\" : \"8480-6\"," +
-                                                            "\"display\" : \"Systolic blood pressure\"" +
-                                                        "}" +
-                                                    "]" +
-                                                "}," +
-                                                "\"valueQuantity\" : {" +
-                                                    "\"value\" : "+sistole+"," +
-                                                    "\"unit\" : \"mmHg\"," +
-                                                    "\"system\" : \"http://unitsofmeasure.org\"," +
-                                                    "\"code\" : \"mm[Hg]\"" +
-                                                "}" +
-                                            "}," +
-                                            "{" +
-                                                "\"code\" : {" +
-                                                    "\"coding\" : ["+
-                                                        "{" +
-                                                            "\"system\" : \"http://loinc.org\"," +
-                                                            "\"code\" : \"8462-4\"," +
-                                                            "\"display\" : \"Diastolic blood pressure\"" +
-                                                        "}"+
-                                                    "]" +
-                                                "}," +
-                                                "\"valueQuantity\" : {" +
-                                                    "\"value\" : "+diastole+"," +
-                                                    "\"unit\" : \"mmHg\"," +
-                                                    "\"system\" : \"http://unitsofmeasure.org\"," +
-                                                    "\"code\" : \"mm[Hg]\"" +
-                                                "}" +
-                                            "}"+
-                                        "]" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbTensi.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbTensi.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbTensi.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbTensi.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"35094-2\","
+                                    + "\"display\": \"Blood pressure panel\""
+                                    + "}"
+                                    + "],"
+                                    + "\"text\": \"Blood pressure systolic & diastolic\""
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbTensi.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Tensi di " + tbTensi.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbTensi.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbTensi.
+                                    getValueAt(i, 13).toString() + " Jam " + tbTensi.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbTensi.
+                                            getValueAt(i, 13).toString() + "T" + tbTensi.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"component\" : ["
+                                    + "{"
+                                    + "\"code\" : {"
+                                    + "\"coding\" : ["
+                                    + "{"
+                                    + "\"system\" : \"http://loinc.org\","
+                                    + "\"code\" : \"8480-6\","
+                                    + "\"display\" : \"Systolic blood pressure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"valueQuantity\" : {"
+                                    + "\"value\" : " + sistole + ","
+                                    + "\"unit\" : \"mmHg\","
+                                    + "\"system\" : \"http://unitsofmeasure.org\","
+                                    + "\"code\" : \"mm[Hg]\""
+                                    + "}"
+                                    + "},"
+                                    + "{"
+                                    + "\"code\" : {"
+                                    + "\"coding\" : ["
+                                    + "{"
+                                    + "\"system\" : \"http://loinc.org\","
+                                    + "\"code\" : \"8462-4\","
+                                    + "\"display\" : \"Diastolic blood pressure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"valueQuantity\" : {"
+                                    + "\"value\" : " + diastole + ","
+                                    + "\"unit\" : \"mmHg\","
+                                    + "\"system\" : \"http://unitsofmeasure.org\","
+                                    + "\"code\" : \"mm[Hg]\""
+                                    + "}"
+                                    + "}"
+                                    + "]"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbTensi.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbTensi.getValueAt(
+                                            i, 15).toString(), HttpMethod.PUT,
+                                    requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbTensi.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==7){
-            for(i=0;i<tbTB.getRowCount();i++){
-                if(tbTB.getValueAt(i,0).toString().equals("true")&&(!tbTB.getValueAt(i,5).toString().isEmpty())&&(!tbTB.getValueAt(i,12).toString().isEmpty())&&(!tbTB.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 7) {
+            for (i = 0; i < tbTB.getRowCount(); i++) {
+                if (tbTB.getValueAt(i, 0).toString().equals("true") && (!tbTB.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbTB.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbTB.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbTB.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbTB.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbTB.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbTB.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbTB.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8302-2\"," +
-                                                    "\"display\": \"Body height\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbTB.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Tinggi Badan di "+tbTB.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbTB.getValueAt(i,4).toString()+" Pada Tanggal "+tbTB.getValueAt(i,13).toString()+" Jam "+tbTB.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbTB.getValueAt(i,13).toString()+"T"+tbTB.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbTB.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"centimeter\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"cm\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbTB.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbTB.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbTB.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbTB.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8302-2\","
+                                    + "\"display\": \"Body height\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbTB.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Tinggi Badan di " + tbTB.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbTB.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbTB.
+                                    getValueAt(i, 13).toString() + " Jam " + tbTB.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbTB.
+                                            getValueAt(i, 13).toString() + "T" + tbTB.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbTB.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"centimeter\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"cm\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbTB.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbTB.getValueAt(i,
+                                            15).toString(), HttpMethod.PUT,
+                                    requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbTB.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==8){
-            for(i=0;i<tbBB.getRowCount();i++){
-                if(tbBB.getValueAt(i,0).toString().equals("true")&&(!tbBB.getValueAt(i,5).toString().isEmpty())&&(!tbBB.getValueAt(i,12).toString().isEmpty())&&(!tbBB.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 8) {
+            for (i = 0; i < tbBB.getRowCount(); i++) {
+                if (tbBB.getValueAt(i, 0).toString().equals("true") && (!tbBB.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbBB.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbBB.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbBB.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbBB.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbBB.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbBB.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbBB.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"29463-7\"," +
-                                                    "\"display\": \"Body Weight\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbBB.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Berat Badan di "+tbBB.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbBB.getValueAt(i,4).toString()+" Pada Tanggal "+tbBB.getValueAt(i,13).toString()+" Jam "+tbBB.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbBB.getValueAt(i,13).toString()+"T"+tbBB.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbBB.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"kilogram\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"kg\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbBB.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbBB.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbBB.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbBB.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"29463-7\","
+                                    + "\"display\": \"Body Weight\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbBB.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Berat Badan di " + tbBB.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbBB.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbBB.
+                                    getValueAt(i, 13).toString() + " Jam " + tbBB.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbBB.
+                                            getValueAt(i, 13).toString() + "T" + tbBB.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbBB.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"kilogram\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"kg\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbBB.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbBB.getValueAt(i,
+                                            15).toString(), HttpMethod.PUT,
+                                    requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbBB.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
-        }else if(TabRawat.getSelectedIndex()==9){
-            for(i=0;i<tbLP.getRowCount();i++){
-                if(tbLP.getValueAt(i,0).toString().equals("true")&&(!tbLP.getValueAt(i,5).toString().isEmpty())&&(!tbLP.getValueAt(i,12).toString().isEmpty())&&(!tbLP.getValueAt(i,15).toString().isEmpty())){
+        } else if (TabRawat.getSelectedIndex() == 9) {
+            for (i = 0; i < tbLP.getRowCount(); i++) {
+                if (tbLP.getValueAt(i, 0).toString().equals("true") && (!tbLP.
+                        getValueAt(i, 5).toString().isEmpty()) && (!tbLP.
+                        getValueAt(i, 12).toString().isEmpty()) && (!tbLP.
+                        getValueAt(i, 15).toString().isEmpty())) {
                     try {
-                        iddokter=cekViaSatuSehat.tampilIDParktisi(tbLP.getValueAt(i,12).toString());
-                        idpasien=cekViaSatuSehat.tampilIDPasien(tbLP.getValueAt(i,5).toString());
-                        try{
+                        iddokter = cekViaSatuSehat.tampilIDParktisi(tbLP.
+                                getValueAt(i, 12).toString());
+                        idpasien = cekViaSatuSehat.tampilIDPasien(tbLP.
+                                getValueAt(i, 5).toString());
+                        try {
                             headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
-                            headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                            json = "{" +
-                                        "\"resourceType\": \"Observation\"," +
-                                        "\"id\": \""+tbLP.getValueAt(i,15).toString()+"\"," +
-                                        "\"status\": \"final\"," +
-                                        "\"category\": [" +
-                                            "{" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\"," +
-                                                        "\"code\": \"vital-signs\"," +
-                                                        "\"display\": \"Vital Signs\"" +
-                                                    "}" +
-                                                "]" +
-                                            "}" +
-                                        "]," +
-                                        "\"code\": {" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://loinc.org\"," +
-                                                    "\"code\": \"8280-0\"," +
-                                                    "\"display\": \"Waist Circumference at umbilicus by Tape measure\"" +
-                                                "}" +
-                                            "]" +
-                                        "}," +
-                                        "\"subject\": {" +
-                                            "\"reference\": \"Patient/"+idpasien+"\"" +
-                                        "}," +
-                                        "\"performer\": [" +
-                                            "{" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "]," +
-                                        "\"encounter\": {" +
-                                            "\"reference\": \"Encounter/"+tbLP.getValueAt(i,9).toString()+"\"," +
-                                            "\"display\": \"Pemeriksaan Fisik Lingkar Perut di "+tbLP.getValueAt(i,7).toString().replaceAll("Ralan","Rawat Jalan/IGD").replaceAll("Ranap","Rawat Inap")+", Pasien "+tbLP.getValueAt(i,4).toString()+" Pada Tanggal "+tbLP.getValueAt(i,13).toString()+" Jam "+tbLP.getValueAt(i,14).toString()+"\"" +
-                                        "}," +
-                                        "\"effectiveDateTime\": \""+tbLP.getValueAt(i,13).toString()+"T"+tbLP.getValueAt(i,14).toString()+"+07:00\"," +
-                                        "\"valueQuantity\": {" +
-                                            "\"value\": "+tbLP.getValueAt(i,10).toString().replaceAll(",",".")+"," +
-                                            "\"unit\": \"centimeter\"," +
-                                            "\"system\": \"http://unitsofmeasure.org\"," +
-                                            "\"code\": \"cm\"" +
-                                        "}" +
-                                   "}";
-                            System.out.println("URL : "+link+"/Observation/"+tbLP.getValueAt(i,15).toString());
-                            System.out.println("Request JSON : "+json);
-                            requestEntity = new HttpEntity(json,headers);
-                            json=api.getRest().exchange(link+"/Observation/"+tbLP.getValueAt(i,15).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
-                            System.out.println("Result JSON : "+json);
-                            tbLP.setValueAt(false,i,0);
-                        }catch(Exception e){
-                            System.out.println("Notifikasi Bridging : "+e);
+                            headers.add("Authorization", "Bearer " + api.
+                                    TokenSatuSehat());
+                            json = "{"
+                                    + "\"resourceType\": \"Observation\","
+                                    + "\"id\": \"" + tbLP.getValueAt(i, 15).
+                                            toString() + "\","
+                                    + "\"status\": \"final\","
+                                    + "\"category\": ["
+                                    + "{"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\","
+                                    + "\"code\": \"vital-signs\","
+                                    + "\"display\": \"Vital Signs\""
+                                    + "}"
+                                    + "]"
+                                    + "}"
+                                    + "],"
+                                    + "\"code\": {"
+                                    + "\"coding\": ["
+                                    + "{"
+                                    + "\"system\": \"http://loinc.org\","
+                                    + "\"code\": \"8280-0\","
+                                    + "\"display\": \"Waist Circumference at umbilicus by Tape measure\""
+                                    + "}"
+                                    + "]"
+                                    + "},"
+                                    + "\"subject\": {"
+                                    + "\"reference\": \"Patient/" + idpasien + "\""
+                                    + "},"
+                                    + "\"performer\": ["
+                                    + "{"
+                                    + "\"reference\": \"Practitioner/" + iddokter + "\""
+                                    + "}"
+                                    + "],"
+                                    + "\"encounter\": {"
+                                    + "\"reference\": \"Encounter/" + tbLP.
+                                            getValueAt(i, 9).toString() + "\","
+                                    + "\"display\": \"Pemeriksaan Fisik Lingkar Perut di " + tbLP.
+                                            getValueAt(i, 7).toString().
+                                            replaceAll("Ralan",
+                                                    "Rawat Jalan/IGD").
+                                            replaceAll("Ranap", "Rawat Inap") + ", Pasien " + tbLP.
+                                    getValueAt(i, 4).toString() + " Pada Tanggal " + tbLP.
+                                    getValueAt(i, 13).toString() + " Jam " + tbLP.
+                                    getValueAt(i, 14).toString() + "\""
+                                    + "},"
+                                    + "\"effectiveDateTime\": \"" + tbLP.
+                                            getValueAt(i, 13).toString() + "T" + tbLP.
+                                    getValueAt(i, 14).toString() + "+07:00\","
+                                    + "\"valueQuantity\": {"
+                                    + "\"value\": " + tbLP.getValueAt(i, 10).
+                                            toString().replaceAll(",", ".") + ","
+                                    + "\"unit\": \"centimeter\","
+                                    + "\"system\": \"http://unitsofmeasure.org\","
+                                    + "\"code\": \"cm\""
+                                    + "}"
+                                    + "}";
+                            System.out.println(
+                                    "URL : " + link + "/Observation/" + tbLP.
+                                            getValueAt(i, 15).toString());
+                            System.out.println("Request JSON : " + json);
+                            requestEntity = new HttpEntity(json, headers);
+                            json = api.getRest().exchange(
+                                    link + "/Observation/" + tbLP.getValueAt(i,
+                                            15).toString(), HttpMethod.PUT,
+                                    requestEntity, String.class).getBody();
+                            System.out.println("Result JSON : " + json);
+                            tbLP.setValueAt(false, i, 0);
+                        } catch (KeyManagementException | NoSuchAlgorithmException | RestClientException e) {
+                            System.out.println("Notifikasi Bridging : " + e);
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
             }
@@ -3722,25 +4809,84 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAll1ActionPerformed
 
     private void BtnAll1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAll1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             TabRawatMouseClicked(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAll1KeyPressed
 
+    private void ppPilih200ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilih200ActionPerformed
+        switch (TabRawat.getSelectedIndex()) {
+            case 0:
+                for (i = 0; i < 201; i++) {
+                    tbSuhu.setValueAt(true, i, 0);
+                }
+                break;
+            case 1:
+                for (i = 0; i < 201; i++) {
+                    tbRespirasi.setValueAt(true, i, 0);
+                }
+                break;
+            case 2:
+                for (i = 0; i < 201; i++) {
+                    tbNadi.setValueAt(true, i, 0);
+                }
+                break;
+            case 3:
+                for (i = 0; i < 201; i++) {
+                    tbSpO2.setValueAt(true, i, 0);
+                }
+                break;
+            case 4:
+                for (i = 0; i < 201; i++) {
+                    tbGCS.setValueAt(true, i, 0);
+                }
+                break;
+            case 5:
+                for (i = 0; i < 201; i++) {
+                    tbKesadaran.setValueAt(true, i, 0);
+                }
+                break;
+            case 6:
+                for (i = 0; i < 201; i++) {
+                    tbTensi.setValueAt(true, i, 0);
+                }
+                break;
+            case 7:
+                for (i = 0; i < 201; i++) {
+                    tbTB.setValueAt(true, i, 0);
+                }
+                break;
+            case 8:
+                for (i = 0; i < 201; i++) {
+                    tbBB.setValueAt(true, i, 0);
+                }
+                break;
+            case 9:
+                for (i = 0; i < 201; i++) {
+                    tbLP.setValueAt(true, i, 0);
+                }
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_ppPilih200ActionPerformed
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimObservationTTV dialog = new SatuSehatKirimObservationTTV(new javax.swing.JFrame(), true);
+            SatuSehatKirimObservationTTV dialog = new SatuSehatKirimObservationTTV(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -3769,6 +4915,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     private widget.ScrollPane Scroll9;
     private widget.TextBox TCari;
     private javax.swing.JTabbedPane TabRawat;
+    private widget.CekBox cekBoxBelumKirim;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel15;
     private widget.Label jLabel16;
@@ -3779,6 +4926,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private javax.swing.JMenuItem ppBersihkan;
+    private javax.swing.JMenuItem ppPilih200;
     private javax.swing.JMenuItem ppPilihSemua;
     private widget.Table tbBB;
     private widget.Table tbGCS;
@@ -3791,932 +4939,1157 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
     private widget.Table tbTB;
     private widget.Table tbTensi;
     // End of variables declaration//GEN-END:variables
-    
+
     private void tampilsuhu() {
-        Valid.tabelKosong(tabModeSuhu);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.suhu_tubuh, "+
-                   "ifnull(satu_sehat_observationttvsuhu.id_observation,'') as satu_sehat_observationttvsuhu from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvsuhu on satu_sehat_observationttvsuhu.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvsuhu.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvsuhu.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvsuhu.status='Ralan' where pemeriksaan_ralan.suhu_tubuh<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
-            try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
-                }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeSuhu.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("suhu_tubuh"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvsuhu")
-                    });
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
-            }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.suhu_tubuh, "+
-                   "ifnull(satu_sehat_observationttvsuhu.id_observation,'') as satu_sehat_observationttvsuhu from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvsuhu on satu_sehat_observationttvsuhu.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvsuhu.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvsuhu.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvsuhu.status='Ranap' where pemeriksaan_ranap.suhu_tubuh<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
-            try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
-                }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeSuhu.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("suhu_tubuh"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvsuhu")
-                    });
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
-            }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvsuhu.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
         }
-        LCount.setText(""+tabModeSuhu.getRowCount());
+        Valid.tabelKosong(tabModeSuhu);
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.suhu_tubuh, "
+                    + "ifnull(satu_sehat_observationttvsuhu.id_observation,'') as satu_sehat_observationttvsuhu from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvsuhu on satu_sehat_observationttvsuhu.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvsuhu.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvsuhu.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvsuhu.status='Ralan' where pemeriksaan_ralan.suhu_tubuh<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
+            try {
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeSuhu
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvsuhu")});
+                }
+            } catch (Exception e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.suhu_tubuh, "
+                    + "ifnull(satu_sehat_observationttvsuhu.id_observation,'') as satu_sehat_observationttvsuhu from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvsuhu on satu_sehat_observationttvsuhu.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvsuhu.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvsuhu.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvsuhu.status='Ranap' where pemeriksaan_ranap.suhu_tubuh<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
+            try {
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeSuhu
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvsuhu")});
+                }
+            } catch (Exception e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
+        LCount.setText("" + tabModeSuhu.getRowCount());
     }
 
     private void tampilrespirasi() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvrespirasi.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeRespirasi);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.respirasi, "+
-                   "ifnull(satu_sehat_observationttvrespirasi.id_observation,'') as satu_sehat_observationttvrespirasi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvrespirasi on satu_sehat_observationttvrespirasi.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvrespirasi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvrespirasi.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvrespirasi.status='Ralan' where pemeriksaan_ralan.respirasi<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.respirasi, "
+                    + "ifnull(satu_sehat_observationttvrespirasi.id_observation,'') as satu_sehat_observationttvrespirasi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvrespirasi on satu_sehat_observationttvrespirasi.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvrespirasi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvrespirasi.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvrespirasi.status='Ralan' where pemeriksaan_ralan.respirasi<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeRespirasi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("respirasi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvrespirasi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeRespirasi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("respirasi"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvrespirasi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.respirasi, "+
-                   "ifnull(satu_sehat_observationttvrespirasi.id_observation,'') as satu_sehat_observationttvrespirasi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvrespirasi on satu_sehat_observationttvrespirasi.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvrespirasi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvrespirasi.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvrespirasi.status='Ranap' where pemeriksaan_ranap.respirasi<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.respirasi, "
+                    + "ifnull(satu_sehat_observationttvrespirasi.id_observation,'') as satu_sehat_observationttvrespirasi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvrespirasi on satu_sehat_observationttvrespirasi.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvrespirasi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvrespirasi.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvrespirasi.status='Ranap' where pemeriksaan_ranap.respirasi<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeRespirasi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("respirasi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvrespirasi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeRespirasi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("respirasi"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvrespirasi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeRespirasi.getRowCount());
+        LCount.setText("" + tabModeRespirasi.getRowCount());
     }
-    
+
     private void tampilnadi() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvnadi.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeNadi);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.nadi, "+
-                   "ifnull(satu_sehat_observationttvnadi.id_observation,'') as satu_sehat_observationttvnadi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvnadi on satu_sehat_observationttvnadi.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvnadi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvnadi.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvnadi.status='Ralan' where pemeriksaan_ralan.nadi<>'' and reg_periksa.tgl_registrasi between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or nota_jalan.tanggal like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.nadi, "
+                    + "ifnull(satu_sehat_observationttvnadi.id_observation,'') as satu_sehat_observationttvnadi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvnadi on satu_sehat_observationttvnadi.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvnadi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvnadi.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvnadi.status='Ralan' where pemeriksaan_ralan.nadi<>'' and reg_periksa.tgl_registrasi between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or nota_jalan.tanggal like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeNadi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("nadi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvnadi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeNadi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("nadi"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvnadi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.nadi, "+
-                   "ifnull(satu_sehat_observationttvnadi.id_observation,'') as satu_sehat_observationttvnadi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvnadi on satu_sehat_observationttvnadi.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvnadi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvnadi.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvnadi.status='Ranap' where pemeriksaan_ranap.nadi<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.nadi, "
+                    + "ifnull(satu_sehat_observationttvnadi.id_observation,'') as satu_sehat_observationttvnadi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvnadi on satu_sehat_observationttvnadi.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvnadi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvnadi.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvnadi.status='Ranap' where pemeriksaan_ranap.nadi<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeNadi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("nadi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvnadi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeNadi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("nadi"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvnadi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeNadi.getRowCount());
+        LCount.setText("" + tabModeNadi.getRowCount());
     }
-    
+
     private void tampilspo2() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvspo2.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeSpO2);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.spo2, "+
-                   "ifnull(satu_sehat_observationttvspo2.id_observation,'') as satu_sehat_observationttvspo2 from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvspo2 on satu_sehat_observationttvspo2.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvspo2.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvspo2.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvspo2.status='Ralan' where pemeriksaan_ralan.spo2<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.spo2, "
+                    + "ifnull(satu_sehat_observationttvspo2.id_observation,'') as satu_sehat_observationttvspo2 from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvspo2 on satu_sehat_observationttvspo2.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvspo2.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvspo2.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvspo2.status='Ralan' where pemeriksaan_ralan.spo2<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeSpO2.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("spo2"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvspo2")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeSpO2
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("spo2"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvspo2")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.spo2, "+
-                   "ifnull(satu_sehat_observationttvspo2.id_observation,'') as satu_sehat_observationttvspo2 from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvspo2 on satu_sehat_observationttvspo2.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvspo2.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvspo2.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvspo2.status='Ranap' where pemeriksaan_ranap.spo2<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.spo2, "
+                    + "ifnull(satu_sehat_observationttvspo2.id_observation,'') as satu_sehat_observationttvspo2 from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvspo2 on satu_sehat_observationttvspo2.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvspo2.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvspo2.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvspo2.status='Ranap' where pemeriksaan_ranap.spo2<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeSpO2.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("spo2"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvspo2")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeSpO2
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("spo2"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvspo2")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeSpO2.getRowCount());
+        LCount.setText("" + tabModeSpO2.getRowCount());
     }
-    
+
     private void tampilgcs() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvgcs.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeGCS);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.gcs, "+
-                   "ifnull(satu_sehat_observationttvgcs.id_observation,'') as satu_sehat_observationttvgcs from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvgcs on satu_sehat_observationttvgcs.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvgcs.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvgcs.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvgcs.status='Ralan' where pemeriksaan_ralan.gcs<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.gcs, "
+                    + "ifnull(satu_sehat_observationttvgcs.id_observation,'') as satu_sehat_observationttvgcs from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvgcs on satu_sehat_observationttvgcs.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvgcs.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvgcs.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvgcs.status='Ralan' where pemeriksaan_ralan.gcs<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeGCS.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("gcs"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvgcs")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeGCS
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("gcs"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvgcs")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.gcs, "+
-                   "ifnull(satu_sehat_observationttvgcs.id_observation,'') as satu_sehat_observationttvgcs from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvgcs on satu_sehat_observationttvgcs.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvgcs.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvgcs.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvgcs.status='Ranap' where pemeriksaan_ranap.gcs<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.gcs, "
+                    + "ifnull(satu_sehat_observationttvgcs.id_observation,'') as satu_sehat_observationttvgcs from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvgcs on satu_sehat_observationttvgcs.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvgcs.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvgcs.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvgcs.status='Ranap' where pemeriksaan_ranap.gcs<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeGCS.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("gcs"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvgcs")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeGCS
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("gcs"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvgcs")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeGCS.getRowCount());
+        LCount.setText("" + tabModeGCS.getRowCount());
     }
-    
+
     private void tampilkesadaran() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvkesadaran.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeKesadaran);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.kesadaran, "+
-                   "ifnull(satu_sehat_observationttvkesadaran.id_observation,'') as satu_sehat_observationttvkesadaran from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvkesadaran on satu_sehat_observationttvkesadaran.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvkesadaran.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvkesadaran.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvkesadaran.status='Ralan' where pemeriksaan_ralan.kesadaran<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.kesadaran, "
+                    + "ifnull(satu_sehat_observationttvkesadaran.id_observation,'') as satu_sehat_observationttvkesadaran from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvkesadaran on satu_sehat_observationttvkesadaran.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvkesadaran.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvkesadaran.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvkesadaran.status='Ralan' where pemeriksaan_ralan.kesadaran<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeKesadaran.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("kesadaran"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvkesadaran")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeKesadaran
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("kesadaran"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvkesadaran")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.kesadaran, "+
-                   "ifnull(satu_sehat_observationttvkesadaran.id_observation,'') as satu_sehat_observationttvkesadaran from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvkesadaran on satu_sehat_observationttvkesadaran.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvkesadaran.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvkesadaran.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvkesadaran.status='Ranap' where pemeriksaan_ranap.kesadaran<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.kesadaran, "
+                    + "ifnull(satu_sehat_observationttvkesadaran.id_observation,'') as satu_sehat_observationttvkesadaran from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvkesadaran on satu_sehat_observationttvkesadaran.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvkesadaran.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvkesadaran.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvkesadaran.status='Ranap' where pemeriksaan_ranap.kesadaran<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeKesadaran.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("kesadaran"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvkesadaran")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeKesadaran
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("kesadaran"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvkesadaran")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeKesadaran.getRowCount());
+        LCount.setText("" + tabModeKesadaran.getRowCount());
     }
-    
+
     private void tampiltensi() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvtensi.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeTensi);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.tensi, "+
-                   "ifnull(satu_sehat_observationttvtensi.id_observation,'') as satu_sehat_observationttvtensi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvtensi on satu_sehat_observationttvtensi.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvtensi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvtensi.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvtensi.status='Ralan' where pemeriksaan_ralan.tensi<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.tensi, "
+                    + "ifnull(satu_sehat_observationttvtensi.id_observation,'') as satu_sehat_observationttvtensi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvtensi on satu_sehat_observationttvtensi.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvtensi.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvtensi.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvtensi.status='Ralan' where pemeriksaan_ralan.tensi<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeTensi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("tensi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvtensi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeTensi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tensi"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvtensi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.tensi, "+
-                   "ifnull(satu_sehat_observationttvtensi.id_observation,'') as satu_sehat_observationttvtensi from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvtensi on satu_sehat_observationttvtensi.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvtensi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvtensi.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvtensi.status='Ranap' where pemeriksaan_ranap.tensi<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.tensi, "
+                    + "ifnull(satu_sehat_observationttvtensi.id_observation,'') as satu_sehat_observationttvtensi from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvtensi on satu_sehat_observationttvtensi.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvtensi.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvtensi.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvtensi.status='Ranap' where pemeriksaan_ranap.tensi<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeTensi.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("tensi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvtensi")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeTensi
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tensi"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvtensi")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeTensi.getRowCount());
+        LCount.setText("" + tabModeTensi.getRowCount());
     }
-    
+
     private void tampiltb() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvtb.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeTB);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.tinggi, "+
-                   "ifnull(satu_sehat_observationttvtb.id_observation,'') as satu_sehat_observationttvtb from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvtb on satu_sehat_observationttvtb.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvtb.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvtb.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvtb.status='Ralan' where pemeriksaan_ralan.tinggi<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.tinggi, "
+                    + "ifnull(satu_sehat_observationttvtb.id_observation,'') as satu_sehat_observationttvtb from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvtb on satu_sehat_observationttvtb.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvtb.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvtb.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvtb.status='Ralan' where pemeriksaan_ralan.tinggi<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeTB.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("tinggi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvtb")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeTB
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tinggi"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvtb")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.tinggi, "+
-                   "ifnull(satu_sehat_observationttvtb.id_observation,'') as satu_sehat_observationttvtb from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvtb on satu_sehat_observationttvtb.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvtb.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvtb.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvtb.status='Ranap' where pemeriksaan_ranap.tinggi<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.tinggi, "
+                    + "ifnull(satu_sehat_observationttvtb.id_observation,'') as satu_sehat_observationttvtb from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvtb on satu_sehat_observationttvtb.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvtb.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvtb.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvtb.status='Ranap' where pemeriksaan_ranap.tinggi<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeTB.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("tinggi"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvtb")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeTB
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tinggi"),
+                        rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvtb")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeTB.getRowCount());
+        LCount.setText("" + tabModeTB.getRowCount());
     }
-    
+
     private void tampilbb() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvbb.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeBB);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.berat, "+
-                   "ifnull(satu_sehat_observationttvbb.id_observation,'') as satu_sehat_observationttvbb from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvbb on satu_sehat_observationttvbb.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvbb.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvbb.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvbb.status='Ralan' where pemeriksaan_ralan.berat<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.berat, "
+                    + "ifnull(satu_sehat_observationttvbb.id_observation,'') as satu_sehat_observationttvbb from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvbb on satu_sehat_observationttvbb.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvbb.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvbb.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvbb.status='Ralan' where pemeriksaan_ralan.berat<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeBB.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("berat"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvbb")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeBB
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("berat"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvbb")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.berat, "+
-                   "ifnull(satu_sehat_observationttvbb.id_observation,'') as satu_sehat_observationttvbb from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvbb on satu_sehat_observationttvbb.no_rawat=pemeriksaan_ranap.no_rawat "+
-                   "and satu_sehat_observationttvbb.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvbb.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_observationttvbb.status='Ranap' where pemeriksaan_ranap.berat<>'' and nota_inap.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.berat, "
+                    + "ifnull(satu_sehat_observationttvbb.id_observation,'') as satu_sehat_observationttvbb from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ranap on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik left join satu_sehat_observationttvbb on satu_sehat_observationttvbb.no_rawat=pemeriksaan_ranap.no_rawat "
+                    + "and satu_sehat_observationttvbb.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_observationttvbb.jam_rawat=pemeriksaan_ranap.jam_rawat "
+                    + "and satu_sehat_observationttvbb.status='Ranap' where pemeriksaan_ranap.berat<>'' and nota_inap.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeBB.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("berat"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvbb")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeBB
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("berat"), rs.
+                        getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvbb")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeBB.getRowCount());
+        LCount.setText("" + tabModeBB.getRowCount());
     }
-    
+
     private void tampillp() {
+        if (cekBoxBelumKirim.isSelected() == true) {
+            cekbok = " and satu_sehat_observationttvlp.id_observation is null and pasien.no_ktp <> '-'";
+        } else {
+            cekbok = "";
+        }
         Valid.tabelKosong(tabModeLP);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"+
-                   "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.lingkar_perut, "+
-                   "ifnull(satu_sehat_observationttvlp.id_observation,'') as satu_sehat_observationttvlp from reg_periksa inner join pasien "+
-                   "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "+
-                   "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvlp on satu_sehat_observationttvlp.no_rawat=pemeriksaan_ralan.no_rawat "+
-                   "and satu_sehat_observationttvlp.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvlp.jam_rawat=pemeriksaan_ralan.jam_rawat "+
-                   "and satu_sehat_observationttvlp.status='Ralan' where pemeriksaan_ralan.lingkar_perut<>'' and nota_jalan.tanggal between ? and ? "+
-                   (TCari.getText().isEmpty()?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)"));
+        try {
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"
+                    + "reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) as pulang,satu_sehat_encounter.id_encounter,"
+                    + "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.lingkar_perut, "
+                    + "ifnull(satu_sehat_observationttvlp.id_observation,'') as satu_sehat_observationttvlp from reg_periksa inner join pasien "
+                    + "on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat inner join pemeriksaan_ralan on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat "
+                    + "inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik left join satu_sehat_observationttvlp on satu_sehat_observationttvlp.no_rawat=pemeriksaan_ralan.no_rawat "
+                    + "and satu_sehat_observationttvlp.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan and satu_sehat_observationttvlp.jam_rawat=pemeriksaan_ralan.jam_rawat "
+                    + "and satu_sehat_observationttvlp.status='Ralan' where pemeriksaan_ralan.lingkar_perut<>'' and nota_jalan.tanggal between ? and ? "
+                    + cekbok + " "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "
+                    + "reg_periksa.stts like ?)"));
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabModeLP.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),"Ralan",rs.getString("pulang"),rs.getString("id_encounter"),rs.getString("lingkar_perut"),
-                        rs.getString("nama"),rs.getString("ktppraktisi"),rs.getString("tgl_perawatan"),rs.getString("jam_rawat"),rs.getString("satu_sehat_observationttvlp")
-                    });
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeLP
+                            .addRow(new Object[]{false, rs.getString(
+                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString(
+                        "lingkar_perut"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString(
+                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                        rs.getString("satu_sehat_observationttvlp")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeLP.getRowCount());
+        LCount.setText("" + tabModeLP.getRowCount());
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnKirim.setEnabled(akses.getsatu_sehat_kirim_observationttv());
         BtnPrint.setEnabled(akses.getsatu_sehat_kirim_observationttv());
     }
-    
-    public JTable getTable(){
+
+    public JTable getTable() {
         return tbSuhu;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SatuSehatKirimObservationTTV.class.getName());
+
 }

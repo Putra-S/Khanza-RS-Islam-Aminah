@@ -3,103 +3,135 @@
  * and open the template in the editor.
  */
 
-/*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+ /*
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgCariTemplateLaborat extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
-    /** Creates new form DlgPenyakit
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgCariTemplateLaborat(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(656,250);
+        this.setLocation(10, 2);
+        setSize(656, 250);
 
-        Object[] row={"ID Periksa","Pemeriksaan","ID Detail","Detail Pemeriksaan","Satuan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"ID Periksa", "Pemeriksaan", "ID Detail",
+            "Detail Pemeriksaan", "Satuan"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 4; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(80);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(320);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
             });
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -226,15 +258,14 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -244,9 +275,9 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -257,16 +288,16 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tabMode.getRowCount()!=0){
-            if(evt.getClickCount()==2){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getClickCount() == 2) {
                 dispose();
             }
         }
@@ -277,10 +308,10 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -288,16 +319,18 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
     }//GEN-LAST:event_tbKamarKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariTemplateLaborat dialog = new DlgCariTemplateLaborat(new javax.swing.JFrame(), true);
+            DlgCariTemplateLaborat dialog = new DlgCariTemplateLaborat(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -320,81 +353,107 @@ public class DlgCariTemplateLaborat extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            file=new File("./cache/templatelaborat.iyem");
+            file = new File("./cache/templatelaborat.iyem");
             file.createNewFile();
             fileWriter = new FileWriter(file);
-            iyem="";
-            ps=koneksi.prepareStatement(
-                    "SELECT template_laboratorium.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,template_laboratorium.id_template,template_laboratorium.Pemeriksaan,template_laboratorium.satuan "+
-                    "FROM template_laboratorium inner join jns_perawatan_lab on jns_perawatan_lab.kd_jenis_prw=template_laboratorium.kd_jenis_prw where jns_perawatan_lab.status='1' "+
-                    "order by template_laboratorium.kd_jenis_prw,template_laboratorium.id_template,template_laboratorium.urut");
-            try{         
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)});
-                    iyem=iyem+"{\"IDPeriksa\":\""+rs.getString(1)+"\",\"NamaPemeriksaan\":\""+rs.getString(2)+"\",\"IDTemplate\":\""+rs.getString(3)+"\",\"DetailPemeriksaan\":\""+rs.getString(4)+"\",\"Satuan\":\""+rs.getString(5)+"\"},";
+            iyem = "";
+            ps = koneksi.prepareStatement(
+                    "SELECT template_laboratorium.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,template_laboratorium.id_template,template_laboratorium.Pemeriksaan,template_laboratorium.satuan "
+                    + "FROM template_laboratorium inner join jns_perawatan_lab on jns_perawatan_lab.kd_jenis_prw=template_laboratorium.kd_jenis_prw where jns_perawatan_lab.status='1' "
+                    + "order by template_laboratorium.kd_jenis_prw,template_laboratorium.id_template,template_laboratorium.urut");
+            try {
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new Object[]{rs.getString(1), rs.getString(2),
+                                rs.getString(3), rs.getString(4),
+                                rs.getString(5)});
+                    iyem = iyem + "{\"IDPeriksa\":\"" + rs.getString(1) + "\",\"NamaPemeriksaan\":\"" + rs.
+                            getString(2)
+                            + "\",\"IDTemplate\":\"" + rs.getString(3) + "\",\"DetailPemeriksaan\":\"" + rs.
+                            getString(4)
+                            + "\",\"Satuan\":\"" + rs.getString(5) + "\"},";
                 }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            }finally{
-                if(rs != null){
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                
-                if(ps != null){
+
+                if (ps != null) {
                     ps.close();
                 }
             }
 
-            fileWriter.write("{\"template\":["+iyem.substring(0,iyem.length()-1)+"]}");
+            fileWriter.write("{\"template\":[" + iyem.substring(0,
+                    iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
-            iyem=null;
+            iyem = null;
         } catch (Exception e) {
-            System.out.println("Notifikasi : "+e);
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
-    public void emptTeks() {   
+    public void emptTeks() {
         TCari.requestFocus();
     }
-  
+
     /**
-     *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
+
     private void tampil2() {
         try {
             myObj = new FileReader("./cache/templatelaborat.iyem");
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("template");
-            if(response.isArray()){
-                if(TCari.getText().trim().isEmpty()){
-                    for(JsonNode list:response){
-                        tabMode.addRow(new Object[]{
-                            list.path("IDPeriksa").asText(),list.path("NamaPemeriksaan").asText(),list.path("IDTemplate").asText(),list.path("DetailPemeriksaan").asText(),list.path("Satuan").asText()
-                        });
+            if (response.isArray()) {
+                if (TCari.getText().trim().isEmpty()) {
+                    for (JsonNode list : response) {
+                        tabMode.addRow(new Object[]{list.path("IDPeriksa").
+                            asText(),
+                            list.path("NamaPemeriksaan").asText(), list.path(
+                            "IDTemplate").asText(),
+                            list.path("DetailPemeriksaan").asText(), list.path(
+                            "Satuan").asText()});
                     }
-                }else{
-                    for(JsonNode list:response){
-                        if(list.path("IDPeriksa").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaPemeriksaan").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("DetailPemeriksaan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
-                            tabMode.addRow(new Object[]{
-                                list.path("IDPeriksa").asText(),list.path("NamaPemeriksaan").asText(),list.path("IDTemplate").asText(),list.path("DetailPemeriksaan").asText(),list.path("Satuan").asText()
-                            });
+                } else {
+                    for (JsonNode list : response) {
+                        if (list.path("IDPeriksa").asText().toLowerCase().
+                                contains(TCari.getText().toLowerCase())
+                                || list.path("NamaPemeriksaan")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())
+                                || list.path("DetailPemeriksaan")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())) {
+                            tabMode.addRow(new Object[]{list.path("IDPeriksa").
+                                asText(),
+                                list.path("NamaPemeriksaan").asText(), list.
+                                path("IDTemplate").asText(),
+                                list.path("DetailPemeriksaan").asText(), list.
+                                path("Satuan").asText()});
                         }
                     }
                 }
             }
             myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
-        LCount.setText(""+tabMode.getRowCount());
-    } 
+        LCount.setText("" + tabMode.getRowCount());
+    }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgCariTemplateLaborat.class.getName());
+
 }

@@ -1,167 +1,202 @@
 package tranfusidarah;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import kepegawaian.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class UTDPemisahanDarah extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabModeMedis,tabModeNonMedis,tabModeKomponen;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement psdonor,pskomponen,ps,ps2,pspemisahan,pscekmedis,psceknonmedis,pscekkomponen;
-    private ResultSet rs,rs2;
-    private int i,index=0,row=0,jml=0;
+
+    private final DefaultTableModel tabMode, tabModeMedis, tabModeNonMedis, tabModeKomponen;
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private PreparedStatement psdonor, pskomponen, ps, ps2, pspemisahan, pscekmedis, psceknonmedis, pscekkomponen;
+    private ResultSet rs, rs2;
+    private int i, index = 0, row = 0, jml = 0;
     private Calendar cal;
     private SimpleDateFormat sdf;
-    private boolean[] pilih; 
-    private String[] kodebarang,namabarang,jumlah,satuan,stokasal,hbeli,total;
-    private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
-    private String aktifkan="",
-            sqlpscekmedis="select utd_penggunaan_medis_pemisahan_komponen.kode_brng,databarang.nama_brng,utd_penggunaan_medis_pemisahan_komponen.jml,utd_penggunaan_medis_pemisahan_komponen.harga,"+
-                            "utd_penggunaan_medis_pemisahan_komponen.total,databarang.kode_sat from utd_penggunaan_medis_pemisahan_komponen inner join databarang "+
-                            "on utd_penggunaan_medis_pemisahan_komponen.kode_brng=databarang.kode_brng where utd_penggunaan_medis_pemisahan_komponen.no_donor=?",
-            sqlpsceknonmedis="select utd_penggunaan_penunjang_pemisahan_komponen.kode_brng,ipsrsbarang.nama_brng,utd_penggunaan_penunjang_pemisahan_komponen.jml,utd_penggunaan_penunjang_pemisahan_komponen.harga,"+
-                            "utd_penggunaan_penunjang_pemisahan_komponen.total,ipsrsbarang.kode_sat from utd_penggunaan_penunjang_pemisahan_komponen inner join ipsrsbarang "+
-                            "on utd_penggunaan_penunjang_pemisahan_komponen.kode_brng=ipsrsbarang.kode_brng where utd_penggunaan_penunjang_pemisahan_komponen.no_donor=?";
+    private boolean[] pilih;
+    private String[] kodebarang, namabarang, jumlah, satuan, stokasal, hbeli, total;
+    private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+    private String aktifkan = "",
+            sqlpscekmedis = "select utd_penggunaan_medis_pemisahan_komponen.kode_brng,databarang.nama_brng,utd_penggunaan_medis_pemisahan_komponen.jml,utd_penggunaan_medis_pemisahan_komponen.harga,"
+            + "utd_penggunaan_medis_pemisahan_komponen.total,databarang.kode_sat from utd_penggunaan_medis_pemisahan_komponen inner join databarang "
+            + "on utd_penggunaan_medis_pemisahan_komponen.kode_brng=databarang.kode_brng where utd_penggunaan_medis_pemisahan_komponen.no_donor=?",
+            sqlpsceknonmedis = "select utd_penggunaan_penunjang_pemisahan_komponen.kode_brng,ipsrsbarang.nama_brng,utd_penggunaan_penunjang_pemisahan_komponen.jml,utd_penggunaan_penunjang_pemisahan_komponen.harga,"
+            + "utd_penggunaan_penunjang_pemisahan_komponen.total,ipsrsbarang.kode_sat from utd_penggunaan_penunjang_pemisahan_komponen inner join ipsrsbarang "
+            + "on utd_penggunaan_penunjang_pemisahan_komponen.kode_brng=ipsrsbarang.kode_brng where utd_penggunaan_penunjang_pemisahan_komponen.no_donor=?";
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public UTDPemisahanDarah(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabModeMedis=new DefaultTableModel(null,new Object[]{"Jml","Kode Barang","Nama Barang","Harga","Subtotal","Satuan","Stok"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabModeMedis = new DefaultTableModel(null, new Object[]{"Jml",
+            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
+            }
+
         };
         tbMedis.setModel(tabModeMedis);
-        tbMedis.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbMedis.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbMedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbMedis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(35);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(50);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(40);
             }
         }
         tbMedis.setDefaultRenderer(Object.class, new WarnaTable());
         //non medis
-        tabModeNonMedis=new DefaultTableModel(null,new Object[]{"Jml","Kode Barang","Nama Barang","Harga","Subtotal","Satuan","Stok"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+        tabModeNonMedis = new DefaultTableModel(null, new Object[]{"Jml",
+            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
-             }
+            }
+
         };
         tbNonMedis.setModel(tabModeNonMedis);
-        tbNonMedis.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbNonMedis.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbNonMedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbNonMedis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(35);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(50);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(40);
             }
         }
         tbNonMedis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Object[] row={
-            "Nomor","Nama Pendonor","Tgl.Donor","Dinas","J.K.",
-            "Umur","Alamat","G.D.","Resus","Tensi","No.Bag","No.Telp"
+        Object[] row = {
+            "Nomor", "Nama Pendonor", "Tgl.Donor", "Dinas", "J.K.",
+            "Umur", "Alamat", "G.D.", "Resus", "Tensi", "No.Bag", "No.Telp"
         };
-        tabMode=new DefaultTableModel(null,row){
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}            
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbPemisahan.setModel(tabMode);
 
-        tbPemisahan.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbPemisahan.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbPemisahan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbPemisahan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(150);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(40);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(27);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(35);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(340);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(27);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(40);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(60);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(45);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(90);
             }
         }
         tbPemisahan.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeKomponen=new DefaultTableModel(null,new String[]{"P","Kode","Nama Komponen","Lama(Hari)"}){
+
+        tabModeKomponen = new DefaultTableModel(null, new String[]{"P", "Kode",
+            "Nama Komponen", "Lama(Hari)"}) {
             Class[] types = new Class[]{
-                java.lang.Boolean.class,java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class
             };
-            @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if (colIndex==0) {
-                    a=true;
+                if (colIndex == 0) {
+                    a = true;
                 }
                 return a;
             }
@@ -170,144 +205,177 @@ public class UTDPemisahanDarah extends javax.swing.JDialog {
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
+
         };
         tbKomponen.setModel(tabModeKomponen);
 
-        tbKomponen.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbKomponen.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbKomponen.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 4; i++) {
             TableColumn column = tbKomponen.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(20);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(55);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(255);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
             }
         }
         tbKomponen.setDefaultRenderer(Object.class, new WarnaTable());
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){ 
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());
-                    KodePetugas.requestFocus();                    
-                } 
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas.requestFocus();
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
 
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-            TCariMedis.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            TCariMedis.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCariMedis.getText().length()>2){
+                    if (TCariMedis.getText().length() > 2) {
                         tampilMedis();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCariMedis.getText().length()>2){
+                    if (TCariMedis.getText().length() > 2) {
                         tampilMedis();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCariMedis.getText().length()>2){
+                    if (TCariMedis.getText().length() > 2) {
                         tampilMedis();
                     }
                 }
+
             });
-            TCariNonMedis.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            TCariNonMedis.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCariNonMedis.getText().length()>2){
+                    if (TCariNonMedis.getText().length() > 2) {
                         tampilNonMedis();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCariNonMedis.getText().length()>2){
+                    if (TCariNonMedis.getText().length() > 2) {
                         tampilNonMedis();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCariNonMedis.getText().length()>2){
+                    if (TCariNonMedis.getText().length() > 2) {
                         tampilNonMedis();
                     }
                 }
+
             });
-            Komponen.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            Komponen.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(Komponen.getText().length()>2){
+                    if (Komponen.getText().length() > 2) {
                         tampilKomponen();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(Komponen.getText().length()>2){
+                    if (Komponen.getText().length() > 2) {
                         tampilKomponen();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(Komponen.getText().length()>2){
+                    if (Komponen.getText().length() > 2) {
                         tampilKomponen();
                     }
                 }
+
             });
-            
-            TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-            TCariMedis.setDocument(new batasInput((byte)100).getKata(TCariMedis));
-            TCariNonMedis.setDocument(new batasInput((byte)100).getKata(TCariNonMedis));
-            Komponen.setDocument(new batasInput((byte)100).getKata(Komponen));
-            KodePetugas.setDocument(new batasInput((byte)20).getKata(KodePetugas));
+
+            TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+            TCariMedis.setDocument(new batasInput((byte) 100).
+                    getKata(TCariMedis));
+            TCariNonMedis.setDocument(new batasInput((byte) 100).getKata(
+                    TCariNonMedis));
+            Komponen.setDocument(new batasInput((byte) 100).getKata(Komponen));
+            KodePetugas.setDocument(new batasInput((byte) 20).getKata(
+                    KodePetugas));
         }
 
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1089,32 +1157,32 @@ public class UTDPemisahanDarah extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbPemisahan.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        aktifkan="";
+        aktifkan = "";
         tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbPemisahanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPemisahanMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1123,8 +1191,9 @@ public class UTDPemisahanDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_tbPemisahanMouseClicked
 
     private void tbPemisahanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPemisahanKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1134,120 +1203,134 @@ public class UTDPemisahanDarah extends javax.swing.JDialog {
 }//GEN-LAST:event_tbPemisahanKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){            
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
-           // BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            // BtnBatal.requestFocus();
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            jml=tabMode.getRowCount();
-            for(i=0;i<jml;i++){  
-                Sequel.menyimpan("temporary","'"+i+"','"+
-                                tabMode.getValueAt(i,0).toString()+"','"+
-                                tabMode.getValueAt(i,1).toString()+"','"+
-                                tabMode.getValueAt(i,2).toString()+"','"+
-                                tabMode.getValueAt(i,3).toString()+"','"+
-                                tabMode.getValueAt(i,4).toString()+"','"+
-                                tabMode.getValueAt(i,5).toString()+"','"+
-                                tabMode.getValueAt(i,6).toString()+"','"+
-                                tabMode.getValueAt(i,7).toString()+"','"+
-                                tabMode.getValueAt(i,8).toString()+"','"+
-                                tabMode.getValueAt(i,9).toString()+"','"+
-                                tabMode.getValueAt(i,10).toString()+"','"+
-                                tabMode.getValueAt(i,11).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Transaksi Pembelian"); 
-            }           
-            
-            Map<String, Object> param = new HashMap<>();    
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptUTDPemisahanKomponen.jasper","report","::[ Data Pemisahan Komponen Darah ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            jml = tabMode.getRowCount();
+            for (i = 0; i < jml; i++) {
+                Sequel.menyimpan("temporary", "'" + i + "','"
+                        + tabMode.getValueAt(i, 0).toString() + "','"
+                        + tabMode.getValueAt(i, 1).toString() + "','"
+                        + tabMode.getValueAt(i, 2).toString() + "','"
+                        + tabMode.getValueAt(i, 3).toString() + "','"
+                        + tabMode.getValueAt(i, 4).toString() + "','"
+                        + tabMode.getValueAt(i, 5).toString() + "','"
+                        + tabMode.getValueAt(i, 6).toString() + "','"
+                        + tabMode.getValueAt(i, 7).toString() + "','"
+                        + tabMode.getValueAt(i, 8).toString() + "','"
+                        + tabMode.getValueAt(i, 9).toString() + "','"
+                        + tabMode.getValueAt(i, 10).toString() + "','"
+                        + tabMode.getValueAt(i, 11).toString() + "','','','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                        getalamatip() + "'", "Transaksi Pembelian");
+            }
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptUTDPemisahanKomponen.jasper", "report",
+                    "::[ Data Pemisahan Komponen Darah ]::",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt,BtnEdit,BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        aktifkan="";
+        aktifkan = "";
         tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTambahActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else if(tbPemisahan.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data darah yang madu dipisahkan komponennya..!!");
-        }else{
-            if(!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString().isEmpty()){
-                NomorDonor.setText(tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                DlgInput.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+        } else if (tbPemisahan.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data darah yang madu dipisahkan komponennya..!!");
+        } else {
+            if (!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(), 0).
+                    toString().isEmpty()) {
+                NomorDonor.setText(tbPemisahan.getValueAt(tbPemisahan.
+                        getSelectedRow(), 0).toString());
+                DlgInput.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                        getHeight() - 20);
                 DlgInput.setLocationRelativeTo(internalFrame1);
                 DlgInput.setVisible(true);
                 emptTeks();
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf,Pilih pada nomor donor...!!!!");
-            } 
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf,Pilih pada nomor donor...!!!!");
+            }
         }
-            
+
 }//GEN-LAST:event_BtnTambahActionPerformed
 
     private void BtnTambahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnTambahKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             //BtnSimpanActionPerformed(null);
-        }else{
-           // Valid.pindah(evt,Pembatalan,BtnBatal);
+        } else {
+            // Valid.pindah(evt,Pembatalan,BtnBatal);
         }
 }//GEN-LAST:event_BtnTambahKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        aktifkan="";
+        aktifkan = "";
         tampil();
     }//GEN-LAST:event_formWindowOpened
 
     private void TCariMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariMedisKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari2ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TCariNonMedis.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Komponen.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbMedis.requestFocus();
         }
     }//GEN-LAST:event_TCariMedisKeyPressed
@@ -1266,17 +1349,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_tbMedisMouseClicked
 
     private void tbMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbMedisKeyPressed
-        if(tbMedis.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (tbMedis.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 try {
-                    i=tbMedis.getSelectedColumn();
-                    if(i==1){
+                    i = tbMedis.getSelectedColumn();
+                    if (i == 1) {
                         TCariMedis.setText("");
                         TCariMedis.requestFocus();
                     }
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCariMedis.setText("");
                 TCariMedis.requestFocus();
             }
@@ -1284,13 +1367,13 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_tbMedisKeyPressed
 
     private void TCariNonMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariNonMedisKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCari3ActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnSimpan.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             TCariMedis.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbNonMedis.requestFocus();
         }
     }//GEN-LAST:event_TCariNonMedisKeyPressed
@@ -1309,17 +1392,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_tbNonMedisMouseClicked
 
     private void tbNonMedisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbNonMedisKeyPressed
-        if(tbNonMedis.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (tbNonMedis.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 try {
-                    i=tbNonMedis.getSelectedColumn();
-                    if(i==1){
+                    i = tbNonMedis.getSelectedColumn();
+                    if (i == 1) {
                         TCariNonMedis.setText("");
                         TCariNonMedis.requestFocus();
                     }
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCariNonMedis.setText("");
                 TCariNonMedis.requestFocus();
             }
@@ -1327,33 +1410,34 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_tbNonMedisKeyPressed
 
     private void NomorDonorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NomorDonorKeyPressed
-        Valid.pindah(evt,TCari,Tanggal);
+        Valid.pindah(evt, TCari, Tanggal);
     }//GEN-LAST:event_NomorDonorKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,NomorDonor,Dinas);
+        Valid.pindah(evt, NomorDonor, Dinas);
     }//GEN-LAST:event_TanggalKeyPressed
 
     private void DinasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DinasKeyPressed
-        Valid.pindah(evt,Dinas,KodePetugas);
+        Valid.pindah(evt, Dinas, KodePetugas);
     }//GEN-LAST:event_DinasKeyPressed
 
     private void btnPetugasAftapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasAftapActionPerformed
         petugas.emptTeks();
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setAlwaysOnTop(false);
         petugas.setVisible(true);
     }//GEN-LAST:event_btnPetugasAftapActionPerformed
 
     private void KodePetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodePetugasKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             NamaPetugas.setText(petugas.tampil3(KodePetugas.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnPetugasAftapActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Dinas,Komponen);
+        } else {
+            Valid.pindah(evt, Dinas, Komponen);
         }
     }//GEN-LAST:event_KodePetugasKeyPressed
 
@@ -1366,20 +1450,21 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnCariKomponenActionPerformed
 
     private void tbKomponenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKomponenKeyPressed
-        if(tbKomponen.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (tbKomponen.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 try {
-                    i=tbKomponen.getSelectedColumn();
-                    if(i==1){
-                        if(tbKomponen.getSelectedRow()>-1){
-                            tbKomponen.setValueAt(true,tbKomponen.getSelectedRow(),0);
+                    i = tbKomponen.getSelectedColumn();
+                    if (i == 1) {
+                        if (tbKomponen.getSelectedRow() > -1) {
+                            tbKomponen.setValueAt(true, tbKomponen.
+                                    getSelectedRow(), 0);
                         }
                         Komponen.setText("");
                         Komponen.requestFocus();
                     }
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 Komponen.setText("");
                 Komponen.requestFocus();
             }
@@ -1388,7 +1473,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void btnTambahKomponenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahKomponenActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        UTDKomponenDarah form=new UTDKomponenDarah(null,true);
+        UTDKomponenDarah form = new UTDKomponenDarah(null, true);
         form.isCek();
         form.setSize(internalFrame2.getWidth(), internalFrame2.getHeight());
         form.setLocationRelativeTo(internalFrame2);
@@ -1397,13 +1482,13 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_btnTambahKomponenActionPerformed
 
     private void KomponenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KomponenKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariKomponenActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TCariMedis.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             KodePetugas.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             tbKomponen.requestFocus();
         }
     }//GEN-LAST:event_KomponenKeyPressed
@@ -1415,88 +1500,141 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_DlgInputWindowOpened
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TCariNonMedis,BtnBatal);
+        } else {
+            Valid.pindah(evt, TCariNonMedis, BtnBatal);
         }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        jml=0;
-        for(i=0;i<tbKomponen.getRowCount();i++){
-            if(tbKomponen.getValueAt(i,0).toString().equals("true")){
+        jml = 0;
+        for (i = 0; i < tbKomponen.getRowCount(); i++) {
+            if (tbKomponen.getValueAt(i, 0).toString().equals("true")) {
                 jml++;
             }
         }
-        if(NomorDonor.getText().trim().isEmpty()){
-            Valid.textKosong(NomorDonor,"Nomor Donor");
-        }else if(KodePetugas.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(KodePetugas,"Petugas");
-        }else if(jml==0){
-            Valid.textKosong(Komponen,"Data Komponen Darah");
-        }else{            
-            
-            if(Sequel.menyimpantf("utd_pemisahan_komponen","?,?,?,?","Nomor Donor",4,new String[]{
-                NomorDonor.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),Dinas.getSelectedItem().toString(),KodePetugas.getText()
-            })==true){
-                row=tbKomponen.getRowCount();
-                for(i=0;i<row;i++){
-                    if(tbKomponen.getValueAt(i,0).toString().equals("true")){
+        if (NomorDonor.getText().trim().isEmpty()) {
+            Valid.textKosong(NomorDonor, "Nomor Donor");
+        } else if (KodePetugas.getText().trim().isEmpty() || NamaPetugas.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(KodePetugas, "Petugas");
+        } else if (jml == 0) {
+            Valid.textKosong(Komponen, "Data Komponen Darah");
+        } else {
+
+            if (Sequel.menyimpantf("utd_pemisahan_komponen", "?,?,?,?",
+                    "Nomor Donor", 4, new String[]{
+                        NomorDonor.getText(), Valid.SetTgl(Tanggal.
+                        getSelectedItem() + ""), Dinas.getSelectedItem().
+                                toString(), KodePetugas.getText()
+                    }) == true) {
+                row = tbKomponen.getRowCount();
+                for (i = 0; i < row; i++) {
+                    if (tbKomponen.getValueAt(i, 0).toString().equals("true")) {
                         cal = Calendar.getInstance();
                         cal.setTime(Tanggal.getDate());
-                        cal.add( Calendar.DATE,Integer.parseInt(tbKomponen.getValueAt(i,3).toString()));
+                        cal.add(Calendar.DATE, Integer.parseInt(tbKomponen.
+                                getValueAt(i, 3).toString()));
                         sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        if(Sequel.menyimpantf2("utd_detail_pemisahan_komponen","?,?,?,?","No.Kantong",4,new String[]{
-                            NomorDonor.getText(),tbKomponen.getValueAt(i,1).toString()+NomorDonor.getText(),
-                            tbKomponen.getValueAt(i,1).toString(),sdf.format(cal.getTime())
-                        })==true){
-                            Sequel.menyimpan2("utd_stok_darah","?,?,?,?,?,?,?,?","Kode",8,new String[]{
-                                tbKomponen.getValueAt(i,1).toString()+NomorDonor.getText(),
-                                tbKomponen.getValueAt(i,1).toString(),tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),7).toString(),
-                                tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),8).toString(),Valid.SetTgl(Tanggal.getSelectedItem()+""),
-                                sdf.format(cal.getTime()),"Produksi Sendiri","Ada"
-                            });
-                            tbKomponen.setValueAt(false,i,0);
+                        if (Sequel.menyimpantf2("utd_detail_pemisahan_komponen",
+                                "?,?,?,?", "No.Kantong", 4, new String[]{
+                                    NomorDonor.getText(), tbKomponen.getValueAt(
+                                    i, 1).toString() + NomorDonor.getText(),
+                                    tbKomponen.getValueAt(i, 1).toString(), sdf.
+                                    format(cal.getTime())
+                                }) == true) {
+                            Sequel.menyimpan2("utd_stok_darah",
+                                    "?,?,?,?,?,?,?,?", "Kode", 8, new String[]{
+                                        tbKomponen.getValueAt(i, 1).toString() + NomorDonor.
+                                        getText(),
+                                        tbKomponen.getValueAt(i, 1).toString(),
+                                        tbPemisahan.getValueAt(tbPemisahan.
+                                                getSelectedRow(), 7).toString(),
+                                        tbPemisahan.getValueAt(tbPemisahan.
+                                                getSelectedRow(), 8).toString(),
+                                        Valid.SetTgl(
+                                                Tanggal.getSelectedItem() + ""),
+                                        sdf.format(cal.getTime()),
+                                        "Produksi Sendiri", "Ada"
+                                    });
+                            tbKomponen.setValueAt(false, i, 0);
                         }
-                    } 
+                    }
                 }
-                for(i=0;i<tbMedis.getRowCount();i++){  
+                for (i = 0; i < tbMedis.getRowCount(); i++) {
                     try {
-                        if(Valid.SetAngka(tbMedis.getValueAt(i,0).toString())>0){
-                            if(Sequel.menyimpantf2("utd_penggunaan_medis_pemisahan_komponen ","?,?,?,?,?","BHP Medis",5,new String[]{
-                                NomorDonor.getText(),tbMedis.getValueAt(i,1).toString(),tbMedis.getValueAt(i,0).toString(),tbMedis.getValueAt(i,3).toString(),
-                                Double.toString(Double.parseDouble(tbMedis.getValueAt(i,0).toString())*Double.parseDouble(tbMedis.getValueAt(i,3).toString()))
-                            })==true){
-                                Sequel.menyimpan("utd_stok_medis","'"+tbMedis.getValueAt(i,1).toString()+"','-"+tbMedis.getValueAt(i,0).toString()+"','"+tbMedis.getValueAt(i,3).toString()+"'", 
-                                    "stok=stok-"+tbMedis.getValueAt(i,0).toString()+"","kode_brng='"+tbMedis.getValueAt(i,1).toString()+"'");
-                                tbMedis.setValueAt(null,i,0);        
-                                tbMedis.setValueAt(0,i,4);
-                            }   
-                        }                                
+                        if (Valid.SetAngka(tbMedis.getValueAt(i, 0).toString()) > 0) {
+                            if (Sequel.menyimpantf2(
+                                    "utd_penggunaan_medis_pemisahan_komponen ",
+                                    "?,?,?,?,?", "BHP Medis", 5, new String[]{
+                                        NomorDonor.getText(), tbMedis.
+                                        getValueAt(i, 1).toString(), tbMedis.
+                                        getValueAt(i, 0).toString(), tbMedis.
+                                        getValueAt(i, 3).toString(),
+                                        Double.toString(Double.parseDouble(
+                                                tbMedis.getValueAt(i, 0).
+                                                        toString()) * Double.
+                                                        parseDouble(tbMedis.
+                                                                getValueAt(i, 3).
+                                                                toString()))
+                                    }) == true) {
+                                Sequel.menyimpan("utd_stok_medis",
+                                        "'" + tbMedis.getValueAt(i, 1).
+                                                toString() + "','-" + tbMedis.
+                                                getValueAt(i, 0).toString() + "','" + tbMedis.
+                                        getValueAt(i, 3).toString() + "'",
+                                        "stok=stok-" + tbMedis.getValueAt(i, 0).
+                                                toString() + "",
+                                        "kode_brng='" + tbMedis.getValueAt(i, 1).
+                                                toString() + "'");
+                                tbMedis.setValueAt(null, i, 0);
+                                tbMedis.setValueAt(0, i, 4);
+                            }
+                        }
                     } catch (Exception e) {
-                    }                    
+                    }
                 }
-                for(i=0;i<tbNonMedis.getRowCount();i++){  
+                for (i = 0; i < tbNonMedis.getRowCount(); i++) {
                     try {
-                        if(Valid.SetAngka(tbNonMedis.getValueAt(i,0).toString())>0){
-                            if(Sequel.menyimpantf2("utd_penggunaan_penunjang_pemisahan_komponen ","?,?,?,?,?","BHP Non Medis",5,new String[]{
-                                NomorDonor.getText(),tbNonMedis.getValueAt(i,1).toString(),tbNonMedis.getValueAt(i,0).toString(),tbNonMedis.getValueAt(i,3).toString(),
-                                Double.toString(Double.parseDouble(tbNonMedis.getValueAt(i,0).toString())*Double.parseDouble(tbNonMedis.getValueAt(i,3).toString()))
-                            })==true){
-                                Sequel.menyimpan("utd_stok_penunjang","'"+tbNonMedis.getValueAt(i,1).toString()+"','-"+tbNonMedis.getValueAt(i,0).toString()+"','"+tbNonMedis.getValueAt(i,3).toString()+"'", 
-                                "stok=stok-"+tbNonMedis.getValueAt(i,0).toString()+"","kode_brng='"+tbNonMedis.getValueAt(i,1).toString()+"'");
-                                tbNonMedis.setValueAt(null,i,0);        
-                                tbNonMedis.setValueAt(0,i,4);
-                            }   
-                        }                                
+                        if (Valid.SetAngka(tbNonMedis.getValueAt(i, 0).
+                                toString()) > 0) {
+                            if (Sequel.menyimpantf2(
+                                    "utd_penggunaan_penunjang_pemisahan_komponen ",
+                                    "?,?,?,?,?", "BHP Non Medis", 5,
+                                    new String[]{
+                                        NomorDonor.getText(), tbNonMedis.
+                                        getValueAt(i, 1).toString(), tbNonMedis.
+                                        getValueAt(i, 0).toString(), tbNonMedis.
+                                        getValueAt(i, 3).toString(),
+                                        Double.toString(Double.parseDouble(
+                                                tbNonMedis.getValueAt(i, 0).
+                                                        toString()) * Double.
+                                                        parseDouble(tbNonMedis.
+                                                                getValueAt(i, 3).
+                                                                toString()))
+                                    }) == true) {
+                                Sequel.menyimpan("utd_stok_penunjang",
+                                        "'" + tbNonMedis.getValueAt(i, 1).
+                                                toString() + "','-" + tbNonMedis.
+                                                getValueAt(i, 0).toString() + "','" + tbNonMedis.
+                                        getValueAt(i, 3).toString() + "'",
+                                        "stok=stok-" + tbNonMedis.getValueAt(i,
+                                                0).toString() + "",
+                                        "kode_brng='" + tbNonMedis.getValueAt(i,
+                                                1).toString() + "'");
+                                tbNonMedis.setValueAt(null, i, 0);
+                                tbNonMedis.setValueAt(0, i, 4);
+                            }
+                        }
                     } catch (Exception e) {
-                    }                    
+                    }
                 }
                 tampil();
-                JOptionPane.showMessageDialog(null,"Proses simpan selesai..!!!");
+                JOptionPane.
+                        showMessageDialog(null, "Proses simpan selesai..!!!");
             }
-                        
+
         }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
@@ -1510,203 +1648,268 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllKomponenActionPerformed
 
     private void ppTampilkanBHPMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppTampilkanBHPMedisActionPerformed
-        aktifkan="medis";
+        aktifkan = "medis";
         tampil();
     }//GEN-LAST:event_ppTampilkanBHPMedisActionPerformed
 
     private void ppTampilkanBHPPenunjangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppTampilkanBHPPenunjangActionPerformed
-        aktifkan="nonmedis";
+        aktifkan = "nonmedis";
         tampil();
     }//GEN-LAST:event_ppTampilkanBHPPenunjangActionPerformed
 
     private void ppTampilkanBHPPenunjangDanMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppTampilkanBHPPenunjangDanMedisActionPerformed
-        aktifkan="medis&nonmedis";
+        aktifkan = "medis&nonmedis";
         tampil();
     }//GEN-LAST:event_ppTampilkanBHPPenunjangDanMedisActionPerformed
 
     private void ppHapusBHPMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppHapusBHPMedisActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else if(tbPemisahan.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data yang mau dihapus..!!");
-        }else{
-            if(!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString().isEmpty()){
-                int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, Yakin mau dihapus..??","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        } else if (tbPemisahan.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data yang mau dihapus..!!");
+        } else {
+            if (!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(), 0).
+                    toString().isEmpty()) {
+                int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Eeiiiiiits, Yakin mau dihapus..??", "Konfirmasi",
+                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     try {
-                        
-                        pscekmedis=koneksi.prepareStatement(sqlpscekmedis);
+
+                        pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1,tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                            rs=pscekmedis.executeQuery();
-                            while(rs.next()){
-                                Sequel.menyimpan("utd_stok_medis","'"+rs.getString("kode_brng")+"','"+rs.getString("jml")+"','"+rs.getDouble("harga")+"'",
-                                    "stok=stok+"+rs.getString("jml")+"","kode_brng='"+rs.getString("kode_brng")+"'");
+                            pscekmedis.setString(1, tbPemisahan.getValueAt(
+                                    tbPemisahan.getSelectedRow(), 0).toString());
+                            rs = pscekmedis.executeQuery();
+                            while (rs.next()) {
+                                Sequel.menyimpan("utd_stok_medis", "'" + rs.
+                                        getString("kode_brng") + "','" + rs.
+                                        getString("jml") + "','" + rs.getDouble(
+                                        "harga") + "'",
+                                        "stok=stok+" + rs.getString("jml") + "",
+                                        "kode_brng='" + rs.
+                                                getString("kode_brng") + "'");
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs != null) {
                                 rs.close();
                             }
-                            if(pscekmedis!=null){
+                            if (pscekmedis != null) {
                                 pscekmedis.close();
                             }
                         }
-                        Sequel.meghapus("utd_penggunaan_medis_pemisahan_komponen","no_donor",tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                        
+                        Sequel.meghapus(
+                                "utd_penggunaan_medis_pemisahan_komponen",
+                                "no_donor", tbPemisahan.getValueAt(tbPemisahan.
+                                        getSelectedRow(), 0).toString());
+
                         tampil();
                         emptTeks();
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                    } catch (SQLException e) {
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf,Pilih pada nomor donor...!!!!");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf,Pilih pada nomor donor...!!!!");
             }
         }
     }//GEN-LAST:event_ppHapusBHPMedisActionPerformed
 
     private void ppHapusBHPNonMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppHapusBHPNonMedisActionPerformed
-        if(tbPemisahan.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tbPemisahan.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else if(tbPemisahan.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data yang mau dihapus..!!");
-        }else{
-            if(!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString().isEmpty()){
-                int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, Yakin mau dihapus..??","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        } else if (tbPemisahan.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data yang mau dihapus..!!");
+        } else {
+            if (!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(), 0).
+                    toString().isEmpty()) {
+                int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Eeiiiiiits, Yakin mau dihapus..??", "Konfirmasi",
+                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     try {
-                        
-                        psceknonmedis=koneksi.prepareStatement(sqlpsceknonmedis);
+
+                        psceknonmedis = koneksi.prepareStatement(
+                                sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1,tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                            rs2=psceknonmedis.executeQuery();
-                            while(rs2.next()){
-                                Sequel.menyimpan("utd_stok_penunjang","'"+rs2.getString("kode_brng")+"','"+rs2.getString("jml")+"','"+rs2.getDouble("harga")+"'",
-                                    "stok=stok+"+rs2.getString("jml")+"","kode_brng='"+rs2.getString("kode_brng")+"'");
+                            psceknonmedis.setString(1, tbPemisahan.getValueAt(
+                                    tbPemisahan.getSelectedRow(), 0).toString());
+                            rs2 = psceknonmedis.executeQuery();
+                            while (rs2.next()) {
+                                Sequel.menyimpan("utd_stok_penunjang",
+                                        "'" + rs2.getString("kode_brng") + "','" + rs2.
+                                        getString("jml") + "','" + rs2.
+                                        getDouble("harga") + "'",
+                                        "stok=stok+" + rs2.getString("jml") + "",
+                                        "kode_brng='" + rs2.getString(
+                                                "kode_brng") + "'");
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(psceknonmedis!=null){
+                            if (psceknonmedis != null) {
                                 psceknonmedis.close();
                             }
                         }
-                        Sequel.meghapus("utd_penggunaan_penunjang_pemisahan_komponen","no_donor",tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                        
+                        Sequel.meghapus(
+                                "utd_penggunaan_penunjang_pemisahan_komponen",
+                                "no_donor", tbPemisahan.getValueAt(tbPemisahan.
+                                        getSelectedRow(), 0).toString());
+
                         tampil();
                         emptTeks();
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                    } catch (SQLException e) {
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf,Pilih pada nomor donor...!!!!");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf,Pilih pada nomor donor...!!!!");
             }
         }
     }//GEN-LAST:event_ppHapusBHPNonMedisActionPerformed
 
     private void ppHapusBHPMedisDanNonMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppHapusBHPMedisDanNonMedisActionPerformed
-        if(tbPemisahan.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tbPemisahan.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else if(tbPemisahan.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data yang mau dihapus..!!");
-        }else{
-            if(!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString().isEmpty()){
-                int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, Yakin mau dihapus..??","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        } else if (tbPemisahan.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data yang mau dihapus..!!");
+        } else {
+            if (!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(), 0).
+                    toString().isEmpty()) {
+                int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Eeiiiiiits, Yakin mau dihapus..??", "Konfirmasi",
+                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     try {
-                        
-                        pscekmedis=koneksi.prepareStatement(sqlpscekmedis);
+
+                        pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1,tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                            rs=pscekmedis.executeQuery();
-                            while(rs.next()){
-                                Sequel.menyimpan("utd_stok_medis","'"+rs.getString("kode_brng")+"','"+rs.getString("jml")+"','"+rs.getDouble("harga")+"'",
-                                    "stok=stok+"+rs.getString("jml")+"","kode_brng='"+rs.getString("kode_brng")+"'");
+                            pscekmedis.setString(1, tbPemisahan.getValueAt(
+                                    tbPemisahan.getSelectedRow(), 0).toString());
+                            rs = pscekmedis.executeQuery();
+                            while (rs.next()) {
+                                Sequel.menyimpan("utd_stok_medis", "'" + rs.
+                                        getString("kode_brng") + "','" + rs.
+                                        getString("jml") + "','" + rs.getDouble(
+                                        "harga") + "'",
+                                        "stok=stok+" + rs.getString("jml") + "",
+                                        "kode_brng='" + rs.
+                                                getString("kode_brng") + "'");
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs != null) {
                                 rs.close();
                             }
-                            if(pscekmedis!=null){
+                            if (pscekmedis != null) {
                                 pscekmedis.close();
                             }
                         }
-                        Sequel.meghapus("utd_penggunaan_medis_pemisahan_komponen","no_donor",tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                        psceknonmedis=koneksi.prepareStatement(sqlpsceknonmedis);
+                        Sequel.meghapus(
+                                "utd_penggunaan_medis_pemisahan_komponen",
+                                "no_donor", tbPemisahan.getValueAt(tbPemisahan.
+                                        getSelectedRow(), 0).toString());
+                        psceknonmedis = koneksi.prepareStatement(
+                                sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1,tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                            rs2=psceknonmedis.executeQuery();
-                            while(rs2.next()){
-                                Sequel.menyimpan("utd_stok_penunjang","'"+rs2.getString("kode_brng")+"','"+rs2.getString("jml")+"','"+rs2.getDouble("harga")+"'",
-                                    "stok=stok+"+rs2.getString("jml")+"","kode_brng='"+rs2.getString("kode_brng")+"'");
+                            psceknonmedis.setString(1, tbPemisahan.getValueAt(
+                                    tbPemisahan.getSelectedRow(), 0).toString());
+                            rs2 = psceknonmedis.executeQuery();
+                            while (rs2.next()) {
+                                Sequel.menyimpan("utd_stok_penunjang",
+                                        "'" + rs2.getString("kode_brng") + "','" + rs2.
+                                        getString("jml") + "','" + rs2.
+                                        getDouble("harga") + "'",
+                                        "stok=stok+" + rs2.getString("jml") + "",
+                                        "kode_brng='" + rs2.getString(
+                                                "kode_brng") + "'");
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(psceknonmedis!=null){
+                            if (psceknonmedis != null) {
                                 psceknonmedis.close();
                             }
                         }
-                        Sequel.meghapus("utd_penggunaan_penunjang_pemisahan_komponen","no_donor",tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                        
+                        Sequel.meghapus(
+                                "utd_penggunaan_penunjang_pemisahan_komponen",
+                                "no_donor", tbPemisahan.getValueAt(tbPemisahan.
+                                        getSelectedRow(), 0).toString());
+
                         tampil();
                         emptTeks();
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
+                    } catch (SQLException e) {
+                        System.out.println("Notifikasi : " + e);
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf,Pilih pada nomor donor...!!!!");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf,Pilih pada nomor donor...!!!!");
             }
         }
     }//GEN-LAST:event_ppHapusBHPMedisDanNonMedisActionPerformed
 
     private void ppHapusPemisahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppHapusPemisahanActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else if(tbPemisahan.getSelectedRow()<= -1){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data yang mau dihapus..!!");
-        }else{
-            if(!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString().isEmpty()){
-                int reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, Yakin mau dihapus..??","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        } else if (tbPemisahan.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Silahkan pilih data yang mau dihapus..!!");
+        } else {
+            if (!tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(), 0).
+                    toString().isEmpty()) {
+                int reply = JOptionPane.showConfirmDialog(rootPane,
+                        "Eeiiiiiits, Yakin mau dihapus..??", "Konfirmasi",
+                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-                    Sequel.meghapus("utd_pemisahan_komponen","no_donor",tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString());
-                    Sequel.queryu("delete from utd_stok_darah where no_kantong like ?","%"+tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),0).toString()+"%");
+                    Sequel.meghapus("utd_pemisahan_komponen", "no_donor",
+                            tbPemisahan.getValueAt(tbPemisahan.getSelectedRow(),
+                                    0).toString());
+                    Sequel.queryu(
+                            "delete from utd_stok_darah where no_kantong like ?",
+                            "%" + tbPemisahan.getValueAt(tbPemisahan.
+                                    getSelectedRow(), 0).toString() + "%");
                     tampil();
                     emptTeks();
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf,Pilih pada nomor donor...!!!!");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf,Pilih pada nomor donor...!!!!");
             }
         }
     }//GEN-LAST:event_ppHapusPemisahanActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            UTDPemisahanDarah dialog = new UTDPemisahanDarah(new javax.swing.JFrame(), true);
+            UTDPemisahanDarah dialog = new UTDPemisahanDarah(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1785,228 +1988,274 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            psdonor=koneksi.prepareStatement(
-                "select utd_donor.no_donor,utd_donor.no_pendonor,utd_donor.tanggal,utd_donor.dinas,utd_donor.tensi,utd_donor.no_bag,utd_donor.jenis_bag,"+
-                "utd_donor.jenis_donor,utd_donor.tempat_aftap,utd_donor.petugas_aftap,utd_donor.hbsag,utd_donor.hcv,utd_donor.hiv,utd_donor.spilis,"+
-                "utd_donor.malaria,utd_donor.petugas_u_saring,utd_donor.status,utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,"+
-                "utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,"+
-                "utd_pendonor.kd_prop,utd_pendonor.golongan_darah,utd_pendonor.resus,utd_pendonor.no_telp,propinsi.nm_prop,kabupaten.nm_kab,kecamatan.nm_kec,kelurahan.nm_kel, "+
-                "TIMESTAMPDIFF(YEAR,utd_pendonor.tgl_lahir, utd_donor.tanggal) as umur from utd_donor inner join utd_pendonor on utd_donor.no_pendonor=utd_pendonor.no_pendonor "+
-                "inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel "+
-                "inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "+
-                "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab "+
-                "inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "+
-                "where "+
-                "utd_donor.tanggal between ? and ? and utd_donor.status='Aman' and "+
-                "(utd_donor.no_donor like ? or utd_pendonor.nama like ? or utd_pendonor.alamat like ? or propinsi.nm_prop like ? or "+
-                "kabupaten.nm_kab like ? or kecamatan.nm_kec like ? or kelurahan.nm_kel like ? or utd_donor.jenis_donor like ? or "+
-                "utd_donor.tempat_aftap like ? or utd_donor.jenis_bag like ? or utd_donor.dinas like ?) order by tanggal,no_donor ");
+        try {
+            psdonor = koneksi.prepareStatement(
+                    "select utd_donor.no_donor,utd_donor.no_pendonor,utd_donor.tanggal,utd_donor.dinas,utd_donor.tensi,utd_donor.no_bag,utd_donor.jenis_bag,"
+                    + "utd_donor.jenis_donor,utd_donor.tempat_aftap,utd_donor.petugas_aftap,utd_donor.hbsag,utd_donor.hcv,utd_donor.hiv,utd_donor.spilis,"
+                    + "utd_donor.malaria,utd_donor.petugas_u_saring,utd_donor.status,utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,"
+                    + "utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,"
+                    + "utd_pendonor.kd_prop,utd_pendonor.golongan_darah,utd_pendonor.resus,utd_pendonor.no_telp,propinsi.nm_prop,kabupaten.nm_kab,kecamatan.nm_kec,kelurahan.nm_kel, "
+                    + "TIMESTAMPDIFF(YEAR,utd_pendonor.tgl_lahir, utd_donor.tanggal) as umur from utd_donor inner join utd_pendonor on utd_donor.no_pendonor=utd_pendonor.no_pendonor "
+                    + "inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel "
+                    + "inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
+                    + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab "
+                    + "inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
+                    + "where "
+                    + "utd_donor.tanggal between ? and ? and utd_donor.status='Aman' and "
+                    + "(utd_donor.no_donor like ? or utd_pendonor.nama like ? or utd_pendonor.alamat like ? or propinsi.nm_prop like ? or "
+                    + "kabupaten.nm_kab like ? or kecamatan.nm_kec like ? or kelurahan.nm_kel like ? or utd_donor.jenis_donor like ? or "
+                    + "utd_donor.tempat_aftap like ? or utd_donor.jenis_bag like ? or utd_donor.dinas like ?) order by tanggal,no_donor ");
             try {
-                psdonor.setString(1,Valid.SetTgl(TanggalCari1.getSelectedItem()+""));
-                psdonor.setString(2,Valid.SetTgl(TanggalCari2.getSelectedItem()+""));
-                psdonor.setString(3,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(4,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(5,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(6,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(7,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(8,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(9,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(10,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(11,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(12,"%"+TCari.getText().trim()+"%");
-                psdonor.setString(13,"%"+TCari.getText().trim()+"%");
-                rs=psdonor.executeQuery();
-                while(rs.next()){
+                psdonor.setString(1, Valid.SetTgl(
+                        TanggalCari1.getSelectedItem() + ""));
+                psdonor.setString(2, Valid.SetTgl(
+                        TanggalCari2.getSelectedItem() + ""));
+                psdonor.setString(3, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(4, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(5, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(6, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(7, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(8, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(9, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(10, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(11, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(12, "%" + TCari.getText().trim() + "%");
+                psdonor.setString(13, "%" + TCari.getText().trim() + "%");
+                rs = psdonor.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_donor"),rs.getString("nama"),rs.getString("tanggal"), 
-                        rs.getString("dinas"),rs.getString("jk"),rs.getString("umur"),
-                        rs.getString("alamat")+", "+rs.getString("nm_kel")+", "+rs.getString("nm_kec")+", "+rs.getString("nm_kab")+", "+rs.getString("nm_prop"),
-                        rs.getString("golongan_darah"),rs.getString("resus"),rs.getString("tensi"),rs.getString("no_bag"),rs.getString("no_telp") 
+                        rs.getString("no_donor"), rs.getString("nama"), rs.
+                        getString("tanggal"),
+                        rs.getString("dinas"), rs.getString("jk"), rs.getString(
+                        "umur"),
+                        rs.getString("alamat") + ", " + rs.getString("nm_kel") + ", " + rs.
+                        getString("nm_kec") + ", " + rs.getString("nm_kab") + ", " + rs.
+                        getString("nm_prop"),
+                        rs.getString("golongan_darah"), rs.getString("resus"),
+                        rs.getString("tensi"), rs.getString("no_bag"), rs.
+                        getString("no_telp")
                     });
                     //pemisahan
-                    pspemisahan=koneksi.prepareStatement(
-                            "select utd_pemisahan_komponen.tanggal,utd_pemisahan_komponen.dinas,petugas.nama "+
-                            "from utd_pemisahan_komponen inner join petugas on utd_pemisahan_komponen.nip=petugas.nip "+
-                            "where utd_pemisahan_komponen.no_donor=?");
+                    pspemisahan = koneksi.prepareStatement(
+                            "select utd_pemisahan_komponen.tanggal,utd_pemisahan_komponen.dinas,petugas.nama "
+                            + "from utd_pemisahan_komponen inner join petugas on utd_pemisahan_komponen.nip=petugas.nip "
+                            + "where utd_pemisahan_komponen.no_donor=?");
                     try {
-                        pspemisahan.setString(1,rs.getString("no_donor"));
-                        rs2=pspemisahan.executeQuery();
-                        while(rs2.next()){
+                        pspemisahan.setString(1, rs.getString("no_donor"));
+                        rs2 = pspemisahan.executeQuery();
+                        while (rs2.next()) {
                             tabMode.addRow(new Object[]{
-                               "","","","","","","Tanggal : "+rs2.getString("tanggal")+" "+rs2.getString("dinas")+", Petugas : "+rs2.getString("nama"),"","","","",""
+                                "", "", "", "", "", "", "Tanggal : " + rs2.
+                                getString("tanggal") + " " + rs2.getString(
+                                "dinas") + ", Petugas : " + rs2.
+                                getString("nama"), "", "", "", "", ""
                             });
                         }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi Pemisahan : "+e);
-                    } finally{
-                        if(rs2!=null){
+                    } catch (SQLException e) {
+                        System.out.println("Notifikasi Pemisahan : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(pspemisahan!=null){
+                        if (pspemisahan != null) {
                             pspemisahan.close();
                         }
                     }
                     //detail pemisahan
-                    pscekkomponen=koneksi.prepareStatement(
-                            "select utd_detail_pemisahan_komponen.no_kantong,utd_komponen_darah.nama,utd_detail_pemisahan_komponen.tanggal_kadaluarsa "+
-                            "from utd_detail_pemisahan_komponen inner join utd_komponen_darah on utd_detail_pemisahan_komponen.kode_komponen=utd_komponen_darah.kode "+
-                            "where utd_detail_pemisahan_komponen.no_donor=?");
-                    try{
-                        pscekkomponen.setString(1,rs.getString("no_donor"));
-                        rs2=pscekkomponen.executeQuery();
-                        if(rs2.next()){
+                    pscekkomponen = koneksi.prepareStatement(
+                            "select utd_detail_pemisahan_komponen.no_kantong,utd_komponen_darah.nama,utd_detail_pemisahan_komponen.tanggal_kadaluarsa "
+                            + "from utd_detail_pemisahan_komponen inner join utd_komponen_darah on utd_detail_pemisahan_komponen.kode_komponen=utd_komponen_darah.kode "
+                            + "where utd_detail_pemisahan_komponen.no_donor=?");
+                    try {
+                        pscekkomponen.setString(1, rs.getString("no_donor"));
+                        rs2 = pscekkomponen.executeQuery();
+                        if (rs2.next()) {
                             tabMode.addRow(new Object[]{
-                                    "","","","","","","Komponen Yang Dipisahkan :","","","","",""
+                                "", "", "", "", "", "",
+                                "Komponen Yang Dipisahkan :", "", "", "", "", ""
                             });
-                            i=1;
+                            i = 1;
                         }
                         rs2.beforeFirst();
-                        while(rs2.next()){
+                        while (rs2.next()) {
                             tabMode.addRow(new Object[]{
-                                "","","","","","",
-                                i+". "+rs2.getString("no_kantong")+" "+rs2.getString("nama")+" ("+rs2.getString("tanggal_kadaluarsa")+")","","","","",""
-                            });                          
+                                "", "", "", "", "", "",
+                                i + ". " + rs2.getString("no_kantong") + " " + rs2.
+                                getString("nama") + " (" + rs2.getString(
+                                "tanggal_kadaluarsa") + ")", "", "", "", "", ""
+                            });
                             i++;
                         }
-                    } catch (Exception e) {
-                        System.out.println("Notifikasi Detail Pemisahan : "+e);
-                    } finally{
-                        if(rs2!=null){
+                    } catch (SQLException e) {
+                        System.out.println("Notifikasi Detail Pemisahan : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(pskomponen!=null){
+                        if (pskomponen != null) {
                             pskomponen.close();
                         }
                     }
-                    if(aktifkan.equals("medis")){
-                        pscekmedis=koneksi.prepareStatement(sqlpscekmedis);
+                    if (aktifkan.equals("medis")) {
+                        pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1,rs.getString("no_donor"));
-                            rs2=pscekmedis.executeQuery();
-                            if(rs2.next()){
+                            pscekmedis.setString(1, rs.getString("no_donor"));
+                            rs2 = pscekmedis.executeQuery();
+                            if (rs2.next()) {
                                 tabMode.addRow(new Object[]{
-                                        "","","","","","","Penggunaan BHP Medis :","","","","",""
+                                    "", "", "", "", "", "",
+                                    "Penggunaan BHP Medis :", "", "", "", "", ""
                                 });
-                                i=1;
+                                i = 1;
                             }
                             rs2.beforeFirst();
-                            while(rs2.next()){
+                            while (rs2.next()) {
                                 tabMode.addRow(new String[]{
-                                    "","","","","","",i+". "+rs2.getString("nama_brng")+" ("+rs2.getString("jml")+" "+rs2.getString("kode_sat")+" X "+Valid.SetAngka(rs2.getDouble("harga"))+") = "+Valid.SetAngka(rs2.getDouble("total")),"","","","",""
+                                    "", "", "", "", "", "", i + ". " + rs2.
+                                    getString("nama_brng") + " (" + rs2.
+                                    getString("jml") + " " + rs2.getString(
+                                    "kode_sat") + " X " + Valid.SetAngka(rs2.
+                                    getDouble("harga")) + ") = " + Valid.
+                                    SetAngka(rs2.getDouble("total")), "", "", "",
+                                    "", ""
                                 });
                                 i++;
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(pscekmedis!=null){
+                            if (pscekmedis != null) {
                                 pscekmedis.close();
                             }
                         }
-                    }else if(aktifkan.equals("nonmedis")){
-                        psceknonmedis=koneksi.prepareStatement(sqlpsceknonmedis);
+                    } else if (aktifkan.equals("nonmedis")) {
+                        psceknonmedis = koneksi.prepareStatement(
+                                sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1,rs.getString("no_donor"));
-                            rs2=psceknonmedis.executeQuery();
-                            if(rs2.next()){
+                            psceknonmedis.setString(1, rs.getString("no_donor"));
+                            rs2 = psceknonmedis.executeQuery();
+                            if (rs2.next()) {
                                 tabMode.addRow(new Object[]{
-                                        "","","","","","","Penggunaan BHP Non Medis :","","","","",""
+                                    "", "", "", "", "", "",
+                                    "Penggunaan BHP Non Medis :", "", "", "", "",
+                                    ""
                                 });
-                                i=1;
+                                i = 1;
                             }
                             rs2.beforeFirst();
-                            while(rs2.next()){
+                            while (rs2.next()) {
                                 tabMode.addRow(new String[]{
-                                   "","","","","","",i+". "+rs2.getString("nama_brng")+" ("+rs2.getString("jml")+" "+rs2.getString("kode_sat")+" X "+Valid.SetAngka(rs2.getDouble("harga"))+") = "+Valid.SetAngka(rs2.getDouble("total")),"","","","",""
-                                });                       
+                                    "", "", "", "", "", "", i + ". " + rs2.
+                                    getString("nama_brng") + " (" + rs2.
+                                    getString("jml") + " " + rs2.getString(
+                                    "kode_sat") + " X " + Valid.SetAngka(rs2.
+                                    getDouble("harga")) + ") = " + Valid.
+                                    SetAngka(rs2.getDouble("total")), "", "", "",
+                                    "", ""
+                                });
                                 i++;
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(psceknonmedis!=null){
+                            if (psceknonmedis != null) {
                                 psceknonmedis.close();
                             }
                         }
-                    }else if(aktifkan.equals("medis&nonmedis")){
-                        pscekmedis=koneksi.prepareStatement(sqlpscekmedis);
+                    } else if (aktifkan.equals("medis&nonmedis")) {
+                        pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1,rs.getString("no_donor"));
-                            rs2=pscekmedis.executeQuery();
-                            if(rs2.next()){
+                            pscekmedis.setString(1, rs.getString("no_donor"));
+                            rs2 = pscekmedis.executeQuery();
+                            if (rs2.next()) {
                                 tabMode.addRow(new Object[]{
-                                        "","","","","","","Penggunaan BHP Medis :","","","","",""
+                                    "", "", "", "", "", "",
+                                    "Penggunaan BHP Medis :", "", "", "", "", ""
                                 });
-                                i=1;
+                                i = 1;
                             }
-                            rs2.beforeFirst();                         
-                            while(rs2.next()){
+                            rs2.beforeFirst();
+                            while (rs2.next()) {
                                 tabMode.addRow(new String[]{
-                                    "","","","","","",i+". "+rs2.getString("nama_brng")+" ("+rs2.getString("jml")+" "+rs2.getString("kode_sat")+" X "+Valid.SetAngka(rs2.getDouble("harga"))+") = "+Valid.SetAngka(rs2.getDouble("total")),"","","","",""
-                                });                       
+                                    "", "", "", "", "", "", i + ". " + rs2.
+                                    getString("nama_brng") + " (" + rs2.
+                                    getString("jml") + " " + rs2.getString(
+                                    "kode_sat") + " X " + Valid.SetAngka(rs2.
+                                    getDouble("harga")) + ") = " + Valid.
+                                    SetAngka(rs2.getDouble("total")), "", "", "",
+                                    "", ""
+                                });
                                 i++;
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(pscekmedis!=null){
+                            if (pscekmedis != null) {
                                 pscekmedis.close();
                             }
                         }
-                        
-                        psceknonmedis=koneksi.prepareStatement(sqlpsceknonmedis);
+
+                        psceknonmedis = koneksi.prepareStatement(
+                                sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1,rs.getString("no_donor"));
-                            rs2=psceknonmedis.executeQuery();
-                            if(rs2.next()){
+                            psceknonmedis.setString(1, rs.getString("no_donor"));
+                            rs2 = psceknonmedis.executeQuery();
+                            if (rs2.next()) {
                                 tabMode.addRow(new Object[]{
-                                    "","","","","","","Penggunaan BHP Non Medis :","","","","",""
+                                    "", "", "", "", "", "",
+                                    "Penggunaan BHP Non Medis :", "", "", "", "",
+                                    ""
                                 });
-                                i=1;
+                                i = 1;
                             }
                             rs2.beforeFirst();
-                            while(rs2.next()){
+                            while (rs2.next()) {
                                 tabMode.addRow(new String[]{
-                                    "","","","","","",i+". "+rs2.getString("nama_brng")+" ("+rs2.getString("jml")+" "+rs2.getString("kode_sat")+" X "+Valid.SetAngka(rs2.getDouble("harga"))+") = "+Valid.SetAngka(rs2.getDouble("total")),"","","","",""
-                                });                       
+                                    "", "", "", "", "", "", i + ". " + rs2.
+                                    getString("nama_brng") + " (" + rs2.
+                                    getString("jml") + " " + rs2.getString(
+                                    "kode_sat") + " X " + Valid.SetAngka(rs2.
+                                    getDouble("harga")) + ") = " + Valid.
+                                    SetAngka(rs2.getDouble("total")), "", "", "",
+                                    "", ""
+                                });
                                 i++;
                             }
-                        } catch (Exception e) {
-                            System.out.println("Notifikasi : "+e);
-                        } finally{
-                            if(rs2!=null){
+                        } catch (SQLException e) {
+                            System.out.println("Notifikasi : " + e);
+                        } finally {
+                            if (rs2 != null) {
                                 rs2.close();
                             }
-                            if(psceknonmedis!=null){
+                            if (psceknonmedis != null) {
                                 psceknonmedis.close();
                             }
-                        }                        
+                        }
                     }
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(psdonor!=null){
+                if (psdonor != null) {
                     psdonor.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -2019,257 +2268,269 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         TCariMedis.setText("");
         TCariNonMedis.setText("");
         Tanggal.requestFocus();
-        for(index=0;index<tbMedis.getRowCount();index++){   
-            tbMedis.setValueAt(null,index,0);        
+        for (index = 0; index < tbMedis.getRowCount(); index++) {
+            tbMedis.setValueAt(null, index, 0);
         }
-        
-        for(index=0;index<tbNonMedis.getRowCount();index++){   
-            tbNonMedis.setValueAt(null,index,0);        
+
+        for (index = 0; index < tbNonMedis.getRowCount(); index++) {
+            tbNonMedis.setValueAt(null, index, 0);
         }
-        
-        for(index=0;index<tbKomponen.getRowCount();index++){   
-            tbKomponen.setValueAt(false,index,0);        
+
+        for (index = 0; index < tbKomponen.getRowCount(); index++) {
+            tbKomponen.setValueAt(false, index, 0);
         }
     }
 
     private void getData() {
-        if(tbPemisahan.getSelectedRow()!= -1){
-            
+        if (tbPemisahan.getSelectedRow() != -1) {
+
         }
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbPemisahan;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnTambah.setEnabled(akses.getutd_pemisahan_darah());
         BtnPrint.setEnabled(akses.getutd_pemisahan_darah());
         btnTambahKomponen.setEnabled(akses.getutd_komponen_darah());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KodePetugas.setText(akses.getkode());
             NamaPetugas.setText(petugas.tampil3(KodePetugas.getText()));
-        } 
+        }
     }
-    
+
     private void tampilMedis() {
-        row=tbMedis.getRowCount();
-        jml=0;
-        for(i=0;i<row;i++){
+        row = tbMedis.getRowCount();
+        jml = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(Double.parseDouble(tbMedis.getValueAt(i,0).toString())>0){
+                if (Double.parseDouble(tbMedis.getValueAt(i, 0).toString()) > 0) {
                     jml++;
                 }
             } catch (Exception e) {
                 jml += 0;
-            } 
+            }
         }
-        
-        kodebarang=null;
-        namabarang=null;
-        satuan=null;
-        hbeli=null;
-        total=null;
-        jumlah=null;
-        stokasal=null;
-        
-        kodebarang=new String[jml];
-        namabarang=new String[jml];
-        satuan=new String[jml];
-        hbeli=new String[jml];
-        total=new String[jml];
-        jumlah=new String[jml];
-        stokasal=new String[jml];
-        index=0;        
-        for(i=0;i<row;i++){
+
+        kodebarang = null;
+        namabarang = null;
+        satuan = null;
+        hbeli = null;
+        total = null;
+        jumlah = null;
+        stokasal = null;
+
+        kodebarang = new String[jml];
+        namabarang = new String[jml];
+        satuan = new String[jml];
+        hbeli = new String[jml];
+        total = new String[jml];
+        jumlah = new String[jml];
+        stokasal = new String[jml];
+        index = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(Double.parseDouble(tbMedis.getValueAt(i,0).toString())>0){
-                    jumlah[index]=tbMedis.getValueAt(i,0).toString();
-                    kodebarang[index]=tbMedis.getValueAt(i,1).toString();
-                    namabarang[index]=tbMedis.getValueAt(i,2).toString();
-                    hbeli[index]=tbMedis.getValueAt(i,3).toString();
-                    total[index]=tbMedis.getValueAt(i,4).toString();
-                    satuan[index]=tbMedis.getValueAt(i,5).toString();
-                    stokasal[index]=tbMedis.getValueAt(i,6).toString();
+                if (Double.parseDouble(tbMedis.getValueAt(i, 0).toString()) > 0) {
+                    jumlah[index] = tbMedis.getValueAt(i, 0).toString();
+                    kodebarang[index] = tbMedis.getValueAt(i, 1).toString();
+                    namabarang[index] = tbMedis.getValueAt(i, 2).toString();
+                    hbeli[index] = tbMedis.getValueAt(i, 3).toString();
+                    total[index] = tbMedis.getValueAt(i, 4).toString();
+                    satuan[index] = tbMedis.getValueAt(i, 5).toString();
+                    stokasal[index] = tbMedis.getValueAt(i, 6).toString();
                     index++;
                 }
             } catch (Exception e) {
             }
         }
         Valid.tabelKosong(tabModeMedis);
-        for(i=0;i<jml;i++){
-            tabModeMedis.addRow(new Object[]{jumlah[i],kodebarang[i],namabarang[i],hbeli[i],total[i],satuan[i],stokasal[i]});
+        for (i = 0; i < jml; i++) {
+            tabModeMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
+                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
         }
-        
-        try{
-            ps=koneksi.prepareStatement("select databarang.kode_brng, databarang.nama_brng,utd_stok_medis.hargaterakhir,databarang.kode_sat, "+
-                " utd_stok_medis.stok from databarang inner join utd_stok_medis on databarang.kode_brng=utd_stok_medis.kode_brng "+
-                " where databarang.status='1' and databarang.kode_brng like ? or "+
-                " databarang.status='1' and databarang.nama_brng like ? order by databarang.nama_brng");
+
+        try {
+            ps = koneksi.prepareStatement(
+                    "select databarang.kode_brng, databarang.nama_brng,utd_stok_medis.hargaterakhir,databarang.kode_sat, "
+                    + " utd_stok_medis.stok from databarang inner join utd_stok_medis on databarang.kode_brng=utd_stok_medis.kode_brng "
+                    + " where databarang.status='1' and databarang.kode_brng like ? or "
+                    + " databarang.status='1' and databarang.nama_brng like ? order by databarang.nama_brng");
             try {
-                ps.setString(1,"%"+TCariMedis.getText().trim()+"%");
-                ps.setString(2,"%"+TCariMedis.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){                
-                    tabModeMedis.addRow(new Object[]{null,rs.getString(1),rs.getString(2),rs.getString(3),0,rs.getString(4),rs.getString(5)});
-                }   
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
+                ps.setString(1, "%" + TCariMedis.getText().trim() + "%");
+                ps.setString(2, "%" + TCariMedis.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabModeMedis.addRow(new Object[]{null, rs.getString(1), rs.
+                        getString(2), rs.getString(3), 0, rs.getString(4), rs.
+                        getString(5)});
+                }
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                          
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     private void tampilNonMedis() {
-        row=tbNonMedis.getRowCount();
-        jml=0;
-        for(i=0;i<row;i++){
+        row = tbNonMedis.getRowCount();
+        jml = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(Double.parseDouble(tbNonMedis.getValueAt(i,0).toString())>0){
+                if (Double.parseDouble(tbNonMedis.getValueAt(i, 0).toString()) > 0) {
                     jml++;
                 }
             } catch (Exception e) {
                 jml += 0;
-            } 
+            }
         }
-        
-        kodebarang=null;
-        namabarang=null;
-        satuan=null;
-        hbeli=null;
-        total=null;
-        jumlah=null;
-        stokasal=null;
-        
-        kodebarang=new String[jml];
-        namabarang=new String[jml];
-        satuan=new String[jml];
-        hbeli=new String[jml];
-        total=new String[jml];
-        jumlah=new String[jml];
-        stokasal=new String[jml];
-        index=0;        
-        for(i=0;i<row;i++){
+
+        kodebarang = null;
+        namabarang = null;
+        satuan = null;
+        hbeli = null;
+        total = null;
+        jumlah = null;
+        stokasal = null;
+
+        kodebarang = new String[jml];
+        namabarang = new String[jml];
+        satuan = new String[jml];
+        hbeli = new String[jml];
+        total = new String[jml];
+        jumlah = new String[jml];
+        stokasal = new String[jml];
+        index = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(Double.parseDouble(tbNonMedis.getValueAt(i,0).toString())>0){
-                    jumlah[index]=tbNonMedis.getValueAt(i,0).toString();
-                    kodebarang[index]=tbNonMedis.getValueAt(i,1).toString();
-                    namabarang[index]=tbNonMedis.getValueAt(i,2).toString();
-                    hbeli[index]=tbNonMedis.getValueAt(i,3).toString();
-                    total[index]=tbNonMedis.getValueAt(i,4).toString();
-                    satuan[index]=tbNonMedis.getValueAt(i,5).toString();
-                    stokasal[index]=tbNonMedis.getValueAt(i,6).toString();
+                if (Double.parseDouble(tbNonMedis.getValueAt(i, 0).toString()) > 0) {
+                    jumlah[index] = tbNonMedis.getValueAt(i, 0).toString();
+                    kodebarang[index] = tbNonMedis.getValueAt(i, 1).toString();
+                    namabarang[index] = tbNonMedis.getValueAt(i, 2).toString();
+                    hbeli[index] = tbNonMedis.getValueAt(i, 3).toString();
+                    total[index] = tbNonMedis.getValueAt(i, 4).toString();
+                    satuan[index] = tbNonMedis.getValueAt(i, 5).toString();
+                    stokasal[index] = tbNonMedis.getValueAt(i, 6).toString();
                     index++;
                 }
             } catch (Exception e) {
             }
         }
         Valid.tabelKosong(tabModeNonMedis);
-        for(i=0;i<jml;i++){
-            tabModeNonMedis.addRow(new Object[]{jumlah[i],kodebarang[i],namabarang[i],hbeli[i],total[i],satuan[i],stokasal[i]});
+        for (i = 0; i < jml; i++) {
+            tabModeNonMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
+                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
         }
-        
-        try{
-            ps2=koneksi.prepareStatement("select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng,utd_stok_penunjang.hargaterakhir,ipsrsbarang.kode_sat, "+
-                " utd_stok_penunjang.stok from ipsrsbarang inner join utd_stok_penunjang on ipsrsbarang.kode_brng=utd_stok_penunjang.kode_brng "+
-                " where ipsrsbarang.kode_brng like ? or ipsrsbarang.nama_brng like ? order by ipsrsbarang.nama_brng");
+
+        try {
+            ps2 = koneksi.prepareStatement(
+                    "select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng,utd_stok_penunjang.hargaterakhir,ipsrsbarang.kode_sat, "
+                    + " utd_stok_penunjang.stok from ipsrsbarang inner join utd_stok_penunjang on ipsrsbarang.kode_brng=utd_stok_penunjang.kode_brng "
+                    + " where ipsrsbarang.kode_brng like ? or ipsrsbarang.nama_brng like ? order by ipsrsbarang.nama_brng");
             try {
-                ps2.setString(1,"%"+TCariNonMedis.getText().trim()+"%");
-                ps2.setString(2,"%"+TCariNonMedis.getText().trim()+"%");
-                rs2=ps2.executeQuery();
-                while(rs2.next()){                
-                    tabModeNonMedis.addRow(new Object[]{null,rs2.getString(1),rs2.getString(2),rs2.getString(3),0,rs2.getString(4),rs2.getString(5)});
-                }   
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs2!=null){
+                ps2.setString(1, "%" + TCariNonMedis.getText().trim() + "%");
+                ps2.setString(2, "%" + TCariNonMedis.getText().trim() + "%");
+                rs2 = ps2.executeQuery();
+                while (rs2.next()) {
+                    tabModeNonMedis.addRow(new Object[]{null, rs2.getString(1),
+                        rs2.getString(2), rs2.getString(3), 0, rs2.getString(4),
+                        rs2.getString(5)});
+                }
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rs2 != null) {
                     rs2.close();
                 }
-                if(ps2!=null){
+                if (ps2 != null) {
                     ps2.close();
                 }
-            }                          
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
-    
+
     private void tampilKomponen() {
-        row=tbKomponen.getRowCount();
-        jml=0;
-        for(i=0;i<row;i++){
+        row = tbKomponen.getRowCount();
+        jml = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(tbKomponen.getValueAt(i,0).toString().equals("true")){
+                if (tbKomponen.getValueAt(i, 0).toString().equals("true")) {
                     jml++;
                 }
             } catch (Exception e) {
                 jml += 0;
-            } 
+            }
         }
-        
-        pilih=null;
-        pilih=new boolean[jml];
-        kodebarang=null;
-        kodebarang=new String[jml];
-        namabarang=null;
-        namabarang=new String[jml];
-        jumlah=null;
-        jumlah=new String[jml];
-        index=0;        
-        for(i=0;i<row;i++){
+
+        pilih = null;
+        pilih = new boolean[jml];
+        kodebarang = null;
+        kodebarang = new String[jml];
+        namabarang = null;
+        namabarang = new String[jml];
+        jumlah = null;
+        jumlah = new String[jml];
+        index = 0;
+        for (i = 0; i < row; i++) {
             try {
-                if(tbKomponen.getValueAt(i,0).toString().equals("true")){
-                    pilih[index]=true;
-                    kodebarang[index]=tbKomponen.getValueAt(i,1).toString();
-                    namabarang[index]=tbKomponen.getValueAt(i,2).toString();
-                    jumlah[index]=tbKomponen.getValueAt(i,3).toString();
+                if (tbKomponen.getValueAt(i, 0).toString().equals("true")) {
+                    pilih[index] = true;
+                    kodebarang[index] = tbKomponen.getValueAt(i, 1).toString();
+                    namabarang[index] = tbKomponen.getValueAt(i, 2).toString();
+                    jumlah[index] = tbKomponen.getValueAt(i, 3).toString();
                     index++;
                 }
             } catch (Exception e) {
             }
         }
         Valid.tabelKosong(tabModeKomponen);
-        for(i=0;i<jml;i++){
-            tabModeKomponen.addRow(new Object[]{pilih[i],kodebarang[i],namabarang[i],jumlah[i]});
+        for (i = 0; i < jml; i++) {
+            tabModeKomponen.addRow(new Object[]{pilih[i], kodebarang[i],
+                namabarang[i], jumlah[i]});
         }
-        try{            
-            pskomponen=koneksi.prepareStatement(
-                "select * from utd_komponen_darah where kode like ? or nama like ? order by nama");
+        try {
+            pskomponen = koneksi.prepareStatement(
+                    "select * from utd_komponen_darah where kode like ? or nama like ? order by nama");
             try {
-                pskomponen.setString(1,"%"+Komponen.getText().trim()+"%");
-                pskomponen.setString(2,"%"+Komponen.getText().trim()+"%");
-                rs=pskomponen.executeQuery();
-                while(rs.next()){
+                pskomponen.setString(1, "%" + Komponen.getText().trim() + "%");
+                pskomponen.setString(2, "%" + Komponen.getText().trim() + "%");
+                rs = pskomponen.executeQuery();
+                while (rs.next()) {
                     tabModeKomponen.addRow(new Object[]{
-                        false,rs.getString(1),rs.getString(2),rs.getString(3)
+                        false, rs.getString(1), rs.getString(2), rs.getString(3)
                     });
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(pskomponen!=null){
+                if (pskomponen != null) {
                     pskomponen.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabModeKomponen.getRowCount());
+        LCount.setText("" + tabModeKomponen.getRowCount());
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(UTDPemisahanDarah.class.
+            getName());
+
 }

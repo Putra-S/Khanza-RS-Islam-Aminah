@@ -3,133 +3,177 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgAdmin.java
  *
  * Created on 21 Jun 10, 20:53:44
  */
-
 package setting;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import kepegawaian.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariDokter;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgSetPenjabLab extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
-    private int pilihan=0,i=0;
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
+    private int pilihan = 0, i = 0;
 
-    /** Creates new form DlgAdmin
+    /**
+     * Creates new form DlgAdmin
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgSetPenjabLab(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "P.J.Laboratorium PK","P.J.Radiologi","P.J.Hemodialisa","P.J.Tranfusi Darah","P.J.Laboratorium PA","P.J.Laboratorium MB",
-                "Kode PK","Kode Radiologi","Kode Hemodialisa","Kode Tranfusi Darah","Kode PA","Kode MB"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "P.J.Laboratorium PK", "P.J.Radiologi", "P.J.Hemodialisa",
+            "P.J.Tranfusi Darah", "P.J.Laboratorium PA", "P.J.Laboratorium MB",
+            "Kode PK", "Kode Radiologi", "Kode Hemodialisa",
+            "Kode Tranfusi Darah", "Kode PA", "Kode MB"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbAdmin.setModel(tabMode);
-        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbAdmin.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbAdmin.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbAdmin.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(220);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(220);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(220);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(220);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(220);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(220);
-            }else{
+            } else {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
-        kddokter.setDocument(new batasInput((byte)20).getKata(kddokter));
-        kddokter2.setDocument(new batasInput((byte)20).getKata(kddokter2));
-        kddokter3.setDocument(new batasInput((byte)20).getKata(kddokter3));
-        kddokter4.setDocument(new batasInput((byte)20).getKata(kddokter4));
-        kddokter5.setDocument(new batasInput((byte)20).getKata(kddokter5));
-        kddokter6.setDocument(new batasInput((byte)20).getKata(kddokter6));
+        kddokter.setDocument(new batasInput((byte) 20).getKata(kddokter));
+        kddokter2.setDocument(new batasInput((byte) 20).getKata(kddokter2));
+        kddokter3.setDocument(new batasInput((byte) 20).getKata(kddokter3));
+        kddokter4.setDocument(new batasInput((byte) 20).getKata(kddokter4));
+        kddokter5.setDocument(new batasInput((byte) 20).getKata(kddokter5));
+        kddokter6.setDocument(new batasInput((byte) 20).getKata(kddokter6));
 
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){                    
-                    if(pilihan==1){
-                        kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    if (pilihan == 1) {
+                        kddokter.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter.requestFocus();
-                    }else if(pilihan==2){
-                        kddokter2.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter2.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    } else if (pilihan == 2) {
+                        kddokter2.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter2.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter2.requestFocus();
-                    }else if(pilihan==3){
-                        kddokter3.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter3.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    } else if (pilihan == 3) {
+                        kddokter3.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter3.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter3.requestFocus();
-                    }else if(pilihan==4){
-                        kddokter4.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter4.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    } else if (pilihan == 4) {
+                        kddokter4.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter4.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter4.requestFocus();
-                    }else if(pilihan==5){
-                        kddokter5.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter5.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    } else if (pilihan == 5) {
+                        kddokter5.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter5.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter5.requestFocus();
-                    }else if(pilihan==6){
-                        kddokter6.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        TDokter6.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    } else if (pilihan == 6) {
+                        kddokter6.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 0).toString());
+                        TDokter6.setText(dokter.getTable().getValueAt(dokter.
+                                getTable().getSelectedRow(), 1).toString());
                         kddokter6.requestFocus();
                     }
-                }                
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
 
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -508,39 +552,52 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
   }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TDokter.getText().trim().isEmpty()||kddokter.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter,"Penanggung Jawab Laborat PK");
-        }else if(TDokter2.getText().trim().isEmpty()||kddokter2.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter2,"Penanggung Jawab Radiologi");
-        }else if(TDokter3.getText().trim().isEmpty()||kddokter3.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter3,"Penanggung Jawab Hemodialisa");
-        }else if(TDokter4.getText().trim().isEmpty()||kddokter4.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter4,"Penanggung Jawab Unit Tranfusi Darah");
-        }else if(TDokter5.getText().trim().isEmpty()||kddokter5.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter5,"Penanggung Jawab Laborat PA");
-        }else if(TDokter6.getText().trim().isEmpty()||kddokter6.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter6,"Penanggung Jawab Laborat MB");
-        }else if(tabMode.getRowCount()==0){
-            if(Sequel.menyimpantf("set_pjlab","?,?,?,?,?,?","Penanggung Jawab",6,new String[]{
-                kddokter.getText(),kddokter2.getText(),kddokter3.getText(),kddokter4.getText(),kddokter5.getText(),kddokter6.getText()
-            })==true){
+        if (TDokter.getText().trim().isEmpty() || kddokter.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(kddokter, "Penanggung Jawab Laborat PK");
+        } else if (TDokter2.getText().trim().isEmpty() || kddokter2.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter2, "Penanggung Jawab Radiologi");
+        } else if (TDokter3.getText().trim().isEmpty() || kddokter3.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter3, "Penanggung Jawab Hemodialisa");
+        } else if (TDokter4.getText().trim().isEmpty() || kddokter4.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter4, "Penanggung Jawab Unit Tranfusi Darah");
+        } else if (TDokter5.getText().trim().isEmpty() || kddokter5.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter5, "Penanggung Jawab Laborat PA");
+        } else if (TDokter6.getText().trim().isEmpty() || kddokter6.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter6, "Penanggung Jawab Laborat MB");
+        } else if (tabMode.getRowCount() == 0) {
+            if (Sequel.menyimpantf("set_pjlab", "?,?,?,?,?,?",
+                    "Penanggung Jawab", 6, new String[]{
+                        kddokter.getText(), kddokter2.getText(), kddokter3.
+                        getText(), kddokter4.getText(), kddokter5.getText(),
+                        kddokter6.getText()
+                    }) == true) {
                 tabMode.addRow(new String[]{
-                    TDokter.getText(),TDokter2.getText(),TDokter3.getText(),TDokter4.getText(),TDokter5.getText(),TDokter6.getText(),
-                    kddokter.getText(),kddokter2.getText(),kddokter3.getText(),kddokter4.getText(),kddokter5.getText(),kddokter6.getText()
+                    TDokter.getText(), TDokter2.getText(), TDokter3.getText(),
+                    TDokter4.getText(), TDokter5.getText(), TDokter6.getText(),
+                    kddokter.getText(), kddokter2.getText(), kddokter3.getText(),
+                    kddokter4.getText(), kddokter5.getText(), kddokter6.
+                    getText()
                 });
                 emptTeks();
             }
-        }else if(tabMode.getRowCount()>0){
-            JOptionPane.showMessageDialog(null,"Maaf, Hanya diijinkan satu Admin Utama ...!!!!");
+        } else if (tabMode.getRowCount() > 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Hanya diijinkan satu Admin Utama ...!!!!");
             kddokter.requestFocus();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter5,BtnBatal);
+        } else {
+            Valid.pindah(evt, kddokter5, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -549,16 +606,18 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             kddokter.requestFocus();
-        }else{
+        } else {
             Sequel.queryu("delete from set_pjlab");
             Valid.tabelKosong(tabMode);
             emptTeks();
@@ -566,35 +625,47 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TDokter.getText().trim().isEmpty()||kddokter.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter,"Penanggung Jawab Laborat");
-        }else if(TDokter2.getText().trim().isEmpty()||kddokter2.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter2,"Penanggung Jawab Radiologi");
-        }else if(TDokter3.getText().trim().isEmpty()||kddokter3.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter3,"Penanggung Jawab Hemodialisa");
-        }else if(TDokter4.getText().trim().isEmpty()||kddokter4.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter4,"Penanggung Jawab Unit Tranfusi Darah");
-        }else if(TDokter5.getText().trim().isEmpty()||kddokter5.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter5,"Penanggung Jawab Laborat PA");
-        }else if(TDokter6.getText().trim().isEmpty()||kddokter6.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter6,"Penanggung Jawab Laborat MB");
-        }else{
+        if (TDokter.getText().trim().isEmpty() || kddokter.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(kddokter, "Penanggung Jawab Laborat");
+        } else if (TDokter2.getText().trim().isEmpty() || kddokter2.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter2, "Penanggung Jawab Radiologi");
+        } else if (TDokter3.getText().trim().isEmpty() || kddokter3.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter3, "Penanggung Jawab Hemodialisa");
+        } else if (TDokter4.getText().trim().isEmpty() || kddokter4.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter4, "Penanggung Jawab Unit Tranfusi Darah");
+        } else if (TDokter5.getText().trim().isEmpty() || kddokter5.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter5, "Penanggung Jawab Laborat PA");
+        } else if (TDokter6.getText().trim().isEmpty() || kddokter6.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter6, "Penanggung Jawab Laborat MB");
+        } else {
             Sequel.queryu("delete from set_pjlab");
             Valid.tabelKosong(tabMode);
-            if(Sequel.menyimpantf("set_pjlab","?,?,?,?,?,?","Penanggung Jawab",6,new String[]{
-                kddokter.getText(),kddokter2.getText(),kddokter3.getText(),kddokter4.getText(),kddokter5.getText(),kddokter6.getText()
-            })==true){
+            if (Sequel.menyimpantf("set_pjlab", "?,?,?,?,?,?",
+                    "Penanggung Jawab", 6, new String[]{
+                        kddokter.getText(), kddokter2.getText(), kddokter3.
+                        getText(), kddokter4.getText(), kddokter5.getText(),
+                        kddokter6.getText()
+                    }) == true) {
                 tabMode.addRow(new String[]{
-                    TDokter.getText(),TDokter2.getText(),TDokter3.getText(),TDokter4.getText(),TDokter5.getText(),TDokter6.getText(),
-                    kddokter.getText(),kddokter2.getText(),kddokter3.getText(),kddokter4.getText(),kddokter5.getText(),kddokter6.getText()
+                    TDokter.getText(), TDokter2.getText(), TDokter3.getText(),
+                    TDokter4.getText(), TDokter5.getText(), TDokter6.getText(),
+                    kddokter.getText(), kddokter2.getText(), kddokter3.getText(),
+                    kddokter4.getText(), kddokter5.getText(), kddokter6.
+                    getText()
                 });
                 emptTeks();
             }
@@ -602,30 +673,33 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data penanggung jawab lab & radiologi tidak boleh kosong ...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data penanggung jawab lab & radiologi tidak boleh kosong ...!!!!");
             kddokter.requestFocus();
-        }else if(! (tabMode.getRowCount()==0)) {
+        } else if (!(tabMode.getRowCount() == 0)) {
             dispose();
         }
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnEdit, BtnKeluar);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void tbAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAdminMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -634,8 +708,9 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
 }//GEN-LAST:event_tbAdminMouseClicked
 
     private void tbAdminKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbAdminKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -649,130 +724,138 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void kddokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokterKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter.setText(dokter.tampil3(kddokter.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokterActionPerformed(null);
-        }else{
-            Valid.pindah(evt,BtnKeluar,kddokter2);
+        } else {
+            Valid.pindah(evt, BtnKeluar, kddokter2);
         }
     }//GEN-LAST:event_kddokterKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
-        pilihan=1;
+        pilihan = 1;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void kddokter2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokter2KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter2.setText(dokter.tampil3(kddokter2.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokter2ActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter,kddokter3);
+        } else {
+            Valid.pindah(evt, kddokter, kddokter3);
         }
     }//GEN-LAST:event_kddokter2KeyPressed
 
     private void BtnDokter2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter2ActionPerformed
-        pilihan=2;
+        pilihan = 2;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokter2ActionPerformed
 
     private void kddokter3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokter3KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter3.setText(dokter.tampil3(kddokter3.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokter3ActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter2,kddokter4);
+        } else {
+            Valid.pindah(evt, kddokter2, kddokter4);
         }
     }//GEN-LAST:event_kddokter3KeyPressed
 
     private void BtnDokter3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter3ActionPerformed
-        pilihan=3;
+        pilihan = 3;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokter3ActionPerformed
 
     private void kddokter4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokter4KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter4.setText(dokter.tampil3(kddokter4.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokter4ActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter3,kddokter5);
+        } else {
+            Valid.pindah(evt, kddokter3, kddokter5);
         }
     }//GEN-LAST:event_kddokter4KeyPressed
 
     private void BtnDokter4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter4ActionPerformed
-        pilihan=4;
+        pilihan = 4;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokter4ActionPerformed
 
     private void kddokter5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokter5KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter5.setText(dokter.tampil3(kddokter5.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokter5ActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter4,kddokter6);
+        } else {
+            Valid.pindah(evt, kddokter4, kddokter6);
         }
     }//GEN-LAST:event_kddokter5KeyPressed
 
     private void BtnDokter5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter5ActionPerformed
-        pilihan=5;
+        pilihan = 5;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokter5ActionPerformed
 
     private void kddokter6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokter6KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter6.setText(dokter.tampil3(kddokter6.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokter6ActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter5,BtnSimpan);
+        } else {
+            Valid.pindah(evt, kddokter5, BtnSimpan);
         }
     }//GEN-LAST:event_kddokter6KeyPressed
 
     private void BtnDokter6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter6ActionPerformed
-        pilihan=6;
+        pilihan = 6;
         dokter.isCek();
         dokter.TCari.requestFocus();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokter6ActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetPenjabLab dialog = new DlgSetPenjabLab(new javax.swing.JFrame(), true);
+            DlgSetPenjabLab dialog = new DlgSetPenjabLab(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -817,50 +900,75 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select * from set_pjlab");
+        try {
+            ps = koneksi.prepareStatement("select * from set_pjlab");
             try {
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(1)),
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(2)),
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(3)),
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(4)),
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(5)),
-                        Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString(6)),
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(1)),
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(2)),
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(3)),
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(4)),
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(5)),
+                        Sequel.cariIsi(
+                        "select dokter.nm_dokter from dokter where dokter.kd_dokter=?",
+                        rs.getString(6)),
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5), rs.getString(6)
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs != null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps != null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void getData() {
-        if(tbAdmin.getSelectedRow()!= -1){
-            TDokter.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),0).toString());
-            TDokter2.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),1).toString());
-            TDokter3.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),2).toString());
-            TDokter4.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),3).toString());
-            TDokter5.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),4).toString());
-            TDokter6.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),5).toString());
-            kddokter.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),6).toString());
-            kddokter2.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),7).toString());
-            kddokter3.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),8).toString());
-            kddokter4.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),9).toString());
-            kddokter5.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),10).toString());
-            kddokter6.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(),11).toString());
+        if (tbAdmin.getSelectedRow() != -1) {
+            TDokter.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 0).
+                    toString());
+            TDokter2.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 1).
+                    toString());
+            TDokter3.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 2).
+                    toString());
+            TDokter4.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 3).
+                    toString());
+            TDokter5.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 4).
+                    toString());
+            TDokter6.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 5).
+                    toString());
+            kddokter.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 6).
+                    toString());
+            kddokter2.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 7).
+                    toString());
+            kddokter3.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 8).
+                    toString());
+            kddokter4.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 9).
+                    toString());
+            kddokter5.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 10).
+                    toString());
+            kddokter6.setText(tbAdmin.getValueAt(tbAdmin.getSelectedRow(), 11).
+                    toString());
         }
     }
 
@@ -882,4 +990,7 @@ public class DlgSetPenjabLab extends javax.swing.JDialog {
         TDokter6.setText("");
         kddokter.requestFocus();
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgSetPenjabLab.class.
+            getName());
 }

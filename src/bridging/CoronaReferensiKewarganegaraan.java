@@ -9,100 +9,131 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class CoronaReferensiKewarganegaraan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private int i=0;
-    private ApiKemenkesCorona api=new ApiKemenkesCorona();
-    private String link="",idrs="";
-    private HttpHeaders headers ;
+
+    private validasi Valid = new validasi();
+
+    private int i = 0;
+
+    private ApiKemenkesCorona api = new ApiKemenkesCorona();
+
+    private String link = "", idrs = "";
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
 
-    /** Creates new form DlgKamar
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public CoronaReferensiKewarganegaraan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{"Kode","Kewarganegaraan"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new String[]{"Kode",
+            "Kewarganegaraan"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 2; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(60);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(400);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }   
+        }
         try {
-            link=koneksiDB.URLAPICORONA();
-            idrs=koneksiDB.IDCORONA();
+            link = koneksiDB.URLAPICORONA();
+            idrs = koneksiDB.IDCORONA();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -224,19 +255,19 @@ public class CoronaReferensiKewarganegaraan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
         }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             tampil();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             tampil();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnCariActionPerformed(null);
         }
     }//GEN-LAST:event_TCariKeyPressed
@@ -248,14 +279,14 @@ public class CoronaReferensiKewarganegaraan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
             }
         }
@@ -267,16 +298,18 @@ public class CoronaReferensiKewarganegaraan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            CoronaReferensiKewarganegaraan dialog = new CoronaReferensiKewarganegaraan(new javax.swing.JFrame(), true);
+            CoronaReferensiKewarganegaraan dialog = new CoronaReferensiKewarganegaraan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -301,38 +334,49 @@ public class CoronaReferensiKewarganegaraan extends javax.swing.JDialog {
     public void tampil() {
         try {
             headers = new HttpHeaders();
-	   headers.add("X-rs-id",idrs);
-	   headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString())); 
-	   headers.add("X-pass",api.getHmac()); 
-	   requestEntity = new HttpEntity(headers);
-            root = mapper.readTree(api.getRest().exchange(link+"/Referensi/kewarganegaraan", HttpMethod.GET, requestEntity, String.class).getBody());
+            headers.add("X-rs-id", idrs);
+            headers.add("X-Timestamp", String.valueOf(api.
+                    GetUTCdatetimeAsString()));
+            headers.add("X-pass", api.getHmac());
+            requestEntity = new HttpEntity(headers);
+            root = mapper.readTree(api.getRest()
+                    .exchange(link + "/Referensi/kewarganegaraan",
+                            HttpMethod.GET, requestEntity, String.class)
+                    .getBody());
             Valid.tabelKosong(tabMode);
             response = root.path("kewarganegaraan");
-            if(response.isArray()){
-                for(JsonNode list:response){
-                    if(list.path("nationality").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
-                        tabMode.addRow(new Object[]{
-                           list.path("id_nation").asText(),list.path("nationality").asText()
-                        }); 
+            if (response.isArray()) {
+                for (JsonNode list : response) {
+                    if (list.path("nationality").asText().toLowerCase().
+                            contains(TCari.getText().toLowerCase())) {
+                        tabMode.addRow(
+                                new Object[]{list.path("id_nation").asText(),
+                                    list.path("nationality").asText()});
                     }
                 }
             }
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server Kemenkes terputus....!");
-            }else if(ex.toString().contains("404")){
-                JOptionPane.showMessageDialog(rootPane,"Tidak ditemukan....!");
-            }else if(ex.toString().contains("500")){
-                JOptionPane.showMessageDialog(rootPane,"Server internal error....!");
-            }else if(ex.toString().contains("502")){
-                JOptionPane.showMessageDialog(rootPane,"Server kemenkes lelah broo....!");
+        } catch (IOException | KeyManagementException | NoSuchAlgorithmException | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server Kemenkes terputus....!");
+            } else if (ex.toString().contains("404")) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak ditemukan....!");
+            } else if (ex.toString().contains("500")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Server internal error....!");
+            } else if (ex.toString().contains("502")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Server kemenkes lelah broo....!");
             }
         }
-    }   
-    
- 
-    public JTable getTable(){
+    }
+
+    public JTable getTable() {
         return tbKamar;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            CoronaReferensiKewarganegaraan.class.getName());
+
 }

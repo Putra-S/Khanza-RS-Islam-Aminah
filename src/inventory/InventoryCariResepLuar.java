@@ -3,195 +3,241 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgResepObat.java
  *
  * Created on 31 Mei 10, 11:27:40
  */
-
 package inventory;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
-import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
 
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class InventoryCariResepLuar extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabmodeUbahRacikan,tabmodeUbahRacikan2;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,ps2,psracikan;
-    private ResultSet rs,rs2,rsracikan;
+
+    private final DefaultTableModel tabMode, tabmodeUbahRacikan, tabmodeUbahRacikan2;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private PreparedStatement ps, ps2, psracikan;
+    private ResultSet rs, rs2, rsracikan;
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Date date = new Date();
-    private String now=dateFormat.format(date),rincianobat="",finger="";
-    private DlgCariAturanPakai aturanpakai=new DlgCariAturanPakai(null,false);
-    private int i=0,pilihan=0;
-    private DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+    private String now = dateFormat.format(date), rincianobat = "", finger = "";
+    private DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
+    private int i = 0, pilihan = 0;
+    private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    /** Creates new form DlgResepObat 
-     *@param parent
-     *@param modal*/
+    /**
+     * Creates new form DlgResepObat
+     *
+     * @param parent
+     * @param modal
+     */
     public InventoryCariResepLuar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        Object[] row={"No.Resep","Tgl.Resep","Pasien","Dokter Peresep"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"No.Resep", "Tgl.Resep", "Pasien", "Dokter Peresep"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbResep.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbResep.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbResep.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbResep.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 4; i++) {
             TableColumn column = tbResep.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(90);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(110);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(350);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(200);
             }
         }
         tbResep.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabmodeUbahRacikan=new DefaultTableModel(null,new Object[]{
-                "Kode Barang","Nama Barang","Jumlah","Aturan Pakai"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+
+        tabmodeUbahRacikan = new DefaultTableModel(null, new Object[]{
+            "Kode Barang", "Nama Barang", "Jumlah", "Aturan Pakai"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if ((colIndex==2)||(colIndex==3)) {
-                    a=true;
+                if ((colIndex == 2) || (colIndex == 3)) {
+                    a = true;
                 }
                 return a;
-             }
-         };
+            }
+
+        };
         tbTambahan.setModel(tabmodeUbahRacikan);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbTambahan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbTambahan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 4; i++) {
             TableColumn column = tbTambahan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(90);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(50);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(200);
             }
         }
         tbTambahan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmodeUbahRacikan2=new DefaultTableModel(null,new Object[]{
-                "No.Racik","Nama Racik","Aturan Pakai"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
+        tabmodeUbahRacikan2 = new DefaultTableModel(null, new Object[]{
+            "No.Racik", "Nama Racik", "Aturan Pakai"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if ((colIndex==1)||(colIndex==2)) {
-                    a=true;
+                if ((colIndex == 1) || (colIndex == 2)) {
+                    a = true;
                 }
                 return a;
-             }
-         };
+            }
+
+        };
         tbTambahan1.setModel(tabmodeUbahRacikan2);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbTambahan1.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbTambahan1.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbTambahan1.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(60);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(250);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
             }
         }
         tbTambahan1.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
-        
+        }
+
         aturanpakai.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(aturanpakai.getTable().getSelectedRow()!= -1){ 
-                    if(pilihan==1){
-                        tbTambahan.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(),0).toString(),tbTambahan.getSelectedRow(),5);
+                if (aturanpakai.getTable().getSelectedRow() != -1) {
+                    if (pilihan == 1) {
+                        tbTambahan.setValueAt(aturanpakai.getTable().getValueAt(
+                                aturanpakai.getTable().getSelectedRow(), 0).
+                                toString(), tbTambahan.getSelectedRow(), 5);
                         tbTambahan.requestFocus();
-                    }else if(pilihan==2){
-                        tbTambahan1.setValueAt(aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(),0).toString(),tbTambahan1.getSelectedRow(),5);
+                    } else if (pilihan == 2) {
+                        tbTambahan1.setValueAt(aturanpakai.getTable().
+                                getValueAt(aturanpakai.getTable().
+                                        getSelectedRow(), 0).toString(),
+                                tbTambahan1.getSelectedRow(), 5);
                         tbTambahan1.requestFocus();
                     }
-                }   
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
-        Valid.SetTgl2(DTPCari1,format.format(new Date())+" 00:00:00");
-        Valid.SetTgl2(DTPCari2,format.format(new Date())+" 23:59:59"); 
+
+        Valid.SetTgl2(DTPCari1, format.format(new Date()) + " 00:00:00");
+        Valid.SetTgl2(DTPCari2, format.format(new Date()) + " 23:59:59");
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -636,24 +682,27 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tabMode.getRowCount()==0){
-             JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-             TCari.requestFocus();
-        }else if(tbResep.getSelectedRow()>-1){
-            if(!tbResep.getValueAt(tbResep.getSelectedRow(),0).toString().isEmpty()){
-                Sequel.meghapus("resep_luar","no_resep",tbResep.getValueAt(tbResep.getSelectedRow(),0).toString());
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
+            TCari.requestFocus();
+        } else if (tbResep.getSelectedRow() > -1) {
+            if (!tbResep.getValueAt(tbResep.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                Sequel.meghapus("resep_luar", "no_resep", tbResep.getValueAt(
+                        tbResep.getSelectedRow(), 0).toString());
                 tampil();
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus resep. Pilih dulu data yang mau dihapus. Klik data Nomor Resep untuk memilih...!!!!");
-            }   
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal menghapus resep. Pilih dulu data yang mau dihapus. Klik data Nomor Resep untuk memilih...!!!!");
+            }
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
-            Valid.pindah(evt, BtnResep,BtnPrint);
+        } else {
+            Valid.pindah(evt, BtnResep, BtnPrint);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
@@ -662,53 +711,69 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));        
-            Sequel.queryu("delete from temporary_resep where temp37='"+akses.getalamatip()+"'");
-            
-            for(int i=0;i<tabMode.getRowCount();i++){  
-                Sequel.menyimpan("temporary_resep","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",38,new String[]{
-                    ""+i,tabMode.getValueAt(i,0).toString(),tabMode.getValueAt(i,1).toString(),tabMode.getValueAt(i,2).toString(),
-                    tabMode.getValueAt(i,3).toString(),"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",akses.getalamatip()
-                });
+        } else if (tabMode.getRowCount() != 0) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Sequel.queryu("delete from temporary_resep where temp37='" + akses.
+                    getalamatip() + "'");
+
+            for (int i = 0; i < tabMode.getRowCount(); i++) {
+                Sequel.menyimpan("temporary_resep",
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                        38, new String[]{
+                            "" + i, tabMode.getValueAt(i, 0).toString(),
+                            tabMode.getValueAt(i, 1).toString(), tabMode.
+                            getValueAt(i, 2).toString(),
+                            tabMode.getValueAt(i, 3).toString(), "", "", "", "",
+                            "", "", "", "", "", "", "", "", "", "", "", "", "",
+                            "", "", "", "", "", "", "", "", "", "", "", "", "",
+                            "", "", akses.getalamatip()
+                        });
             }
-            
-            Map<String, Object> param = new HashMap<>();  
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptResepLuar.jasper","report","::[ Daftar Resep Obat Yang Ditebus Keluar Oleh Pasien ]::","select * from temporary_resep where temporary_resep.temp37='"+akses.getalamatip()+"' order by temporary_resep.no",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptResepLuar.jasper", "report",
+                    "::[ Daftar Resep Obat Yang Ditebus Keluar Oleh Pasien ]::",
+                    "select * from temporary_resep where temporary_resep.temp37='" + akses.
+                            getalamatip() + "' order by temporary_resep.no",
+                    param);
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -718,23 +783,23 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();        
+        tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -744,16 +809,19 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_NoResepUbah3KeyPressed
 
     private void BtnSimpanInput3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanInput3ActionPerformed
-        if(NoResepUbah3.getText().trim().isEmpty()||(tbTambahan.getRowCount()<=0)){
-            Valid.textKosong(NoResepUbah3,"Data");
-        }else{
-            Sequel.queryu2("delete from resep_luar_obat where no_resep=?",1,new String[]{NoResepUbah3.getText()});
-            for(i=0;i<tbTambahan.getRowCount();i++){
-                Sequel.menyimpan("resep_luar_obat","?,?,?,?",4,new String[]{
-                    NoResepUbah3.getText(),tbTambahan.getValueAt(i,0).toString(),tbTambahan.getValueAt(i,2).toString(),tbTambahan.getValueAt(i,3).toString()
+        if (NoResepUbah3.getText().trim().isEmpty() || (tbTambahan.getRowCount() <= 0)) {
+            Valid.textKosong(NoResepUbah3, "Data");
+        } else {
+            Sequel.queryu2("delete from resep_luar_obat where no_resep=?", 1,
+                    new String[]{NoResepUbah3.getText()});
+            for (i = 0; i < tbTambahan.getRowCount(); i++) {
+                Sequel.menyimpan("resep_luar_obat", "?,?,?,?", 4, new String[]{
+                    NoResepUbah3.getText(), tbTambahan.getValueAt(i, 0).
+                    toString(), tbTambahan.getValueAt(i, 2).toString(),
+                    tbTambahan.getValueAt(i, 3).toString()
                 });
             }
-            
+
             tampil();
             WindowInput3.dispose();
         }
@@ -764,31 +832,33 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarInput3ActionPerformed
 
     private void tbTambahanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTambahanKeyPressed
-        if(tbTambahan.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_RIGHT){
-                i=tbTambahan.getSelectedColumn();
-                if(i==5){
-                    pilihan=1;
-                    aturanpakai.setSize(internalFrame4.getWidth()-20,internalFrame4.getHeight()-20);
+        if (tbTambahan.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                i = tbTambahan.getSelectedColumn();
+                if (i == 5) {
+                    pilihan = 1;
+                    aturanpakai.setSize(internalFrame4.getWidth() - 20,
+                            internalFrame4.getHeight() - 20);
                     aturanpakai.setLocationRelativeTo(internalFrame4);
                     aturanpakai.setVisible(true);
                 }
             }
-        }            
+        }
     }//GEN-LAST:event_tbTambahanKeyPressed
 
     private void tbTambahan1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTambahan1KeyPressed
-        if(tbTambahan1.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_RIGHT){
-                i=tbTambahan1.getSelectedColumn();
-                if(i==5){
-                    pilihan=2;
-                    aturanpakai.setSize(internalFrame5.getWidth()-20,internalFrame5.getHeight()-20);
+        if (tbTambahan1.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                i = tbTambahan1.getSelectedColumn();
+                if (i == 5) {
+                    pilihan = 2;
+                    aturanpakai.setSize(internalFrame5.getWidth() - 20,
+                            internalFrame5.getHeight() - 20);
                     aturanpakai.setLocationRelativeTo(internalFrame5);
                     aturanpakai.setVisible(true);
                 }
             }
-        } 
+        }
     }//GEN-LAST:event_tbTambahan1KeyPressed
 
     private void NoResepUbah4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoResepUbah4KeyPressed
@@ -796,15 +866,21 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_NoResepUbah4KeyPressed
 
     private void BtnSimpanInput4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanInput4ActionPerformed
-       if(NoResepUbah4.getText().trim().isEmpty()||(tbTambahan1.getRowCount()<=0)){
-            Valid.textKosong(NoResepUbah4,"Data");
-        }else{
-            for(i=0;i<tbTambahan1.getRowCount();i++){
-                Sequel.queryu2("update resep_luar_racikan set aturan_pakai=?,nama_racik=? where no_resep=? and no_racik=?",4,new String[]{
-                    tbTambahan1.getValueAt(i,2).toString(),tbTambahan1.getValueAt(i,1).toString(),NoResepUbah4.getText(),tbTambahan1.getValueAt(i,0).toString()
-                });
+        if (NoResepUbah4.getText().trim().isEmpty() || (tbTambahan1.
+                getRowCount() <= 0)) {
+            Valid.textKosong(NoResepUbah4, "Data");
+        } else {
+            for (i = 0; i < tbTambahan1.getRowCount(); i++) {
+                Sequel.queryu2(
+                        "update resep_luar_racikan set aturan_pakai=?,nama_racik=? where no_resep=? and no_racik=?",
+                        4, new String[]{
+                            tbTambahan1.getValueAt(i, 2).toString(),
+                            tbTambahan1.getValueAt(i, 1).toString(),
+                            NoResepUbah4.getText(),
+                            tbTambahan1.getValueAt(i, 0).toString()
+                        });
             }
-            
+
             tampil();
             WindowInput4.dispose();
         }
@@ -815,14 +891,17 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarInput4ActionPerformed
 
     private void ppUbahAturanPakaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppUbahAturanPakaiActionPerformed
-        if(tabMode.getRowCount()==0){
-             JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-             TCari.requestFocus();
-        }else if(tbResep.getSelectedRow()>-1){
-            if(!tbResep.getValueAt(tbResep.getSelectedRow(),0).toString().isEmpty()){
-                NoResepUbah3.setText(tbResep.getValueAt(tbResep.getSelectedRow(),0).toString());
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
+            TCari.requestFocus();
+        } else if (tbResep.getSelectedRow() > -1) {
+            if (!tbResep.getValueAt(tbResep.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                NoResepUbah3.setText(tbResep.
+                        getValueAt(tbResep.getSelectedRow(), 0).toString());
                 tampilresep();
-                WindowInput3.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                WindowInput3.setSize(internalFrame1.getWidth() - 20,
+                        internalFrame1.getHeight() - 20);
                 WindowInput3.setLocationRelativeTo(internalFrame1);
                 WindowInput3.setVisible(true);
             }
@@ -830,14 +909,17 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_ppUbahAturanPakaiActionPerformed
 
     private void ppUbahAturanPakai1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppUbahAturanPakai1ActionPerformed
-        if(tabMode.getRowCount()==0){
-             JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-             TCari.requestFocus();
-        }else if(tbResep.getSelectedRow()>-1){
-            if(!tbResep.getValueAt(tbResep.getSelectedRow(),0).toString().isEmpty()){
-                NoResepUbah4.setText(tbResep.getValueAt(tbResep.getSelectedRow(),0).toString());
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
+            TCari.requestFocus();
+        } else if (tbResep.getSelectedRow() > -1) {
+            if (!tbResep.getValueAt(tbResep.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                NoResepUbah4.setText(tbResep.
+                        getValueAt(tbResep.getSelectedRow(), 0).toString());
                 tampilresep2();
-                WindowInput4.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                WindowInput4.setSize(internalFrame1.getWidth() - 20,
+                        internalFrame1.getHeight() - 20);
                 WindowInput4.setLocationRelativeTo(internalFrame1);
                 WindowInput4.setVisible(true);
             }
@@ -845,152 +927,207 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }//GEN-LAST:event_ppUbahAturanPakai1ActionPerformed
 
     private void BtnResepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResepActionPerformed
-        if(tabMode.getRowCount()==0){
-             JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-             TCari.requestFocus();
-        }else if(tbResep.getSelectedRow()>-1){
-            if(!tbResep.getValueAt(tbResep.getSelectedRow(),0).toString().isEmpty()){
-                try{  
-                    ps=koneksi.prepareStatement("select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,reg_periksa.kd_pj,"+
-                            " resep_luar.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_luar.kd_dokter,dokter.nm_dokter "+
-                            " from resep_luar inner join reg_periksa on resep_luar.no_rawat=reg_periksa.no_rawat "+
-                            " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            " inner join dokter on resep_luar.kd_dokter=dokter.kd_dokter where resep_luar.no_resep=? ");
-                    try{
-                        ps.setString(1,tbResep.getValueAt(tbResep.getSelectedRow(),0).toString());
-                        rs=ps.executeQuery();
-                        if(rs.next()){
-                            i=0;
-                            Sequel.queryu("delete from temporary_resep where temp37='"+akses.getalamatip()+"'");
-                            ps2=koneksi.prepareStatement(
-                                "select databarang.kode_brng,databarang.nama_brng,resep_luar_obat.jml,kodesatuan.satuan,"+
-                                "resep_luar_obat.aturan_pakai from resep_luar_obat inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng "+
-                                "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_obat.no_resep=? order by databarang.kode_brng");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
+            TCari.requestFocus();
+        } else if (tbResep.getSelectedRow() > -1) {
+            if (!tbResep.getValueAt(tbResep.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                try {
+                    ps = koneksi.prepareStatement(
+                            "select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,reg_periksa.kd_pj,"
+                            + " resep_luar.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_luar.kd_dokter,dokter.nm_dokter "
+                            + " from resep_luar inner join reg_periksa on resep_luar.no_rawat=reg_periksa.no_rawat "
+                            + " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + " inner join dokter on resep_luar.kd_dokter=dokter.kd_dokter where resep_luar.no_resep=? ");
+                    try {
+                        ps.setString(1, tbResep.getValueAt(tbResep.
+                                getSelectedRow(), 0).toString());
+                        rs = ps.executeQuery();
+                        if (rs.next()) {
+                            i = 0;
+                            Sequel.queryu(
+                                    "delete from temporary_resep where temp37='" + akses.
+                                            getalamatip() + "'");
+                            ps2 = koneksi.prepareStatement(
+                                    "select databarang.kode_brng,databarang.nama_brng,resep_luar_obat.jml,kodesatuan.satuan,"
+                                    + "resep_luar_obat.aturan_pakai from resep_luar_obat inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng "
+                                    + "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_obat.no_resep=? order by databarang.kode_brng");
                             try {
-                                ps2.setString(1,rs.getString("no_resep"));
-                                rs2=ps2.executeQuery();
-                                while(rs2.next()){
-                                    Sequel.menyimpan("temporary_resep","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",38,new String[]{
-                                        ""+i,rs2.getString("nama_brng"),rs2.getString("aturan_pakai"),rs2.getString("jml"),rs2.getString("satuan"),"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",akses.getalamatip()
-                                    });
+                                ps2.setString(1, rs.getString("no_resep"));
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
+                                    Sequel.menyimpan("temporary_resep",
+                                            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                                            38, new String[]{
+                                                "" + i, rs2.getString(
+                                                        "nama_brng"), rs2.
+                                                        getString("aturan_pakai"),
+                                                rs2.getString("jml"), rs2.
+                                                getString("satuan"), "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", akses.
+                                                        getalamatip()
+                                            });
                                     i++;
                                 }
                             } catch (Exception e) {
-                                System.out.println("Notifikasi : "+e);
-                            } finally{
-                                if(rs2!=null){
+                                System.out.println("Notifikasi : " + e);
+                            } finally {
+                                if (rs2 != null) {
                                     rs2.close();
                                 }
-                                if(ps2!=null){
+                                if (ps2 != null) {
                                     ps2.close();
                                 }
                             }
 
-                            psracikan=koneksi.prepareStatement(
-                                    "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"+
-                                    "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"+
-                                    "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"+
-                                    "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "+
-                                    "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "+
-                                    "resep_luar_racikan.no_resep=? order by resep_luar_racikan.no_racik");
+                            psracikan = koneksi.prepareStatement(
+                                    "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"
+                                    + "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"
+                                    + "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"
+                                    + "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "
+                                    + "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "
+                                    + "resep_luar_racikan.no_resep=? order by resep_luar_racikan.no_racik");
                             try {
-                                psracikan.setString(1,rs.getString("no_resep"));
-                                rsracikan=psracikan.executeQuery();
-                                while(rsracikan.next()){
-                                    rincianobat="";
-                                    ps2=koneksi.prepareStatement(
-                                        "select databarang.kode_brng,databarang.nama_brng,resep_luar_racikan_detail.jml,kodesatuan.satuan from "+
-                                        "resep_luar_racikan_detail inner join databarang on resep_luar_racikan_detail.kode_brng=databarang.kode_brng "+
-                                        "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_racikan_detail.no_resep=? and "+
-                                        "resep_luar_racikan_detail.no_racik=? order by databarang.kode_brng");
-                                    try{ 
-                                        ps2.setString(1,rs.getString("no_resep"));
-                                        ps2.setString(2,rsracikan.getString("no_racik"));
-                                        rs2=ps2.executeQuery();
-                                        while(rs2.next()){
-                                            rincianobat=rs2.getString("nama_brng")+" "+rs2.getString("jml")+" "+rs2.getString("satuan")+","+rincianobat;
-                                        }                                
+                                psracikan.setString(1, rs.getString("no_resep"));
+                                rsracikan = psracikan.executeQuery();
+                                while (rsracikan.next()) {
+                                    rincianobat = "";
+                                    ps2 = koneksi.prepareStatement(
+                                            "select databarang.kode_brng,databarang.nama_brng,resep_luar_racikan_detail.jml,kodesatuan.satuan from "
+                                            + "resep_luar_racikan_detail inner join databarang on resep_luar_racikan_detail.kode_brng=databarang.kode_brng "
+                                            + "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_racikan_detail.no_resep=? and "
+                                            + "resep_luar_racikan_detail.no_racik=? order by databarang.kode_brng");
+                                    try {
+                                        ps2.setString(1, rs.
+                                                getString("no_resep"));
+                                        ps2.setString(2, rsracikan.getString(
+                                                "no_racik"));
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            rincianobat = rs2.getString(
+                                                    "nama_brng") + " " + rs2.
+                                                            getString("jml") + " " + rs2.
+                                                    getString("satuan") + "," + rincianobat;
+                                        }
                                     } catch (Exception e) {
-                                        System.out.println("Notifikasi Detail Racikan : "+e);
-                                    } finally{
-                                        if(rs2!=null){
+                                        System.out.println(
+                                                "Notifikasi Detail Racikan : " + e);
+                                    } finally {
+                                        if (rs2 != null) {
                                             rs2.close();
                                         }
-                                        if(ps2!=null){
+                                        if (ps2 != null) {
                                             ps2.close();
                                         }
                                     }
-                                    
-                                    rincianobat = rincianobat.substring(0,rincianobat.length() - 1);
-                                    
-                                    Sequel.menyimpan("temporary_resep","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",38,new String[]{
-                                        ""+i,rsracikan.getString("no_racik")+". "+rsracikan.getString("nama_racik")+" ("+rincianobat+")",rsracikan.getString("aturan_pakai"),rsracikan.getString("jml_dr"),rsracikan.getString("metode"),"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",akses.getalamatip()
-                                    });
+
+                                    rincianobat = rincianobat.substring(0,
+                                            rincianobat.length() - 1);
+
+                                    Sequel.menyimpan("temporary_resep",
+                                            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                                            38, new String[]{
+                                                "" + i, rsracikan.getString(
+                                                        "no_racik") + ". " + rsracikan.
+                                                        getString("nama_racik") + " (" + rincianobat + ")",
+                                                rsracikan.getString(
+                                                        "aturan_pakai"),
+                                                rsracikan.getString("jml_dr"),
+                                                rsracikan.getString("metode"),
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                "", "", "", "", "", "", "", "",
+                                                akses.getalamatip()
+                                            });
                                     i++;
                                 }
                             } catch (Exception e) {
-                                System.out.println("Notif Racikan : "+e);
-                            } finally{
-                                if(rsracikan!=null){
+                                System.out.println("Notif Racikan : " + e);
+                            } finally {
+                                if (rsracikan != null) {
                                     rsracikan.close();
                                 }
-                                if(psracikan!=null){
+                                if (psracikan != null) {
                                     psracikan.close();
                                 }
                             }
-                            Map<String, Object> param = new HashMap<>();  
-                            param.put("namars",akses.getnamars());
-                            param.put("alamatrs",akses.getalamatrs());
-                            param.put("kotars",akses.getkabupatenrs());
-                            param.put("propinsirs",akses.getpropinsirs());
-                            param.put("emailrs",akses.getemailrs());
-                            param.put("kontakrs",akses.getkontakrs());
-                            param.put("penanggung",Sequel.cariIsi("select penjab.png_jawab from penjab where penjab.kd_pj=?",rs.getString("kd_pj")));               
-                            param.put("propinsirs",akses.getpropinsirs());
-                            param.put("tanggal",Valid.SetTgl(rs.getString("tgl_perawatan")+""));
-                            param.put("norawat",rs.getString("no_rawat"));
-                            param.put("pasien",rs.getString("nm_pasien"));
-                            param.put("norm",rs.getString("no_rkm_medis"));
-                            param.put("peresep",rs.getString("nm_dokter"));
-                            param.put("noresep",rs.getString("no_resep"));
-                            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",rs.getString("kd_dokter"));
-                            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rs.getString("nm_dokter")+"\nID "+(finger.isEmpty()?rs.getString("kd_dokter"):finger)+"\n"+Valid.SetTgl(rs.getString("tgl_perawatan")+""));  
-                            param.put("jam",rs.getString("jam"));
-                            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
+                            Map<String, Object> param = new HashMap<>();
+                            param.put("namars", akses.getnamars());
+                            param.put("alamatrs", akses.getalamatrs());
+                            param.put("kotars", akses.getkabupatenrs());
+                            param.put("propinsirs", akses.getpropinsirs());
+                            param.put("emailrs", akses.getemailrs());
+                            param.put("kontakrs", akses.getkontakrs());
+                            param.put("penanggung", Sequel.cariIsi(
+                                    "select penjab.png_jawab from penjab where penjab.kd_pj=?",
+                                    rs.getString("kd_pj")));
+                            param.put("propinsirs", akses.getpropinsirs());
+                            param.put("tanggal", Valid.SetTgl(rs.getString(
+                                    "tgl_perawatan") + ""));
+                            param.put("norawat", rs.getString("no_rawat"));
+                            param.put("pasien", rs.getString("nm_pasien"));
+                            param.put("norm", rs.getString("no_rkm_medis"));
+                            param.put("peresep", rs.getString("nm_dokter"));
+                            param.put("noresep", rs.getString("no_resep"));
+                            finger = Sequel.cariIsi(
+                                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                                    rs.getString("kd_dokter"));
+                            param.put("finger", "Dikeluarkan di " + akses.
+                                    getnamars() + ", Kabupaten/Kota " + akses.
+                                            getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + rs.
+                                            getString("nm_dokter") + "\nID " + (finger.
+                                    isEmpty() ? rs.getString("kd_dokter") : finger) + "\n" + Valid.
+                                    SetTgl(rs.getString("tgl_perawatan") + ""));
+                            param.put("jam", rs.getString("jam"));
+                            param.put("logo", Sequel.cariGambar(
+                                    "select setting.logo from setting"));
 
-                            Valid.MyReportqry("rptLembarResepLuar.jasper","report","::[ Lembar Resep Obat Yang Ditebus Keluar Oleh Pasien ]::","select * from temporary_resep where temporary_resep.temp37='"+akses.getalamatip()+"' order by temporary_resep.no",param);
+                            Valid.MyReportqry("rptLembarResepLuar.jasper",
+                                    "report",
+                                    "::[ Lembar Resep Obat Yang Ditebus Keluar Oleh Pasien ]::",
+                                    "select * from temporary_resep where temporary_resep.temp37='" + akses.
+                                            getalamatip() + "' order by temporary_resep.no",
+                                    param);
                             this.setCursor(Cursor.getDefaultCursor());
-                        }          
-                    } catch(Exception ex){
-                        System.out.println("Notifikasi : "+ex);
-                    } finally{
-                        if(rs!=null){
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Notifikasi : " + ex);
+                    } finally {
+                        if (rs != null) {
                             rs.close();
                         }
-                        if(ps!=null){
+                        if (ps != null) {
                             ps.close();
                         }
-                    }                
-                }catch(Exception e){
-                    System.out.println("Notifikasi : "+e);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf, Gagal mencetak resep. Pilih dulu data yang mau dicetak. Klik data Nomor Resep untuk memilih...!!!!");
-            }   
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Gagal mencetak resep. Pilih dulu data yang mau dicetak. Klik data Nomor Resep untuk memilih...!!!!");
+            }
         }
     }//GEN-LAST:event_BtnResepActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryCariResepLuar dialog = new InventoryCariResepLuar(new javax.swing.JFrame(), true);
+            InventoryCariResepLuar dialog = new InventoryCariResepLuar(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1042,191 +1179,219 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{  
-            ps=koneksi.prepareStatement("select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,"+
-                    " resep_luar.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_luar.kd_dokter,dokter.nm_dokter "+
-                    " from resep_luar inner join reg_periksa on resep_luar.no_rawat=reg_periksa.no_rawat "+
-                    " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    " inner join dokter on resep_luar.kd_dokter=dokter.kd_dokter where "+
-                    " concat(resep_luar.tgl_perawatan,' ',resep_luar.jam) between ? and ? and "+
-                    " (resep_luar.no_resep like ? or resep_luar.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or dokter.nm_dokter like ?) "+
-                    " order by resep_luar.tgl_perawatan,resep_luar.jam");
-            try{
-                ps.setString(1,Valid.SetTglJam(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTglJam(DTPCari2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText().trim()+"%");
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+        try {
+            ps = koneksi.prepareStatement(
+                    "select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,"
+                    + " resep_luar.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_luar.kd_dokter,dokter.nm_dokter "
+                    + " from resep_luar inner join reg_periksa on resep_luar.no_rawat=reg_periksa.no_rawat "
+                    + " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + " inner join dokter on resep_luar.kd_dokter=dokter.kd_dokter where "
+                    + " concat(resep_luar.tgl_perawatan,' ',resep_luar.jam) between ? and ? and "
+                    + " (resep_luar.no_resep like ? or resep_luar.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or dokter.nm_dokter like ?) "
+                    + " order by resep_luar.tgl_perawatan,resep_luar.jam");
+            try {
+                ps.
+                        setString(1, Valid.SetTglJam(
+                                DTPCari1.getSelectedItem() + ""));
+                ps.
+                        setString(2, Valid.SetTglJam(
+                                DTPCari2.getSelectedItem() + ""));
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText().trim() + "%");
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                ps.setString(7, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_resep"),rs.getString("tgl_perawatan")+" "+rs.getString("jam"),
-                        rs.getString("no_rawat")+" "+rs.getString("no_rkm_medis")+" "+rs.getString("nm_pasien"),
+                        rs.getString("no_resep"),
+                        rs.getString("tgl_perawatan") + " " + rs.
+                        getString("jam"),
+                        rs.getString("no_rawat") + " " + rs.getString(
+                        "no_rkm_medis") + " " + rs.getString("nm_pasien"),
                         rs.getString("nm_dokter")
                     });
-                    tabMode.addRow(new String[]{"","Jumlah","Nama Obat","Aturan Pakai"});                
-                    ps2=koneksi.prepareStatement(
-                        "select databarang.kode_brng,databarang.nama_brng,resep_luar_obat.jml,kodesatuan.satuan,"+
-                        "resep_luar_obat.aturan_pakai from resep_luar_obat inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng "+
-                        "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_obat.no_resep=? order by databarang.kode_brng");
+                    tabMode.addRow(new String[]{"", "Jumlah", "Nama Obat",
+                        "Aturan Pakai"});
+                    ps2 = koneksi.prepareStatement(
+                            "select databarang.kode_brng,databarang.nama_brng,resep_luar_obat.jml,kodesatuan.satuan,"
+                            + "resep_luar_obat.aturan_pakai from resep_luar_obat inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng "
+                            + "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_obat.no_resep=? order by databarang.kode_brng");
                     try {
-                        ps2.setString(1,rs.getString("no_resep"));
-                        rs2=ps2.executeQuery();
-                        while(rs2.next()){
+                        ps2.setString(1, rs.getString("no_resep"));
+                        rs2 = ps2.executeQuery();
+                        while (rs2.next()) {
                             tabMode.addRow(new String[]{
-                                "",rs2.getString("jml")+" "+rs2.getString("satuan"),rs2.getString("nama_brng"),rs2.getString("aturan_pakai")
+                                "", rs2.getString("jml") + " " + rs2.getString(
+                                "satuan"), rs2.getString("nama_brng"), rs2.
+                                getString("aturan_pakai")
                             });
                         }
                     } catch (Exception e) {
-                        System.out.println("Notifikasi : "+e);
-                    } finally{
-                        if(rs2!=null){
+                        System.out.println("Notifikasi : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(ps2!=null){
+                        if (ps2 != null) {
                             ps2.close();
                         }
                     }
-                    
-                    psracikan=koneksi.prepareStatement(
-                            "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"+
-                            "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"+
-                            "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"+
-                            "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "+
-                            "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "+
-                            "resep_luar_racikan.no_resep=? ");
+
+                    psracikan = koneksi.prepareStatement(
+                            "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"
+                            + "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"
+                            + "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"
+                            + "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "
+                            + "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "
+                            + "resep_luar_racikan.no_resep=? ");
                     try {
-                        psracikan.setString(1,rs.getString("no_resep"));
-                        rsracikan=psracikan.executeQuery();
-                        while(rsracikan.next()){
+                        psracikan.setString(1, rs.getString("no_resep"));
+                        rsracikan = psracikan.executeQuery();
+                        while (rsracikan.next()) {
                             tabMode.addRow(new String[]{
-                                "",rsracikan.getString("jml_dr")+" "+rsracikan.getString("metode"),rsracikan.getString("no_racik")+". "+rsracikan.getString("nama_racik")+", Keterangan : "+rsracikan.getString("keterangan"),rsracikan.getString("aturan_pakai")
+                                "",
+                                rsracikan.getString("jml_dr") + " " + rsracikan.
+                                getString("metode"), rsracikan.getString(
+                                "no_racik") + ". " + rsracikan.getString(
+                                "nama_racik") + ", Keterangan : " + rsracikan.
+                                getString("keterangan"), rsracikan.getString(
+                                "aturan_pakai")
                             });
-                            
-                            ps2=koneksi.prepareStatement(
-                                "select databarang.kode_brng,databarang.nama_brng,resep_luar_racikan_detail.jml,kodesatuan.satuan from "+
-                                "resep_luar_racikan_detail inner join databarang on resep_luar_racikan_detail.kode_brng=databarang.kode_brng "+
-                                "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_racikan_detail.no_resep=? and "+
-                                "resep_luar_racikan_detail.no_racik=? order by databarang.kode_brng");
-                            try{ 
-                                ps2.setString(1,rs.getString("no_resep"));
-                                ps2.setString(2,rsracikan.getString("no_racik"));
-                                rs2=ps2.executeQuery();
-                                while(rs2.next()){
+
+                            ps2 = koneksi.prepareStatement(
+                                    "select databarang.kode_brng,databarang.nama_brng,resep_luar_racikan_detail.jml,kodesatuan.satuan from "
+                                    + "resep_luar_racikan_detail inner join databarang on resep_luar_racikan_detail.kode_brng=databarang.kode_brng "
+                                    + "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat where resep_luar_racikan_detail.no_resep=? and "
+                                    + "resep_luar_racikan_detail.no_racik=? order by databarang.kode_brng");
+                            try {
+                                ps2.setString(1, rs.getString("no_resep"));
+                                ps2.
+                                        setString(2, rsracikan.getString(
+                                                "no_racik"));
+                                rs2 = ps2.executeQuery();
+                                while (rs2.next()) {
                                     tabMode.addRow(new String[]{
-                                        "","   "+rs2.getString("jml")+" "+rs2.getString("satuan"),"   "+rs2.getString("nama_brng"),""
+                                        "",
+                                        "   " + rs2.getString("jml") + " " + rs2.
+                                        getString("satuan"), "   " + rs2.
+                                        getString("nama_brng"), ""
                                     });
-                                }                                
+                                }
                             } catch (Exception e) {
-                                System.out.println("Notifikasi Detail Racikan : "+e);
-                            } finally{
-                                if(rs2!=null){
+                                System.out.println(
+                                        "Notifikasi Detail Racikan : " + e);
+                            } finally {
+                                if (rs2 != null) {
                                     rs2.close();
                                 }
-                                if(ps2!=null){
+                                if (ps2 != null) {
                                     ps2.close();
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("Notif Racikan : "+e);
-                    } finally{
-                        if(rsracikan!=null){
+                        System.out.println("Notif Racikan : " + e);
+                    } finally {
+                        if (rsracikan != null) {
                             rsracikan.close();
                         }
-                        if(psracikan!=null){
+                        if (psracikan != null) {
                             psracikan.close();
                         }
                     }
-                }   
+                }
                 rs.last();
-                LCount.setText(""+rs.getRow());
-            } catch(Exception ex){
-                System.out.println("Notifikasi : "+ex);
-            } finally{
-                if(rs!=null){
+                LCount.setText("" + rs.getRow());
+            } catch (Exception ex) {
+                System.out.println("Notifikasi : " + ex);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }        
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
     }
-    
+
     private void tampilresep() {
         Valid.tabelKosong(tabmodeUbahRacikan);
         try {
             try {
-                ps2=koneksi.prepareStatement(
-                        "select resep_luar_obat.kode_brng,databarang.nama_brng,resep_luar_obat.jml,resep_luar_obat.aturan_pakai from resep_luar_obat "+
-                        "inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng where resep_luar_obat.no_resep=?");
-                ps2.setString(1,NoResepUbah3.getText());
-                rs2=ps2.executeQuery();
-                while(rs2.next()){
+                ps2 = koneksi.prepareStatement(
+                        "select resep_luar_obat.kode_brng,databarang.nama_brng,resep_luar_obat.jml,resep_luar_obat.aturan_pakai from resep_luar_obat "
+                        + "inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng where resep_luar_obat.no_resep=?");
+                ps2.setString(1, NoResepUbah3.getText());
+                rs2 = ps2.executeQuery();
+                while (rs2.next()) {
                     tabmodeUbahRacikan.addRow(new String[]{
-                        rs2.getString("kode_brng"),rs2.getString("nama_brng"),rs2.getString("jml"),rs2.getString("aturan_pakai")
+                        rs2.getString("kode_brng"), rs2.getString("nama_brng"),
+                        rs2.getString("jml"), rs2.getString("aturan_pakai")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs2!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs2 != null) {
                     rs2.close();
                 }
-                if(ps2!=null){
+                if (ps2 != null) {
                     ps2.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
-        } 
+            System.out.println("Notif : " + e);
+        }
     }
-    
+
     private void tampilresep2() {
         Valid.tabelKosong(tabmodeUbahRacikan2);
         try {
             try {
-                ps2=koneksi.prepareStatement(
+                ps2 = koneksi.prepareStatement(
                         "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,resep_luar_racikan.aturan_pakai from resep_luar_racikan where resep_luar_racikan.no_resep=?");
-                ps2.setString(1,NoResepUbah4.getText());
-                rs2=ps2.executeQuery();
-                while(rs2.next()){
+                ps2.setString(1, NoResepUbah4.getText());
+                rs2 = ps2.executeQuery();
+                while (rs2.next()) {
                     tabmodeUbahRacikan2.addRow(new String[]{
-                        rs2.getString("no_racik"),rs2.getString("nama_racik"),rs2.getString("aturan_pakai")
+                        rs2.getString("no_racik"), rs2.getString("nama_racik"),
+                        rs2.getString("aturan_pakai")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs2!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs2 != null) {
                     rs2.close();
                 }
-                if(ps2!=null){
+                if (ps2 != null) {
                     ps2.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
 
-    public void setNoRm(String norwt,Date tgl1) {
+    public void setNoRm(String norwt, Date tgl1) {
         TCari.setText(norwt);
         tampil();
-        Valid.SetTgl2(DTPCari1,format.format(tgl1)+" 00:00:00");
-        Valid.SetTgl2(DTPCari2,format.format(tgl1)+" 23:59:59");
+        Valid.SetTgl2(DTPCari1, format.format(tgl1) + " 00:00:00");
+        Valid.SetTgl2(DTPCari2, format.format(tgl1) + " 23:59:59");
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnHapus.setEnabled(akses.getresep_luar());
         BtnPrint.setEnabled(akses.getresep_luar());
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            InventoryCariResepLuar.class.getName());
 }

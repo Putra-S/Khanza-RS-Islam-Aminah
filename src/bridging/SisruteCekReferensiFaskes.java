@@ -9,108 +9,147 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class SisruteCekReferensiFaskes extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
+
     private final Properties prop = new Properties();
-    private validasi Valid=new validasi();
-    private sekuel Sequel=new sekuel();
-    private int i=0;
-    private ApiKemenkesSisrute api=new ApiKemenkesSisrute();
-    private String URL="",link="",idrs="";
-    private HttpHeaders headers ;
+
+    private validasi Valid = new validasi();
+
+    private sekuel Sequel = new sekuel();
+
+    private int i = 0;
+
+    private ApiKemenkesSisrute api = new ApiKemenkesSisrute();
+
+    private String URL = "", link = "", idrs = "";
+
+    private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
 
-    /** Creates new form DlgKamar
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public SisruteCekReferensiFaskes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{"No.","Kode Faskes","Nama Faskes"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new String[]{"No.", "Kode Faskes",
+            "Nama Faskes"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 3; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(40);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(120);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(500);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        diagnosa.setDocument(new batasInput((byte)100).getKata(diagnosa));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            diagnosa.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        diagnosa.setDocument(new batasInput((byte) 100).getKata(diagnosa));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            diagnosa.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(diagnosa.getText().length()>2){
+                    if (diagnosa.getText().length() > 2) {
                         tampil(diagnosa.getText());
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(diagnosa.getText().length()>2){
+                    if (diagnosa.getText().length() > 2) {
                         tampil(diagnosa.getText());
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(diagnosa.getText().length()>2){
+                    if (diagnosa.getText().length() > 2) {
                         tampil(diagnosa.getText());
                     }
                 }
+
             });
-        }   
+        }
         try {
-            prop.loadFromXML(new FileInputStream("setting/database.xml")); 
-            link=prop.getProperty("URLAPISISRUTE");
-            idrs=koneksiDB.IDSISRUTE();
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            link = prop.getProperty("URLAPISISRUTE");
+            idrs = koneksiDB.IDSISRUTE();
         } catch (Exception e) {
-            System.out.println("E : "+e);
+            System.out.println("E : " + e);
         }
     }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -228,49 +267,61 @@ public class SisruteCekReferensiFaskes extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
+        } else if (tabMode.getRowCount() != 0) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            int row=tabMode.getRowCount();
-            for(int r=0;r<row;r++){  
-                Sequel.menyimpan("temporary","'"+r+"','"+
-                                tabMode.getValueAt(r,0).toString()+"','"+
-                                tabMode.getValueAt(r,1).toString().replaceAll("'","`")+"','"+
-                                tabMode.getValueAt(r,2).toString().replaceAll("'","`")+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Harian Pengadaan Ipsrs"); 
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            int row = tabMode.getRowCount();
+            for (int r = 0; r < row; r++) {
+                Sequel.menyimpan("temporary", "'" + r + "','"
+                        + tabMode.getValueAt(r, 0).toString() + "','"
+                        + tabMode.getValueAt(r, 1).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 2).toString().replaceAll("'",
+                                "`") + "','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                                getalamatip() + "'",
+                        "Rekap Harian Pengadaan Ipsrs");
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
             //param.put("peserta","No.Peserta : "+NoKartu.getText()+" Nama Peserta : "+NamaPasien.getText());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptCariSisruteReferensiFaskes.jasper","report","[ Pencarian Referensi Faskes ]","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptCariSisruteReferensiFaskes.jasper", "report",
+                    "[ Pencarian Referensi Faskes ]",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
             this.setCursor(Cursor.getDefaultCursor());
-        }        
+        }
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void diagnosaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_diagnosaKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             tampil(diagnosa.getText());
             BtnPrint.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             tampil(diagnosa.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnCariActionPerformed(null);
         }
     }//GEN-LAST:event_diagnosaKeyPressed
@@ -282,24 +333,26 @@ public class SisruteCekReferensiFaskes extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,diagnosa,BtnPrint);
+        } else {
+            Valid.pindah(evt, diagnosa, BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SisruteCekReferensiFaskes dialog = new SisruteCekReferensiFaskes(new javax.swing.JFrame(), true);
+            SisruteCekReferensiFaskes dialog = new SisruteCekReferensiFaskes(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -319,59 +372,67 @@ public class SisruteCekReferensiFaskes extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param faskes
      */
     public void tampil(String faskes) {
         try {
-            if(faskes.isEmpty()){
-                URL = link+"/referensi/faskes";
-            }else{
-                URL = link+"/referensi/faskes?query="+faskes;
-            }    	
-                    
+            if (faskes.isEmpty()) {
+                URL = link + "/referensi/faskes";
+            } else {
+                URL = link + "/referensi/faskes?query=" + faskes;
+            }
+
             headers = new HttpHeaders();
-	   headers.add("X-cons-id",idrs);
-	   headers.add("X-Timestamp",String.valueOf(api.GetUTCdatetimeAsString())); 
-	   headers.add("X-signature",api.getHmac()); 
-	   headers.add("Content-type","application/json");             
-	   headers.add("Content-length",null); 
-	   requestEntity = new HttpEntity(headers);
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            headers.add("X-cons-id", idrs);
+            headers.add("X-Timestamp", String.valueOf(api.
+                    GetUTCdatetimeAsString()));
+            headers.add("X-signature", api.getHmac());
+            headers.add("Content-type", "application/json");
+            headers.add("Content-length", null);
+            requestEntity = new HttpEntity(headers);
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("status");
-            System.out.println("Result : "+root.path("status").asText());
-            if(nameNode.asText().equals("200")){
+            System.out.println("Result : " + root.path("status").asText());
+            if (nameNode.asText().equals("200")) {
                 Valid.tabelKosong(tabMode);
                 response = root.path("data");
-                if(response.isArray()){
-                    i=1;
-                    for(JsonNode list:response){
-                        tabMode.addRow(new Object[]{
-                            i+".",list.path("KODE").asText(),list.path("NAMA").asText()
-                        });                        
+                if (response.isArray()) {
+                    i = 1;
+                    for (JsonNode list : response) {
+                        tabMode
+                                .addRow(new Object[]{i + ".", list.path("KODE").
+                            asText(), list.path("NAMA").asText()});
                         i++;
                     }
                 }
-            }else {
-                JOptionPane.showMessageDialog(null,root.path("detail").asText());                
-            }   
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server Kemenkes terputus....!");
-            }else if(ex.toString().contains("404")){
-                JOptionPane.showMessageDialog(rootPane,"Tidak ditemukan....!");
-            }else if(ex.toString().contains("500")){
-                JOptionPane.showMessageDialog(rootPane,"Server interenal error....!");
+            } else {
+                JOptionPane.
+                        showMessageDialog(null, root.path("detail").asText());
+            }
+        } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException
+                | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server Kemenkes terputus....!");
+            } else if (ex.toString().contains("404")) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak ditemukan....!");
+            } else if (ex.toString().contains("500")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Server interenal error....!");
             }
         }
-    }    
-    
+    }
+
     /**
-     *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            SisruteCekReferensiFaskes.class.getName());
+
 }

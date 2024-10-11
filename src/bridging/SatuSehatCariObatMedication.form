@@ -172,7 +172,7 @@
                     <StringItem index="3" value="400"/>
                     <StringItem index="4" value="500"/>
                     <StringItem index="5" value="1000"/>
-                    <StringItem index="6" value="Semua"/>
+                    <StringItem index="6" value="99999999"/>
                   </StringArray>
                 </Property>
                 <Property name="name" type="java.lang.String" value="cmbHlm" noResource="true"/>

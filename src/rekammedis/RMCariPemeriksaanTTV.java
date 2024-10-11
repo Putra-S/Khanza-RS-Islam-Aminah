@@ -3,127 +3,146 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPenyakit.java
  *
  * Created on May 23, 2010, 12:57:16 AM
  */
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String norawat="";
-    private int z=0,i=0,jml=0,index=0;
+    private String norawat = "";
+    private int z = 0, i = 0, jml = 0, index = 0;
     private boolean[] pilih;
-    private String[] tanggal,jam,suhu,tensi,nadi,respirasi,spo2,gcs;
-    /** Creates new form DlgPenyakit
+    private String[] tanggal, jam, suhu, tensi, nadi, respirasi, spo2, gcs;
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMCariPemeriksaanTTV(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(656,250);
+        this.setLocation(10, 2);
+        setSize(656, 250);
 
 //        Object[] row={"Tanggal","Jam","Pemeriksaan"};
 //        tabMode=new DefaultTableModel(null,row){
 //              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
 //        };
 //        tbKamar.setModel(tabMode);
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "P","Tanggal","Jam","Suhu","Tensi","Nadi","Respirasi","SpO2","GCS"
-            }){
-             Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "P", "Tanggal", "Jam", "Suhu", "Tensi", "Nadi", "Respirasi", "SpO2",
+            "GCS"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
                 java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-               boolean a = false;
-               if (colIndex==0) {
-                 a=true;
-               }
-               return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if (colIndex == 0) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for (z= 0; z < 9; z++) {
+        for (z = 0; z < 9; z++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(z);
-            if(z==0){
+            if (z == 0) {
                 column.setPreferredWidth(15);
-            }else if(z==1){
+            } else if (z == 1) {
                 column.setPreferredWidth(65);
-            }else if(z==2){
+            } else if (z == 2) {
                 column.setPreferredWidth(50);
-            }else if(z==3){
+            } else if (z == 3) {
                 column.setPreferredWidth(75);
-            }else if(z==4){
+            } else if (z == 4) {
                 column.setPreferredWidth(75);
-            }else if(z==5){
+            } else if (z == 5) {
                 column.setPreferredWidth(75);
-            }else if(z==6){
+            } else if (z == 6) {
                 column.setPreferredWidth(75);
-            }else if(z==7){
+            } else if (z == 7) {
                 column.setPreferredWidth(75);
-            }else if(z==8){
+            } else if (z == 8) {
                 column.setPreferredWidth(75);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
     }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -258,15 +277,14 @@ public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -276,9 +294,9 @@ public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -289,26 +307,26 @@ public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbKamarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKamarMouseClicked
-        if(tabMode.getRowCount()!=0){
-            if(evt.getClickCount()==2){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getClickCount() == 2) {
                 dispose();
             }
         }
 }//GEN-LAST:event_tbKamarMouseClicked
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -328,16 +346,18 @@ public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMCariPemeriksaanTTV dialog = new RMCariPemeriksaanTTV(new javax.swing.JFrame(), true);
+            RMCariPemeriksaanTTV dialog = new RMCariPemeriksaanTTV(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -361,99 +381,105 @@ public class RMCariPemeriksaanTTV extends javax.swing.JDialog {
      *
      */
     public void tampil() {
-        jml=0;
-        for(i=0;i<tabMode.getRowCount();i++){
-            if(tabMode.getValueAt(i,0).toString().equals("true")){
+        jml = 0;
+        for (i = 0; i < tabMode.getRowCount(); i++) {
+            if (tabMode.getValueAt(i, 0).toString().equals("true")) {
                 jml++;
             }
         }
 
-        pilih=null;
-        pilih=new boolean[jml]; 
-        tanggal=null;
-        tanggal=new String[jml];
-        jam=null;
-        jam=new String[jml];
-        suhu=null;
-        suhu=new String[jml];
-        tensi=null;
-        tensi=new String[jml];
-        nadi=null;
-        nadi=new String[jml];
-        respirasi=null;
-        respirasi=new String[jml];
-        spo2=null;
-        spo2=new String[jml];
-        gcs=null;
-        gcs=new String[jml];
-        
-        index=0;        
-        for(i=0;i<tabMode.getRowCount();i++){
-            if(tabMode.getValueAt(i,0).toString().equals("true")){
-                pilih[index]=true;
-                tanggal[index]=tabMode.getValueAt(i,1).toString();
-                jam[index]=tabMode.getValueAt(i,2).toString();
-                suhu[index]=tabMode.getValueAt(i,3).toString();
-                tensi[index]=tabMode.getValueAt(i,4).toString();
-                nadi[index]=tabMode.getValueAt(i,5).toString();
-                respirasi[index]=tabMode.getValueAt(i,6).toString();
-                spo2[index]=tabMode.getValueAt(i,7).toString();
-                gcs[index]=tabMode.getValueAt(i,8).toString();
+        pilih = null;
+        pilih = new boolean[jml];
+        tanggal = null;
+        tanggal = new String[jml];
+        jam = null;
+        jam = new String[jml];
+        suhu = null;
+        suhu = new String[jml];
+        tensi = null;
+        tensi = new String[jml];
+        nadi = null;
+        nadi = new String[jml];
+        respirasi = null;
+        respirasi = new String[jml];
+        spo2 = null;
+        spo2 = new String[jml];
+        gcs = null;
+        gcs = new String[jml];
+
+        index = 0;
+        for (i = 0; i < tabMode.getRowCount(); i++) {
+            if (tabMode.getValueAt(i, 0).toString().equals("true")) {
+                pilih[index] = true;
+                tanggal[index] = tabMode.getValueAt(i, 1).toString();
+                jam[index] = tabMode.getValueAt(i, 2).toString();
+                suhu[index] = tabMode.getValueAt(i, 3).toString();
+                tensi[index] = tabMode.getValueAt(i, 4).toString();
+                nadi[index] = tabMode.getValueAt(i, 5).toString();
+                respirasi[index] = tabMode.getValueAt(i, 6).toString();
+                spo2[index] = tabMode.getValueAt(i, 7).toString();
+                gcs[index] = tabMode.getValueAt(i, 8).toString();
                 index++;
             }
-        }       
+        }
 
         Valid.tabelKosong(tabMode);
 
-        for(i=0;i<jml;i++){
-            tabMode.addRow(new Object[] {
-                pilih[i],tanggal[i],jam[i],suhu[i],tensi[i],nadi[i],respirasi[i],spo2[i],gcs[i]
+        for (i = 0; i < jml; i++) {
+            tabMode.addRow(new Object[]{
+                pilih[i], tanggal[i], jam[i], suhu[i], tensi[i], nadi[i],
+                respirasi[i], spo2[i], gcs[i]
             });
         }
         Valid.tabelKosong(tabMode);
-                        
-        try{
-            ps=koneksi.prepareStatement(
-                    "select pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.suhu_tubuh,pemeriksaan_ranap.tensi,pemeriksaan_ranap.nadi,pemeriksaan_ranap.respirasi,pemeriksaan_ranap.spo2,pemeriksaan_ranap.gcs "+
-                    "from pemeriksaan_ranap where pemeriksaan_ranap.no_rawat=? and "+
-                    "(pemeriksaan_ranap.tgl_perawatan like ?) "+
-                    "order by pemeriksaan_ranap.tgl_perawatan DESC,pemeriksaan_ranap.jam_rawat DESC");
-            try{
-                ps.setString(1,norawat);
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[] {
-                        false,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)
+
+        try {
+            ps = koneksi.prepareStatement(
+                    "select pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.suhu_tubuh,pemeriksaan_ranap.tensi,pemeriksaan_ranap.nadi,pemeriksaan_ranap.respirasi,pemeriksaan_ranap.spo2,pemeriksaan_ranap.gcs "
+                    + "from pemeriksaan_ranap where pemeriksaan_ranap.no_rawat=? and "
+                    + "(pemeriksaan_ranap.tgl_perawatan like ?) "
+                    + "order by pemeriksaan_ranap.tgl_perawatan DESC,pemeriksaan_ranap.jam_rawat DESC");
+            try {
+                ps.setString(1, norawat);
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{
+                        false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.
+                        getString(7), rs.getString(8)
                     });
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex);
-            }finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        
-        LCount.setText(""+tabMode.getRowCount());
+
+        LCount.setText("" + tabMode.getRowCount());
     }
 
-    public void emptTeks() {   
+    public void emptTeks() {
         TCari.requestFocus();
     }
-    
-    public void setNoRawat(String norawat){
-        this.norawat=norawat;
+
+    public void setNoRawat(String norawat) {
+        this.norawat = norawat;
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
+
+    private static final Logger LOG = Logger.getLogger(
+            RMCariPemeriksaanTTV.class.getName());
+
 }

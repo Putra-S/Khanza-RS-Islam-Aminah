@@ -3,121 +3,162 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPerawatan.java
  *
  * Created on May 23, 2010, 6:36:30 PM
  */
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.table.*;
-import kepegawaian.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariPetugas;
 
 /**
  *
  * @author dosen
  */
 public class RMRekonsiliasiObat extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
-    private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i,reply;
-    
+    private int i, reply;
 
-    /** Creates new form DlgPerawatan
+    /**
+     * Creates new form DlgPerawatan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMRekonsiliasiObat(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        DlgTambahObatRekonsiliasi.setSize(650,163);
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Nama Obat","Dosis Obat","Frekuensi","Cara Pemberian/Aturan Pakai","Waktu Pemberian Terakhir","Tindak Lanjut","Perubahan Aturan Pakai"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        DlgTambahObatRekonsiliasi.setSize(650, 163);
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Nama Obat", "Dosis Obat", "Frekuensi",
+            "Cara Pemberian/Aturan Pakai", "Waktu Pemberian Terakhir",
+            "Tindak Lanjut", "Perubahan Aturan Pakai"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
-        tbPemeriksaan.setModel(tabMode);        
-        
+        tbPemeriksaan.setModel(tabMode);
+
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbPemeriksaan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbPemeriksaan.
+                setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPemeriksaan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for(i = 0; i < 7; i++) {
+        for (i = 0; i < 7; i++) {
             TableColumn column = tbPemeriksaan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(150);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(120);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(200);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(140);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(90);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(200);
             }
         }
         tbPemeriksaan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         NamaObat.setDocument(new batasInput(100).getKata(NamaObat));
-        DosisObat.setDocument(new batasInput((byte)20).getKata(DosisObat));
-        Frekuensi.setDocument(new batasInput((byte)10).getKata(Frekuensi));
+        DosisObat.setDocument(new batasInput((byte) 20).getKata(DosisObat));
+        Frekuensi.setDocument(new batasInput((byte) 10).getKata(Frekuensi));
         AturanPakai.setDocument(new batasInput(150).getKata(AturanPakai));
-        PemberianTerakhir.setDocument(new batasInput((byte)20).getKata(PemberianTerakhir));
-        PerubahanAturanPakai.setDocument(new batasInput(150).getKata(PerubahanAturanPakai));
-        TNoRekonsialiasi.setDocument(new batasInput((byte)20).getKata(TNoRekonsialiasi));
+        PemberianTerakhir.setDocument(new batasInput((byte) 20).getKata(
+                PemberianTerakhir));
+        PerubahanAturanPakai.setDocument(new batasInput(150).getKata(
+                PerubahanAturanPakai));
+        TNoRekonsialiasi.setDocument(new batasInput((byte) 20).getKata(
+                TNoRekonsialiasi));
         AlergiObat.setDocument(new batasInput(70).getKata(AlergiObat));
-        ManifestasiAlergi.setDocument(new batasInput(70).getKata(ManifestasiAlergi));
-        
-        
+        ManifestasiAlergi.setDocument(new batasInput(70).getKata(
+                ManifestasiAlergi));
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){ 
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());   
-                }              
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         ChkJln.setSelected(true);
         jam();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -716,7 +757,8 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
 
     private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPetugasActionPerformed
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setAlwaysOnTop(false);
         petugas.setVisible(true);
@@ -750,10 +792,11 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
     }//GEN-LAST:event_DampakAlergiKeyPressed
 
     private void BtnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTambahActionPerformed
-        if(TNoRM.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Pilih terlebih dahulu pasien yang mau dimasukkan data kelarihannya...");
+        if (TNoRM.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Pilih terlebih dahulu pasien yang mau dimasukkan data kelarihannya...");
             BtnTambah.requestFocus();
-        }else{
+        } else {
             DlgTambahObatRekonsiliasi.setLocationRelativeTo(internalFrame1);
             DlgTambahObatRekonsiliasi.setVisible(true);
             emptTeksTambahRekon();
@@ -761,25 +804,26 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnTambahActionPerformed
 
     private void BtnTambahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnTambahKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnTambahActionPerformed(null);
-        }else{
-            Valid.pindah(evt,RekonsiliasiSaat,BtnBatal);
+        } else {
+            Valid.pindah(evt, RekonsiliasiSaat, BtnBatal);
         }
     }//GEN-LAST:event_BtnTambahKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbPemeriksaan.getSelectedRow()>-1){
+        if (tbPemeriksaan.getSelectedRow() > -1) {
             tabMode.removeRow(tbPemeriksaan.getSelectedRow());
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }   
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnTambah, BtnCari);
         }
     }//GEN-LAST:event_BtnHapusKeyPressed
@@ -791,17 +835,19 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnCari,BtnTambah);}
+        } else {
+            Valid.pindah(evt, BtnCari, BtnTambah);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));  
-        RMCariRekonsiliasiObat form=new RMCariRekonsiliasiObat(null,false);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        RMCariRekonsiliasiObat form = new RMCariRekonsiliasiObat(null, false);
         form.isCek();
         form.SetNoRw(TNoRw.getText());
-        form.setSize(this.getWidth(),this.getHeight());
+        form.setSize(this.getWidth(), this.getHeight());
         form.setLocationRelativeTo(this);
         form.setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
@@ -816,44 +862,66 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
     }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Pasien");
-        }else if(KodePetugas.getText().trim().isEmpty()||NamaPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(BtnPetugas,"Petugas");
-        }else if(TNoRekonsialiasi.getText().trim().isEmpty()||TNoRekonsialiasi.getText().trim().equals("-")){
-            Valid.textKosong(TNoRekonsialiasi,"No.Rekonsiliasi");
-        }else if(tabMode.getRowCount()==0){
-            Valid.textKosong(TNoRekonsialiasi,"Data Obat Rekonsiliasi");
-        }else{
-            reply = JOptionPane.showConfirmDialog(rootPane,"Eeiiiiiits, udah bener belum data yang mau disimpan..??","Konfirmasi",JOptionPane.YES_NO_OPTION);
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "Pasien");
+        } else if (KodePetugas.getText().trim().isEmpty() || NamaPetugas.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(BtnPetugas, "Petugas");
+        } else if (TNoRekonsialiasi.getText().trim().isEmpty() || TNoRekonsialiasi.
+                getText().trim().equals("-")) {
+            Valid.textKosong(TNoRekonsialiasi, "No.Rekonsiliasi");
+        } else if (tabMode.getRowCount() == 0) {
+            Valid.textKosong(TNoRekonsialiasi, "Data Obat Rekonsiliasi");
+        } else {
+            reply = JOptionPane.showConfirmDialog(rootPane,
+                    "Eeiiiiiits, udah bener belum data yang mau disimpan..??",
+                    "Konfirmasi", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
-                if(Sequel.menyimpantf("rekonsiliasi_obat","?,?,?,?,?,?,?,?","No.Rawat",8,new String[]{
-                        TNoRekonsialiasi.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem(), 
-                        RekonsiliasiSaat.getSelectedItem().toString(),AlergiObat.getText(),ManifestasiAlergi.getText(),DampakAlergi.getSelectedItem().toString(),KodePetugas.getText(),
-                    })==true){
-                        for (i = 0; i < tbPemeriksaan.getRowCount(); i++) {
-                           Sequel.menyimpan2("rekonsiliasi_obat_detail_obat","?,?,?,?,?,?,?,?",8,new String[]{
-                               TNoRekonsialiasi.getText(),tbPemeriksaan.getValueAt(i,0).toString(),tbPemeriksaan.getValueAt(i,1).toString(),tbPemeriksaan.getValueAt(i,2).toString(),
-                               tbPemeriksaan.getValueAt(i,3).toString(),tbPemeriksaan.getValueAt(i,4).toString(),tbPemeriksaan.getValueAt(i,5).toString(),tbPemeriksaan.getValueAt(i,6).toString()
-                           });
-                        }
-                        Valid.tabelKosong(tabMode);
-                        emptTeks();
+                if (Sequel.menyimpantf("rekonsiliasi_obat", "?,?,?,?,?,?,?,?",
+                        "No.Rawat", 8, new String[]{
+                            TNoRekonsialiasi.getText(), TNoRw.getText(), Valid.
+                            SetTgl(Tanggal.getSelectedItem() + "") + " " + CmbJam.
+                            getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                            getSelectedItem(),
+                            RekonsiliasiSaat.getSelectedItem().toString(),
+                            AlergiObat.getText(), ManifestasiAlergi.getText(),
+                            DampakAlergi.getSelectedItem().toString(),
+                            KodePetugas.getText(),}) == true) {
+                    for (i = 0; i < tbPemeriksaan.getRowCount(); i++) {
+                        Sequel.menyimpan2("rekonsiliasi_obat_detail_obat",
+                                "?,?,?,?,?,?,?,?", 8, new String[]{
+                                    TNoRekonsialiasi.getText(), tbPemeriksaan.
+                                    getValueAt(i, 0).toString(), tbPemeriksaan.
+                                    getValueAt(i, 1).toString(), tbPemeriksaan.
+                                    getValueAt(i, 2).toString(),
+                                    tbPemeriksaan.getValueAt(i, 3).toString(),
+                                    tbPemeriksaan.getValueAt(i, 4).toString(),
+                                    tbPemeriksaan.getValueAt(i, 5).toString(),
+                                    tbPemeriksaan.getValueAt(i, 6).toString()
+                                });
+                    }
+                    Valid.tabelKosong(tabMode);
+                    emptTeks();
                 }
             }
         }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{Valid.pindah(evt, BtnHapus, BtnBatal);}
+        } else {
+            Valid.pindah(evt, BtnHapus, BtnBatal);
+        }
     }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnKeluarRekonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarRekonActionPerformed
@@ -861,71 +929,76 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarRekonActionPerformed
 
     private void BtnSimpanRekonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanRekonActionPerformed
-        if(NamaObat.getText().trim().isEmpty()){
-            Valid.textKosong(NamaObat,"Nama Obat");
-        }else if(DosisObat.getText().trim().isEmpty()){
-            Valid.textKosong(DosisObat,"Dosis Obat");
-        }else if(Frekuensi.getText().trim().isEmpty()){
-            Valid.textKosong(Frekuensi,"Frekuensi");
-        }else if(AturanPakai.getText().trim().isEmpty()){
-            Valid.textKosong(AturanPakai,"Aturan Pakai");
-        }else if(PemberianTerakhir.getText().trim().isEmpty()){
-            Valid.textKosong(PemberianTerakhir,"Waktu Pemberian Terakhir");
-        }else{
+        if (NamaObat.getText().trim().isEmpty()) {
+            Valid.textKosong(NamaObat, "Nama Obat");
+        } else if (DosisObat.getText().trim().isEmpty()) {
+            Valid.textKosong(DosisObat, "Dosis Obat");
+        } else if (Frekuensi.getText().trim().isEmpty()) {
+            Valid.textKosong(Frekuensi, "Frekuensi");
+        } else if (AturanPakai.getText().trim().isEmpty()) {
+            Valid.textKosong(AturanPakai, "Aturan Pakai");
+        } else if (PemberianTerakhir.getText().trim().isEmpty()) {
+            Valid.textKosong(PemberianTerakhir, "Waktu Pemberian Terakhir");
+        } else {
             tabMode.addRow(new String[]{
-                NamaObat.getText(),DosisObat.getText(),Frekuensi.getText(),AturanPakai.getText(),PemberianTerakhir.getText(),TindakLanjut.getSelectedItem().toString(),PerubahanAturanPakai.getText()
+                NamaObat.getText(), DosisObat.getText(), Frekuensi.getText(),
+                AturanPakai.getText(), PemberianTerakhir.getText(),
+                TindakLanjut.getSelectedItem().toString(), PerubahanAturanPakai.
+                getText()
             });
             emptTeksTambahRekon();
         }
     }//GEN-LAST:event_BtnSimpanRekonActionPerformed
 
     private void NamaObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaObatKeyPressed
-        Valid.pindah(evt,BtnKeluarRekon,DosisObat);
+        Valid.pindah(evt, BtnKeluarRekon, DosisObat);
     }//GEN-LAST:event_NamaObatKeyPressed
 
     private void DosisObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DosisObatKeyPressed
-        Valid.pindah(evt,NamaObat,Frekuensi);
+        Valid.pindah(evt, NamaObat, Frekuensi);
     }//GEN-LAST:event_DosisObatKeyPressed
 
     private void TindakLanjutKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TindakLanjutKeyPressed
-        Valid.pindah(evt,AturanPakai,PerubahanAturanPakai);
+        Valid.pindah(evt, AturanPakai, PerubahanAturanPakai);
     }//GEN-LAST:event_TindakLanjutKeyPressed
 
     private void FrekuensiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FrekuensiKeyPressed
-        Valid.pindah(evt,DosisObat,PemberianTerakhir);
+        Valid.pindah(evt, DosisObat, PemberianTerakhir);
     }//GEN-LAST:event_FrekuensiKeyPressed
 
     private void AturanPakaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AturanPakaiKeyPressed
-        Valid.pindah(evt,PemberianTerakhir,TindakLanjut);
+        Valid.pindah(evt, PemberianTerakhir, TindakLanjut);
     }//GEN-LAST:event_AturanPakaiKeyPressed
 
     private void PemberianTerakhirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemberianTerakhirKeyPressed
-        Valid.pindah(evt,Frekuensi,AturanPakai);
+        Valid.pindah(evt, Frekuensi, AturanPakai);
     }//GEN-LAST:event_PemberianTerakhirKeyPressed
 
     private void PerubahanAturanPakaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PerubahanAturanPakaiKeyPressed
-        Valid.pindah(evt,TindakLanjut,BtnSimpanRekon);
+        Valid.pindah(evt, TindakLanjut, BtnSimpanRekon);
     }//GEN-LAST:event_PerubahanAturanPakaiKeyPressed
 
     private void BtnSimpanRekonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanRekonKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanRekonActionPerformed(null);
-        }else{
-            Valid.pindah(evt,PerubahanAturanPakai,BtnKeluarRekon);
+        } else {
+            Valid.pindah(evt, PerubahanAturanPakai, BtnKeluarRekon);
         }
     }//GEN-LAST:event_BtnSimpanRekonKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMRekonsiliasiObat dialog = new RMRekonsiliasiObat(new javax.swing.JFrame(), true);
+            RMRekonsiliasiObat dialog = new RMRekonsiliasiObat(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1005,16 +1078,17 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
         AlergiObat.setText("");
         ManifestasiAlergi.setText("");
         DampakAlergi.setSelectedIndex(0);
-        
+
         autoNomor();
         TNoRekonsialiasi.requestFocus();
     }
-    
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
@@ -1025,14 +1099,14 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkJln.isSelected()==true){
+                if (ChkJln.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkJln.isSelected()==false){
-                    nilai_jam =CmbJam.getSelectedIndex();
-                    nilai_menit =CmbMenit.getSelectedIndex();
-                    nilai_detik =CmbDetik.getSelectedIndex();
+                } else if (ChkJln.isSelected() == false) {
+                    nilai_jam = CmbJam.getSelectedIndex();
+                    nilai_menit = CmbMenit.getSelectedIndex();
+                    nilai_detik = CmbDetik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -1060,64 +1134,70 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
                 CmbMenit.setSelectedItem(menit);
                 CmbDetik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
-    } 
-    
+    }
+
     /**
      *
      * @param norwt
      */
     public void setNoRm(String norwt) {
-        TNoRw.setText(norwt);   
+        TNoRw.setText(norwt);
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi "+
-                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){        
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getrekonsiliasi_obat());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KodePetugas.setEditable(false);
             BtnPetugas.setEnabled(false);
             KodePetugas.setText(akses.getkode());
             NamaPetugas.setText(petugas.tampil3(KodePetugas.getText()));
-            if(NamaPetugas.getText().isEmpty()){
+            if (NamaPetugas.getText().isEmpty()) {
                 KodePetugas.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan petugas...!!");
             }
-        } 
+        }
     }
 
     private void autoNomor() {
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(rekonsiliasi_obat.no_rekonsiliasi,4),signed)),0) from rekonsiliasi_obat where left(rekonsiliasi_obat.tanggal_wawancara,10)='"+Valid.SetTgl(Tanggal.getSelectedItem()+"")+"' ","RO"+Valid.SetTgl(Tanggal.getSelectedItem()+"").replaceAll("-",""),4,TNoRekonsialiasi);           
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(rekonsiliasi_obat.no_rekonsiliasi,4),signed)),0) from rekonsiliasi_obat where left(rekonsiliasi_obat.tanggal_wawancara,10)='" + Valid.
+                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "RO" + Valid.SetTgl(Tanggal.getSelectedItem() + "").replaceAll(
+                        "-", ""), 4, TNoRekonsialiasi);
     }
 
     private void emptTeksTambahRekon() {
@@ -1130,5 +1210,8 @@ public class RMRekonsiliasiObat extends javax.swing.JDialog {
         TindakLanjut.setSelectedIndex(0);
         NamaObat.requestFocus();
     }
+
+    private static final Logger LOG = Logger.getLogger(RMRekonsiliasiObat.class.
+            getName());
 
 }

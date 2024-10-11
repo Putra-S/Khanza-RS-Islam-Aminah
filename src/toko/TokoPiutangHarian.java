@@ -3,123 +3,149 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgLhtBiaya.java
  *
  * Created on 12 Jul 10, 16:21:34
  */
-
 package toko;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class TokoPiutangHarian extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private double ttluangmuka,ttlongkir,ttlbayar,ttlsisa;
+    private double ttluangmuka, ttlongkir, ttlbayar, ttlsisa;
 
-    /** Creates new form DlgLhtBiaya
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public TokoPiutangHarian(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tabMode=new DefaultTableModel(null,new String[]{
-            "No.Nota","Tanggal","NIP","Petugas","No.Member","Nama Member","Ongkir","Uang Muka","Total","Jenis","Sisa Piutang","Catatan"
-        }){
-              Class[] types = new Class[] {
-                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                  java.lang.String.class,java.lang.String.class,java.lang.Double.class,java.lang.Double.class,
-                  java.lang.Double.class,java.lang.String.class,java.lang.Double.class,java.lang.String.class
-             };
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }
+        tabMode = new DefaultTableModel(null, new String[]{
+            "No.Nota", "Tanggal", "NIP", "Petugas", "No.Member", "Nama Member",
+            "Ongkir", "Uang Muka", "Total", "Jenis", "Sisa Piutang", "Catatan"
+        }) {
+            Class[] types = new Class[]{
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.String.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
         tbBangsal.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 12; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(65);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(70);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(85);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(85);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(95);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(60);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(95);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(120);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
-            });
-        }  
-        
-    }    
-    
-     
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -287,38 +313,48 @@ public class TokoPiutangHarian extends javax.swing.JDialog {
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptPiutangHarianToko.jasper","report","::[ Data Piutang Harian Toko ]::",
-                    "select tokopiutang.nota_piutang,tokopiutang.tgl_piutang,tokopiutang.nip,petugas.nama,"+
-                    "tokopiutang.ongkir,(tokopiutang.ongkir+tokopiutang.uangmuka+tokopiutang.sisapiutang) as total, "+
-                    "tokopiutang.no_member,tokopiutang.nm_member,tokopiutang.catatan, "+
-                    "tokopiutang.jns_jual,tokopiutang.uangmuka,tokopiutang.sisapiutang "+
-                    "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "+
-                    "where tokopiutang.tgl_piutang between '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"' "+
-                    (TCari.getText().isEmpty()?"":"and (tokopiutang.nota_piutang like '%"+TCari.getText()+"%' or tokopiutang.nip like '%"+TCari.getText()+"%' or "+
-                    "petugas.nama like '%"+TCari.getText()+"%' or tokopiutang.no_member like '%"+TCari.getText()+"%' or tokopiutang.nm_member like '%"+TCari.getText()+"%' or "+
-                    "tokopiutang.catatan like '%"+TCari.getText()+"%' or tokopiutang.jns_jual like '%"+TCari.getText()+"%')")+
-                    "order by tokopiutang.tgl_piutang",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptPiutangHarianToko.jasper", "report",
+                    "::[ Data Piutang Harian Toko ]::",
+                    "select tokopiutang.nota_piutang,tokopiutang.tgl_piutang,tokopiutang.nip,petugas.nama,"
+                    + "tokopiutang.ongkir,(tokopiutang.ongkir+tokopiutang.uangmuka+tokopiutang.sisapiutang) as total, "
+                    + "tokopiutang.no_member,tokopiutang.nm_member,tokopiutang.catatan, "
+                    + "tokopiutang.jns_jual,tokopiutang.uangmuka,tokopiutang.sisapiutang "
+                    + "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "
+                    + "where tokopiutang.tgl_piutang between '" + Valid.SetTgl(
+                            Tgl1.getSelectedItem() + "") + "' and '" + Valid.
+                    SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                    + (TCari.getText().isEmpty() ? "" : "and (tokopiutang.nota_piutang like '%" + TCari.
+                    getText() + "%' or tokopiutang.nip like '%" + TCari.
+                            getText() + "%' or "
+                    + "petugas.nama like '%" + TCari.getText() + "%' or tokopiutang.no_member like '%" + TCari.
+                    getText() + "%' or tokopiutang.nm_member like '%" + TCari.
+                            getText() + "%' or "
+                    + "tokopiutang.catatan like '%" + TCari.getText() + "%' or tokopiutang.jns_jual like '%" + TCari.
+                    getText() + "%')")
+                    + "order by tokopiutang.tgl_piutang", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt, Tgl2,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Tgl2, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -327,9 +363,11 @@ public class TokoPiutangHarian extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,Tgl1);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, Tgl1);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
 private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
@@ -337,13 +375,13 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_BtnCariActionPerformed
 
 private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            tampil();
-            this.setCursor(Cursor.getDefaultCursor());
-        }else{
-            Valid.pindah(evt,Tgl2 , BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tampil();
+        this.setCursor(Cursor.getDefaultCursor());
+    } else {
+        Valid.pindah(evt, Tgl2, BtnPrint);
+    }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -356,36 +394,38 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnPrint);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             tampil();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Tgl2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbBangsal.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoPiutangHarian dialog = new TokoPiutangHarian(new javax.swing.JFrame(), true);
+            TokoPiutangHarian dialog = new TokoPiutangHarian(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -409,64 +449,76 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Table tbBangsal;
     // End of variables declaration//GEN-END:variables
 
-    public void tampil(){
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+    public void tampil() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Valid.tabelKosong(tabMode);
-        try{      
-            ps=koneksi.prepareStatement(
-                "select tokopiutang.nota_piutang,tokopiutang.tgl_piutang,tokopiutang.nip,petugas.nama,"+
-                "tokopiutang.ongkir,(tokopiutang.ongkir+tokopiutang.uangmuka+tokopiutang.sisapiutang) as total, "+
-                "tokopiutang.no_member,tokopiutang.nm_member,tokopiutang.catatan, "+
-                "tokopiutang.jns_jual,tokopiutang.uangmuka,tokopiutang.sisapiutang "+
-                "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "+
-                "where tokopiutang.tgl_piutang between ? and ? "+
-                (TCari.getText().isEmpty()?"":"and (tokopiutang.nota_piutang like ? or tokopiutang.nip like ? or "+
-                "petugas.nama like ? or tokopiutang.no_member like ? or tokopiutang.nm_member like ? or "+
-                "tokopiutang.catatan like ? or tokopiutang.jns_jual like ? )")+
-                "order by tokopiutang.tgl_piutang");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select tokopiutang.nota_piutang,tokopiutang.tgl_piutang,tokopiutang.nip,petugas.nama,"
+                    + "tokopiutang.ongkir,(tokopiutang.ongkir+tokopiutang.uangmuka+tokopiutang.sisapiutang) as total, "
+                    + "tokopiutang.no_member,tokopiutang.nm_member,tokopiutang.catatan, "
+                    + "tokopiutang.jns_jual,tokopiutang.uangmuka,tokopiutang.sisapiutang "
+                    + "from tokopiutang inner join petugas on tokopiutang.nip=petugas.nip "
+                    + "where tokopiutang.tgl_piutang between ? and ? "
+                    + (TCari.getText().isEmpty() ? "" : "and (tokopiutang.nota_piutang like ? or tokopiutang.nip like ? or "
+                    + "petugas.nama like ? or tokopiutang.no_member like ? or tokopiutang.nm_member like ? or "
+                    + "tokopiutang.catatan like ? or tokopiutang.jns_jual like ? )")
+                    + "order by tokopiutang.tgl_piutang");
             try {
-                ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                if(!TCari.getText().trim().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                if (!TCari.getText().trim().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                    ps.setString(8, "%" + TCari.getText() + "%");
+                    ps.setString(9, "%" + TCari.getText() + "%");
                 }
-                rs=ps.executeQuery();
-                ttluangmuka=0;ttlbayar=0;ttlongkir=0;ttlsisa=0;
-                while(rs.next()){
+                rs = ps.executeQuery();
+                ttluangmuka = 0;
+                ttlbayar = 0;
+                ttlongkir = 0;
+                ttlsisa = 0;
+                while (rs.next()) {
                     ttluangmuka += rs.getDouble("uangmuka");
                     ttlbayar += rs.getDouble("total");
                     ttlongkir += rs.getDouble("ongkir");
                     ttlsisa += rs.getDouble("sisapiutang");
                     tabMode.addRow(new Object[]{
-                        rs.getString("nota_piutang"),rs.getString("tgl_piutang"),rs.getString("nip"),rs.getString("nama"),rs.getString("no_member"),rs.getString("nm_member"),
-                        rs.getDouble("ongkir"),rs.getDouble("uangmuka"),rs.getDouble("total"),rs.getString("jns_jual"),rs.getDouble("sisapiutang"),rs.getString("catatan")
+                        rs.getString("nota_piutang"), rs.
+                        getString("tgl_piutang"), rs.getString("nip"), rs.
+                        getString("nama"), rs.getString("no_member"), rs.
+                        getString("nm_member"),
+                        rs.getDouble("ongkir"), rs.getDouble("uangmuka"), rs.
+                        getDouble("total"), rs.getString("jns_jual"), rs.
+                        getDouble("sisapiutang"), rs.getString("catatan")
                     });
                 }
-                if(ttlbayar>0){
+                if (ttlbayar > 0) {
                     tabMode.addRow(new Object[]{
-                        "","","","","","",ttlongkir,ttluangmuka,ttlbayar,"",ttlsisa,""
+                        "", "", "", "", "", "", ttlongkir, ttluangmuka, ttlbayar,
+                        "", ttlsisa, ""
                     });
-                }   
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                }
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }
+
+    private static final Logger LOG = Logger.getLogger(TokoPiutangHarian.class.
+            getName());
 
 }

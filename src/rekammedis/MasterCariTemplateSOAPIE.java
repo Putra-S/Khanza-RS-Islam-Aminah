@@ -3,32 +3,44 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPenyakit.java
  *
  * Created on May 23, 2010, 12:57:16 AM
  */
-
 package rekammedis;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private File file;
@@ -38,78 +50,89 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode response;
     private FileReader myObj;
-    /** Creates new form DlgPenyakit
+
+    /**
+     * Creates new form DlgPenyakit
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public MasterCariTemplateSOAPIE(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(10,2);
-        setSize(656,250);
+        this.setLocation(10, 2);
+        setSize(656, 250);
 
-        Object[] row={"No.Template","Kode Dokter","Nama Dokter","Subyek","Obyek","Asesmen","Planning","Instrukti","Evaluasi"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"No.Template", "Kode Dokter", "Nama Dokter", "Subyek",
+            "Obyek", "Asesmen", "Planning", "Instrukti", "Evaluasi"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
-        
+
         tbKamar.setModel(tabMode);
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 9; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(200);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(205);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(205);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(205);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(205);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(205);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(205);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil2();
                     }
                 }
-            });
-        } 
-        
-    }   
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -280,15 +303,14 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -298,9 +320,9 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -311,9 +333,9 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TCari);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
@@ -323,15 +345,16 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTambahActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));        
-        MasterTemplateSOAPIE form=new MasterTemplateSOAPIE(null,false);
-        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        MasterTemplateSOAPIE form = new MasterTemplateSOAPIE(null, false);
+        form.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         form.setLocationRelativeTo(internalFrame1);
         form.setAlwaysOnTop(false);
         form.emptTeks();
         form.setVisible(true);
-        this.setCursor(Cursor.getDefaultCursor());   
-        
+        this.setCursor(Cursor.getDefaultCursor());
+
     }//GEN-LAST:event_BtnTambahActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -339,7 +362,7 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-/*        try {
+        /*        try {
             if(Valid.daysOld("./cache/template_pemeriksaan_dokter.iyem")<8){
                 tampil2();
             }else{
@@ -350,10 +373,10 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tbKamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbKamarKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 dispose();
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -369,16 +392,18 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     }//GEN-LAST:event_TCariActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            MasterCariTemplateSOAPIE dialog = new MasterCariTemplateSOAPIE(new javax.swing.JFrame(), true);
+            MasterCariTemplateSOAPIE dialog = new MasterCariTemplateSOAPIE(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -403,7 +428,7 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-      /*  Valid.tabelKosong(tabMode);
+        /*  Valid.tabelKosong(tabMode);
         try{
             file=new File("./cache/template_pemeriksaan_dokter.iyem");
             file.createNewFile();
@@ -437,8 +462,8 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
         }  
         LCount.setText(""+tabMode.getRowCount()); */
     }
-    
-/*    private void tampil2() {
+
+    /*    private void tampil2() {
         try {
             myObj = new FileReader("./cache/template_pemeriksaan_dokter.iyem");
             root = mapper.readTree(myObj);
@@ -468,36 +493,35 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
         }
         LCount.setText(""+tabMode.getRowCount());
     } */
-    
-    private void tampil2(){
+    private void tampil2() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(kddokter.getText().isEmpty()){
-            ps=koneksi.prepareStatement("select template_pemeriksaan_dokter.no_template,template_pemeriksaan_dokter.kd_dokter,dokter.nm_dokter,template_pemeriksaan_dokter.keluhan,"+
-               "template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,"+
-               "template_pemeriksaan_dokter.evaluasi from template_pemeriksaan_dokter inner join dokter on template_pemeriksaan_dokter.kd_dokter=dokter.kd_dokter "+
-               "where template_pemeriksaan_dokter.penilaian like ? order by template_pemeriksaan_dokter.no_template");        
+        try {
+            if (kddokter.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select template_pemeriksaan_dokter.no_template,template_pemeriksaan_dokter.kd_dokter,dokter.nm_dokter,template_pemeriksaan_dokter.keluhan,"
+                        + "template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,"
+                        + "template_pemeriksaan_dokter.evaluasi from template_pemeriksaan_dokter inner join dokter on template_pemeriksaan_dokter.kd_dokter=dokter.kd_dokter "
+                        + "where template_pemeriksaan_dokter.penilaian like ? order by template_pemeriksaan_dokter.no_template");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select template_pemeriksaan_dokter.no_template,template_pemeriksaan_dokter.kd_dokter,dokter.nm_dokter,template_pemeriksaan_dokter.keluhan,"
+                        + "template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,"
+                        + "template_pemeriksaan_dokter.evaluasi from template_pemeriksaan_dokter inner join dokter on template_pemeriksaan_dokter.kd_dokter=dokter.kd_dokter "
+                        + "where template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.penilaian like ? "
+                        + //               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.keluhan like ? or "+
+                        //               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.pemeriksaan like ? or "+
+                        //               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.rencana like ? or "+
+                        //               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.instruksi like ? or "+
+                        //               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.evaluasi like ? "+
+                        "order by template_pemeriksaan_dokter.no_template desc");
             }
-            else{
-               ps=koneksi.prepareStatement("select template_pemeriksaan_dokter.no_template,template_pemeriksaan_dokter.kd_dokter,dokter.nm_dokter,template_pemeriksaan_dokter.keluhan,"+
-               "template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,"+
-               "template_pemeriksaan_dokter.evaluasi from template_pemeriksaan_dokter inner join dokter on template_pemeriksaan_dokter.kd_dokter=dokter.kd_dokter "+
-               "where template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.penilaian like ? "+
-//               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.keluhan like ? or "+
-//               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.pemeriksaan like ? or "+
-//               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.rencana like ? or "+
-//               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.instruksi like ? or "+
-//               "template_pemeriksaan_dokter.kd_dokter like ? and template_pemeriksaan_dokter.evaluasi like ? "+
-               "order by template_pemeriksaan_dokter.no_template desc");
-            }
-            
-            try{
-                if(kddokter.getText().isEmpty()){
-                    ps.setString(1,"%"+TCari.getText().trim()+"%");
-                } 
-                else{
-                    ps.setString(1,"%"+kddokter.getText().trim()+"%");
-                    ps.setString(2,"%"+TCari.getText().trim()+"%");
+
+            try {
+                if (kddokter.getText().isEmpty()) {
+                    ps.setString(1, "%" + TCari.getText().trim() + "%");
+                } else {
+                    ps.setString(1, "%" + kddokter.getText().trim() + "%");
+                    ps.setString(2, "%" + TCari.getText().trim() + "%");
 //                    ps.setString(3,"%"+kddokter.getText().trim()+"%");
 //                    ps.setString(4,"%"+TCari.getText().trim()+"%");
 //                    ps.setString(5,"%"+kddokter.getText().trim()+"%");
@@ -509,28 +533,30 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
 //                    ps.setString(11,"%"+kddokter.getText().trim()+"%");
 //                    ps.setString(12,"%"+TCari.getText().trim()+"%");
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_template"),rs.getString("kd_dokter"),rs.getString("nm_dokter"),rs.getString("keluhan"),
-                        rs.getString("pemeriksaan"),rs.getString("penilaian"),rs.getString("rencana"),rs.getString("instruksi"),
+                        rs.getString("no_template"), rs.getString("kd_dokter"),
+                        rs.getString("nm_dokter"), rs.getString("keluhan"),
+                        rs.getString("pemeriksaan"), rs.getString("penilaian"),
+                        rs.getString("rencana"), rs.getString("instruksi"),
                         rs.getString("evaluasi")
-                        });
-            }}
-            catch(Exception ex){
-                System.out.println("Notifikasi : "+ex);
-            }   finally{
-                if(rs!=null){
+                    });
+                }
+            } catch (Exception ex) {
+                System.out.println("Notifikasi : " + ex);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
-            }                
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-    }    
+    }
 
     /**
      *
@@ -539,26 +565,28 @@ public class MasterCariTemplateSOAPIE extends javax.swing.JDialog {
         TCari.requestFocus();
     }
 
-
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
+
     /**
      *
      */
-    public void isCek(){        
+    public void isCek() {
         BtnTambah.setEnabled(akses.gettemplate_pemeriksaan());
     }
-    
+
     /**
      *
      * @param kodedokter
      * @param namadokter
      */
-    public void setRM(String kodedokter,String namadokter){
+    public void setRM(String kodedokter, String namadokter) {
         kddokter.setText(kodedokter);
         nmdokter.setText(namadokter);
         tampil2();
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            MasterCariTemplateSOAPIE.class.getName());
 }

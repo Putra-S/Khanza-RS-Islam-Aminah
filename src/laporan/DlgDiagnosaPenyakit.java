@@ -3,148 +3,221 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPemberianObat.java
  *
  * Created on 27 Mei 10, 14:52:31
  */
-
 package laporan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import widget.*;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Date;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import widget.PanelBiasa;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
-    private validasi Valid=new validasi();
-    private final sekuel Sequel=new sekuel();
 
-    /** Creates new form DlgPemberianObat
+    private validasi Valid = new validasi();
+    private final sekuel Sequel = new sekuel();
+
+    /**
+     * Creates new form DlgPemberianObat
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgDiagnosaPenyakit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));       
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+                    if (TCari.getText().length() > 2) {
+                        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
+                                Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
+                                Status.getSelectedItem().toString(), TCari.
+                                getText().trim());
                         panelDiagnosa1.pilihTab();
-                        LCount.setText(panelDiagnosa1.getRecord()+"");
-                    }                        
+                        LCount.setText(panelDiagnosa1.getRecord() + "");
+                    }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+                    if (TCari.getText().length() > 2) {
+                        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
+                                Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
+                                Status.getSelectedItem().toString(), TCari.
+                                getText().trim());
                         panelDiagnosa1.pilihTab();
-                        LCount.setText(panelDiagnosa1.getRecord()+"");
-                    } 
+                        LCount.setText(panelDiagnosa1.getRecord() + "");
+                    }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+                    if (TCari.getText().length() > 2) {
+                        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
+                                Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
+                                Status.getSelectedItem().toString(), TCari.
+                                getText().trim());
                         panelDiagnosa1.pilihTab();
-                        LCount.setText(panelDiagnosa1.getRecord()+"");
-                    } 
+                        LCount.setText(panelDiagnosa1.getRecord() + "");
+                    }
                 }
+
             });
-        } 
-        
+        }
+
         panelDiagnosa1.tbDiagnosaPasien.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow()!= -1){
-                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),2).toString());
-                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),3).toString());
-                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),4).toString());
-                }                
+                if (panelDiagnosa1.tbDiagnosaPasien.getSelectedRow() != -1) {
+                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2).
+                            toString());
+                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3).
+                            toString());
+                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4).
+                            toString());
+                }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
+
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
+
         });
-        
+
         panelDiagnosa1.tbDiagnosaPasien.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
+
             @Override
             public void keyReleased(KeyEvent e) {
-                if(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow()!= -1){
-                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),2).toString());
-                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),3).toString());
-                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(),4).toString());
-                } 
+                if (panelDiagnosa1.tbDiagnosaPasien.getSelectedRow() != -1) {
+                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2).
+                            toString());
+                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3).
+                            toString());
+                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
+                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4).
+                            toString());
+                }
             }
+
         });
-        
+
         panelDiagnosa1.tbTindakanPasien.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(panelDiagnosa1.tbTindakanPasien.getSelectedRow()!= -1){
-                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),2).toString());
-                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),3).toString());
-                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),4).toString());
-                }                
+                if (panelDiagnosa1.tbTindakanPasien.getSelectedRow() != -1) {
+                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2).
+                            toString());
+                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3).
+                            toString());
+                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4).
+                            toString());
+                }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
+
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
+
         });
-        
+
         panelDiagnosa1.tbTindakanPasien.addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
+
             @Override
             public void keyReleased(KeyEvent e) {
-                if(panelDiagnosa1.tbTindakanPasien.getSelectedRow()!= -1){
-                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),2).toString());
-                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),3).toString());
-                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(),4).toString());
-                } 
+                if (panelDiagnosa1.tbTindakanPasien.getSelectedRow() != -1) {
+                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2).
+                            toString());
+                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3).
+                            toString());
+                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
+                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4).
+                            toString());
+                }
             }
+
         });
     }
 
     //private DlgCariObatPenyakit dlgobtpny=new DlgCariObatPenyakit(null,false);
-    
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -450,49 +523,59 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
+                    DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
+                    getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                    TCari.getText().trim());
             panelDiagnosa1.pilihTab();
-            LCount.setText(panelDiagnosa1.getRecord()+"");
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+            LCount.setText(panelDiagnosa1.getRecord() + "");
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        panelDiagnosa1.setRM(TNoRw.getText(),"",Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        panelDiagnosa1.setRM(TNoRw.getText(), "", Valid.SetTgl(DTPCari1.
+                getSelectedItem() + ""), Valid.SetTgl(
+                        DTPCari2.getSelectedItem() + ""), Status.
+                getSelectedItem().toString(), TCari.getText().trim());
         panelDiagnosa1.pilihTab();
-        LCount.setText(panelDiagnosa1.getRecord()+"");
+        LCount.setText(panelDiagnosa1.getRecord() + "");
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        Valid.pindah(evt,TCari,panelDiagnosa1.Diagnosa);
+        Valid.pindah(evt, TCari, panelDiagnosa1.Diagnosa);
 }//GEN-LAST:event_TNoRwKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"No.Rawat");
-        }else{ 
-            panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "No.Rawat");
+        } else {
+            panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
+                    DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
+                    getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                    TCari.getText().trim());
             panelDiagnosa1.simpan();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,panelDiagnosa1.Diagnosa,BtnBatal);
+        } else {
+            Valid.pindah(evt, panelDiagnosa1.Diagnosa, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -501,24 +584,30 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnBatalActionPerformed(null);
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TPasien.getText().trim().isEmpty()){
-             JOptionPane.showMessageDialog(null,"Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
-        }else if(!(TPasien.getText().trim().isEmpty())){
-            panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        if (TPasien.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Gagal menghapus. Pilih dulu data yang mau dihapus.\nKlik data pada table untuk memilih...!!!!");
+        } else if (!(TPasien.getText().trim().isEmpty())) {
+            panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
+                    DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
+                    getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                    TCari.getText().trim());
             panelDiagnosa1.hapus();
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnPrint);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
@@ -528,9 +617,9 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -540,64 +629,83 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        panelDiagnosa1.setRM(TNoRw.getText(),"",Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        panelDiagnosa1.setRM(TNoRw.getText(), "", Valid.SetTgl(DTPCari1.
+                getSelectedItem() + ""), Valid.SetTgl(
+                        DTPCari2.getSelectedItem() + ""), Status.
+                getSelectedItem().toString(), TCari.getText().trim());
         panelDiagnosa1.pilihTab();
-        LCount.setText(panelDiagnosa1.getRecord()+"");
+        LCount.setText(panelDiagnosa1.getRecord() + "");
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
+                DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
+                getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                TCari.getText().trim());
         panelDiagnosa1.pilihTab();
-        LCount.setText(panelDiagnosa1.getRecord()+"");
+        LCount.setText(panelDiagnosa1.getRecord() + "");
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        if(this.getHeight()<605){   
-            panelDiagnosa1.ScrollInput.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-            panelDiagnosa1.FormData.setPreferredSize(new Dimension(PanelBiasa.WIDTH,420));
-            if(this.getWidth()<900){
-                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);                                
-                panelDiagnosa1.FormData.setPreferredSize(new Dimension(890,420));
-            }else{
-                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);                
+        if (this.getHeight() < 605) {
+            panelDiagnosa1.ScrollInput.setVerticalScrollBarPolicy(
+                    javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelDiagnosa1.FormData.setPreferredSize(new Dimension(
+                    PanelBiasa.WIDTH, 420));
+            if (this.getWidth() < 900) {
+                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(
+                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                panelDiagnosa1.FormData.
+                        setPreferredSize(new Dimension(890, 420));
+            } else {
+                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(
+                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             }
-        }else{
-            panelDiagnosa1.ScrollInput.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);            
-            if(this.getWidth()<900){
-                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);                                
-                panelDiagnosa1.FormData.setPreferredSize(new Dimension(890,PanelBiasa.HEIGHT));
-            }else{
-                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);                
+        } else {
+            panelDiagnosa1.ScrollInput.setVerticalScrollBarPolicy(
+                    javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+            if (this.getWidth() < 900) {
+                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(
+                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                panelDiagnosa1.FormData.setPreferredSize(new Dimension(890,
+                        PanelBiasa.HEIGHT));
+            } else {
+                panelDiagnosa1.ScrollInput.setHorizontalScrollBarPolicy(
+                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             }
         }
     }//GEN-LAST:event_formWindowActivated
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDiagnosaPenyakit dialog = new DlgDiagnosaPenyakit(new javax.swing.JFrame(), true);
+            DlgDiagnosaPenyakit dialog = new DlgDiagnosaPenyakit(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -634,14 +742,16 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
     private widget.panelisi panelGlass9;
     // End of variables declaration//GEN-END:variables
 
-    
-
     private void isRawat() {
-         Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",TNoRM,TNoRw.getText());
+        Sequel.cariIsi(
+                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
+                TNoRM, TNoRw.getText());
     }
 
     private void isPsien() {
-        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",TPasien,TNoRM.getText());
+        Sequel.cariIsi(
+                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
+                TPasien, TNoRM.getText());
     }
 
     /**
@@ -651,28 +761,29 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
      * @param tgl2
      * @param status
      */
-    public void setNoRm(String norwt, Date tgl1, Date tgl2,String status) {
+    public void setNoRm(String norwt, Date tgl1, Date tgl2, String status) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
         Status.setSelectedItem(status);
         isRawat();
-        isPsien();   
+        isPsien();
         DTPCari1.setDate(tgl1);
         DTPCari2.setDate(tgl2);
-        panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
+        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
+                DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
+                getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                TCari.getText().trim());
     }
-    
-    
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getdiagnosa_pasien());
-        BtnHapus.setEnabled(akses.getdiagnosa_pasien());        
+        BtnHapus.setEnabled(akses.getdiagnosa_pasien());
         BtnPrint.setEnabled(akses.getdiagnosa_pasien());
         panelDiagnosa1.btnTambahPenyakit.setEnabled(akses.getpenyakit());
         panelDiagnosa1.btnTambahProsedur.setEnabled(akses.geticd9());
     }
 
-    
-
+    private static final Logger LOG = Logger.getLogger(
+            DlgDiagnosaPenyakit.class.getName());
 
 }

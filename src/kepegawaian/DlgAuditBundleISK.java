@@ -1,149 +1,193 @@
 /*
  * Kontribusi dari Muanas RSAD Pelomonia Makasar
  */
-
 package kepegawaian;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.event.*;
-import javax.swing.table.*;
-
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgAuditBundleISK extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
-    private DlgCariRuangAuditKepatuhan ruang=new DlgCariRuangAuditKepatuhan(null,false);
-    private double pemasangan_sesuai_indikasi=0,hand_hygiene=0,menggunakan_apd_yang_tepat=0,pemasangan_menggunakan_alat_steril=0,segera_dilepas_setelah_tidak_diperlukan=0,pengisian_balon_sesuai_petunjuk=0,fiksasi_kateter_dengan_plester=0,urinebag_menggantung_tidak_menyentuh_lantai=0,
-                ttlpemasangan_sesuai_indikasi=0,ttlhand_hygiene=0,ttlmenggunakan_apd_yang_tepat=0,ttlpemasangan_menggunakan_alat_steril=0,ttlsegera_dilepas_setelah_tidak_diperlukan=0,ttlpengisian_balon_sesuai_petunjuk=0,ttlfiksasi_kateter_dengan_plester=0,ttlurinebag_menggantung_tidak_menyentuh_lantai=0,ttlpenilaian=0;
-    
-    
-    /** Creates new form DlgRujuk
+    private int i = 0;
+    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(
+            null, false);
+    private double pemasangan_sesuai_indikasi = 0, hand_hygiene = 0, menggunakan_apd_yang_tepat = 0, pemasangan_menggunakan_alat_steril = 0, segera_dilepas_setelah_tidak_diperlukan = 0, pengisian_balon_sesuai_petunjuk = 0, fiksasi_kateter_dengan_plester = 0, urinebag_menggantung_tidak_menyentuh_lantai = 0,
+            ttlpemasangan_sesuai_indikasi = 0, ttlhand_hygiene = 0, ttlmenggunakan_apd_yang_tepat = 0, ttlpemasangan_menggunakan_alat_steril = 0, ttlsegera_dilepas_setelah_tidak_diperlukan = 0, ttlpengisian_balon_sesuai_petunjuk = 0, ttlfiksasi_kateter_dengan_plester = 0, ttlurinebag_menggantung_tidak_menyentuh_lantai = 0, ttlpenilaian = 0;
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgAuditBundleISK(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Tanggal Audit","ID Ruang","Ruang/Unit","1.Pemasangan sesuai indikasi",
-            "2.Hand Hygiene","3.Menggunakan APD yang tepat","4.Pemasangan menggunakan alat steril","5.Segera dilepas setelah tdk diperlukan",
-            "6.Pengisian balon sesuai petunjuk produk (20 ml)","7.Fiksasi kateter dengan plester","8.Urine bag menggantung tidak menyentuh lantai","Ttl.Nilai(%)"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tanggal Audit", "ID Ruang", "Ruang/Unit",
+            "1.Pemasangan sesuai indikasi",
+            "2.Hand Hygiene", "3.Menggunakan APD yang tepat",
+            "4.Pemasangan menggunakan alat steril",
+            "5.Segera dilepas setelah tdk diperlukan",
+            "6.Pengisian balon sesuai petunjuk produk (20 ml)",
+            "7.Fiksasi kateter dengan plester",
+            "8.Urine bag menggantung tidak menyentuh lantai", "Ttl.Nilai(%)"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(120);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(160);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(150);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(150);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(150);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(150);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(150);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(150);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(68);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        KdRuang.setDocument(new batasInput((byte)20).getKata(KdRuang));
+        KdRuang.setDocument(new batasInput((byte) 20).getKata(KdRuang));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         ruang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(ruang.getTable().getSelectedRow()!= -1){                   
-                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),1).toString());
-                }  
+                if (ruang.getTable().getSelectedRow() != -1) {
+                    KdRuang.setText(ruang.getTable().getValueAt(
+                            ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(
+                            ruang.getTable().getSelectedRow(), 1).toString());
+                }
                 KdRuang.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
         ChkInput.setSelected(false);
         isForm();
-        
+
         jam();
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -714,79 +758,110 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-   if(KdRuang.getText().trim().isEmpty()||NmRuang.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"Ruang/Unit");
-        }else{
-            if(Sequel.menyimpantf("audit_bundle_isk","?,?,?,?,?,?,?,?,?,?","Data",10,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),KdRuang.getText(),PemasanganSesuaiIndikasi.getSelectedItem().toString(),
-                HandHygiene.getSelectedItem().toString(),ApdYangTepat.getSelectedItem().toString(),PetunjukProduk.getSelectedItem().toString(),LepasSetelahTidakDiperlukan.getSelectedItem().toString(),
-                AlatSteril.getSelectedItem().toString(),FiksasiKateter.getSelectedItem().toString(),UrineBag.getSelectedItem().toString()
-            })==true){
+        if (KdRuang.getText().trim().isEmpty() || NmRuang.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(btnPetugas, "Ruang/Unit");
+        } else {
+            if (Sequel.menyimpantf("audit_bundle_isk", "?,?,?,?,?,?,?,?,?,?",
+                    "Data", 10, new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), KdRuang.getText(),
+                        PemasanganSesuaiIndikasi.getSelectedItem().toString(),
+                        HandHygiene.getSelectedItem().toString(), ApdYangTepat.
+                        getSelectedItem().toString(), PetunjukProduk.
+                                getSelectedItem().toString(),
+                        LepasSetelahTidakDiperlukan.getSelectedItem().toString(),
+                        AlatSteril.getSelectedItem().toString(), FiksasiKateter.
+                        getSelectedItem().toString(),
+                        UrineBag.getSelectedItem().toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }  
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,UrineBag,BtnBatal);
+        } else {
+            Valid.pindah(evt, UrineBag, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
-            if(Sequel.queryu2tf("delete from audit_bundle_isk where id_ruang=? and tanggal=?",2,new String[]{
-                tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
+        if (tbObat.getSelectedRow() != -1) {
+            if (Sequel.queryu2tf(
+                    "delete from audit_bundle_isk where id_ruang=? and tanggal=?",
+                    2, new String[]{
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }else{
-                JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
             }
-        }            
-            
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(KdRuang.getText().trim().isEmpty()||NmRuang.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"Ruang/Unit");
-        }else{   
-            Sequel.mengedit("audit_bundle_isk","id_ruang=? and tanggal=?","tanggal=?,id_ruang=?,pemasangan_sesuai_indikasi=?,hand_hygiene=?,menggunakan_apd_yang_tepat=?,pemasangan_menggunakan_alat_steril=?,segera_dilepas_setelah_tidak_diperlukan=?,pengisian_balon_sesuai_petunjuk=?,fiksasi_kateter_dengan_plester=?,urinebag_menggantung_tidak_menyentuh_lantai=?",12,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),KdRuang.getText(),PemasanganSesuaiIndikasi.getSelectedItem().toString(),HandHygiene.getSelectedItem().toString(),ApdYangTepat.getSelectedItem().toString(),
-                PetunjukProduk.getSelectedItem().toString(),LepasSetelahTidakDiperlukan.getSelectedItem().toString(),AlatSteril.getSelectedItem().toString(),FiksasiKateter.getSelectedItem().toString(),UrineBag.getSelectedItem().toString(),tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (KdRuang.getText().trim().isEmpty() || NmRuang.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(btnPetugas, "Ruang/Unit");
+        } else {
+            Sequel.mengedit("audit_bundle_isk", "id_ruang=? and tanggal=?",
+                    "tanggal=?,id_ruang=?,pemasangan_sesuai_indikasi=?,hand_hygiene=?,menggunakan_apd_yang_tepat=?,pemasangan_menggunakan_alat_steril=?,segera_dilepas_setelah_tidak_diperlukan=?,pengisian_balon_sesuai_petunjuk=?,fiksasi_kateter_dengan_plester=?,urinebag_menggantung_tidak_menyentuh_lantai=?",
+                    12, new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), KdRuang.getText(),
+                        PemasanganSesuaiIndikasi.getSelectedItem().toString(),
+                        HandHygiene.getSelectedItem().toString(), ApdYangTepat.
+                        getSelectedItem().toString(),
+                        PetunjukProduk.getSelectedItem().toString(),
+                        LepasSetelahTidakDiperlukan.getSelectedItem().toString(),
+                        AlatSteril.getSelectedItem().toString(), FiksasiKateter.
+                        getSelectedItem().toString(),
+                        UrineBag.getSelectedItem().toString(), tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 1).toString(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -797,60 +872,72 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            
-            if(TCari.getText().trim().isEmpty()){
-                Valid.MyReportqry("rptAuditBundleISK.jasper","report","::[ Data Audit Bundle ISK ]::",
-                    "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"+
-                    "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"+
-                    "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "+
-                    "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_bundle_isk.tanggal between "+
-                    "'"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' order by audit_bundle_isk.tanggal",param);
-            }else{
-                Valid.MyReportqry("rptAuditBundleISK.jasper","report","::[ Data Audit Bundle ISK ]::",
-                    "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"+
-                    "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"+
-                    "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "+
-                    "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_bundle_isk.tanggal between "+
-                    "'"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' "+
-                    "and (audit_bundle_isk.id_ruang like '%"+TCari.getText().trim()+"%' or ruang_audit_kepatuhan.nama_ruang like '%"+TCari.getText().trim()+"%') order by audit_bundle_isk.tanggal",param);
-            }  
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+
+            if (TCari.getText().trim().isEmpty()) {
+                Valid.MyReportqry("rptAuditBundleISK.jasper", "report",
+                        "::[ Data Audit Bundle ISK ]::",
+                        "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"
+                        + "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"
+                        + "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "
+                        + "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_bundle_isk.tanggal between "
+                        + "'" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' and '" + Valid.
+                        SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' order by audit_bundle_isk.tanggal",
+                        param);
+            } else {
+                Valid.MyReportqry("rptAuditBundleISK.jasper", "report",
+                        "::[ Data Audit Bundle ISK ]::",
+                        "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"
+                        + "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"
+                        + "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "
+                        + "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_bundle_isk.tanggal between "
+                        + "'" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' and '" + Valid.
+                        SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' "
+                        + "and (audit_bundle_isk.id_ruang like '%" + TCari.
+                                getText().trim() + "%' or ruang_audit_kepatuhan.nama_ruang like '%" + TCari.
+                                getText().trim() + "%') order by audit_bundle_isk.tanggal",
+                        param);
+            }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -860,9 +947,9 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -873,20 +960,20 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             //Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,TCari,Jam);
+        Valid.pindah(evt, TCari, Jam);
 }//GEN-LAST:event_TanggalKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -895,8 +982,9 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -910,19 +998,19 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void JamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JamKeyPressed
-        Valid.pindah(evt,Tanggal,Menit);
+        Valid.pindah(evt, Tanggal, Menit);
     }//GEN-LAST:event_JamKeyPressed
 
     private void MenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MenitKeyPressed
-        Valid.pindah(evt,Jam,Detik);
+        Valid.pindah(evt, Jam, Detik);
     }//GEN-LAST:event_MenitKeyPressed
 
     private void DetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DetikKeyPressed
-        Valid.pindah(evt,Menit,btnPetugas);
+        Valid.pindah(evt, Menit, btnPetugas);
     }//GEN-LAST:event_DetikKeyPressed
 
     private void PemasanganSesuaiIndikasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemasanganSesuaiIndikasiKeyPressed
-        Valid.pindah(evt,btnPetugas,HandHygiene);
+        Valid.pindah(evt, btnPetugas, HandHygiene);
     }//GEN-LAST:event_PemasanganSesuaiIndikasiKeyPressed
 
     private void HandHygieneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HandHygieneKeyPressed
@@ -930,15 +1018,15 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     }//GEN-LAST:event_HandHygieneKeyPressed
 
     private void ApdYangTepatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApdYangTepatKeyPressed
-        Valid.pindah(evt, HandHygiene,PetunjukProduk);
+        Valid.pindah(evt, HandHygiene, PetunjukProduk);
     }//GEN-LAST:event_ApdYangTepatKeyPressed
 
     private void PetunjukProdukKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PetunjukProdukKeyPressed
-        Valid.pindah(evt, ApdYangTepat,LepasSetelahTidakDiperlukan);
+        Valid.pindah(evt, ApdYangTepat, LepasSetelahTidakDiperlukan);
     }//GEN-LAST:event_PetunjukProdukKeyPressed
 
     private void LepasSetelahTidakDiperlukanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LepasSetelahTidakDiperlukanKeyPressed
-        Valid.pindah(evt, PetunjukProduk,BtnSimpan);
+        Valid.pindah(evt, PetunjukProduk, BtnSimpan);
     }//GEN-LAST:event_LepasSetelahTidakDiperlukanKeyPressed
 
     private void AlatSterilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlatSterilKeyPressed
@@ -954,18 +1042,19 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     }//GEN-LAST:event_FiksasiKateterKeyPressed
 
     private void KdRuangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdRuangKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Detik.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             PemasanganSesuaiIndikasi.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnPetugasActionPerformed(null);
         }
     }//GEN-LAST:event_KdRuangKeyPressed
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         ruang.emptTeks();
-        ruang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        ruang.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         ruang.setLocationRelativeTo(internalFrame1);
         ruang.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
@@ -975,16 +1064,18 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPetugasKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditBundleISK dialog = new DlgAuditBundleISK(new javax.swing.JFrame(), true);
+            DlgAuditBundleISK dialog = new DlgAuditBundleISK(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1044,96 +1135,166 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
     private widget.panelisi panelGlass9;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     private void tampil() {
-      Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"+
-                    "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"+
-                    "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "+
-                    "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang "+
-                    "where audit_bundle_isk.tanggal between ? and ? order by audit_bundle_isk.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"+
-                    "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"+
-                    "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "+
-                    "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang "+
-                    "where audit_bundle_isk.tanggal between ? and ? "+
-                    "and (audit_bundle_isk.id_ruang like ? or ruang_audit_kepatuhan.nama_ruang like ?) order by audit_bundle_isk.tanggal");
-             }
-                
+        Valid.tabelKosong(tabMode);
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"
+                        + "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"
+                        + "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "
+                        + "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang "
+                        + "where audit_bundle_isk.tanggal between ? and ? order by audit_bundle_isk.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select audit_bundle_isk.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_bundle_isk.tanggal,audit_bundle_isk.pemasangan_sesuai_indikasi,"
+                        + "audit_bundle_isk.hand_hygiene,audit_bundle_isk.menggunakan_apd_yang_tepat,audit_bundle_isk.pemasangan_menggunakan_alat_steril,audit_bundle_isk.segera_dilepas_setelah_tidak_diperlukan,"
+                        + "audit_bundle_isk.pengisian_balon_sesuai_petunjuk,audit_bundle_isk.fiksasi_kateter_dengan_plester,audit_bundle_isk.urinebag_menggantung_tidak_menyentuh_lantai from audit_bundle_isk "
+                        + "inner join ruang_audit_kepatuhan on audit_bundle_isk.id_ruang=ruang_audit_kepatuhan.id_ruang "
+                        + "where audit_bundle_isk.tanggal between ? and ? "
+                        + "and (audit_bundle_isk.id_ruang like ? or ruang_audit_kepatuhan.nama_ruang like ?) order by audit_bundle_isk.tanggal");
+            }
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                ttlpemasangan_sesuai_indikasi=0;ttlhand_hygiene=0;ttlmenggunakan_apd_yang_tepat=0;ttlpemasangan_menggunakan_alat_steril=0;ttlsegera_dilepas_setelah_tidak_diperlukan=0;ttlpengisian_balon_sesuai_petunjuk=0;ttlfiksasi_kateter_dengan_plester=0;ttlurinebag_menggantung_tidak_menyentuh_lantai=0;ttlpenilaian=0;
-                i=1;
-                while(rs.next()){
-                    pemasangan_sesuai_indikasi=Double.parseDouble(rs.getString("pemasangan_sesuai_indikasi").replaceAll("Ya","1").replaceAll("Tidak","0"));
+
+                rs = ps.executeQuery();
+                ttlpemasangan_sesuai_indikasi = 0;
+                ttlhand_hygiene = 0;
+                ttlmenggunakan_apd_yang_tepat = 0;
+                ttlpemasangan_menggunakan_alat_steril = 0;
+                ttlsegera_dilepas_setelah_tidak_diperlukan = 0;
+                ttlpengisian_balon_sesuai_petunjuk = 0;
+                ttlfiksasi_kateter_dengan_plester = 0;
+                ttlurinebag_menggantung_tidak_menyentuh_lantai = 0;
+                ttlpenilaian = 0;
+                i = 1;
+                while (rs.next()) {
+                    pemasangan_sesuai_indikasi = Double.parseDouble(rs.
+                            getString("pemasangan_sesuai_indikasi").replaceAll(
+                            "Ya", "1").replaceAll("Tidak", "0"));
                     ttlpemasangan_sesuai_indikasi += pemasangan_sesuai_indikasi;
-                    hand_hygiene=Double.parseDouble(rs.getString("hand_hygiene").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    hand_hygiene = Double.parseDouble(rs.getString(
+                            "hand_hygiene").replaceAll("Ya", "1").replaceAll(
+                            "Tidak", "0"));
                     ttlhand_hygiene += hand_hygiene;
-                    menggunakan_apd_yang_tepat=Double.parseDouble(rs.getString("menggunakan_apd_yang_tepat").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    menggunakan_apd_yang_tepat = Double.parseDouble(rs.
+                            getString("menggunakan_apd_yang_tepat").replaceAll(
+                            "Ya", "1").replaceAll("Tidak", "0"));
                     ttlmenggunakan_apd_yang_tepat += menggunakan_apd_yang_tepat;
-                    pemasangan_menggunakan_alat_steril=Double.parseDouble(rs.getString("pemasangan_menggunakan_alat_steril").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    pemasangan_menggunakan_alat_steril = Double.parseDouble(rs.
+                            getString("pemasangan_menggunakan_alat_steril").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlpemasangan_menggunakan_alat_steril += pemasangan_menggunakan_alat_steril;
-                    segera_dilepas_setelah_tidak_diperlukan=Double.parseDouble(rs.getString("segera_dilepas_setelah_tidak_diperlukan").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    segera_dilepas_setelah_tidak_diperlukan = Double.
+                            parseDouble(rs.getString(
+                                    "segera_dilepas_setelah_tidak_diperlukan").
+                                    replaceAll("Ya", "1").replaceAll("Tidak",
+                                    "0"));
                     ttlsegera_dilepas_setelah_tidak_diperlukan += segera_dilepas_setelah_tidak_diperlukan;
-                    pengisian_balon_sesuai_petunjuk=Double.parseDouble(rs.getString("pengisian_balon_sesuai_petunjuk").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    pengisian_balon_sesuai_petunjuk = Double.parseDouble(rs.
+                            getString("pengisian_balon_sesuai_petunjuk").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlpengisian_balon_sesuai_petunjuk += pengisian_balon_sesuai_petunjuk;
-                    fiksasi_kateter_dengan_plester=Double.parseDouble(rs.getString("fiksasi_kateter_dengan_plester").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    fiksasi_kateter_dengan_plester = Double.parseDouble(rs.
+                            getString("fiksasi_kateter_dengan_plester").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlfiksasi_kateter_dengan_plester += fiksasi_kateter_dengan_plester;
-                    urinebag_menggantung_tidak_menyentuh_lantai=Double.parseDouble(rs.getString("urinebag_menggantung_tidak_menyentuh_lantai").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    urinebag_menggantung_tidak_menyentuh_lantai = Double.
+                            parseDouble(rs.getString(
+                                    "urinebag_menggantung_tidak_menyentuh_lantai").
+                                    replaceAll("Ya", "1").replaceAll("Tidak",
+                                    "0"));
                     ttlurinebag_menggantung_tidak_menyentuh_lantai += urinebag_menggantung_tidak_menyentuh_lantai;
-                    ttlpenilaian += (((pemasangan_sesuai_indikasi+hand_hygiene+menggunakan_apd_yang_tepat+pemasangan_menggunakan_alat_steril+segera_dilepas_setelah_tidak_diperlukan+pengisian_balon_sesuai_petunjuk+fiksasi_kateter_dengan_plester+urinebag_menggantung_tidak_menyentuh_lantai)/8)*100);
+                    ttlpenilaian += (((pemasangan_sesuai_indikasi + hand_hygiene + menggunakan_apd_yang_tepat + pemasangan_menggunakan_alat_steril + segera_dilepas_setelah_tidak_diperlukan + pengisian_balon_sesuai_petunjuk + fiksasi_kateter_dengan_plester + urinebag_menggantung_tidak_menyentuh_lantai) / 8) * 100);
                     tabMode.addRow(new String[]{
-                        rs.getString("tanggal"),rs.getString("id_ruang"),rs.getString("nama_ruang"),rs.getString("pemasangan_sesuai_indikasi"),rs.getString("hand_hygiene"),
-                        rs.getString("menggunakan_apd_yang_tepat"),rs.getString("pemasangan_menggunakan_alat_steril"),rs.getString("segera_dilepas_setelah_tidak_diperlukan"),rs.getString("pengisian_balon_sesuai_petunjuk"),rs.getString("fiksasi_kateter_dengan_plester"),rs.getString("urinebag_menggantung_tidak_menyentuh_lantai"),
-                        Math.round(((pemasangan_sesuai_indikasi+hand_hygiene+menggunakan_apd_yang_tepat+pemasangan_menggunakan_alat_steril+segera_dilepas_setelah_tidak_diperlukan+pengisian_balon_sesuai_petunjuk+fiksasi_kateter_dengan_plester+urinebag_menggantung_tidak_menyentuh_lantai)/8)*100)+" %"
+                        rs.getString("tanggal"), rs.getString("id_ruang"), rs.
+                        getString("nama_ruang"), rs.getString(
+                        "pemasangan_sesuai_indikasi"), rs.getString(
+                        "hand_hygiene"),
+                        rs.getString("menggunakan_apd_yang_tepat"), rs.
+                        getString("pemasangan_menggunakan_alat_steril"), rs.
+                        getString("segera_dilepas_setelah_tidak_diperlukan"),
+                        rs.getString("pengisian_balon_sesuai_petunjuk"), rs.
+                        getString("fiksasi_kateter_dengan_plester"), rs.
+                        getString("urinebag_menggantung_tidak_menyentuh_lantai"),
+                        Math.round(
+                        ((pemasangan_sesuai_indikasi + hand_hygiene + menggunakan_apd_yang_tepat + pemasangan_menggunakan_alat_steril + segera_dilepas_setelah_tidak_diperlukan + pengisian_balon_sesuai_petunjuk + fiksasi_kateter_dengan_plester + urinebag_menggantung_tidak_menyentuh_lantai) / 8) * 100) + " %"
                     });
                     i++;
                 }
                 i -= 1;
-                if(i>0){
+                if (i > 0) {
                     tabMode.addRow(new String[]{
-                        "","Ya",":",""+ttlpemasangan_sesuai_indikasi,""+ttlhand_hygiene,""+ttlmenggunakan_apd_yang_tepat,""+ttlpemasangan_menggunakan_alat_steril,""+ttlsegera_dilepas_setelah_tidak_diperlukan,""+ttlpengisian_balon_sesuai_petunjuk,""+ttlfiksasi_kateter_dengan_plester,""+ttlurinebag_menggantung_tidak_menyentuh_lantai,""+(pemasangan_sesuai_indikasi+hand_hygiene+menggunakan_apd_yang_tepat+pemasangan_menggunakan_alat_steril+segera_dilepas_setelah_tidak_diperlukan+pengisian_balon_sesuai_petunjuk+fiksasi_kateter_dengan_plester+urinebag_menggantung_tidak_menyentuh_lantai)
+                        "", "Ya", ":", "" + ttlpemasangan_sesuai_indikasi,
+                        "" + ttlhand_hygiene, "" + ttlmenggunakan_apd_yang_tepat,
+                        "" + ttlpemasangan_menggunakan_alat_steril,
+                        "" + ttlsegera_dilepas_setelah_tidak_diperlukan,
+                        "" + ttlpengisian_balon_sesuai_petunjuk,
+                        "" + ttlfiksasi_kateter_dengan_plester,
+                        "" + ttlurinebag_menggantung_tidak_menyentuh_lantai,
+                        "" + (pemasangan_sesuai_indikasi + hand_hygiene + menggunakan_apd_yang_tepat + pemasangan_menggunakan_alat_steril + segera_dilepas_setelah_tidak_diperlukan + pengisian_balon_sesuai_petunjuk + fiksasi_kateter_dengan_plester + urinebag_menggantung_tidak_menyentuh_lantai)
                     });
                     tabMode.addRow(new String[]{
-                        "","Tidak",":",""+(i-ttlpemasangan_sesuai_indikasi),""+(i-ttlhand_hygiene),""+(i-ttlmenggunakan_apd_yang_tepat),""+(i-ttlpemasangan_menggunakan_alat_steril),""+(i-ttlsegera_dilepas_setelah_tidak_diperlukan),""+(i-ttlpengisian_balon_sesuai_petunjuk),""+(i-ttlfiksasi_kateter_dengan_plester),""+(i-ttlurinebag_menggantung_tidak_menyentuh_lantai),""+((i-ttlpemasangan_sesuai_indikasi)+
-                        (i-ttlhand_hygiene)+(i-ttlmenggunakan_apd_yang_tepat)+(i-ttlpemasangan_menggunakan_alat_steril)+(i-ttlsegera_dilepas_setelah_tidak_diperlukan)+(i-ttlpengisian_balon_sesuai_petunjuk)+(i-ttlfiksasi_kateter_dengan_plester)+(i-ttlurinebag_menggantung_tidak_menyentuh_lantai))
+                        "", "Tidak", ":",
+                        "" + (i - ttlpemasangan_sesuai_indikasi),
+                        "" + (i - ttlhand_hygiene),
+                        "" + (i - ttlmenggunakan_apd_yang_tepat),
+                        "" + (i - ttlpemasangan_menggunakan_alat_steril),
+                        "" + (i - ttlsegera_dilepas_setelah_tidak_diperlukan),
+                        "" + (i - ttlpengisian_balon_sesuai_petunjuk),
+                        "" + (i - ttlfiksasi_kateter_dengan_plester),
+                        "" + (i - ttlurinebag_menggantung_tidak_menyentuh_lantai),
+                        "" + ((i - ttlpemasangan_sesuai_indikasi)
+                        + (i - ttlhand_hygiene) + (i - ttlmenggunakan_apd_yang_tepat) + (i - ttlpemasangan_menggunakan_alat_steril) + (i - ttlsegera_dilepas_setelah_tidak_diperlukan) + (i - ttlpengisian_balon_sesuai_petunjuk) + (i - ttlfiksasi_kateter_dengan_plester) + (i - ttlurinebag_menggantung_tidak_menyentuh_lantai))
                     });
                     tabMode.addRow(new String[]{
-                        "","Rata-rata",":",Math.round((ttlpemasangan_sesuai_indikasi/i)*100)+" %",Math.round((ttlhand_hygiene/i)*100)+" %",Math.round((ttlmenggunakan_apd_yang_tepat/i)*100)+" %",
-                        Math.round((ttlpemasangan_menggunakan_alat_steril/i)*100)+" %",Math.round((ttlsegera_dilepas_setelah_tidak_diperlukan/i)*100)+" %",Math.round((ttlpengisian_balon_sesuai_petunjuk/i)*100)+" %",Math.round((ttlfiksasi_kateter_dengan_plester/i)*100)+" %",Math.round((ttlurinebag_menggantung_tidak_menyentuh_lantai/i)*100)+" %",Math.round(ttlpenilaian/i)+" %"
+                        "", "Rata-rata", ":", Math.round(
+                        (ttlpemasangan_sesuai_indikasi / i) * 100) + " %", Math.
+                        round((ttlhand_hygiene / i) * 100) + " %", Math.round(
+                        (ttlmenggunakan_apd_yang_tepat / i) * 100) + " %",
+                        Math.round(
+                        (ttlpemasangan_menggunakan_alat_steril / i) * 100) + " %",
+                        Math.round(
+                        (ttlsegera_dilepas_setelah_tidak_diperlukan / i) * 100) + " %",
+                        Math.round(
+                        (ttlpengisian_balon_sesuai_petunjuk / i) * 100) + " %",
+                        Math.
+                        round((ttlfiksasi_kateter_dengan_plester / i) * 100) + " %",
+                        Math.round(
+                        (ttlurinebag_menggantung_tidak_menyentuh_lantai / i) * 100) + " %",
+                        Math.round(ttlpenilaian / i) + " %"
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+i);
+        LCount.setText("" + i);
     }
-    
+
     public void emptTeks() {
         KdRuang.setText("");
         NmRuang.setText("");
@@ -1147,71 +1308,85 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
         FiksasiKateter.setSelectedIndex(0);
         UrineBag.setSelectedIndex(0);
         PemasanganSesuaiIndikasi.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            if(!tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().isEmpty()){
-                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-                PemasanganSesuaiIndikasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-                HandHygiene.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-                ApdYangTepat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-                PetunjukProduk.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-                LepasSetelahTidakDiperlukan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-                AlatSteril.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-                FiksasiKateter.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-                UrineBag.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-                Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                        toString());
+                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                        toString());
+                PemasanganSesuaiIndikasi.setSelectedItem(tbObat.getValueAt(
+                        tbObat.getSelectedRow(), 3).toString());
+                HandHygiene.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 4).toString());
+                ApdYangTepat.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 5).toString());
+                PetunjukProduk.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 6).toString());
+                LepasSetelahTidakDiperlukan.setSelectedItem(tbObat.getValueAt(
+                        tbObat.getSelectedRow(), 7).toString());
+                AlatSteril.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 8).toString());
+                FiksasiKateter.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 9).toString());
+                UrineBag.setSelectedItem(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 10).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
+                        0).toString());
             }
         }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,184));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 184));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getaudit_bundle_isk());
         BtnHapus.setEnabled(akses.getaudit_bundle_isk());
         BtnEdit.setEnabled(akses.getaudit_bundle_isk());
-        BtnPrint.setEnabled(akses.getaudit_bundle_isk());        
+        BtnPrint.setEnabled(akses.getaudit_bundle_isk());
     }
 
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
                 String nol_detik = "";
-                
+
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkKejadian.isSelected()==true){
+                if (ChkKejadian.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkKejadian.isSelected()==false){
-                    nilai_jam =Jam.getSelectedIndex();
-                    nilai_menit =Menit.getSelectedIndex();
-                    nilai_detik =Detik.getSelectedIndex();
+                } else if (ChkKejadian.isSelected() == false) {
+                    nilai_jam = Jam.getSelectedIndex();
+                    nilai_menit = Menit.getSelectedIndex();
+                    nilai_detik = Detik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -1239,8 +1414,12 @@ public class DlgAuditBundleISK extends javax.swing.JDialog {
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgAuditBundleISK.class.
+            getName());
 }

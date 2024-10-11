@@ -45,6 +45,14 @@
         </MenuItem>
       </SubComponents>
     </Container>
+    <Component class="widget.TextBox" name="TanggalRegistrasi">
+      <Properties>
+        <Property name="highlighter" type="javax.swing.text.Highlighter" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="null"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="TanggalRegistrasi" noResource="true"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
@@ -1004,9 +1012,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetMata" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetMataKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1038,9 +1043,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetGigi" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetGigiKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1072,9 +1074,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetLeher" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetLeherKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1106,9 +1105,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetThorax" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetThoraxKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1140,9 +1136,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetAbdomen" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetAbdomenKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1174,9 +1167,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetGenital" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetGenitalKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1208,9 +1198,6 @@
                                 <Property name="rows" type="int" value="8"/>
                                 <Property name="name" type="java.lang.String" value="KetEkstremitas" noResource="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetEkstremitasKeyPressed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -2042,7 +2029,7 @@
                             </Property>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="1">
-                                <StringItem index="0" value="21-05-2024 08:14:46"/>
+                                <StringItem index="0" value="22-07-2024 14:46:10"/>
                               </StringArray>
                             </Property>
                             <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy HH:mm:ss"/>
@@ -2290,7 +2277,7 @@
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="1">
-                            <StringItem index="0" value="21-05-2024"/>
+                            <StringItem index="0" value="22-07-2024"/>
                           </StringArray>
                         </Property>
                         <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -2318,7 +2305,7 @@
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="1">
-                            <StringItem index="0" value="21-05-2024"/>
+                            <StringItem index="0" value="22-07-2024"/>
                           </StringArray>
                         </Property>
                         <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>

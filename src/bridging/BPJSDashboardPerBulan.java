@@ -9,116 +9,152 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.text.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClientException;
 
 /**
- *
  * @author dosen
  */
 public class BPJSDashboardPerBulan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private sekuel Sequel=new sekuel();
-    private int i=0;
-    private ApiMobileJKN api=new ApiMobileJKN();
-    private String URL="",link="",utc="";
+
+    private validasi Valid = new validasi();
+
+    private sekuel Sequel = new sekuel();
+
+    private int i = 0;
+
+    private ApiMobileJKN api = new ApiMobileJKN();
+
+    private String URL = "", link = "", utc = "";
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
 
-    /** Creates new form DlgKamar
+    /**
+     * Creates new form DlgKamar
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public BPJSDashboardPerBulan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{"No.","Kode PPK","Nama PPK","Kode Poli","Nama Poli","Tanggal","Jumlah Antrian","W.T Admisi","Rata W.T Admisi","W.L Admisi"
-        ,"Rata W.L Admisi","W.T Poli","Rata W.T Poli","W.L Poli","Rata W.L Poli","W.T Farmasi","Rata W.T Farmasi","W.L Farmasi","Rata W.L Farmasi","Waktu Insert"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null,
+                new String[]{"No.", "Kode PPK", "Nama PPK", "Kode Poli",
+                    "Nama Poli", "Tanggal", "Jumlah Antrian",
+                    "W.T Admisi", "Rata W.T Admisi", "W.L Admisi",
+                    "Rata W.L Admisi", "W.T Poli", "Rata W.T Poli",
+                    "W.L Poli", "Rata W.L Poli", "W.T Farmasi",
+                    "Rata W.T Farmasi", "W.L Farmasi",
+                    "Rata W.L Farmasi", "Waktu Insert"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 20; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(40);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(100);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(100);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(100);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(100);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(100);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(100);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(100);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(100);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(100);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(100);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(100);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(100);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        try {
-            link=koneksiDB.URLAPIMOBILEJKN();
-        } catch (Exception e) {
-            System.out.println("E : "+e);
-        }
-              
-    }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+        try {
+            link = koneksiDB.URLAPIMOBILEJKN();
+        } catch (Exception e) {
+            System.out.println("E : " + e);
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -252,9 +288,11 @@ public class BPJSDashboardPerBulan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
@@ -295,24 +333,26 @@ public class BPJSDashboardPerBulan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
 //            Valid.pindah(evt,Poli,BtnPrint);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSDashboardPerBulan dialog = new BPJSDashboardPerBulan(new javax.swing.JFrame(), true);
+            BPJSDashboardPerBulan dialog = new BPJSDashboardPerBulan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -339,46 +379,97 @@ public class BPJSDashboardPerBulan extends javax.swing.JDialog {
         try {
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-	    utc=String.valueOf(api.GetUTCdatetimeAsString());
-	    headers.add("x-timestamp",utc);
-	    headers.add("x-signature",api.getHmac(utc));
-	    headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
+            headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("x-timestamp", utc);
+            headers.add("x-signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
             requestEntity = new HttpEntity(headers);
-            URL = link+"/dashboard/waktutunggu/bulan/"+Tanggal.getSelectedItem()+"/tahun/"+Tahun.getSelectedItem()+"/waktu/"+Waktu.getSelectedItem()+"";	
+            URL = link + "/dashboard/waktutunggu/bulan/" + Tanggal.
+                    getSelectedItem() + "/tahun/"
+                    + Tahun.getSelectedItem() + "/waktu/" + Waktu.
+                    getSelectedItem() + "";
             System.out.println(URL);
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
+                    requestEntity, String.class).getBody());
             nameNode = root.path("metadata");
-            if(nameNode.path("code").asText().equals("200")||nameNode.path("message").asText().equals("OK")){
+            if (nameNode.path("code").asText().equals("200") || nameNode.path(
+                    "message").asText().equals("OK")) {
                 Valid.tabelKosong(tabMode);
-//                response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
+                // response =
+                // mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
                 response = root.path("response");
-                if(response.path("list").isArray()){
-                    i=1;
-                    for(JsonNode list:response.path("list")){
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            tabMode.addRow(new Object[]{
-                                i+".",list.path("kdppk").asText(),list.path("nmppk").asText(),list.path("kodepoli").asText(),list.path("namapoli").asText(),list.path("tanggal").asText(),list.path("jumlah_antrean").asText(),((list.path("waktu_task1").asInt()/3600)+":"+((list.path("waktu_task1").asInt()%3600)/60)+":"+(list.path("waktu_task1").asInt()%60))
-                                ,((list.path("avg_waktu_task1").asInt()/3600)+":"+((list.path("avg_waktu_task1").asInt()%3600)/60)+":"+(list.path("avg_waktu_task1").asInt()%60)),((list.path("waktu_task2").asInt()/3600)+":"+((list.path("waktu_task2").asInt()%3600)/60)+":"+(list.path("waktu_task2").asInt()%60)),((list.path("avg_waktu_task2").asInt()/3600)+":"+((list.path("avg_waktu_task2").asInt()%3600)/60)+":"+(list.path("avg_waktu_task2").asInt()%60)),((list.path("waktu_task3").asInt()/3600)+":"+((list.path("waktu_task3").asInt()%3600)/60)+":"+(list.path("waktu_task3").asInt()%60))
-                                ,((list.path("avg_waktu_task3").asInt()/3600)+":"+((list.path("avg_waktu_task3").asInt()%3600)/60)+":"+(list.path("avg_waktu_task3").asInt()%60)),((list.path("waktu_task4").asInt()/3600)+":"+((list.path("waktu_task4").asInt()%3600)/60)+":"+(list.path("waktu_task4").asInt()%60)),((list.path("avg_waktu_task4").asInt()/3600)+":"+((list.path("avg_waktu_task4").asInt()%3600)/60)+":"+(list.path("avg_waktu_task4").asInt()%60)),((list.path("waktu_task5").asInt()/3600)+":"+((list.path("waktu_task5").asInt()%3600)/60)+":"+(list.path("waktu_task5").asInt()%60))
-                                ,((list.path("avg_waktu_task5").asInt()/3600)+":"+((list.path("avg_waktu_task5").asInt()%3600)/60)+":"+(list.path("avg_waktu_task5").asInt()%60)),((list.path("waktu_task6").asInt()/3600)+":"+((list.path("waktu_task6").asInt()%3600)/60)+":"+(list.path("waktu_task6").asInt()%60)),((list.path("avg_waktu_task6").asInt()/3600)+":"+((list.path("avg_waktu_task6").asInt()%3600)/60)+":"+(list.path("avg_waktu_task6").asInt()%60)),sdf.format(list.path("insertdate").asLong())
-                            });
-                        
+                if (response.path("list").isArray()) {
+                    i = 1;
+                    for (JsonNode list : response.path("list")) {
+                        SimpleDateFormat sdf = new SimpleDateFormat(
+                                "yyyy-MM-dd HH:mm:ss");
+                        tabMode.addRow(new Object[]{i + ".", list.path("kdppk").
+                            asText(), list.path("nmppk").asText(),
+                            list.path("kodepoli").asText(), list.
+                            path("namapoli").asText(),
+                            list.path("tanggal").asText(), list.path(
+                            "jumlah_antrean").asText(),
+                            ((list.path("waktu_task1").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task1").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task1").asInt() % 60)),
+                            ((list.path("avg_waktu_task1").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task1").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task1").asInt() % 60)),
+                            ((list.path("waktu_task2").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task2").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task2").asInt() % 60)),
+                            ((list.path("avg_waktu_task2").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task2").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task2").asInt() % 60)),
+                            ((list.path("waktu_task3").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task3").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task3").asInt() % 60)),
+                            ((list.path("avg_waktu_task3").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task3").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task3").asInt() % 60)),
+                            ((list.path("waktu_task4").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task4").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task4").asInt() % 60)),
+                            ((list.path("avg_waktu_task4").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task4").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task4").asInt() % 60)),
+                            ((list.path("waktu_task5").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task5").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task5").asInt() % 60)),
+                            ((list.path("avg_waktu_task5").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task5").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task5").asInt() % 60)),
+                            ((list.path("waktu_task6").asInt() / 3600) + ":"
+                            + ((list.path("waktu_task6").asInt() % 3600) / 60) + ":"
+                            + (list.path("waktu_task6").asInt() % 60)),
+                            ((list.path("avg_waktu_task6").asInt() / 3600) + ":"
+                            + ((list.path("avg_waktu_task6").asInt() % 3600) / 60) + ":"
+                            + (list.path("avg_waktu_task6").asInt() % 60)),
+                            sdf.format(list.path("insertdate").asLong())});
+
                         i++;
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(null,nameNode.path("message").asText()); 
-            }   
-        } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
-            if(ex.toString().contains("UnknownHostException")){
-                JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").
+                        asText());
+            }
+        } catch (HeadlessException | IOException | KeyManagementException | NoSuchAlgorithmException
+                | RestClientException ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Koneksi ke server BPJS terputus...!");
             }
         }
-    }    
+    }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            BPJSDashboardPerBulan.class.getName());
+
 }

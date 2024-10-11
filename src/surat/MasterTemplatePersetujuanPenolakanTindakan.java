@@ -1,95 +1,123 @@
 package surat;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i;
 
-    /** Creates new form DlgProgramStudi
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
-    public MasterTemplatePersetujuanPenolakanTindakan(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     */
+    public MasterTemplatePersetujuanPenolakanTindakan(java.awt.Frame parent,
+            boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.Template","Diagnosa","Tindakan Kedokteran","Indikasi Tindakan","Tata Cara","Tujuan","Risiko","Komplikasi","Prognosis","Alternatif & Resikonya","Lain-lain","Biaya"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Template", "Diagnosa", "Tindakan Kedokteran",
+            "Indikasi Tindakan", "Tata Cara", "Tujuan", "Risiko", "Komplikasi",
+            "Prognosis", "Alternatif & Resikonya", "Lain-lain", "Biaya"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbDokter.setModel(tabMode);
 
-        tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(90);
-            }else{
+            } else {
                 column.setPreferredWidth(300);
             }
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Kd.setDocument(new batasInput((byte)3).getKata(Kd));
+        Kd.setDocument(new batasInput((byte) 3).getKata(Kd));
         Diagnosa.setDocument(new batasInput(200).getKata(Diagnosa));
-        TindakanKedokteran.setDocument(new batasInput(200).getKata(TindakanKedokteran));
-        IndikasiTindakan.setDocument(new batasInput(200).getKata(IndikasiTindakan));
+        TindakanKedokteran.setDocument(new batasInput(200).getKata(
+                TindakanKedokteran));
+        IndikasiTindakan.setDocument(new batasInput(200).getKata(
+                IndikasiTindakan));
         TataCara.setDocument(new batasInput(400).getKata(TataCara));
         Tujuan.setDocument(new batasInput(200).getKata(Tujuan));
         Risiko.setDocument(new batasInput(200).getKata(Risiko));
         Komplikasi.setDocument(new batasInput(200).getKata(Komplikasi));
         Prognosis.setDocument(new batasInput(200).getKata(Prognosis));
-        AlternatifResiko.setDocument(new batasInput(200).getKata(AlternatifResiko));
+        AlternatifResiko.setDocument(new batasInput(200).getKata(
+                AlternatifResiko));
         LainLain.setDocument(new batasInput(200).getKata(LainLain));
-        Biaya.setDocument(new batasInput((byte)12).getOnlyAngka(Biaya));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));    
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        Biaya.setDocument(new batasInput((byte) 12).getOnlyAngka(Biaya));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }             
+        }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -659,13 +687,13 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
     }// </editor-fold>//GEN-END:initComponents
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbDokter.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -675,33 +703,34 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbDokterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDokterMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
             }
-            if((evt.getClickCount()==2)&&(tbDokter.getSelectedColumn()==0)){
+            if ((evt.getClickCount() == 2) && (tbDokter.getSelectedColumn() == 0)) {
                 TabRawat.setSelectedIndex(0);
             }
         }
 }//GEN-LAST:event_tbDokterMouseClicked
 
     private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDokterKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     getData();
                     TabRawat.setSelectedIndex(0);
@@ -712,14 +741,16 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
 }//GEN-LAST:event_tbDokterKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(TindakanKedokteran.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
+        if (TindakanKedokteran.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, Pilih dulu data yang akan Anda hapus dengan menklik data pada tabel...!!!");
             tbDokter.requestFocus();
-        }else{
-            if(Valid.hapusTabletf(tabMode,Kd,"template_persetujuan_penolakan_tindakan","kode_template")==true){
-                if(tbDokter.getSelectedRow()!= -1){
+        } else {
+            if (Valid.hapusTabletf(tabMode, Kd,
+                    "template_persetujuan_penolakan_tindakan", "kode_template") == true) {
+                if (tbDokter.getSelectedRow() != -1) {
                     tabMode.removeRow(tbDokter.getSelectedRow());
-                    LCount.setText(""+tabMode.getRowCount());
+                    LCount.setText("" + tabMode.getRowCount());
                     emptTeks();
                 }
             }
@@ -727,47 +758,69 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"No.Template");
-        }else if(Biaya.getText().trim().isEmpty()){
-            Valid.textKosong(Biaya,"Perkiraan Biaya");
-        }else if(Diagnosa.getText().trim().isEmpty()){
-            Valid.textKosong(Diagnosa,"Diagnosa");
-        }else if(TindakanKedokteran.getText().trim().isEmpty()){
-            Valid.textKosong(TindakanKedokteran,"Tindakan Kedokteran");
-        }else{
-            if(Valid.editTabletf(tabMode,"template_persetujuan_penolakan_tindakan","kode_template","?","kode_template=?,diagnosa=?,tindakan=?,indikasi_tindakan=?,tata_cara=?,tujuan=?,risiko=?,komplikasi=?,prognosis=?,alternatif_dan_risikonya=?,lain_lain=?,biaya=?",13,new String[]{
-                Kd.getText(),Diagnosa.getText(),TindakanKedokteran.getText(),IndikasiTindakan.getText(),TataCara.getText(),Tujuan.getText(),Risiko.getText(),Komplikasi.getText(),Prognosis.getText(),AlternatifResiko.getText(),LainLain.getText(),Biaya.getText(),tabMode.getValueAt(tbDokter.getSelectedRow(),0).toString()
-            })==true){
-                tbDokter.setValueAt(Kd.getText(),tbDokter.getSelectedRow(),0);
-                tbDokter.setValueAt(Diagnosa.getText(),tbDokter.getSelectedRow(),1);
-                tbDokter.setValueAt(TindakanKedokteran.getText(),tbDokter.getSelectedRow(),2);
-                tbDokter.setValueAt(IndikasiTindakan.getText(),tbDokter.getSelectedRow(),3);
-                tbDokter.setValueAt(TataCara.getText(),tbDokter.getSelectedRow(),4);
-                tbDokter.setValueAt(Tujuan.getText(),tbDokter.getSelectedRow(),5);
-                tbDokter.setValueAt(Risiko.getText(),tbDokter.getSelectedRow(),6);
-                tbDokter.setValueAt(Komplikasi.getText(),tbDokter.getSelectedRow(),7);
-                tbDokter.setValueAt(Prognosis.getText(),tbDokter.getSelectedRow(),8);
-                tbDokter.setValueAt(AlternatifResiko.getText(),tbDokter.getSelectedRow(),9);
-                tbDokter.setValueAt(LainLain.getText(),tbDokter.getSelectedRow(),10);
-                tbDokter.setValueAt(Biaya.getText(),tbDokter.getSelectedRow(),11);
-                emptTeks();TabRawat.setSelectedIndex(1);
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "No.Template");
+        } else if (Biaya.getText().trim().isEmpty()) {
+            Valid.textKosong(Biaya, "Perkiraan Biaya");
+        } else if (Diagnosa.getText().trim().isEmpty()) {
+            Valid.textKosong(Diagnosa, "Diagnosa");
+        } else if (TindakanKedokteran.getText().trim().isEmpty()) {
+            Valid.textKosong(TindakanKedokteran, "Tindakan Kedokteran");
+        } else {
+            if (Valid.editTabletf(tabMode,
+                    "template_persetujuan_penolakan_tindakan", "kode_template",
+                    "?",
+                    "kode_template=?,diagnosa=?,tindakan=?,indikasi_tindakan=?,tata_cara=?,tujuan=?,risiko=?,komplikasi=?,prognosis=?,alternatif_dan_risikonya=?,lain_lain=?,biaya=?",
+                    13, new String[]{
+                        Kd.getText(), Diagnosa.getText(), TindakanKedokteran.
+                        getText(), IndikasiTindakan.getText(), TataCara.
+                        getText(), Tujuan.getText(), Risiko.getText(),
+                        Komplikasi.getText(), Prognosis.getText(),
+                        AlternatifResiko.getText(), LainLain.getText(), Biaya.
+                        getText(), tabMode.getValueAt(tbDokter.getSelectedRow(),
+                                0).toString()
+                    }) == true) {
+                tbDokter.setValueAt(Kd.getText(), tbDokter.getSelectedRow(), 0);
+                tbDokter.setValueAt(Diagnosa.getText(), tbDokter.
+                        getSelectedRow(), 1);
+                tbDokter.setValueAt(TindakanKedokteran.getText(), tbDokter.
+                        getSelectedRow(), 2);
+                tbDokter.setValueAt(IndikasiTindakan.getText(), tbDokter.
+                        getSelectedRow(), 3);
+                tbDokter.setValueAt(TataCara.getText(), tbDokter.
+                        getSelectedRow(), 4);
+                tbDokter.setValueAt(Tujuan.getText(), tbDokter.getSelectedRow(),
+                        5);
+                tbDokter.setValueAt(Risiko.getText(), tbDokter.getSelectedRow(),
+                        6);
+                tbDokter.setValueAt(Komplikasi.getText(), tbDokter.
+                        getSelectedRow(), 7);
+                tbDokter.setValueAt(Prognosis.getText(), tbDokter.
+                        getSelectedRow(), 8);
+                tbDokter.setValueAt(AlternatifResiko.getText(), tbDokter.
+                        getSelectedRow(), 9);
+                tbDokter.setValueAt(LainLain.getText(), tbDokter.
+                        getSelectedRow(), 10);
+                tbDokter.setValueAt(Biaya.getText(), tbDokter.getSelectedRow(),
+                        11);
+                emptTeks();
+                TabRawat.setSelectedIndex(1);
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -778,52 +831,63 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-            dispose();  
+        dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){            
-            dispose();              
-        }else{Valid.pindah(evt,BtnAll,TCari);}
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+            dispose();
+        } else {
+            Valid.pindah(evt, BtnAll, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(Kd.getText().trim().isEmpty()){
-            Valid.textKosong(Kd,"No.Template");
-        }else if(Biaya.getText().trim().isEmpty()){
-            Valid.textKosong(Biaya,"Perkiraan Biaya");
-        }else if(Diagnosa.getText().trim().isEmpty()){
-            Valid.textKosong(Diagnosa,"Diagnosa");
-        }else if(TindakanKedokteran.getText().trim().isEmpty()){
-            Valid.textKosong(TindakanKedokteran,"Tindakan Kedokteran");
-        }else{
-            if(Sequel.menyimpantf("template_persetujuan_penolakan_tindakan","?,?,?,?,?,?,?,?,?,?,?,?","No.Template",12,new String[]{
-                Kd.getText(),Diagnosa.getText(),TindakanKedokteran.getText(),IndikasiTindakan.getText(),TataCara.getText(),Tujuan.getText(),
-                Risiko.getText(),Komplikasi.getText(),Prognosis.getText(),AlternatifResiko.getText(),LainLain.getText(),Biaya.getText()
-            })==true){
+        if (Kd.getText().trim().isEmpty()) {
+            Valid.textKosong(Kd, "No.Template");
+        } else if (Biaya.getText().trim().isEmpty()) {
+            Valid.textKosong(Biaya, "Perkiraan Biaya");
+        } else if (Diagnosa.getText().trim().isEmpty()) {
+            Valid.textKosong(Diagnosa, "Diagnosa");
+        } else if (TindakanKedokteran.getText().trim().isEmpty()) {
+            Valid.textKosong(TindakanKedokteran, "Tindakan Kedokteran");
+        } else {
+            if (Sequel.menyimpantf("template_persetujuan_penolakan_tindakan",
+                    "?,?,?,?,?,?,?,?,?,?,?,?", "No.Template", 12, new String[]{
+                        Kd.getText(), Diagnosa.getText(), TindakanKedokteran.
+                        getText(), IndikasiTindakan.getText(), TataCara.
+                        getText(), Tujuan.getText(),
+                        Risiko.getText(), Komplikasi.getText(), Prognosis.
+                        getText(), AlternatifResiko.getText(), LainLain.
+                        getText(), Biaya.getText()
+                    }) == true) {
                 tabMode.addRow(new String[]{
-                    Kd.getText(),Diagnosa.getText(),TindakanKedokteran.getText(),IndikasiTindakan.getText(),TataCara.getText(),Tujuan.getText(),
-                    Risiko.getText(),Komplikasi.getText(),Prognosis.getText(),AlternatifResiko.getText(),LainLain.getText(),Biaya.getText()
+                    Kd.getText(), Diagnosa.getText(), TindakanKedokteran.
+                    getText(), IndikasiTindakan.getText(), TataCara.getText(),
+                    Tujuan.getText(),
+                    Risiko.getText(), Komplikasi.getText(), Prognosis.getText(),
+                    AlternatifResiko.getText(), LainLain.getText(), Biaya.
+                    getText()
                 });
                 emptTeks();
-                LCount.setText(""+tabMode.getRowCount());
-            }                
+                LCount.setText("" + tabMode.getRowCount());
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,LainLain,BtnBatal);
+        } else {
+            Valid.pindah(evt, LainLain, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -832,18 +896,20 @@ public class MasterTemplatePersetujuanPenolakanTindakan extends javax.swing.JDia
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
-/*
+    /*
 private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
     Valid.pindah(evt,BtnCari,Nm);
 }//GEN-LAST:event_TKdKeyPressed
 */
 
     private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdKeyPressed
-        Valid.pindah(evt,TCari,Biaya);
+        Valid.pindah(evt, TCari, Biaya);
     }//GEN-LAST:event_KdKeyPressed
 
     private void DiagnosaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaKeyPressed
@@ -851,56 +917,58 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_DiagnosaKeyPressed
 
     private void TindakanKedokteranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TindakanKedokteranKeyPressed
-        Valid.pindah2(evt,Diagnosa,IndikasiTindakan);
+        Valid.pindah2(evt, Diagnosa, IndikasiTindakan);
     }//GEN-LAST:event_TindakanKedokteranKeyPressed
 
     private void TataCaraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TataCaraKeyPressed
-        Valid.pindah2(evt,IndikasiTindakan,Tujuan);
+        Valid.pindah2(evt, IndikasiTindakan, Tujuan);
     }//GEN-LAST:event_TataCaraKeyPressed
 
     private void RisikoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RisikoKeyPressed
-        Valid.pindah2(evt,Tujuan,Komplikasi);
+        Valid.pindah2(evt, Tujuan, Komplikasi);
     }//GEN-LAST:event_RisikoKeyPressed
 
     private void PrognosisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PrognosisKeyPressed
-        Valid.pindah2(evt,Komplikasi,AlternatifResiko);
+        Valid.pindah2(evt, Komplikasi, AlternatifResiko);
     }//GEN-LAST:event_PrognosisKeyPressed
 
     private void LainLainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LainLainKeyPressed
-        Valid.pindah2(evt,AlternatifResiko,BtnSimpan);
+        Valid.pindah2(evt, AlternatifResiko, BtnSimpan);
     }//GEN-LAST:event_LainLainKeyPressed
 
     private void IndikasiTindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IndikasiTindakanKeyPressed
-        Valid.pindah2(evt,TindakanKedokteran,TataCara);
+        Valid.pindah2(evt, TindakanKedokteran, TataCara);
     }//GEN-LAST:event_IndikasiTindakanKeyPressed
 
     private void TujuanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TujuanKeyPressed
-        Valid.pindah2(evt,TataCara,Risiko);
+        Valid.pindah2(evt, TataCara, Risiko);
     }//GEN-LAST:event_TujuanKeyPressed
 
     private void KomplikasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KomplikasiKeyPressed
-        Valid.pindah2(evt,Risiko,Prognosis);
+        Valid.pindah2(evt, Risiko, Prognosis);
     }//GEN-LAST:event_KomplikasiKeyPressed
 
     private void AlternatifResikoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlternatifResikoKeyPressed
-        Valid.pindah2(evt,Prognosis,LainLain);
+        Valid.pindah2(evt, Prognosis, LainLain);
     }//GEN-LAST:event_AlternatifResikoKeyPressed
 
     private void BiayaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BiayaKeyPressed
-        Valid.pindah(evt,Kd,Diagnosa);
+        Valid.pindah(evt, Kd, Diagnosa);
     }//GEN-LAST:event_BiayaKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            MasterTemplatePersetujuanPenolakanTindakan dialog = new MasterTemplatePersetujuanPenolakanTindakan(new javax.swing.JFrame(), true);
+            MasterTemplatePersetujuanPenolakanTindakan dialog = new MasterTemplatePersetujuanPenolakanTindakan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -967,39 +1035,41 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select template_persetujuan_penolakan_tindakan.kode_template,template_persetujuan_penolakan_tindakan.diagnosa,template_persetujuan_penolakan_tindakan.tindakan,"+
-                    "template_persetujuan_penolakan_tindakan.indikasi_tindakan,template_persetujuan_penolakan_tindakan.tata_cara,template_persetujuan_penolakan_tindakan.tujuan,"+
-                    "template_persetujuan_penolakan_tindakan.risiko,template_persetujuan_penolakan_tindakan.komplikasi,template_persetujuan_penolakan_tindakan.prognosis,"+
-                    "template_persetujuan_penolakan_tindakan.alternatif_dan_risikonya,template_persetujuan_penolakan_tindakan.lain_lain,template_persetujuan_penolakan_tindakan.biaya "+
-                    "from template_persetujuan_penolakan_tindakan where template_persetujuan_penolakan_tindakan.kode_template like ? or template_persetujuan_penolakan_tindakan.tindakan like ? or "+
-                    "template_persetujuan_penolakan_tindakan.diagnosa like ? order by template_persetujuan_penolakan_tindakan.kode_template");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select template_persetujuan_penolakan_tindakan.kode_template,template_persetujuan_penolakan_tindakan.diagnosa,template_persetujuan_penolakan_tindakan.tindakan,"
+                    + "template_persetujuan_penolakan_tindakan.indikasi_tindakan,template_persetujuan_penolakan_tindakan.tata_cara,template_persetujuan_penolakan_tindakan.tujuan,"
+                    + "template_persetujuan_penolakan_tindakan.risiko,template_persetujuan_penolakan_tindakan.komplikasi,template_persetujuan_penolakan_tindakan.prognosis,"
+                    + "template_persetujuan_penolakan_tindakan.alternatif_dan_risikonya,template_persetujuan_penolakan_tindakan.lain_lain,template_persetujuan_penolakan_tindakan.biaya "
+                    + "from template_persetujuan_penolakan_tindakan where template_persetujuan_penolakan_tindakan.kode_template like ? or template_persetujuan_penolakan_tindakan.tindakan like ? or "
+                    + "template_persetujuan_penolakan_tindakan.diagnosa like ? order by template_persetujuan_penolakan_tindakan.kode_template");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12)
+                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
+                        getString(4), rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getString(8), rs.getString(9), rs.
+                        getString(10), rs.getString(11), rs.getString(12)
                     });
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -1015,25 +1085,37 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         AlternatifResiko.setText("");
         LainLain.setText("");
         Biaya.setText("0");
-        Valid.autoNomer("template_persetujuan_penolakan_tindakan","",3,Kd);
+        Valid.autoNomer("template_persetujuan_penolakan_tindakan", "", 3, Kd);
         TabRawat.setSelectedIndex(0);
         Kd.requestFocus();
     }
 
     private void getData() {
-        if(tbDokter.getSelectedRow()!= -1){
-            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),0).toString());
-            Diagnosa.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),1).toString());
-            TindakanKedokteran.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),2).toString());
-            IndikasiTindakan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),3).toString());
-            TataCara.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),4).toString());
-            Tujuan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),5).toString());
-            Risiko.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),6).toString());
-            Komplikasi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),7).toString());
-            Prognosis.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),8).toString());
-            AlternatifResiko.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),9).toString());
-            LainLain.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),10).toString());
-            Biaya.setText(tabMode.getValueAt(tbDokter.getSelectedRow(),11).toString());
+        if (tbDokter.getSelectedRow() != -1) {
+            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
+                    toString());
+            Diagnosa.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 1).
+                    toString());
+            TindakanKedokteran.setText(tabMode.getValueAt(tbDokter.
+                    getSelectedRow(), 2).toString());
+            IndikasiTindakan.setText(tabMode.getValueAt(tbDokter.
+                    getSelectedRow(), 3).toString());
+            TataCara.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 4).
+                    toString());
+            Tujuan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 5).
+                    toString());
+            Risiko.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 6).
+                    toString());
+            Komplikasi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 7).
+                    toString());
+            Prognosis.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 8).
+                    toString());
+            AlternatifResiko.setText(tabMode.getValueAt(tbDokter.
+                    getSelectedRow(), 9).toString());
+            LainLain.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 10).
+                    toString());
+            Biaya.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 11).
+                    toString());
         }
     }
 
@@ -1041,20 +1123,23 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbDokter;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.gettemplate_persetujuan_penolakan_tindakan());
         BtnHapus.setEnabled(akses.gettemplate_persetujuan_penolakan_tindakan());
         BtnEdit.setEnabled(akses.gettemplate_persetujuan_penolakan_tindakan());
     }
-    
-    public void setTampil(){
-       TabRawat.setSelectedIndex(1);
+
+    public void setTampil() {
+        TabRawat.setSelectedIndex(1);
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            MasterTemplatePersetujuanPenolakanTindakan.class.getName());
 }

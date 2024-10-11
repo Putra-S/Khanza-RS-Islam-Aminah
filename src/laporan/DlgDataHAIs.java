@@ -3,162 +3,183 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgRujuk.java
  *
  * Created on 31 Mei 10, 20:19:56
  */
-
 package laporan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgDataHAIs extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
+    private int i = 0;
     private Date date = new Date();
-    private String norawatibu="";
-    /** Creates new form DlgRujuk
+    private String norawatibu = "";
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgDataHAIs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "Tanggal","No.Rawat","No.R.M.","Nama Pasien","ETT","CVL",
-                "IVL","UC","VAP","IAD","Pleb","ISK","ILO","HAP","Tinea",
-                "Scabies","Deku","Sputum","Darah","Urine","Antibiotik","Kamar","Kode kamar"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tanggal", "No.Rawat", "No.R.M.", "Nama Pasien", "ETT", "CVL",
+            "IVL", "UC", "VAP", "IAD", "Pleb", "ISK", "ILO", "HAP", "Tinea",
+            "Scabies", "Deku", "Sputum", "Darah", "Urine", "Antibiotik", "Kamar",
+            "Kode kamar"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 23; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(75);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(105);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(180);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(35);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(35);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(35);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(35);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(35);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(35);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(35);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(35);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(35);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(35);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(35);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(45);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(50);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(130);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(130);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(130);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(130);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(150);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        ETT.setDocument(new batasInput((byte)2).getOnlyAngka(ETT));
-        CVL.setDocument(new batasInput((byte)2).getOnlyAngka(CVL));
-        IVL.setDocument(new batasInput((byte)2).getOnlyAngka(IVL));
-        UC.setDocument(new batasInput((byte)2).getOnlyAngka(UC));
-        VAP.setDocument(new batasInput((byte)2).getOnlyAngka(VAP));
-        IAD.setDocument(new batasInput((byte)2).getOnlyAngka(IAD));
-        PLEB.setDocument(new batasInput((byte)2).getOnlyAngka(PLEB));
-        ISK.setDocument(new batasInput((byte)2).getOnlyAngka(ISK));
-        ILO.setDocument(new batasInput((byte)2).getOnlyAngka(ILO));
+        ETT.setDocument(new batasInput((byte) 2).getOnlyAngka(ETT));
+        CVL.setDocument(new batasInput((byte) 2).getOnlyAngka(CVL));
+        IVL.setDocument(new batasInput((byte) 2).getOnlyAngka(IVL));
+        UC.setDocument(new batasInput((byte) 2).getOnlyAngka(UC));
+        VAP.setDocument(new batasInput((byte) 2).getOnlyAngka(VAP));
+        IAD.setDocument(new batasInput((byte) 2).getOnlyAngka(IAD));
+        PLEB.setDocument(new batasInput((byte) 2).getOnlyAngka(PLEB));
+        ISK.setDocument(new batasInput((byte) 2).getOnlyAngka(ISK));
+        ILO.setDocument(new batasInput((byte) 2).getOnlyAngka(ILO));
         Sputum.setDocument(new batasInput(200).getKata(Sputum));
         Darah.setDocument(new batasInput(200).getKata(Darah));
         Urine.setDocument(new batasInput(200).getKata(Urine));
         Antibiotik.setDocument(new batasInput(200).getKata(Antibiotik));
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         ChkInput.setSelected(false);
         isForm();
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -851,18 +872,18 @@ public class DlgDataHAIs extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CVLKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CVLKeyPressed
-        Valid.pindah(evt,ETT,IVL);
+        Valid.pindah(evt, ETT, IVL);
 }//GEN-LAST:event_CVLKeyPressed
 
     private void ETTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ETTKeyPressed
-        Valid.pindah(evt,Tanggal,CVL);
+        Valid.pindah(evt, Tanggal, CVL);
 }//GEN-LAST:event_ETTKeyPressed
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
             isPsien();
-        }else{            
+        } else {
             //Valid.pindah(evt,TTmpRujuk,TDiagnosa);
         }
 }//GEN-LAST:event_TNoRwKeyPressed
@@ -872,131 +893,152 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(ETT.getText().trim().isEmpty()){
-            Valid.textKosong(ETT,"ETT");
-        }else if(CVL.getText().trim().isEmpty()){
-            Valid.textKosong(CVL,"CVL");
-        }else if(IVL.getText().trim().isEmpty()){
-            Valid.textKosong(IVL,"IVL");
-        }else if(UC.getText().trim().isEmpty()){
-            Valid.textKosong(UC,"UC");
-        }else if(VAP.getText().trim().isEmpty()){
-            Valid.textKosong(VAP,"VAP");
-        }else if(IAD.getText().trim().isEmpty()){
-            Valid.textKosong(IAD,"IAD");
-        }else if(PLEB.getText().trim().isEmpty()){
-            Valid.textKosong(PLEB,"PLEB");
-        }else if(ISK.getText().trim().isEmpty()){
-            Valid.textKosong(ISK,"ISK");
-        }else if(ILO.getText().trim().isEmpty()){
-            Valid.textKosong(ILO,"ILO");
-        }else if(HAP.getText().trim().isEmpty()){
-            Valid.textKosong(HAP,"HAP");
-        }else if(Tania.getText().trim().isEmpty()){
-            Valid.textKosong(Tania,"Tania");
-        }else if(Scabies.getText().trim().isEmpty()){
-            Valid.textKosong(Scabies,"Scabies");
-        }else{
-            if(Sequel.menyimpantf("data_HAIs","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",20,new String[]{
-                    Valid.SetTgl(Tanggal.getSelectedItem()+""),TNoRw.getText(),ETT.getText(),CVL.getText(),
-                    IVL.getText(),UC.getText(),VAP.getText(),IAD.getText(),PLEB.getText(),ISK.getText(),ILO.getText(),
-                    HAP.getText(),Tania.getText(),Scabies.getText(),Deku.getSelectedItem().toString(),
-                    Sputum.getText(),Darah.getText(),Urine.getText(),Antibiotik.getText(),Kamar.getText()
-                })==true){
-                    tampil();
-                    emptTeks();
-            }   
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (ETT.getText().trim().isEmpty()) {
+            Valid.textKosong(ETT, "ETT");
+        } else if (CVL.getText().trim().isEmpty()) {
+            Valid.textKosong(CVL, "CVL");
+        } else if (IVL.getText().trim().isEmpty()) {
+            Valid.textKosong(IVL, "IVL");
+        } else if (UC.getText().trim().isEmpty()) {
+            Valid.textKosong(UC, "UC");
+        } else if (VAP.getText().trim().isEmpty()) {
+            Valid.textKosong(VAP, "VAP");
+        } else if (IAD.getText().trim().isEmpty()) {
+            Valid.textKosong(IAD, "IAD");
+        } else if (PLEB.getText().trim().isEmpty()) {
+            Valid.textKosong(PLEB, "PLEB");
+        } else if (ISK.getText().trim().isEmpty()) {
+            Valid.textKosong(ISK, "ISK");
+        } else if (ILO.getText().trim().isEmpty()) {
+            Valid.textKosong(ILO, "ILO");
+        } else if (HAP.getText().trim().isEmpty()) {
+            Valid.textKosong(HAP, "HAP");
+        } else if (Tania.getText().trim().isEmpty()) {
+            Valid.textKosong(Tania, "Tania");
+        } else if (Scabies.getText().trim().isEmpty()) {
+            Valid.textKosong(Scabies, "Scabies");
+        } else {
+            if (Sequel.menyimpantf("data_HAIs",
+                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 20,
+                    new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + ""), TNoRw.
+                        getText(), ETT.getText(), CVL.getText(),
+                        IVL.getText(), UC.getText(), VAP.getText(), IAD.
+                        getText(), PLEB.getText(), ISK.getText(), ILO.getText(),
+                        HAP.getText(), Tania.getText(), Scabies.getText(), Deku.
+                        getSelectedItem().toString(),
+                        Sputum.getText(), Darah.getText(), Urine.getText(),
+                        Antibiotik.getText(), Kamar.getText()
+                    }) == true) {
+                tampil();
+                emptTeks();
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Antibiotik,BtnBatal);
+        } else {
+            Valid.pindah(evt, Antibiotik, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         emptTeks();
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
-            if(Sequel.queryu2tf("delete from data_HAIs where tanggal=? and no_rawat=?",2,new String[]{
-                tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()
-            })==true){
+        if (tbObat.getSelectedRow() != -1) {
+            if (Sequel.queryu2tf(
+                    "delete from data_HAIs where tanggal=? and no_rawat=?", 2,
+                    new String[]{
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }else{
-                JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
             }
-        }            
-            
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"pasien");
-        }else if(ETT.getText().trim().isEmpty()){
-            Valid.textKosong(ETT,"ETT");
-        }else if(CVL.getText().trim().isEmpty()){
-            Valid.textKosong(CVL,"CVL");
-        }else if(IVL.getText().trim().isEmpty()){
-            Valid.textKosong(IVL,"IVL");
-        }else if(UC.getText().trim().isEmpty()){
-            Valid.textKosong(UC,"UC");
-        }else if(VAP.getText().trim().isEmpty()){
-            Valid.textKosong(VAP,"VAP");
-        }else if(IAD.getText().trim().isEmpty()){
-            Valid.textKosong(IAD,"IAD");
-        }else if(PLEB.getText().trim().isEmpty()){
-            Valid.textKosong(PLEB,"PLEB");
-        }else if(ISK.getText().trim().isEmpty()){
-            Valid.textKosong(ISK,"ISK");
-        }else if(ILO.getText().trim().isEmpty()){
-            Valid.textKosong(ILO,"ILO");
-        }else if(HAP.getText().trim().isEmpty()){
-            Valid.textKosong(HAP,"HAP");
-        }else if(Tania.getText().trim().isEmpty()){
-            Valid.textKosong(Tania,"Tania");
-        }else if(Scabies.getText().trim().isEmpty()){
-            Valid.textKosong(Scabies,"Scabies");
-        }else{         
-            Sequel.mengedit("data_HAIs","tanggal=? and no_rawat=?","tanggal=?,no_rawat=?,ETT=?,CVL=?,IVL=?,UC=?,VAP=?,IAD=?,PLEB=?,ISK=?,ILO=?,DEKU=?,SPUTUM=?,DARAH=?,URINE=?,ANTIBIOTIK=?,HAP=?,Tinea=?,Scabies=?",21,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+""),TNoRw.getText(),ETT.getText(),CVL.getText(),
-                IVL.getText(),UC.getText(),VAP.getText(),IAD.getText(),PLEB.getText(),ISK.getText(),ILO.getText(),
-                Deku.getSelectedItem().toString(),Sputum.getText(),Darah.getText(),Urine.getText(),Antibiotik.getText(),
-                HAP.getText(),Tania.getText(),Scabies.getText(),
-                tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(TNoRw, "pasien");
+        } else if (ETT.getText().trim().isEmpty()) {
+            Valid.textKosong(ETT, "ETT");
+        } else if (CVL.getText().trim().isEmpty()) {
+            Valid.textKosong(CVL, "CVL");
+        } else if (IVL.getText().trim().isEmpty()) {
+            Valid.textKosong(IVL, "IVL");
+        } else if (UC.getText().trim().isEmpty()) {
+            Valid.textKosong(UC, "UC");
+        } else if (VAP.getText().trim().isEmpty()) {
+            Valid.textKosong(VAP, "VAP");
+        } else if (IAD.getText().trim().isEmpty()) {
+            Valid.textKosong(IAD, "IAD");
+        } else if (PLEB.getText().trim().isEmpty()) {
+            Valid.textKosong(PLEB, "PLEB");
+        } else if (ISK.getText().trim().isEmpty()) {
+            Valid.textKosong(ISK, "ISK");
+        } else if (ILO.getText().trim().isEmpty()) {
+            Valid.textKosong(ILO, "ILO");
+        } else if (HAP.getText().trim().isEmpty()) {
+            Valid.textKosong(HAP, "HAP");
+        } else if (Tania.getText().trim().isEmpty()) {
+            Valid.textKosong(Tania, "Tania");
+        } else if (Scabies.getText().trim().isEmpty()) {
+            Valid.textKosong(Scabies, "Scabies");
+        } else {
+            Sequel.mengedit("data_HAIs", "tanggal=? and no_rawat=?",
+                    "tanggal=?,no_rawat=?,ETT=?,CVL=?,IVL=?,UC=?,VAP=?,IAD=?,PLEB=?,ISK=?,ILO=?,DEKU=?,SPUTUM=?,DARAH=?,URINE=?,ANTIBIOTIK=?,HAP=?,Tinea=?,Scabies=?",
+                    21, new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + ""), TNoRw.
+                        getText(), ETT.getText(), CVL.getText(),
+                        IVL.getText(), UC.getText(), VAP.getText(), IAD.
+                        getText(), PLEB.getText(), ISK.getText(), ILO.getText(),
+                        Deku.getSelectedItem().toString(), Sputum.getText(),
+                        Darah.getText(), Urine.getText(), Antibiotik.getText(),
+                        HAP.getText(), Tania.getText(), Scabies.getText(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1006,50 +1048,55 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("tanggal1",Valid.SetTgl(DTPCari1.getSelectedItem()+""));   
-                param.put("tanggal2",Valid.SetTgl(DTPCari2.getSelectedItem()+""));   
-                param.put("parameter","%"+TCari.getText().trim()+"%");   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReport("rptDataHAIs.jasper",param,"::[ Data HAIs Pasien ]::");
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("tanggal1", Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+            param.put("tanggal2", Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+            param.put("parameter", "%" + TCari.getText().trim() + "%");
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReport("rptDataHAIs.jasper", param,
+                    "::[ Data HAIs Pasien ]::");
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1059,9 +1106,9 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1072,16 +1119,16 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,TNoRw,ETT);
+        Valid.pindah(evt, TNoRw, ETT);
 }//GEN-LAST:event_TanggalKeyPressed
 
     private void TNoRMKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRMKeyPressed
@@ -1089,7 +1136,7 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_TNoRMKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -1098,8 +1145,9 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1113,63 +1161,63 @@ public class DlgDataHAIs extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void DekuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DekuKeyPressed
-        Valid.pindah(evt,UC,VAP);
+        Valid.pindah(evt, UC, VAP);
     }//GEN-LAST:event_DekuKeyPressed
 
     private void IVLKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IVLKeyPressed
-        Valid.pindah(evt,CVL,UC);
+        Valid.pindah(evt, CVL, UC);
     }//GEN-LAST:event_IVLKeyPressed
 
     private void UCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UCKeyPressed
-        Valid.pindah(evt,IVL,Deku);
+        Valid.pindah(evt, IVL, Deku);
     }//GEN-LAST:event_UCKeyPressed
 
     private void VAPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_VAPKeyPressed
-        Valid.pindah(evt,Deku,IAD);
+        Valid.pindah(evt, Deku, IAD);
     }//GEN-LAST:event_VAPKeyPressed
 
     private void IADKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IADKeyPressed
-        Valid.pindah(evt,VAP,PLEB);
+        Valid.pindah(evt, VAP, PLEB);
     }//GEN-LAST:event_IADKeyPressed
 
     private void PLEBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PLEBKeyPressed
-        Valid.pindah(evt,IAD,ISK);
+        Valid.pindah(evt, IAD, ISK);
     }//GEN-LAST:event_PLEBKeyPressed
 
     private void ISKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ISKKeyPressed
-       Valid.pindah(evt,PLEB,ILO);
+        Valid.pindah(evt, PLEB, ILO);
     }//GEN-LAST:event_ISKKeyPressed
 
     private void SputumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SputumKeyPressed
-        Valid.pindah(evt,Scabies,Darah);
+        Valid.pindah(evt, Scabies, Darah);
     }//GEN-LAST:event_SputumKeyPressed
 
     private void UrineKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UrineKeyPressed
-        Valid.pindah(evt,Darah,Antibiotik);
+        Valid.pindah(evt, Darah, Antibiotik);
     }//GEN-LAST:event_UrineKeyPressed
 
     private void AntibiotikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AntibiotikKeyPressed
-        Valid.pindah(evt,Urine,BtnSimpan);
+        Valid.pindah(evt, Urine, BtnSimpan);
     }//GEN-LAST:event_AntibiotikKeyPressed
 
     private void DarahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DarahKeyPressed
-        Valid.pindah(evt,Sputum,Urine);
+        Valid.pindah(evt, Sputum, Urine);
     }//GEN-LAST:event_DarahKeyPressed
 
     private void ILOKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ILOKeyPressed
-        Valid.pindah(evt,ISK,HAP);
+        Valid.pindah(evt, ISK, HAP);
     }//GEN-LAST:event_ILOKeyPressed
 
     private void HAPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HAPKeyPressed
-        Valid.pindah(evt,ILO,Tania);
+        Valid.pindah(evt, ILO, Tania);
     }//GEN-LAST:event_HAPKeyPressed
 
     private void TaniaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TaniaKeyPressed
-        Valid.pindah(evt,HAP,Scabies);
+        Valid.pindah(evt, HAP, Scabies);
     }//GEN-LAST:event_TaniaKeyPressed
 
     private void ScabiesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ScabiesKeyPressed
-        Valid.pindah(evt,Tania,Sputum);
+        Valid.pindah(evt, Tania, Sputum);
     }//GEN-LAST:event_ScabiesKeyPressed
 
     private void KamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KamarKeyPressed
@@ -1177,8 +1225,8 @@ public class DlgDataHAIs extends javax.swing.JDialog {
     }//GEN-LAST:event_KamarKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgDataHAIs dialog = new DlgDataHAIs(new javax.swing.JFrame(), true);
@@ -1187,6 +1235,7 @@ public class DlgDataHAIs extends javax.swing.JDialog {
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1265,60 +1314,60 @@ public class DlgDataHAIs extends javax.swing.JDialog {
 
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select data_HAIs.tanggal,data_HAIs.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                    "data_HAIs.ETT,data_HAIs.CVL,data_HAIs.IVL,data_HAIs.UC,data_HAIs.VAP,data_HAIs.IAD,"+
-                    "data_HAIs.PLEB,data_HAIs.ISK,data_HAIs.ILO,data_HAIs.HAP,data_HAIs.Tinea,data_HAIs.Scabies,"+
-                    "data_HAIs.DEKU,data_HAIs.SPUTUM,data_HAIs.DARAH,data_HAIs.URINE,data_HAIs.ANTIBIOTIK,"+
-                    "concat(data_HAIs.kd_kamar,', ',bangsal.nm_bangsal),data_HAIs.kd_kamar from data_HAIs inner join reg_periksa "+
-                    "inner join pasien inner join kamar inner join bangsal on data_HAIs.kd_kamar=kamar.kd_kamar "+
-                    "and kamar.kd_bangsal=bangsal.kd_bangsal and data_HAIs.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where "+
-                    "data_HAIs.tanggal between ? and ? and data_HAIs.no_rawat like ? or "+
-                    "data_HAIs.tanggal between ? and ? and reg_periksa.no_rkm_medis like ? or "+
-                    "data_HAIs.tanggal between ? and ? and bangsal.nm_bangsal like ? or "+
-                    "data_HAIs.tanggal between ? and ? and pasien.nm_pasien like ? order by data_HAIs.tanggal ");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select data_HAIs.tanggal,data_HAIs.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"
+                    + "data_HAIs.ETT,data_HAIs.CVL,data_HAIs.IVL,data_HAIs.UC,data_HAIs.VAP,data_HAIs.IAD,"
+                    + "data_HAIs.PLEB,data_HAIs.ISK,data_HAIs.ILO,data_HAIs.HAP,data_HAIs.Tinea,data_HAIs.Scabies,"
+                    + "data_HAIs.DEKU,data_HAIs.SPUTUM,data_HAIs.DARAH,data_HAIs.URINE,data_HAIs.ANTIBIOTIK,"
+                    + "concat(data_HAIs.kd_kamar,', ',bangsal.nm_bangsal),data_HAIs.kd_kamar from data_HAIs inner join reg_periksa "
+                    + "inner join pasien inner join kamar inner join bangsal on data_HAIs.kd_kamar=kamar.kd_kamar "
+                    + "and kamar.kd_bangsal=bangsal.kd_bangsal and data_HAIs.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where "
+                    + "data_HAIs.tanggal between ? and ? and data_HAIs.no_rawat like ? or "
+                    + "data_HAIs.tanggal between ? and ? and reg_periksa.no_rkm_medis like ? or "
+                    + "data_HAIs.tanggal between ? and ? and bangsal.nm_bangsal like ? or "
+                    + "data_HAIs.tanggal between ? and ? and pasien.nm_pasien like ? order by data_HAIs.tanggal ");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText()+"%");
-                ps.setString(4,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                ps.setString(6,"%"+TCari.getText()+"%");
-                ps.setString(7,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText()+"%");
-                ps.setString(10,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                ps.setString(3, "%" + TCari.getText() + "%");
+                ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                ps.setString(6, "%" + TCari.getText() + "%");
+                ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                ps.setString(9, "%" + TCari.getText() + "%");
+                ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                ps.setString(12, "%" + TCari.getText() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8),rs.getString(9),
-                        rs.getString(10),rs.getString(11),rs.getString(12),
-                        rs.getString(13),rs.getString(14),rs.getString(15),
-                        rs.getString(16),rs.getString(17),rs.getString(18),
-                        rs.getString(19),rs.getString(20),rs.getString(21),
-                        rs.getString(22),rs.getString(23)
+                        rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12),
+                        rs.getString(13), rs.getString(14), rs.getString(15),
+                        rs.getString(16), rs.getString(17), rs.getString(18),
+                        rs.getString(19), rs.getString(20), rs.getString(21),
+                        rs.getString(22), rs.getString(23)
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        int b=tabMode.getRowCount();
-        LCount.setText(""+b);
+        int b = tabMode.getRowCount();
+        LCount.setText("" + b);
     }
 
     /**
@@ -1345,43 +1394,71 @@ public class DlgDataHAIs extends javax.swing.JDialog {
         Tanggal.setDate(new Date());
     }
 
-   
-
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            ETT.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            CVL.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-            IVL.setText(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-            UC.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            VAP.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-            IAD.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            PLEB.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-            ISK.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            ILO.setText(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-            HAP.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            Tania.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
-            Scabies.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            Deku.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
-            Sputum.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            Darah.setText(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
-            Urine.setText(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            Antibiotik.setText(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
-            Kamar.setText(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());
-            Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            ETT.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
+                            toString());
+            CVL.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                            toString());
+            IVL.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
+                            toString());
+            UC.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            VAP.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
+                            toString());
+            IAD.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
+                            toString());
+            PLEB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
+                    toString());
+            ISK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
+                    toString());
+            ILO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
+                    toString());
+            HAP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
+                    toString());
+            Tania.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
+                    toString());
+            Scabies.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
+                    toString());
+            Deku.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
+                    toString());
+            Sputum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
+                    toString());
+            Darah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
+                    toString());
+            Urine.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
+                    toString());
+            Antibiotik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
+                    toString());
+            Kamar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
+                    toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
         }
     }
 
     private void isRawat() {
-         Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+        Sequel.cariIsi(
+                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
+                        getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='"+TNoRM.getText()+"' ",TPasien);
+        Sequel.cariIsi(
+                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
+                        getText() + "' ", TPasien);
     }
-    
+
     /**
      *
      * @param norwt
@@ -1394,36 +1471,44 @@ public class DlgDataHAIs extends javax.swing.JDialog {
         DTPCari1.setDate(tgl1);
         DTPCari2.setDate(tgl2);
         isRawat();
-        isPsien();              
+        isPsien();
         ChkInput.setSelected(true);
         isForm();
-        norawatibu=Sequel.cariIsi("select ranap_gabung.no_rawat from ranap_gabung where ranap_gabung.no_rawat2=?",TNoRw.getText());
-        if(!norawatibu.isEmpty()){
-            Kamar.setText(Sequel.cariIsi("select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat=? order by kamar_inap.tgl_masuk desc limit 1",norawatibu));
-        }else{
-            Kamar.setText(Sequel.cariIsi("select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat=? order by kamar_inap.tgl_masuk desc limit 1",TNoRw.getText()));
+        norawatibu = Sequel.cariIsi(
+                "select ranap_gabung.no_rawat from ranap_gabung where ranap_gabung.no_rawat2=?",
+                TNoRw.getText());
+        if (!norawatibu.isEmpty()) {
+            Kamar.setText(Sequel.cariIsi(
+                    "select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat=? order by kamar_inap.tgl_masuk desc limit 1",
+                    norawatibu));
+        } else {
+            Kamar.setText(Sequel.cariIsi(
+                    "select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat=? order by kamar_inap.tgl_masuk desc limit 1",
+                    TNoRw.getText()));
         }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,216));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 216));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getdata_HAIs());
         BtnHapus.setEnabled(akses.getdata_HAIs());
         BtnPrint.setEnabled(akses.getdata_HAIs());
     }
 
-   
+    private static final Logger LOG = Logger.getLogger(DlgDataHAIs.class.
+            getName());
+
 }

@@ -3,155 +3,219 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgLhtBiaya.java
  *
  * Created on 12 Jul 10, 16:21:34
  */
-
 package keuangan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import simrskhanza.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import simrskhanza.DlgCariBangsal;
+import simrskhanza.DlgCariCaraBayar;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgPembayaranRanapPerhari extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private PreparedStatement ps,ps2,pstanggal;
-    private ResultSet rs,rs2,rstanggal;
-    private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
-    private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
-    private double all=0,Laborat=0,Radiologi=0,Operasi=0,Obat=0,Ranap_Dokter=0,Ranap_Dokter_Paramedis=0,Ranap_Paramedis=0,Ralan_Dokter=0,
-             Ralan_Dokter_Paramedis=0,Ralan_Paramedis=0,Tambahan=0,Potongan=0,Kamar=0,Registrasi=0,Harian=0,Retur_Obat=0,Resep_Pulang=0,
-             Service=0,ttlLaborat=0,ttlRadiologi=0,ttlOperasi=0,ttlObat=0,ttlRanap_Dokter=0,ttlRanap_Paramedis=0,ttlRalan_Dokter=0,
-             ttlRalan_Paramedis=0,ttlTambahan=0,ttlPotongan=0,ttlKamar=0,ttlRegistrasi=0,ttlHarian=0,ttlRetur_Obat=0,ttlResep_Pulang=0,ttlService=0;
 
-    /** Creates new form DlgLhtBiaya
+    private final DefaultTableModel tabMode;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private PreparedStatement ps, ps2, pstanggal;
+    private ResultSet rs, rs2, rstanggal;
+    private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+    private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+    private double all = 0, Laborat = 0, Radiologi = 0, Operasi = 0, Obat = 0, Ranap_Dokter = 0, Ranap_Dokter_Paramedis = 0, Ranap_Paramedis = 0, Ralan_Dokter = 0,
+            Ralan_Dokter_Paramedis = 0, Ralan_Paramedis = 0, Tambahan = 0, Potongan = 0, Kamar = 0, Registrasi = 0, Harian = 0, Retur_Obat = 0, Resep_Pulang = 0,
+            Service = 0, ttlLaborat = 0, ttlRadiologi = 0, ttlOperasi = 0, ttlObat = 0, ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0, ttlRalan_Dokter = 0,
+            ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlKamar = 0, ttlRegistrasi = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0;
+
+    /**
+     * Creates new form DlgLhtBiaya
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgPembayaranRanapPerhari(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] rowRwJlDr={"Tgl.Pulang","Registrasi","Tindakan","Obat+Emb+Tsl","Retur Obat","Resep Pulang",
-                            "Laborat","Radiologi","Potongan","Tambahan","Kamar+Service","Operasi","Harian","Total"};
-        tabMode=new DefaultTableModel(null,rowRwJlDr){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] rowRwJlDr = {"Tgl.Pulang", "Registrasi", "Tindakan",
+            "Obat+Emb+Tsl", "Retur Obat", "Resep Pulang",
+            "Laborat", "Radiologi", "Potongan", "Tambahan", "Kamar+Service",
+            "Operasi", "Harian", "Total"};
+        tabMode = new DefaultTableModel(null, rowRwJlDr) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbBangsal.setModel(tabMode);
         //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 14; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(70);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(110);
-            }else{
+            } else {
                 column.setPreferredWidth(85);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)20).getKata(TKd));
-        
+        TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
+
         bangsal.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(bangsal.getTable().getSelectedRow()!= -1){
-                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),0).toString());
-                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(),1).toString());
-                }      
+                if (bangsal.getTable().getSelectedRow() != -1) {
+                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 0).toString());
+                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 kdbangsal.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {bangsal.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                bangsal.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         bangsal.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     bangsal.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         penjab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(penjab.getTable().getSelectedRow()!= -1){
-                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),1).toString());
-                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),2).toString());
+                if (penjab.getTable().getSelectedRow() != -1) {
+                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 1).toString());
+                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 2).toString());
                     BtnCaraBayar.requestFocus();
-                }      
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {penjab.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                penjab.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         penjab.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     penjab.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         ChkInput.setSelected(false);
         isForm();
-    }    
-    
+    }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -434,47 +498,68 @@ public class DlgPembayaranRanapPerhari extends javax.swing.JDialog {
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             //TCari.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            
-            Sequel.queryu("delete from temporary where temp37='"+akses.getalamatip()+"'");
-            for(int r=0;r<tabMode.getRowCount();r++){  
-                    Sequel.menyimpan("temporary","'"+r+"','"+
-                                    tabMode.getValueAt(r,0).toString().replaceAll("'","`") +"','"+
-                                    tabMode.getValueAt(r,1).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,2).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,3).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,4).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,5).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,6).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,7).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,8).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,9).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,10).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,11).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,12).toString().replaceAll("'","`")+"','"+
-                                    tabMode.getValueAt(r,13).toString().replaceAll("'","`")+"','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Nota Pembayaran");
+        } else if (tabMode.getRowCount() != 0) {
+
+            Sequel.queryu("delete from temporary where temp37='" + akses.
+                    getalamatip() + "'");
+            for (int r = 0; r < tabMode.getRowCount(); r++) {
+                Sequel.menyimpan("temporary", "'" + r + "','"
+                        + tabMode.getValueAt(r, 0).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 1).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 2).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 3).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 4).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 5).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 6).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 7).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 8).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 9).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 10).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 11).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 12).toString().replaceAll("'",
+                                "`") + "','"
+                        + tabMode.getValueAt(r, 13).toString().replaceAll("'",
+                                "`") + "','','','','','','','','','','','','','','','','','','','','','','','" + akses.
+                                getalamatip() + "'", "Rekap Nota Pembayaran");
             }
-            
-            Map<String, Object> param = new HashMap<>();                 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptRTagihanRanapHarian.jasper","report","::[ Rekap Tagihan Ranap Masuk ]::","select * from temporary where temporary.temp37='"+akses.getalamatip()+"' order by temporary.no",param);
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptRTagihanRanapHarian.jasper", "report",
+                    "::[ Rekap Tagihan Ranap Masuk ]::",
+                    "select * from temporary where temporary.temp37='" + akses.
+                            getalamatip() + "' order by temporary.no", param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             //Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -484,13 +569,15 @@ public class DlgPembayaranRanapPerhari extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnKeluar,TKd);}
+        } else {
+            Valid.pindah(evt, BtnKeluar, TKd);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void tbBangsalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBangsalMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -499,8 +586,9 @@ public class DlgPembayaranRanapPerhari extends javax.swing.JDialog {
 }//GEN-LAST:event_tbBangsalMouseClicked
 
     private void tbBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBangsalKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -510,18 +598,18 @@ public class DlgPembayaranRanapPerhari extends javax.swing.JDialog {
 }//GEN-LAST:event_tbBangsalKeyPressed
 
 private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
-        
-        tampil();
+
+    tampil();
 }//GEN-LAST:event_BtnCari1ActionPerformed
 
 private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            tampil();
-            this.setCursor(Cursor.getDefaultCursor());
-        }else{
-            Valid.pindah(evt, TKd, BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tampil();
+        this.setCursor(Cursor.getDefaultCursor());
+    } else {
+        Valid.pindah(evt, TKd, BtnPrint);
+    }
 }//GEN-LAST:event_BtnCari1KeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -534,7 +622,8 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void BtnCaraBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCaraBayarActionPerformed
         penjab.isCek();
-        penjab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
         penjab.setAlwaysOnTop(false);
         penjab.setVisible(true);
@@ -542,7 +631,8 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void BtnSeek2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek2ActionPerformed
         bangsal.isCek();
-        bangsal.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        bangsal.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         bangsal.setLocationRelativeTo(internalFrame1);
         bangsal.setAlwaysOnTop(false);
         bangsal.setVisible(true);
@@ -561,38 +651,46 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, kdbangsal, BtnPrint);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void kdbangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdbangsalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
             BtnAll.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?", nmbangsal,kdbangsal.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            Sequel.cariIsi(
+                    "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                    nmbangsal, kdbangsal.getText());
             Tgl2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnSeek2ActionPerformed(null);
         }
     }//GEN-LAST:event_kdbangsalKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPembayaranRanapPerhari dialog = new DlgPembayaranRanapPerhari(new javax.swing.JFrame(), true);
+            DlgPembayaranRanapPerhari dialog = new DlgPembayaranRanapPerhari(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -627,481 +725,556 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.Table tbBangsal;
     // End of variables declaration//GEN-END:variables
 
-    public void tampil(){
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+    public void tampil() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Valid.tabelKosong(tabMode);
-        try{          
-            pstanggal=koneksi.prepareStatement(
-                    "select kamar_inap.tgl_keluar from kamar_inap where kamar_inap.tgl_keluar between ? and ? "+
-                    "group by kamar_inap.tgl_keluar order by kamar_inap.tgl_keluar");  
+        try {
+            pstanggal = koneksi.prepareStatement(
+                    "select kamar_inap.tgl_keluar from kamar_inap where kamar_inap.tgl_keluar between ? and ? "
+                    + "group by kamar_inap.tgl_keluar order by kamar_inap.tgl_keluar");
             try {
-                pstanggal.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                pstanggal.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                rstanggal=pstanggal.executeQuery();
-                all=0;ttlLaborat=0;ttlRadiologi=0;ttlOperasi=0;ttlObat=0;
-                ttlRanap_Dokter=0;ttlRanap_Paramedis=0;ttlRalan_Dokter=0;
-                ttlRalan_Paramedis=0;ttlTambahan=0;ttlPotongan=0;ttlKamar=0;
-                ttlRegistrasi=0;ttlHarian=0;ttlRetur_Obat=0;ttlResep_Pulang=0;
-                ttlService=0;
-                while(rstanggal.next()){
-                    Laborat=0;Radiologi=0;Operasi=0;Obat=0;Ranap_Dokter=0;Ranap_Dokter_Paramedis=0;
-                    Ralan_Paramedis=0;Ranap_Paramedis=0;Ralan_Dokter=0;Ralan_Dokter_Paramedis=0;
-                    Tambahan=0;Potongan=0;Kamar=0;Registrasi=0;Harian=0;Retur_Obat=0;Resep_Pulang=0;Service=0;
-                    if(nmbangsal.getText().isEmpty()&&NmCaraBayar.getText().isEmpty()){
-                        ps= koneksi.prepareStatement(
-                            "select kamar_inap.no_rawat,kamar_inap.tgl_keluar,kamar_inap.stts_pulang  from kamar_inap inner join reg_periksa inner join pasien inner join penjab inner join nota_inap "+
-                            "on kamar_inap.no_rawat=reg_periksa.no_rawat and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.no_rawat=nota_inap.no_rawat "+
-                            "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) and kamar_inap.tgl_keluar=? "+
-                            "order by kamar_inap.tgl_keluar");
-                    }else{
-                        ps= koneksi.prepareStatement(
-                            "select kamar_inap.no_rawat,kamar_inap.tgl_keluar,kamar_inap.stts_pulang "+
-                           "from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "+
-                            "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "+
-                            "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "+
-                            "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                            "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) and kamar_inap.tgl_keluar=? and concat(kamar.kd_bangsal,bangsal.nm_bangsal) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ?"+
-                            "order by kamar_inap.tgl_keluar");
+                pstanggal.
+                        setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstanggal.
+                        setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                rstanggal = pstanggal.executeQuery();
+                all = 0;
+                ttlLaborat = 0;
+                ttlRadiologi = 0;
+                ttlOperasi = 0;
+                ttlObat = 0;
+                ttlRanap_Dokter = 0;
+                ttlRanap_Paramedis = 0;
+                ttlRalan_Dokter = 0;
+                ttlRalan_Paramedis = 0;
+                ttlTambahan = 0;
+                ttlPotongan = 0;
+                ttlKamar = 0;
+                ttlRegistrasi = 0;
+                ttlHarian = 0;
+                ttlRetur_Obat = 0;
+                ttlResep_Pulang = 0;
+                ttlService = 0;
+                while (rstanggal.next()) {
+                    Laborat = 0;
+                    Radiologi = 0;
+                    Operasi = 0;
+                    Obat = 0;
+                    Ranap_Dokter = 0;
+                    Ranap_Dokter_Paramedis = 0;
+                    Ralan_Paramedis = 0;
+                    Ranap_Paramedis = 0;
+                    Ralan_Dokter = 0;
+                    Ralan_Dokter_Paramedis = 0;
+                    Tambahan = 0;
+                    Potongan = 0;
+                    Kamar = 0;
+                    Registrasi = 0;
+                    Harian = 0;
+                    Retur_Obat = 0;
+                    Resep_Pulang = 0;
+                    Service = 0;
+                    if (nmbangsal.getText().isEmpty() && NmCaraBayar.getText().
+                            isEmpty()) {
+                        ps = koneksi.prepareStatement(
+                                "select kamar_inap.no_rawat,kamar_inap.tgl_keluar,kamar_inap.stts_pulang  from kamar_inap inner join reg_periksa inner join pasien inner join penjab inner join nota_inap "
+                                + "on kamar_inap.no_rawat=reg_periksa.no_rawat and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.no_rawat=nota_inap.no_rawat "
+                                + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) and kamar_inap.tgl_keluar=? "
+                                + "order by kamar_inap.tgl_keluar");
+                    } else {
+                        ps = koneksi.prepareStatement(
+                                "select kamar_inap.no_rawat,kamar_inap.tgl_keluar,kamar_inap.stts_pulang "
+                                + "from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar "
+                                + "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "
+                                + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.no_rawat not in (select piutang_pasien.no_rawat from piutang_pasien where piutang_pasien.no_rawat=reg_periksa.no_rawat) and kamar_inap.tgl_keluar=? and concat(kamar.kd_bangsal,bangsal.nm_bangsal) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ?"
+                                + "order by kamar_inap.tgl_keluar");
                     }
-                        
-                    try {
-                        if(nmbangsal.getText().isEmpty()&&NmCaraBayar.getText().isEmpty()){
-                            ps.setString(1,rstanggal.getString(1));
-                        }else{
-                            ps.setString(1,rstanggal.getString(1));
-                            ps.setString(2,"%"+kdbangsal.getText()+nmbangsal.getText()+"%");
-                            ps.setString(3,"%"+KdCaraBayar.getText()+NmCaraBayar.getText()+"%");
-                        }
-                            
-                        rs=ps.executeQuery();            
-                        while(rs.next()){
-                            if(!rs.getString("stts_pulang").equals("-")){
-                            if(!rs.getString("stts_pulang").equals("Pindah Kamar")){
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Laborat");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlLaborat += rs2.getDouble(1);
-                                        Laborat += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
 
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Radiologi");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRadiologi += rs2.getDouble(1);
-                                        Radiologi += rs2.getDouble(1);
+                    try {
+                        if (nmbangsal.getText().isEmpty() && NmCaraBayar.
+                                getText().isEmpty()) {
+                            ps.setString(1, rstanggal.getString(1));
+                        } else {
+                            ps.setString(1, rstanggal.getString(1));
+                            ps.setString(2,
+                                    "%" + kdbangsal.getText() + nmbangsal.
+                                    getText() + "%");
+                            ps.setString(3,
+                                    "%" + KdCaraBayar.getText() + NmCaraBayar.
+                                    getText() + "%");
+                        }
+
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            if (!rs.getString("stts_pulang").equals("-")) {
+                                if (!rs.getString("stts_pulang").equals(
+                                        "Pindah Kamar")) {
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Laborat");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlLaborat += rs2.getDouble(1);
+                                            Laborat += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
                                     }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Radiologi");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRadiologi += rs2.getDouble(1);
+                                            Radiologi += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
                                     }
-                                    if(ps2!=null){
-                                        ps2.close();
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Operasi");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlOperasi += rs2.getDouble(1);
+                                            Operasi += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Obat");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlObat += rs2.getDouble(1);
+                                            Obat += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Ranap Dokter");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRanap_Dokter += rs2.getDouble(1);
+                                            Ranap_Dokter += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2,
+                                                "Ranap Dokter Paramedis");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRanap_Dokter += rs2.getDouble(1);
+                                            Ranap_Dokter_Paramedis += rs2.
+                                                    getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Ranap Paramedis");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRanap_Paramedis += rs2.getDouble(
+                                                    1);
+                                            Ranap_Paramedis += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Ralan Dokter");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRalan_Dokter += rs2.getDouble(1);
+                                            Ralan_Dokter += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2,
+                                                "Ralan Dokter Paramedis");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRalan_Dokter += rs2.getDouble(1);
+                                            Ralan_Dokter_Paramedis += rs2.
+                                                    getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Ralan Paramedis");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRalan_Paramedis += rs2.getDouble(
+                                                    1);
+                                            Ralan_Paramedis += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Tambahan");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlTambahan += rs2.getDouble(1);
+                                            Tambahan += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Potongan");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlPotongan += rs2.getDouble(1);
+                                            Potongan += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Kamar");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlKamar += rs2.getDouble(1);
+                                            Kamar += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Registrasi");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRegistrasi += rs2.getDouble(1);
+                                            Registrasi += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Harian");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlHarian += rs2.getDouble(1);
+                                            Harian += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Retur Obat");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlRetur_Obat += rs2.getDouble(1);
+                                            Retur_Obat += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Resep Pulang");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlResep_Pulang += rs2.getDouble(1);
+                                            Resep_Pulang += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
+                                    }
+
+                                    ps2 = koneksi.prepareStatement(
+                                            "select sum(totalbiaya) from billing where no_rawat=? and status=? ");
+                                    try {
+                                        ps2.setString(1, rs.getString(1));
+                                        ps2.setString(2, "Service");
+                                        rs2 = ps2.executeQuery();
+                                        while (rs2.next()) {
+                                            ttlService += rs2.getDouble(1);
+                                            Service += rs2.getDouble(1);
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif 2: " + e);
+                                    } finally {
+                                        if (rs2 != null) {
+                                            rs2.close();
+                                        }
+                                        if (ps2 != null) {
+                                            ps2.close();
+                                        }
                                     }
                                 }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Operasi");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlOperasi += rs2.getDouble(1);
-                                        Operasi += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Obat");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlObat += rs2.getDouble(1);
-                                        Obat += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ranap Dokter");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRanap_Dokter += rs2.getDouble(1);
-                                        Ranap_Dokter += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ranap Dokter Paramedis");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRanap_Dokter += rs2.getDouble(1);
-                                        Ranap_Dokter_Paramedis += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ranap Paramedis");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRanap_Paramedis += rs2.getDouble(1);
-                                        Ranap_Paramedis += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ralan Dokter");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRalan_Dokter += rs2.getDouble(1);
-                                        Ralan_Dokter += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ralan Dokter Paramedis");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRalan_Dokter += rs2.getDouble(1);
-                                        Ralan_Dokter_Paramedis += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Ralan Paramedis");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRalan_Paramedis += rs2.getDouble(1);
-                                        Ralan_Paramedis += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Tambahan");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlTambahan += rs2.getDouble(1);
-                                        Tambahan += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Potongan");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlPotongan += rs2.getDouble(1);
-                                        Potongan += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Kamar");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlKamar += rs2.getDouble(1);
-                                        Kamar += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Registrasi");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRegistrasi += rs2.getDouble(1);
-                                        Registrasi += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Harian");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlHarian += rs2.getDouble(1);
-                                        Harian += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Retur Obat");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlRetur_Obat += rs2.getDouble(1);
-                                        Retur_Obat += rs2.getDouble(1);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Resep Pulang");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlResep_Pulang += rs2.getDouble(1);
-                                        Resep_Pulang += rs2.getDouble(1);
-                                    } 
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                                
-                                ps2=koneksi.prepareStatement("select sum(totalbiaya) from billing where no_rawat=? and status=? ");
-                                try{
-                                    ps2.setString(1,rs.getString(1));
-                                    ps2.setString(2,"Service");
-                                    rs2=ps2.executeQuery();
-                                    while(rs2.next()){
-                                        ttlService += rs2.getDouble(1);
-                                        Service += rs2.getDouble(1);
-                                    } 
-                                } catch (Exception e) {
-                                    System.out.println("Notif 2: "+e);
-                                } finally{
-                                    if(rs2!=null){
-                                        rs2.close();
-                                    }
-                                    if(ps2!=null){
-                                        ps2.close();
-                                    }
-                                }
-                            }}                    
+                            }
                         }
                     } catch (Exception e) {
-                        System.out.println("Notif : "+e);
-                    } finally{
-                        if(rs!=null){
+                        System.out.println("Notif : " + e);
+                    } finally {
+                        if (rs != null) {
                             rs.close();
                         }
-                        if(ps!=null){
+                        if (ps != null) {
                             ps.close();
                         }
                     }
-                        
-                    all=all+Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service;
+
+                    all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service;
                     tabMode.addRow(new Object[]{
-                        rstanggal.getString("tgl_keluar"),Valid.SetAngka(Registrasi),
-                        Valid.SetAngka(Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Paramedis+Ralan_Dokter_Paramedis),
-                        Valid.SetAngka(Obat),Valid.SetAngka(Retur_Obat),Valid.SetAngka(Resep_Pulang),Valid.SetAngka(Laborat),
-                        Valid.SetAngka(Radiologi),Valid.SetAngka(Potongan),
-                        Valid.SetAngka(Tambahan),Valid.SetAngka(Kamar+Service),Valid.SetAngka(Operasi),Valid.SetAngka(Harian),
-                        Valid.SetAngka(Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+
-                            Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang+Service)
+                        rstanggal.getString("tgl_keluar"), Valid.SetAngka(
+                        Registrasi),
+                        Valid.SetAngka(
+                        Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_Paramedis),
+                        Valid.SetAngka(Obat), Valid.SetAngka(Retur_Obat), Valid.
+                        SetAngka(Resep_Pulang), Valid.SetAngka(Laborat),
+                        Valid.SetAngka(Radiologi), Valid.SetAngka(Potongan),
+                        Valid.SetAngka(Tambahan), Valid.
+                        SetAngka(Kamar + Service), Valid.SetAngka(Operasi),
+                        Valid.SetAngka(Harian),
+                        Valid.SetAngka(
+                        Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis
+                        + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rstanggal!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rstanggal != null) {
                     rstanggal.close();
                 }
-                if(pstanggal!=null){
+                if (pstanggal != null) {
                     pstanggal.close();
                 }
             }
-            
+
             tabMode.addRow(new Object[]{
-                    ">> Total : ",Valid.SetAngka(ttlRegistrasi),Valid.SetAngka(ttlRanap_Dokter+ttlRanap_Paramedis+ttlRalan_Dokter+ttlRalan_Paramedis),
-                    Valid.SetAngka(ttlObat),Valid.SetAngka(ttlRetur_Obat),Valid.SetAngka(ttlResep_Pulang),Valid.SetAngka(ttlLaborat),Valid.SetAngka(ttlRadiologi),Valid.SetAngka(ttlPotongan),
-                    Valid.SetAngka(ttlTambahan),Valid.SetAngka(ttlKamar+ttlService),Valid.SetAngka(ttlOperasi),Valid.SetAngka(ttlHarian),Valid.SetAngka(all)
+                ">> Total : ", Valid.SetAngka(ttlRegistrasi), Valid.SetAngka(
+                ttlRanap_Dokter + ttlRanap_Paramedis + ttlRalan_Dokter + ttlRalan_Paramedis),
+                Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRetur_Obat), Valid.
+                SetAngka(ttlResep_Pulang), Valid.SetAngka(ttlLaborat), Valid.
+                SetAngka(ttlRadiologi), Valid.SetAngka(ttlPotongan),
+                Valid.SetAngka(ttlTambahan), Valid.SetAngka(
+                ttlKamar + ttlService), Valid.SetAngka(ttlOperasi), Valid.
+                SetAngka(ttlHarian), Valid.SetAngka(all)
             });
             LCount.setText(Valid.SetAngka(all));
             this.setCursor(Cursor.getDefaultCursor());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
     }
 
     private void getData() {
-        int row=tbBangsal.getSelectedRow();
-        if(row!= -1){
-            TKd.setText(tabMode.getValueAt(row,0).toString());
+        int row = tbBangsal.getSelectedRow();
+        if (row != -1) {
+            TKd.setText(tabMode.getValueAt(row, 0).toString());
         }
     }
 
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,65));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 65));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgPembayaranRanapPerhari.class.getName());
 }

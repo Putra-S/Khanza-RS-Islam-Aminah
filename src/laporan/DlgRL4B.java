@@ -1,263 +1,401 @@
 package laporan;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-import simrskhanza.*;
+
+import fungsi.akses;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariDokter;
+import simrskhanza.DlgCariCaraBayar;
+import simrskhanza.DlgCariPoli;
+import simrskhanza.DlgKabupaten;
+import simrskhanza.DlgKecamatan;
+import simrskhanza.DlgKelurahan;
 
 /**
  *
  * @author Kanit SIRS
  */
 public class DlgRL4B extends javax.swing.JDialog {
-    private final validasi Valid=new validasi();
-    private final Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps,ps2,ps3;
-    private ResultSet rs,rs2;
+
+    private final validasi Valid = new validasi();
+    private final Connection koneksi = koneksiDB.condb();
+    private PreparedStatement ps, ps2, ps3;
+    private ResultSet rs, rs2;
     private StringBuilder htmlContent;
-    private int hr0s6l=0,hr0s6p=0,hr7s28l=0,hr7s28p=0,hr28s1thl=0,hr28s1thp=0,th1s4l=0,th1s4p=0,th5s14l=0,th5s14p=0,
-                th15s24l=0,th15s24p=0,th25s44l=0,th25s44p=0,th45s64l=0,th45s64p=0,lbth65l=0,lbth65p=0,mati=0;
-    private DlgCariPoli poli=new DlgCariPoli(null,false);
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
-    private DlgKabupaten kabupaten=new DlgKabupaten(null,false);
-    private DlgKecamatan kecamatan=new DlgKecamatan(null,false);
-    private DlgKelurahan kelurahan=new DlgKelurahan(null,false);
-    private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
-    
-    /** Creates new form DlgProgramStudi
+    private int hr0s6l = 0, hr0s6p = 0, hr7s28l = 0, hr7s28p = 0, hr28s1thl = 0, hr28s1thp = 0, th1s4l = 0, th1s4p = 0, th5s14l = 0, th5s14p = 0,
+            th15s24l = 0, th15s24p = 0, th25s44l = 0, th25s44p = 0, th45s64l = 0, th45s64p = 0, lbth65l = 0, lbth65p = 0, mati = 0;
+    private DlgCariPoli poli = new DlgCariPoli(null, false);
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
+    private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+    private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+    private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
+    private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
+    /**
+     * Creates new form DlgProgramStudi
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgRL4B(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
-        
+
         poli.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(poli.getTable().getSelectedRow()!= -1){
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
-                }      
+                if (poli.getTable().getSelectedRow() != -1) {
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
+                            getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
+                            getSelectedRow(), 1).toString());
+                }
                 kdpoli.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {poli.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                poli.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         penjab.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(penjab.getTable().getSelectedRow()!= -1){
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(),2).toString());
-                }      
+                if (penjab.getTable().getSelectedRow() != -1) {
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
+                            getTable().getSelectedRow(), 2).toString());
+                }
                 kdpenjab.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {penjab.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                penjab.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         penjab.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     penjab.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         kabupaten.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kabupaten.getTable().getSelectedRow()!= -1){
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(),0).toString());
-                }      
+                if (kabupaten.getTable().getSelectedRow() != -1) {
+                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
+                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                }
                 nmkabupaten.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {kabupaten.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                kabupaten.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         kabupaten.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     kabupaten.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         kecamatan.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kecamatan.getTable().getSelectedRow()!= -1){
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(),0).toString());
-                }      
+                if (kecamatan.getTable().getSelectedRow() != -1) {
+                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
+                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                }
                 nmkecamatan.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {kecamatan.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                kecamatan.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         kecamatan.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     kecamatan.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         kelurahan.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(kelurahan.getTable().getSelectedRow()!= -1){
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(),0).toString());
-                }      
+                if (kelurahan.getTable().getSelectedRow() != -1) {
+                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
+                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                }
                 nmkelurahan.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {kelurahan.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                kelurahan.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         kelurahan.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     kelurahan.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                }      
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 kddokter.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {dokter.emptTeks();}
+            public void windowActivated(WindowEvent e) {
+                dokter.emptTeks();
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         dokter.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     dokter.dispose();
                 }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
-        
+
         ChkInput.setSelected(false);
         isForm();
     }
-    private int i=0;
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    private int i = 0;
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -684,45 +822,50 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            
-            File g = new File("file2.css");            
-            BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-            bg.write(
-                    ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"+                    
-                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-            );
-            bg.close();
-            
-            File f = new File("rl4b.html");            
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-            bw.write(LoadHTML.getText().replaceAll("<head>","<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                        "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                            "<tr class='isi2'>"+
-                                "<td valign='top' align='center'>"+
-                                    "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                    akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                    akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                    "<font size='2' face='Tahoma'>DATA KEADAAN MORBIDITAS PASIEN RAWAT JALAN RUMAH SAKIT PENYEBAB KECELAKAN<br>PERIODE "+Tgl1.getSelectedItem()+" s.d. "+Tgl2.getSelectedItem()+"<br><br></font>"+        
-                                "</td>"+
-                           "</tr>"+
-                        "</table>")
-            );
-            bw.close();                         
+
+            File g = new File("file2.css");
+            try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                bg.write(
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                );
+            }
+
+            File f = new File("rl4b.html");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                bw.write(LoadHTML.getText().replaceAll("<head>",
+                        "<head><link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.
+                        getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.
+                        getemailrs() + "<br><br>"
+                        + "<font size='2' face='Tahoma'>DATA KEADAAN MORBIDITAS PASIEN RAWAT JALAN RUMAH SAKIT PENYEBAB KECELAKAN<br>PERIODE " + Tgl1.
+                                getSelectedItem() + " s.d. " + Tgl2.
+                                getSelectedItem() + "<br><br></font>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+            }
             Desktop.getDesktop().browse(f.toURI());
         } catch (Exception e) {
-            System.out.println("Notifikasi : "+e);
-        }     
-        
+            System.out.println("Notifikasi : " + e);
+        }
+
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Tgl2,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Tgl2, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
@@ -731,9 +874,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,Tgl1);}
+        } else {
+            Valid.pindah(evt, BtnPrint, Tgl1);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
 private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
@@ -741,11 +886,11 @@ private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_btnCariActionPerformed
 
 private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            btnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt, Tgl2, BtnPrint);
-        }
+    if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+        btnCariActionPerformed(null);
+    } else {
+        Valid.pindah(evt, Tgl2, BtnPrint);
+    }
 }//GEN-LAST:event_btnCariKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -757,18 +902,19 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void kdpoliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpoliKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnAll.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Tgl2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnSeek2ActionPerformed(null);
         }
     }//GEN-LAST:event_kdpoliKeyPressed
 
     private void BtnSeek2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek2ActionPerformed
         poli.isCek();
-        poli.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        poli.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         poli.setLocationRelativeTo(internalFrame1);
         poli.setAlwaysOnTop(false);
         poli.setVisible(true);
@@ -779,18 +925,19 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnSeek2KeyPressed
 
     private void kdpenjabKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpenjabKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnAll.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Tgl2.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnSeek2ActionPerformed(null);
         }
     }//GEN-LAST:event_kdpenjabKeyPressed
 
     private void BtnSeek3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek3ActionPerformed
         penjab.isCek();
-        penjab.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
         penjab.setAlwaysOnTop(false);
         penjab.setVisible(true);
@@ -806,7 +953,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
 
     private void BtnSeek4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek4ActionPerformed
         dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setAlwaysOnTop(false);
         dokter.setVisible(true);
@@ -817,7 +965,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnSeek4KeyPressed
 
     private void BtnSeek5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek5ActionPerformed
-        kabupaten.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kabupaten.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         kabupaten.setLocationRelativeTo(internalFrame1);
         kabupaten.setAlwaysOnTop(false);
         kabupaten.setVisible(true);
@@ -828,7 +977,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnSeek5KeyPressed
 
     private void BtnSeek6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek6ActionPerformed
-        kecamatan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kecamatan.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         kecamatan.setLocationRelativeTo(internalFrame1);
         kecamatan.setAlwaysOnTop(false);
         kecamatan.setVisible(true);
@@ -839,7 +989,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnSeek6KeyPressed
 
     private void BtnSeek7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeek7ActionPerformed
-        kelurahan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kelurahan.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         kelurahan.setLocationRelativeTo(internalFrame1);
         kelurahan.setAlwaysOnTop(false);
         kelurahan.setVisible(true);
@@ -859,14 +1010,14 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             DlgRL4B dialog = new DlgRL4B(new javax.swing.JFrame(), true);
@@ -875,6 +1026,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -925,311 +1077,443 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             htmlContent = new StringBuilder();
-            htmlContent.append(                             
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.Urut</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>No.Daftar Terperinci</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' rowspan='3'>Golongan Sebab Penyakit</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='18'>Jumlah Pasien Hidup dan Mati menurut Golongan Umur & Jenis Kelamin</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Pasien Keluar (Hidup & Mati) Menurut Jenis Kelamin</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Jumlah Pasien Keluar Hidup (23+24)</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Jumlah Pasien Keluar Mati</td>"+
-                "</tr>"+
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-6 hr</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>7-28hr</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>28hr-<1th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-14th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>15-24th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>25-44th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>45-64th</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>> 65</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>LK</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>PR</td>"+
-                "</tr>"+
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"+
-                "</tr>"+
-                "<tr class='isi'>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>1</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>2</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>3</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>4</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>5</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>6</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>7</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>8</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>9</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>10</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>11</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>12</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>13</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>14</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>15</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>16</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>17</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>18</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>19</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>20</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>21</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>22</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>23</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>24</td>"+
-                    "<td valign='middle' bgcolor='#FFFAFA' align='center'>25</td>"+
-                "</tr>"
-            );            
-            ps=koneksi.prepareStatement("select diagnosa_pasien.kd_penyakit,SUBSTRING(penyakit.nm_penyakit,1,80) as nm_penyakit from diagnosa_pasien "+
-                    "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "+
-                    "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "+
-                    "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
-                    "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "+
-                    "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                    "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                    "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                    "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                    "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ?  "+
-                    (nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()?
-                    "":"and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? ")+
-                    "and (left(diagnosa_pasien.kd_penyakit,1)<>'V' or left(diagnosa_pasien.kd_penyakit,1)<>'W' or left(diagnosa_pasien.kd_penyakit,1)<>'X' or left(diagnosa_pasien.kd_penyakit,1)<>'Y') "+
-                    " group by diagnosa_pasien.kd_penyakit order by diagnosa_pasien.kd_penyakit");
+            htmlContent.append(
+                    "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.Urut</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>No.Daftar Terperinci</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' rowspan='3'>Golongan Sebab Penyakit</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='18'>Jumlah Pasien Hidup dan Mati menurut Golongan Umur & Jenis Kelamin</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Pasien Keluar (Hidup & Mati) Menurut Jenis Kelamin</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Jumlah Pasien Keluar Hidup (23+24)</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Jumlah Pasien Keluar Mati</td>"
+                    + "</tr>"
+                    + "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-6 hr</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>7-28hr</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>28hr-<1th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-14th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>15-24th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>25-44th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>45-64th</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>> 65</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>LK</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>PR</td>"
+                    + "</tr>"
+                    + "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                    + "</tr>"
+                    + "<tr class='isi'>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>1</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>2</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>3</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>4</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>5</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>6</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>7</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>8</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>9</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>10</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>11</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>12</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>13</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>14</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>15</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>16</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>17</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>18</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>19</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>20</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>21</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>22</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>23</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>24</td>"
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>25</td>"
+                    + "</tr>"
+            );
+            ps = koneksi.prepareStatement(
+                    "select diagnosa_pasien.kd_penyakit,SUBSTRING(penyakit.nm_penyakit,1,80) as nm_penyakit from diagnosa_pasien "
+                    + "inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
+                    + "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
+                    + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
+                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                    + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                    + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                    + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                    + "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ?  "
+                    + (nmpoli.getText().trim().isEmpty() && nmdokter.getText().
+                    trim().isEmpty() && nmpenjab.getText().trim().isEmpty() && nmkabupaten.
+                    getText().trim().isEmpty() && nmkecamatan.getText().trim().
+                            isEmpty() && nmkelurahan.getText().trim().isEmpty()
+                    ? "" : "and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? ")
+                    + "and (left(diagnosa_pasien.kd_penyakit,1)<>'V' or left(diagnosa_pasien.kd_penyakit,1)<>'W' or left(diagnosa_pasien.kd_penyakit,1)<>'X' or left(diagnosa_pasien.kd_penyakit,1)<>'Y') "
+                    + " group by diagnosa_pasien.kd_penyakit order by diagnosa_pasien.kd_penyakit");
             try {
-                if(nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                }else{
-                    ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                    ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                    ps.setString(3,"%"+nmpoli.getText().trim()+"%");
-                    ps.setString(4,"%"+nmdokter.getText().trim()+"%");
-                    ps.setString(5,"%"+nmpenjab.getText().trim()+"%");
-                    ps.setString(6,"%"+nmkabupaten.getText().trim()+"%");
-                    ps.setString(7,"%"+nmkecamatan.getText().trim()+"%");
-                    ps.setString(8,"%"+nmkelurahan.getText().trim()+"%");
+                if (nmpoli.getText().trim().isEmpty() && nmdokter.getText().
+                        trim().isEmpty() && nmpenjab.getText().trim().isEmpty() && nmkabupaten.
+                        getText().trim().isEmpty() && nmkecamatan.getText().
+                                trim().isEmpty() && nmkelurahan.getText().trim().
+                                isEmpty()) {
+                    ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                } else {
+                    ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + nmpoli.getText().trim() + "%");
+                    ps.setString(4, "%" + nmdokter.getText().trim() + "%");
+                    ps.setString(5, "%" + nmpenjab.getText().trim() + "%");
+                    ps.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                    ps.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                    ps.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                i=1;
-                while(rs.next()){
-                    hr0s6l=0;hr0s6p=0;hr7s28l=0;hr7s28p=0;hr28s1thl=0;hr28s1thp=0;th1s4l=0;th1s4p=0;th5s14l=0;th5s14p=0;
-                    th15s24l=0;th15s24p=0;th25s44l=0;th25s44p=0;th45s64l=0;th45s64p=0;lbth65l=0;lbth65p=0;mati=0;
-                    ps2=koneksi.prepareStatement(
-                            "select diagnosa_pasien.kd_penyakit,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk from diagnosa_pasien "+
-                            "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "+
-                            "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
-                            "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "+
-                            "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                            "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                            "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                            "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                            "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "+
-                            (nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()?
-                            "":"and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "));
+
+                rs = ps.executeQuery();
+                i = 1;
+                while (rs.next()) {
+                    hr0s6l = 0;
+                    hr0s6p = 0;
+                    hr7s28l = 0;
+                    hr7s28p = 0;
+                    hr28s1thl = 0;
+                    hr28s1thp = 0;
+                    th1s4l = 0;
+                    th1s4p = 0;
+                    th5s14l = 0;
+                    th5s14p = 0;
+                    th15s24l = 0;
+                    th15s24p = 0;
+                    th25s44l = 0;
+                    th25s44p = 0;
+                    th45s64l = 0;
+                    th45s64p = 0;
+                    lbth65l = 0;
+                    lbth65p = 0;
+                    mati = 0;
+                    ps2 = koneksi.prepareStatement(
+                            "select diagnosa_pasien.kd_penyakit,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk from diagnosa_pasien "
+                            + "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
+                            + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
+                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                            + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                            + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                            + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                            + "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "
+                            + (nmpoli.getText().trim().isEmpty() && nmdokter.
+                            getText().trim().isEmpty() && nmpenjab.getText().
+                                    trim().isEmpty() && nmkabupaten.getText().
+                                    trim().isEmpty() && nmkecamatan.getText().
+                                    trim().isEmpty() && nmkelurahan.getText().
+                                    trim().isEmpty()
+                                    ? "" : "and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "));
                     try {
-                        if(nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()){
-                            ps2.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                            ps2.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                            ps2.setString(3,rs.getString("kd_penyakit"));
-                        }else{
-                            ps2.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                            ps2.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                            ps2.setString(3,rs.getString("kd_penyakit"));
-                            ps2.setString(4,"%"+nmpoli.getText().trim()+"%");
-                            ps2.setString(5,"%"+nmdokter.getText().trim()+"%");
-                            ps2.setString(6,"%"+nmpenjab.getText().trim()+"%");
-                            ps2.setString(7,"%"+nmkabupaten.getText().trim()+"%");
-                            ps2.setString(8,"%"+nmkecamatan.getText().trim()+"%");
-                            ps2.setString(9,"%"+nmkelurahan.getText().trim()+"%");
+                        if (nmpoli.getText().trim().isEmpty() && nmdokter.
+                                getText().trim().isEmpty() && nmpenjab.getText().
+                                        trim().isEmpty() && nmkabupaten.
+                                        getText().trim().isEmpty() && nmkecamatan.
+                                        getText().trim().isEmpty() && nmkelurahan.
+                                        getText().trim().isEmpty()) {
+                            ps2.setString(1, Valid.SetTgl(
+                                    Tgl1.getSelectedItem() + ""));
+                            ps2.setString(2, Valid.SetTgl(
+                                    Tgl2.getSelectedItem() + ""));
+                            ps2.setString(3, rs.getString("kd_penyakit"));
+                        } else {
+                            ps2.setString(1, Valid.SetTgl(
+                                    Tgl1.getSelectedItem() + ""));
+                            ps2.setString(2, Valid.SetTgl(
+                                    Tgl2.getSelectedItem() + ""));
+                            ps2.setString(3, rs.getString("kd_penyakit"));
+                            ps2.
+                                    setString(4,
+                                            "%" + nmpoli.getText().trim() + "%");
+                            ps2.setString(5,
+                                    "%" + nmdokter.getText().trim() + "%");
+                            ps2.setString(6,
+                                    "%" + nmpenjab.getText().trim() + "%");
+                            ps2.setString(7,
+                                    "%" + nmkabupaten.getText().trim() + "%");
+                            ps2.setString(8,
+                                    "%" + nmkecamatan.getText().trim() + "%");
+                            ps2.setString(9,
+                                    "%" + nmkelurahan.getText().trim() + "%");
                         }
-                            
-                        rs2=ps2.executeQuery();
-                        while(rs2.next()){
-                            if(rs2.getString("sttsumur").equals("Hr")){
-                                if((rs2.getInt("umurdaftar")>=0)&&(rs2.getInt("umurdaftar")<=6)){
-                                    if(rs2.getString("jk").equals("L")){
+
+                        rs2 = ps2.executeQuery();
+                        while (rs2.next()) {
+                            if (rs2.getString("sttsumur").equals("Hr")) {
+                                if ((rs2.getInt("umurdaftar") >= 0) && (rs2.
+                                        getInt("umurdaftar") <= 6)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         hr0s6l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         hr0s6p++;
                                     }
-                                }else if((rs2.getInt("umurdaftar")>=7)&&(rs2.getInt("umurdaftar")<=28)){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if ((rs2.getInt("umurdaftar") >= 7) && (rs2.
+                                        getInt("umurdaftar") <= 28)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         hr7s28l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         hr7s28p++;
                                     }
-                                }else if(rs2.getInt("umurdaftar")>28){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if (rs2.getInt("umurdaftar") > 28) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         hr28s1thl++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         hr28s1thp++;
                                     }
                                 }
-                            }else if(rs2.getString("sttsumur").equals("Bl")){
-                                if(rs2.getString("jk").equals("L")){
+                            } else if (rs2.getString("sttsumur").equals("Bl")) {
+                                if (rs2.getString("jk").equals("L")) {
                                     hr28s1thl++;
-                                }else if(rs2.getString("jk").equals("P")){
+                                } else if (rs2.getString("jk").equals("P")) {
                                     hr28s1thp++;
                                 }
-                            }else if(rs2.getString("sttsumur").equals("Th")){
-                                if((rs2.getInt("umurdaftar")>=0)&&(rs2.getInt("umurdaftar")<=4)){
-                                    if(rs2.getString("jk").equals("L")){
+                            } else if (rs2.getString("sttsumur").equals("Th")) {
+                                if ((rs2.getInt("umurdaftar") >= 0) && (rs2.
+                                        getInt("umurdaftar") <= 4)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         th1s4l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         th1s4p++;
                                     }
-                                }else if((rs2.getInt("umurdaftar")>=5)&&(rs2.getInt("umurdaftar")<=14)){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if ((rs2.getInt("umurdaftar") >= 5) && (rs2.
+                                        getInt("umurdaftar") <= 14)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         th5s14l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         th5s14p++;
                                     }
-                                }else if((rs2.getInt("umurdaftar")>=15)&&(rs2.getInt("umurdaftar")<=24)){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if ((rs2.getInt("umurdaftar") >= 15) && (rs2.
+                                        getInt("umurdaftar") <= 24)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         th15s24l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         th15s24p++;
                                     }
-                                }else if((rs2.getInt("umurdaftar")>=25)&&(rs2.getInt("umurdaftar")<=44)){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if ((rs2.getInt("umurdaftar") >= 25) && (rs2.
+                                        getInt("umurdaftar") <= 44)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         th25s44l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         th25s44p++;
                                     }
-                                }else if((rs2.getInt("umurdaftar")>=45)&&(rs2.getInt("umurdaftar")<=64)){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if ((rs2.getInt("umurdaftar") >= 45) && (rs2.
+                                        getInt("umurdaftar") <= 64)) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         th45s64l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         th45s64p++;
                                     }
-                                }else if(rs2.getInt("umurdaftar")>=65){
-                                    if(rs2.getString("jk").equals("L")){
+                                } else if (rs2.getInt("umurdaftar") >= 65) {
+                                    if (rs2.getString("jk").equals("L")) {
                                         lbth65l++;
-                                    }else if(rs2.getString("jk").equals("P")){
+                                    } else if (rs2.getString("jk").equals("P")) {
                                         lbth65p++;
                                     }
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("laporan.DlgRL4B.prosesCari() 1 : "+e);
-                    } finally{
-                        if(rs2!=null){
+                        System.out.println(
+                                "laporan.DlgRL4B.prosesCari() 1 : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(ps2!=null){
+                        if (ps2 != null) {
                             ps2.close();
                         }
                     }
-                    
-                    ps3=koneksi.prepareStatement(
-                            "select count(pasien_mati.no_rkm_medis) from diagnosa_pasien "+
-                            "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "+
-                            "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join pasien_mati on pasien_mati.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
-                            "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "+
-                            "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                            "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "+
-                            "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "+
-                            "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
-                            "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "+
-                            (nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()?
-                            "":"and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? ")+
-                            "group by diagnosa_pasien.kd_penyakit");
+
+                    ps3 = koneksi.prepareStatement(
+                            "select count(pasien_mati.no_rkm_medis) from diagnosa_pasien "
+                            + "inner join reg_periksa on reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + "inner join pasien_mati on pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
+                            + "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
+                            + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
+                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                            + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                            + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                            + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                            + "where diagnosa_pasien.status='Ralan' and status_penyakit='Baru' and reg_periksa.tgl_registrasi between ? and ? and diagnosa_pasien.kd_penyakit=? "
+                            + (nmpoli.getText().trim().isEmpty() && nmdokter.
+                            getText().trim().isEmpty() && nmpenjab.getText().
+                                    trim().isEmpty() && nmkabupaten.getText().
+                                    trim().isEmpty() && nmkecamatan.getText().
+                                    trim().isEmpty() && nmkelurahan.getText().
+                                    trim().isEmpty()
+                                    ? "" : "and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? ")
+                            + "group by diagnosa_pasien.kd_penyakit");
                     try {
-                        if(nmpoli.getText().trim().isEmpty()&&nmdokter.getText().trim().isEmpty()&&nmpenjab.getText().trim().isEmpty()&&nmkabupaten.getText().trim().isEmpty()&&nmkecamatan.getText().trim().isEmpty()&&nmkelurahan.getText().trim().isEmpty()){
-                            ps3.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                            ps3.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                            ps3.setString(3,rs.getString("kd_penyakit"));
-                        }else{
-                            ps3.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                            ps3.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                            ps3.setString(3,rs.getString("kd_penyakit"));
-                            ps3.setString(4,"%"+nmpoli.getText().trim()+"%");
-                            ps3.setString(5,"%"+nmdokter.getText().trim()+"%");
-                            ps3.setString(6,"%"+nmpenjab.getText().trim()+"%");
-                            ps3.setString(7,"%"+nmkabupaten.getText().trim()+"%");
-                            ps3.setString(8,"%"+nmkecamatan.getText().trim()+"%");
-                            ps3.setString(9,"%"+nmkelurahan.getText().trim()+"%");
+                        if (nmpoli.getText().trim().isEmpty() && nmdokter.
+                                getText().trim().isEmpty() && nmpenjab.getText().
+                                        trim().isEmpty() && nmkabupaten.
+                                        getText().trim().isEmpty() && nmkecamatan.
+                                        getText().trim().isEmpty() && nmkelurahan.
+                                        getText().trim().isEmpty()) {
+                            ps3.setString(1, Valid.SetTgl(
+                                    Tgl1.getSelectedItem() + ""));
+                            ps3.setString(2, Valid.SetTgl(
+                                    Tgl2.getSelectedItem() + ""));
+                            ps3.setString(3, rs.getString("kd_penyakit"));
+                        } else {
+                            ps3.setString(1, Valid.SetTgl(
+                                    Tgl1.getSelectedItem() + ""));
+                            ps3.setString(2, Valid.SetTgl(
+                                    Tgl2.getSelectedItem() + ""));
+                            ps3.setString(3, rs.getString("kd_penyakit"));
+                            ps3.
+                                    setString(4,
+                                            "%" + nmpoli.getText().trim() + "%");
+                            ps3.setString(5,
+                                    "%" + nmdokter.getText().trim() + "%");
+                            ps3.setString(6,
+                                    "%" + nmpenjab.getText().trim() + "%");
+                            ps3.setString(7,
+                                    "%" + nmkabupaten.getText().trim() + "%");
+                            ps3.setString(8,
+                                    "%" + nmkecamatan.getText().trim() + "%");
+                            ps3.setString(9,
+                                    "%" + nmkelurahan.getText().trim() + "%");
                         }
-                            
-                        rs2=ps3.executeQuery();
-                        while(rs2.next()){
-                            mati=rs2.getInt(1);
+
+                        rs2 = ps3.executeQuery();
+                        while (rs2.next()) {
+                            mati = rs2.getInt(1);
                         }
                     } catch (Exception e) {
-                        System.out.println("laporan.DlgRL4A.prosesCari() 2 : "+e);
-                    } finally{
-                        if(rs2!=null){
+                        System.out.println(
+                                "laporan.DlgRL4A.prosesCari() 2 : " + e);
+                    } finally {
+                        if (rs2 != null) {
                             rs2.close();
                         }
-                        if(ps2!=null){
+                        if (ps2 != null) {
                             ps2.close();
                         }
                     }
-                    htmlContent.append("<tr class='isi'><td valign='middle' align='center'>").append(i).append("</td><td valign='middle' align='center'>").append(rs.getString("kd_penyakit")).append("</td><td valign='middle' align='left'>").append(rs.getString("nm_penyakit")).append("</td><td valign='middle' align='center'>").append(hr0s6l).append("</td><td valign='middle' align='center'>").append(hr0s6p).append("</td><td valign='middle' align='center'>").append(hr7s28l).append("</td><td valign='middle' align='center'>").append(hr7s28p).append("</td><td valign='middle' align='center'>").append(hr28s1thl).append("</td><td valign='middle' align='center'>").append(hr28s1thp).append("</td><td valign='middle' align='center'>").append(th1s4l).append("</td><td valign='middle' align='center'>").append(th1s4p).append("</td><td valign='middle' align='center'>").append(th5s14l).append("</td><td valign='middle' align='center'>").append(th5s14p).append("</td><td valign='middle' align='center'>").append(th15s24l).append("</td><td valign='middle' align='center'>").append(th15s24p).append("</td><td valign='middle' align='center'>").append(th25s44l).append("</td><td valign='middle' align='center'>").append(th25s44p).append("</td><td valign='middle' align='center'>").append(th45s64l).append("</td><td valign='middle' align='center'>").append(th45s64p).append("</td><td valign='middle' align='center'>").append(lbth65l).append("</td><td valign='middle' align='center'>").append(lbth65p).append("</td><td valign='middle' align='center'>").append(hr0s6l).append(hr7s28l).append(hr28s1thl).append(th1s4l).append(th5s14l).append(th15s24l).append(th25s44l).append(th45s64l).append(lbth65l).append("</td><td valign='middle' align='center'>").append(hr0s6p).append(hr7s28p).append(hr28s1thp).append(th1s4p).append(th5s14p).append(th15s24p).append(th25s44p).append(th45s64p).append(lbth65p).append("</td><td valign='middle' align='center'>").append(hr0s6l+hr7s28l+hr28s1thl+th1s4l+th5s14l+th15s24l+th25s44l+th45s64l+lbth65l+hr0s6p+hr7s28p+hr28s1thp+th1s4p+th5s14p+th15s24p+th25s44p+th45s64p+lbth65p-mati).append("</td><td valign='middle' align='center'>").append(mati).append("</td></tr>");
+                    htmlContent.append(
+                            "<tr class='isi'><td valign='middle' align='center'>").
+                            append(i).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    rs.getString("kd_penyakit")).append(
+                            "</td><td valign='middle' align='left'>").append(rs.
+                                    getString("nm_penyakit")).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    hr0s6l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(hr0s6p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    hr7s28l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(hr7s28p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    hr28s1thl).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(hr28s1thp).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    th1s4l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(th1s4p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    th5s14l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(th5s14p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    th15s24l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(th15s24p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    th25s44l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(th25s44p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    th45s64l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(th45s64p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    lbth65l).append(
+                                    "</td><td valign='middle' align='center'>").
+                            append(lbth65p).append(
+                            "</td><td valign='middle' align='center'>").append(
+                                    hr0s6l).append(hr7s28l).append(hr28s1thl).
+                            append(th1s4l).append(th5s14l).append(th15s24l).
+                            append(th25s44l).append(th45s64l).append(lbth65l).
+                            append("</td><td valign='middle' align='center'>").
+                            append(hr0s6p).append(hr7s28p).append(hr28s1thp).
+                            append(th1s4p).append(th5s14p).append(th15s24p).
+                            append(th25s44p).append(th45s64p).append(lbth65p).
+                            append("</td><td valign='middle' align='center'>").
+                            append(hr0s6l + hr7s28l + hr28s1thl + th1s4l + th5s14l + th15s24l + th25s44l + th45s64l + lbth65l + hr0s6p + hr7s28p + hr28s1thp + th1s4p + th5s14p + th15s24p + th25s44p + th45s64p + lbth65p - mati).
+                            append("</td><td valign='middle' align='center'>").
+                            append(mati).append("</td></tr>");
                     i++;
                 }
             } catch (Exception e) {
-                System.out.println("laporan.DlgRL4A.prosesCari() 3 : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("laporan.DlgRL4A.prosesCari() 3 : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
             LoadHTML.setText(
-                    "<html>"+
-                      "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                       htmlContent.toString()+
-                      "</table>"+
-                    "</html>");
+                    "<html>"
+                    + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                    + htmlContent.toString()
+                    + "</table>"
+                    + "</html>");
         } catch (Exception e) {
-            System.out.println("laporan.DlgRL4A.prosesCari() 5 : "+e);
-        } 
+            System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
+        }
         this.setCursor(Cursor.getDefaultCursor());
-        
+
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnPrint.setEnabled(akses.getrl4bsebab());
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,126));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 126));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgRL4B.class.getName());
 }

@@ -2,154 +2,198 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package kepegawaian;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.event.*;
-import javax.swing.table.*;
-
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;    
-    private DlgCariRuangAuditKepatuhan ruang=new DlgCariRuangAuditKepatuhan(null,false);
-    private double audit1=0,audit2=0,audit3=0,
-                audit4=0,audit5=0,ttlaudit1=0,audit6=0,
-                audit7=0,audit8=0,ttlaudit2=0,
-                ttlaudit3=0,ttlaudit4=0,ttlaudit5=0,
-                ttlaudit6=0,ttlaudit7=0,ttlaudit8=0,ttlpenilaian=0;
-    
-    /** Creates new form DlgRujuk
+    private int i = 0;
+    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(
+            null, false);
+    private double audit1 = 0, audit2 = 0, audit3 = 0,
+            audit4 = 0, audit5 = 0, ttlaudit1 = 0, audit6 = 0,
+            audit7 = 0, audit8 = 0, ttlaudit2 = 0,
+            ttlaudit3 = 0, ttlaudit4 = 0, ttlaudit5 = 0,
+            ttlaudit6 = 0, ttlaudit7 = 0, ttlaudit8 = 0, ttlpenilaian = 0;
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgAuditPengelolaanLinenKotor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "Tanggal Audit","ID Ruang","Ruang/Unit","1.Petugas Ruangan Segera Mengambil Linen Kotor Untuk Dimasukkan Ke Dalam Bak Setelah Pasien Pulang",
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "Tanggal Audit", "ID Ruang", "Ruang/Unit",
+            "1.Petugas Ruangan Segera Mengambil Linen Kotor Untuk Dimasukkan Ke Dalam Bak Setelah Pasien Pulang",
             "2.Petugas Laundry Mengambil Linen Kotor Untuk Dimasukkan Ke Dalam Bak Linen Kotor Dengan Cara Yang Benar",
             "3.Petugas Ruangan menempatkan Linen Kotor Sesuai Dengan Wadah Yang Ditentukan",
             "4.Petugas Memasukkan Linen Kotor Ke Dalam Bak Linen Kotor Dengan Benar",
-            "5.Fasilitas Bak Penampung Linen Kotor Tersedia Dengan Baik Di Ruangan","6.Plastik Untuk Linen Kotor Tersedia Dengan Baik Di Ruangan",
-            "7.Petugas Linen Laundry Mengambil Linen Kotor Sesuai Jadwal","8.Sudah Tersedia Trolli Khusus Untuk Linen Infeksius Dan Non Infeksius","Ttl.Nilai(%)"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+            "5.Fasilitas Bak Penampung Linen Kotor Tersedia Dengan Baik Di Ruangan",
+            "6.Plastik Untuk Linen Kotor Tersedia Dengan Baik Di Ruangan",
+            "7.Petugas Linen Laundry Mengambil Linen Kotor Sesuai Jadwal",
+            "8.Sudah Tersedia Trolli Khusus Untuk Linen Infeksius Dan Non Infeksius",
+            "Ttl.Nilai(%)"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(120);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(160);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(100);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(100);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(100);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(100);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(100);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(100);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(100);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(68);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        KdRuang.setDocument(new batasInput((byte)20).getKata(KdRuang));
+        KdRuang.setDocument(new batasInput((byte) 20).getKata(KdRuang));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         ruang.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(ruang.getTable().getSelectedRow()!= -1){                   
-                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(),1).toString());
-                }  
+                if (ruang.getTable().getSelectedRow() != -1) {
+                    KdRuang.setText(ruang.getTable().getValueAt(
+                            ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(
+                            ruang.getTable().getSelectedRow(), 1).toString());
+                }
                 KdRuang.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        }); 
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
         ChkInput.setSelected(false);
         isForm();
-        
+
         jam();
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -727,83 +771,112 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(KdRuang.getText().trim().isEmpty()||NmRuang.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"Ruang/Unit");
-        }else{
-            if(Sequel.menyimpantf("audit_pengelolaan_linen_kotor","?,?,?,?,?,?,?,?,?,?","Data",10,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),KdRuang.getText(),Audit1.getSelectedItem().toString(),
-                Audit2.getSelectedItem().toString(),Audit3.getSelectedItem().toString(),Audit4.getSelectedItem().toString(),
-                Audit5.getSelectedItem().toString(),Audit6.getSelectedItem().toString(),Audit7.getSelectedItem().toString(),
-                Audit8.getSelectedItem().toString()
-            })==true){
+        if (KdRuang.getText().trim().isEmpty() || NmRuang.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(btnPetugas, "Ruang/Unit");
+        } else {
+            if (Sequel.menyimpantf("audit_pengelolaan_linen_kotor",
+                    "?,?,?,?,?,?,?,?,?,?", "Data", 10, new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), KdRuang.getText(), Audit1.
+                        getSelectedItem().toString(),
+                        Audit2.getSelectedItem().toString(), Audit3.
+                        getSelectedItem().toString(), Audit4.getSelectedItem().
+                                toString(),
+                        Audit5.getSelectedItem().toString(), Audit6.
+                        getSelectedItem().toString(), Audit7.getSelectedItem().
+                                toString(),
+                        Audit8.getSelectedItem().toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }  
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Audit8,BtnBatal);
+        } else {
+            Valid.pindah(evt, Audit8, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
-            if(Sequel.queryu2tf("delete from audit_pengelolaan_linen_kotor where id_ruang=? and tanggal=?",2,new String[]{
-                tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
+        if (tbObat.getSelectedRow() != -1) {
+            if (Sequel.queryu2tf(
+                    "delete from audit_pengelolaan_linen_kotor where id_ruang=? and tanggal=?",
+                    2, new String[]{
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString(),
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    }) == true) {
                 tampil();
                 emptTeks();
-            }else{
-                JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
             }
-        }            
-            
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(KdRuang.getText().trim().isEmpty()||NmRuang.getText().trim().isEmpty()){
-            Valid.textKosong(btnPetugas,"Ruang/Unit");
-        }else{    
-            Sequel.mengedit("audit_pengelolaan_linen_kotor","id_ruang=? and tanggal=?","tanggal=?,id_ruang=?,audit1=?,audit2=?,audit3=?,"+
-                "audit4=?,audit5=?,audit6=?,audit7=?,audit8=?",12,new String[]{
-                Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),KdRuang.getText(),Audit1.getSelectedItem().toString(),
-                Audit2.getSelectedItem().toString(),Audit3.getSelectedItem().toString(),Audit4.getSelectedItem().toString(),
-                Audit5.getSelectedItem().toString(),Audit6.getSelectedItem().toString(),Audit7.getSelectedItem().toString(),
-                Audit8.getSelectedItem().toString(),tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (KdRuang.getText().trim().isEmpty() || NmRuang.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(btnPetugas, "Ruang/Unit");
+        } else {
+            Sequel.mengedit("audit_pengelolaan_linen_kotor",
+                    "id_ruang=? and tanggal=?",
+                    "tanggal=?,id_ruang=?,audit1=?,audit2=?,audit3=?,"
+                    + "audit4=?,audit5=?,audit6=?,audit7=?,audit8=?", 12,
+                    new String[]{
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
+                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
+                        getSelectedItem(), KdRuang.getText(), Audit1.
+                        getSelectedItem().toString(),
+                        Audit2.getSelectedItem().toString(), Audit3.
+                        getSelectedItem().toString(), Audit4.getSelectedItem().
+                                toString(),
+                        Audit5.getSelectedItem().toString(), Audit6.
+                        getSelectedItem().toString(), Audit7.getSelectedItem().
+                                toString(),
+                        Audit8.getSelectedItem().toString(), tbObat.getValueAt(
+                        tbObat.getSelectedRow(), 1).toString(), tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 0).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -814,64 +887,76 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>(); 
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());   
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            
-            if(TCari.getText().trim().isEmpty()){
-                Valid.MyReportqry("rptAuditPengelolaanLinenKotor.jasper","report","::[ Data Audit Pengelolaan Linen Kotor ]::",
-                    "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"+
-                    "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"+
-                    "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"+
-                    "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"+
-                    "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "+
-                    "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_pengelolaan_linen_kotor.tanggal between "+
-                    "'"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' order by audit_pengelolaan_linen_kotor.tanggal",param);
-            }else{
-                Valid.MyReportqry("rptAuditPengelolaanLinenKotor.jasper","report","::[ Data Audit Pengelolaan Linen Kotor ]::",
-                    "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"+
-                    "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"+
-                    "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"+
-                    "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"+
-                    "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "+
-                    "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_pengelolaan_linen_kotor.tanggal between "+
-                    "'"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59' "+
-                    "and (audit_pengelolaan_linen_kotor.id_ruang like '%"+TCari.getText().trim()+"%' or ruang_audit_kepatuhan.nama_ruang like '%"+TCari.getText().trim()+"%') order by audit_pengelolaan_linen_kotor.tanggal",param);
-            }  
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+
+            if (TCari.getText().trim().isEmpty()) {
+                Valid.MyReportqry("rptAuditPengelolaanLinenKotor.jasper",
+                        "report", "::[ Data Audit Pengelolaan Linen Kotor ]::",
+                        "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"
+                        + "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"
+                        + "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"
+                        + "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"
+                        + "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "
+                        + "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_pengelolaan_linen_kotor.tanggal between "
+                        + "'" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' and '" + Valid.
+                        SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' order by audit_pengelolaan_linen_kotor.tanggal",
+                        param);
+            } else {
+                Valid.MyReportqry("rptAuditPengelolaanLinenKotor.jasper",
+                        "report", "::[ Data Audit Pengelolaan Linen Kotor ]::",
+                        "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"
+                        + "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"
+                        + "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"
+                        + "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"
+                        + "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "
+                        + "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang where audit_pengelolaan_linen_kotor.tanggal between "
+                        + "'" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00' and '" + Valid.
+                        SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59' "
+                        + "and (audit_pengelolaan_linen_kotor.id_ruang like '%" + TCari.
+                                getText().trim() + "%' or ruang_audit_kepatuhan.nama_ruang like '%" + TCari.
+                                getText().trim() + "%') order by audit_pengelolaan_linen_kotor.tanggal",
+                        param);
+            }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -881,9 +966,9 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -894,20 +979,20 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, btnPetugas);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,TCari,Jam);
+        Valid.pindah(evt, TCari, Jam);
 }//GEN-LAST:event_TanggalKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -916,8 +1001,9 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -931,30 +1017,31 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkInputActionPerformed
 
     private void JamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JamKeyPressed
-        Valid.pindah(evt,Tanggal,Menit);
+        Valid.pindah(evt, Tanggal, Menit);
     }//GEN-LAST:event_JamKeyPressed
 
     private void MenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MenitKeyPressed
-        Valid.pindah(evt,Jam,Detik);
+        Valid.pindah(evt, Jam, Detik);
     }//GEN-LAST:event_MenitKeyPressed
 
     private void DetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DetikKeyPressed
-        Valid.pindah(evt,Menit,btnPetugas);
+        Valid.pindah(evt, Menit, btnPetugas);
     }//GEN-LAST:event_DetikKeyPressed
 
     private void KdRuangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdRuangKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             Detik.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Audit1.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             btnPetugasActionPerformed(null);
         }
     }//GEN-LAST:event_KdRuangKeyPressed
 
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         ruang.emptTeks();
-        ruang.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        ruang.setSize(internalFrame1.getWidth() - 20,
+                internalFrame1.getHeight() - 20);
         ruang.setLocationRelativeTo(internalFrame1);
         ruang.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
@@ -964,7 +1051,7 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPetugasKeyPressed
 
     private void Audit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit1KeyPressed
-        Valid.pindah(evt,btnPetugas,Audit2);
+        Valid.pindah(evt, btnPetugas, Audit2);
     }//GEN-LAST:event_Audit1KeyPressed
 
     private void Audit2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit2KeyPressed
@@ -972,40 +1059,42 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
     }//GEN-LAST:event_Audit2KeyPressed
 
     private void Audit3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit3KeyPressed
-        Valid.pindah(evt, Audit2,Audit4);
+        Valid.pindah(evt, Audit2, Audit4);
     }//GEN-LAST:event_Audit3KeyPressed
 
     private void Audit4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit4KeyPressed
-        Valid.pindah(evt, Audit3,Audit5);
+        Valid.pindah(evt, Audit3, Audit5);
     }//GEN-LAST:event_Audit4KeyPressed
 
     private void Audit5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit5KeyPressed
-        Valid.pindah(evt, Audit4,Audit6);
+        Valid.pindah(evt, Audit4, Audit6);
     }//GEN-LAST:event_Audit5KeyPressed
 
     private void Audit7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit7KeyPressed
-        Valid.pindah(evt, Audit6,Audit8);
+        Valid.pindah(evt, Audit6, Audit8);
     }//GEN-LAST:event_Audit7KeyPressed
 
     private void Audit6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit6KeyPressed
-        Valid.pindah(evt, Audit5,Audit7);
+        Valid.pindah(evt, Audit5, Audit7);
     }//GEN-LAST:event_Audit6KeyPressed
 
     private void Audit8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Audit8KeyPressed
-        Valid.pindah(evt, Audit7,BtnSimpan);
+        Valid.pindah(evt, Audit7, BtnSimpan);
     }//GEN-LAST:event_Audit8KeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditPengelolaanLinenKotor dialog = new DlgAuditPengelolaanLinenKotor(new javax.swing.JFrame(), true);
+            DlgAuditPengelolaanLinenKotor dialog = new DlgAuditPengelolaanLinenKotor(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1066,113 +1155,148 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
     private widget.ScrollPane scrollInput;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-    
+
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                    "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"+
-                    "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"+
-                    "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"+
-                    "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"+
-                    "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "+
-                    "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang "+
-                    "where audit_pengelolaan_linen_kotor.tanggal between ? and ? order by audit_pengelolaan_linen_kotor.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"+
-                    "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"+
-                    "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"+
-                    "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"+
-                    "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "+
-                    "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang "+
-                    "where audit_pengelolaan_linen_kotor.tanggal between ? and ? "+
-                    "and (audit_pengelolaan_linen_kotor.id_ruang like ? or ruang_audit_kepatuhan.nama_ruang like ?) order by audit_pengelolaan_linen_kotor.tanggal");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"
+                        + "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"
+                        + "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"
+                        + "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"
+                        + "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "
+                        + "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang "
+                        + "where audit_pengelolaan_linen_kotor.tanggal between ? and ? order by audit_pengelolaan_linen_kotor.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select audit_pengelolaan_linen_kotor.id_ruang,ruang_audit_kepatuhan.nama_ruang,audit_pengelolaan_linen_kotor.tanggal,audit_pengelolaan_linen_kotor.audit1,"
+                        + "audit_pengelolaan_linen_kotor.audit2,audit_pengelolaan_linen_kotor.audit3,"
+                        + "audit_pengelolaan_linen_kotor.audit4,audit_pengelolaan_linen_kotor.audit5,"
+                        + "audit_pengelolaan_linen_kotor.audit6,audit_pengelolaan_linen_kotor.audit7,"
+                        + "audit_pengelolaan_linen_kotor.audit8 from audit_pengelolaan_linen_kotor "
+                        + "inner join ruang_audit_kepatuhan on audit_pengelolaan_linen_kotor.id_ruang=ruang_audit_kepatuhan.id_ruang "
+                        + "where audit_pengelolaan_linen_kotor.tanggal between ? and ? "
+                        + "and (audit_pengelolaan_linen_kotor.id_ruang like ? or ruang_audit_kepatuhan.nama_ruang like ?) order by audit_pengelolaan_linen_kotor.tanggal");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                ttlaudit1=0;ttlaudit2=0;ttlaudit3=0;ttlaudit4=0;ttlaudit5=0;
-                ttlaudit6=0;ttlaudit7=0;ttlaudit8=0;ttlpenilaian=0;
-                i=1;
-                while(rs.next()){
-                    audit1=Double.parseDouble(rs.getString("audit1").replaceAll("Ya","1").replaceAll("Tidak","0"));
+
+                rs = ps.executeQuery();
+                ttlaudit1 = 0;
+                ttlaudit2 = 0;
+                ttlaudit3 = 0;
+                ttlaudit4 = 0;
+                ttlaudit5 = 0;
+                ttlaudit6 = 0;
+                ttlaudit7 = 0;
+                ttlaudit8 = 0;
+                ttlpenilaian = 0;
+                i = 1;
+                while (rs.next()) {
+                    audit1 = Double.parseDouble(rs.getString("audit1").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit1 += audit1;
-                    audit2=Double.parseDouble(rs.getString("audit2").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit2 = Double.parseDouble(rs.getString("audit2").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit2 += audit2;
-                    audit3=Double.parseDouble(rs.getString("audit3").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit3 = Double.parseDouble(rs.getString("audit3").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit3 += audit3;
-                    audit4=Double.parseDouble(rs.getString("audit4").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit4 = Double.parseDouble(rs.getString("audit4").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit4 += audit4;
-                    audit5=Double.parseDouble(rs.getString("audit5").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit5 = Double.parseDouble(rs.getString("audit5").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit5 += audit5;
-                    audit6=Double.parseDouble(rs.getString("audit6").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit6 = Double.parseDouble(rs.getString("audit6").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit6 += audit6;
-                    audit7=Double.parseDouble(rs.getString("audit7").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit7 = Double.parseDouble(rs.getString("audit7").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit7 += audit7;
-                    audit8=Double.parseDouble(rs.getString("audit8").replaceAll("Ya","1").replaceAll("Tidak","0"));
+                    audit8 = Double.parseDouble(rs.getString("audit8").
+                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit8 += audit8;
-                    ttlpenilaian += (((audit1+audit2+audit3+
-                            audit4+audit5+audit6+audit7+
-                            audit8)/8)*100);
+                    ttlpenilaian += (((audit1 + audit2 + audit3
+                            + audit4 + audit5 + audit6 + audit7
+                            + audit8) / 8) * 100);
                     tabMode.addRow(new String[]{
-                        rs.getString("tanggal"),rs.getString("id_ruang"),rs.getString("nama_ruang"),rs.getString("audit1"),rs.getString("audit2"),
-                        rs.getString("audit3"),rs.getString("audit4"),rs.getString("audit5"),
-                        rs.getString("audit6"),rs.getString("audit7"),rs.getString("audit8"),
-                        Math.round(((audit1+audit2+audit3+audit4+
-                        audit5+audit6+audit7+audit8)/8)*100)+" %"
+                        rs.getString("tanggal"), rs.getString("id_ruang"), rs.
+                        getString("nama_ruang"), rs.getString("audit1"), rs.
+                        getString("audit2"),
+                        rs.getString("audit3"), rs.getString("audit4"), rs.
+                        getString("audit5"),
+                        rs.getString("audit6"), rs.getString("audit7"), rs.
+                        getString("audit8"),
+                        Math.round(((audit1 + audit2 + audit3 + audit4
+                        + audit5 + audit6 + audit7 + audit8) / 8) * 100) + " %"
                     });
                     i++;
                 }
                 i -= 1;
-                if(i>0){
+                if (i > 0) {
                     tabMode.addRow(new String[]{
-                        "","Ya",":",""+ttlaudit1,""+ttlaudit2,""+ttlaudit3,
-                        ""+ttlaudit4,""+ttlaudit5,""+ttlaudit6,""+ttlaudit7,
-                        ""+ttlaudit8,""+(ttlaudit1+ttlaudit2+
-                        ttlaudit3+ttlaudit4+ttlaudit5+ttlaudit6+
-                        ttlaudit7+ttlaudit8)
+                        "", "Ya", ":", "" + ttlaudit1, "" + ttlaudit2,
+                        "" + ttlaudit3,
+                        "" + ttlaudit4, "" + ttlaudit5, "" + ttlaudit6,
+                        "" + ttlaudit7,
+                        "" + ttlaudit8, "" + (ttlaudit1 + ttlaudit2
+                        + ttlaudit3 + ttlaudit4 + ttlaudit5 + ttlaudit6
+                        + ttlaudit7 + ttlaudit8)
                     });
                     tabMode.addRow(new String[]{
-                        "","Tidak",":",""+(i-ttlaudit1),""+(i-ttlaudit2),""+(i-ttlaudit3),
-                        ""+(i-ttlaudit4),""+(i-ttlaudit5),""+(i-ttlaudit6),""+(i-ttlaudit7),
-                        ""+(i-ttlaudit8),""+((i-ttlaudit1)+(i-ttlaudit2)+
-                        (i-ttlaudit3)+(i-ttlaudit4)+(i-ttlaudit5)+(i-ttlaudit6)+
-                        (i-ttlaudit7)+(i-ttlaudit8))
+                        "", "Tidak", ":", "" + (i - ttlaudit1),
+                        "" + (i - ttlaudit2), "" + (i - ttlaudit3),
+                        "" + (i - ttlaudit4), "" + (i - ttlaudit5),
+                        "" + (i - ttlaudit6), "" + (i - ttlaudit7),
+                        "" + (i - ttlaudit8),
+                        "" + ((i - ttlaudit1) + (i - ttlaudit2)
+                        + (i - ttlaudit3) + (i - ttlaudit4) + (i - ttlaudit5) + (i - ttlaudit6)
+                        + (i - ttlaudit7) + (i - ttlaudit8))
                     });
                     tabMode.addRow(new String[]{
-                        "","Rata-rata",":",Math.round((ttlaudit1/i)*100)+" %",Math.round((ttlaudit2/i)*100)+" %",Math.round((ttlaudit3/i)*100)+" %",
-                        Math.round((ttlaudit4/i)*100)+" %",Math.round((ttlaudit5/i)*100)+" %",Math.round((ttlaudit6/i)*100)+" %",
-                        Math.round((ttlaudit7/i)*100)+" %",Math.round((ttlaudit8/i)*100)+" %",Math.round(ttlpenilaian/i)+" %"
+                        "", "Rata-rata", ":",
+                        Math.round((ttlaudit1 / i) * 100) + " %", Math.round(
+                        (ttlaudit2 / i) * 100) + " %", Math.round(
+                        (ttlaudit3 / i) * 100) + " %",
+                        Math.round((ttlaudit4 / i) * 100) + " %", Math.round(
+                        (ttlaudit5 / i) * 100) + " %", Math.round(
+                        (ttlaudit6 / i) * 100) + " %",
+                        Math.round((ttlaudit7 / i) * 100) + " %", Math.round(
+                        (ttlaudit8 / i) * 100) + " %", Math.round(
+                        ttlpenilaian / i) + " %"
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+i);
+        LCount.setText("" + i);
     }
-    
+
     public void emptTeks() {
         KdRuang.setText("");
         NmRuang.setText("");
@@ -1186,75 +1310,90 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
         Audit7.setSelectedIndex(0);
         Audit8.setSelectedIndex(0);
         Audit1.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            if(!tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().isEmpty()){
-                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-                Audit1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-                Audit2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-                Audit3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-                Audit4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
-                Audit5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-                Audit6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-                Audit7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-                Audit8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-                Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
+                    isEmpty()) {
+                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                        toString());
+                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                        toString());
+                Audit1.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 3).toString());
+                Audit2.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 4).toString());
+                Audit3.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 5).toString());
+                Audit4.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 6).toString());
+                Audit5.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 7).toString());
+                Audit6.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 8).toString());
+                Audit7.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 9).toString());
+                Audit8.setSelectedItem(tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 10).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
+                        0).toString());
             }
         }
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            if(this.getHeight()>440){
-                PanelInput.setPreferredSize(new Dimension(WIDTH,305));
-            }else{
-                PanelInput.setPreferredSize(new Dimension(WIDTH,this.getHeight()-122));
+            if (this.getHeight() > 440) {
+                PanelInput.setPreferredSize(new Dimension(WIDTH, 305));
+            } else {
+                PanelInput.setPreferredSize(new Dimension(WIDTH, this.
+                        getHeight() - 122));
             }
-            FormInput.setVisible(true);      
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getaudit_pengelolaan_linen_kotor());
         BtnHapus.setEnabled(akses.getaudit_pengelolaan_linen_kotor());
         BtnEdit.setEnabled(akses.getaudit_pengelolaan_linen_kotor());
-        BtnPrint.setEnabled(akses.getaudit_pengelolaan_linen_kotor());         
+        BtnPrint.setEnabled(akses.getaudit_pengelolaan_linen_kotor());
     }
 
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
                 String nol_detik = "";
-                
+
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkKejadian.isSelected()==true){
+                if (ChkKejadian.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkKejadian.isSelected()==false){
-                    nilai_jam =Jam.getSelectedIndex();
-                    nilai_menit =Menit.getSelectedIndex();
-                    nilai_detik =Detik.getSelectedIndex();
+                } else if (ChkKejadian.isSelected() == false) {
+                    nilai_jam = Jam.getSelectedIndex();
+                    nilai_menit = Menit.getSelectedIndex();
+                    nilai_detik = Detik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -1282,8 +1421,12 @@ public class DlgAuditPengelolaanLinenKotor extends javax.swing.JDialog {
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            DlgAuditPengelolaanLinenKotor.class.getName());
 }

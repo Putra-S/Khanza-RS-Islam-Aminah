@@ -1,25 +1,25 @@
 package widget;
 
-import java.awt.*;
-import usu.widget.glass.*;
+import java.awt.Color;
+import java.util.logging.Logger;
+import usu.widget.glass.ButtonImageReflection;
 
 /**
- *
  * @author usu
  */
 public class ButtonBig extends ButtonImageReflection {
 
-    /*
-     * Serial version UID
-     */
-    private static final long serialVersionUID = 1L;
+  /*
+   * Serial version UID
+   */
+  private static final long serialVersionUID = 1L;
 
-    /**
-     *
-     */
-    public ButtonBig() {
-        super();
-        setForeground(new Color(50,50,50));
-        setFont(new java.awt.Font("Tahoma", 0, 11));
-    }
+  /** */
+  public ButtonBig() {
+    super();
+    setForeground(new Color(50, 50, 50));
+    setFont(new java.awt.Font("Tahoma", 0, 11));
+  }
+
+  private static final Logger LOG = Logger.getLogger(ButtonBig.class.getName());
 }

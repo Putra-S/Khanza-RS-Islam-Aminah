@@ -1,139 +1,182 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgSpesialis.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private MasterMasalahKeperawatanKebidanan masalah=new MasterMasalahKeperawatanKebidanan(null,false);
+    private MasterMasalahKeperawatanKebidanan masalah = new MasterMasalahKeperawatanKebidanan(
+            null, false);
 
-    /** Creates new form DlgSpesialis
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
-    public MasterRencanaKeperawatanKebidanan(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     */
+    public MasterRencanaKeperawatanKebidanan(java.awt.Frame parent,
+            boolean modal) {
         super(parent, modal);
         initComponents();
 
+        Object[] row = {"Kode Masalah", "Masalah Kebidanan", "Kode",
+            "Rencana Kebidanan"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
 
-        Object[] row={"Kode Masalah","Masalah Kebidanan","Kode","Rencana Kebidanan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
 
         tbSpesialis.setModel(tabMode);
         //tampil();
         //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
-        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 4; i++) {
             TableColumn column = tbSpesialis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(50);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(270);
             }
         }
 
         tbSpesialis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        kdrencana.setDocument(new batasInput((byte)3).getKata(kdrencana));
+        kdrencana.setDocument(new batasInput((byte) 3).getKata(kdrencana));
         namarencana.setDocument(new batasInput(150).getKata(namarencana));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         masalah.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(masalah.getTable().getSelectedRow()!= -1){
-                    kdmasalah.setText(masalah.getTable().getValueAt(masalah.getTable().getSelectedRow(),0).toString());
-                    nmmasalah.setText(masalah.getTable().getValueAt(masalah.getTable().getSelectedRow(),1).toString());
-                }  
+                if (masalah.getTable().getSelectedRow() != -1) {
+                    kdmasalah.setText(masalah.getTable().getValueAt(masalah.
+                            getTable().getSelectedRow(), 0).toString());
+                    nmmasalah.setText(masalah.getTable().getValueAt(masalah.
+                            getTable().getSelectedRow(), 1).toString());
+                }
                 btnPemeriksaan.requestFocus();
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         masalah.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     masalah.dispose();
-                }                
+                }
             }
+
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
         });
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -462,30 +505,32 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void kdrencanaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdrencanaKeyPressed
-        Valid.pindah(evt,TCari,namarencana);
+        Valid.pindah(evt, TCari, namarencana);
 }//GEN-LAST:event_kdrencanaKeyPressed
 
     private void namarencanaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_namarencanaKeyPressed
-        Valid.pindah(evt,kdrencana,BtnSimpan);
+        Valid.pindah(evt, kdrencana, BtnSimpan);
 }//GEN-LAST:event_namarencanaKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(kdrencana.getText().trim().isEmpty()){
-            Valid.textKosong(kdrencana,"Kode");
-        }else if(namarencana.getText().trim().isEmpty()){
-            Valid.textKosong(namarencana,"Pengkajian");
-        }else{
-            Sequel.menyimpan("master_rencana_keperawatan_kebidanan","'"+kdmasalah.getText()+"','"+kdrencana.getText()+"','"+namarencana.getText()+"'","Kode");
+        if (kdrencana.getText().trim().isEmpty()) {
+            Valid.textKosong(kdrencana, "Kode");
+        } else if (namarencana.getText().trim().isEmpty()) {
+            Valid.textKosong(namarencana, "Pengkajian");
+        } else {
+            Sequel.menyimpan("master_rencana_keperawatan_kebidanan",
+                    "'" + kdmasalah.getText() + "','" + kdrencana.getText() + "','" + namarencana.
+                    getText() + "'", "Kode");
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,namarencana,BtnBatal);
+        } else {
+            Valid.pindah(evt, namarencana, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -494,49 +539,59 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(Valid.hapusTabletf(tabMode,kdrencana,"master_rencana_keperawatan_kebidanan","kode_rencana")==true){
-            if(tbSpesialis.getSelectedRow()!= -1){
+        if (Valid.hapusTabletf(tabMode, kdrencana,
+                "master_rencana_keperawatan_kebidanan", "kode_rencana") == true) {
+            if (tbSpesialis.getSelectedRow() != -1) {
                 tabMode.removeRow(tbSpesialis.getSelectedRow());
-                LCount.setText(""+tabMode.getRowCount());
+                LCount.setText("" + tabMode.getRowCount());
                 emptTeks();
             }
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(kdrencana.getText().trim().isEmpty()){
-            Valid.textKosong(kdrencana,"Kode");
-        }else if(namarencana.getText().trim().isEmpty()){
-            Valid.textKosong(namarencana,"Pengkajian");
-        }else{
-            if(tbSpesialis.getSelectedRow()> -1){
-                Sequel.mengedit("master_rencana_keperawatan_kebidanan","kode_rencana=?","kode_rencana=?,rencana_kebidanan=?,kode_masalah=?",4,new String[]{
-                    kdrencana.getText(),namarencana.getText(),kdmasalah.getText(),tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),2).toString()
-                });
-                if(tabMode.getRowCount()!=0){tampil();}
+        if (kdrencana.getText().trim().isEmpty()) {
+            Valid.textKosong(kdrencana, "Kode");
+        } else if (namarencana.getText().trim().isEmpty()) {
+            Valid.textKosong(namarencana, "Pengkajian");
+        } else {
+            if (tbSpesialis.getSelectedRow() > -1) {
+                Sequel.mengedit("master_rencana_keperawatan_kebidanan",
+                        "kode_rencana=?",
+                        "kode_rencana=?,rencana_kebidanan=?,kode_masalah=?", 4,
+                        new String[]{
+                            kdrencana.getText(), namarencana.getText(),
+                            kdmasalah.getText(), tbSpesialis.getValueAt(
+                            tbSpesialis.getSelectedRow(), 2).toString()
+                        });
+                if (tabMode.getRowCount() != 0) {
+                    tampil();
+                }
                 emptTeks();
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -546,19 +601,21 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbSpesialis.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -568,9 +625,9 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -580,20 +637,20 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariKeyReleased
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
-       emptTeks();
-       tampil();
+        emptTeks();
+        tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, kdrencana);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbSpesialisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSpesialisMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -602,11 +659,11 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 }//GEN-LAST:event_tbSpesialisMouseClicked
 
     private void tbSpesialisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
-            }           
+            }
         }
 }//GEN-LAST:event_tbSpesialisKeyPressed
 
@@ -620,46 +677,50 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void tbSpesialisKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }          
+            }
         }
     }//GEN-LAST:event_tbSpesialisKeyReleased
 
     private void kdmasalahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdmasalahKeyPressed
-        Valid.pindah(evt, TCari,kdrencana);
+        Valid.pindah(evt, TCari, kdrencana);
     }//GEN-LAST:event_kdmasalahKeyPressed
 
     private void nmmasalahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nmmasalahKeyPressed
-        Valid.pindah(evt,kdrencana,BtnSimpan);
+        Valid.pindah(evt, kdrencana, BtnSimpan);
     }//GEN-LAST:event_nmmasalahKeyPressed
 
     private void btnPemeriksaanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPemeriksaanActionPerformed
         masalah.isCek();
-        masalah.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        masalah.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         masalah.setLocationRelativeTo(internalFrame1);
         masalah.setVisible(true);
     }//GEN-LAST:event_btnPemeriksaanActionPerformed
 
     private void btnPemeriksaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPemeriksaanKeyPressed
-        Valid.pindah(evt,kdmasalah,BtnSimpan);
+        Valid.pindah(evt, kdmasalah, BtnSimpan);
     }//GEN-LAST:event_btnPemeriksaanKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            MasterRencanaKeperawatanKebidanan dialog = new MasterRencanaKeperawatanKebidanan(new javax.swing.JFrame(), true);
+            MasterRencanaKeperawatanKebidanan dialog = new MasterRencanaKeperawatanKebidanan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -696,35 +757,37 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select master_masalah_keperawatan_kebidanan.kode_masalah,master_masalah_keperawatan_kebidanan.nama_masalah,"+
-                    "master_rencana_keperawatan_kebidanan.kode_rencana,master_rencana_keperawatan_kebidanan.rencana_kebidanan from master_rencana_keperawatan_kebidanan "+
-                    "inner join master_masalah_keperawatan_kebidanan on master_masalah_keperawatan_kebidanan.kode_masalah=master_rencana_keperawatan_kebidanan.kode_masalah "+
-                    "where master_rencana_keperawatan_kebidanan.kode_rencana like ? or master_rencana_keperawatan_kebidanan.rencana_kebidanan like ? or "+
-                    "master_masalah_keperawatan_kebidanan.nama_masalah like ? order by master_rencana_keperawatan_kebidanan.kode_rencana");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select master_masalah_keperawatan_kebidanan.kode_masalah,master_masalah_keperawatan_kebidanan.nama_masalah,"
+                    + "master_rencana_keperawatan_kebidanan.kode_rencana,master_rencana_keperawatan_kebidanan.rencana_kebidanan from master_rencana_keperawatan_kebidanan "
+                    + "inner join master_masalah_keperawatan_kebidanan on master_masalah_keperawatan_kebidanan.kode_masalah=master_rencana_keperawatan_kebidanan.kode_masalah "
+                    + "where master_rencana_keperawatan_kebidanan.kode_rencana like ? or master_rencana_keperawatan_kebidanan.rencana_kebidanan like ? or "
+                    + "master_masalah_keperawatan_kebidanan.nama_masalah like ? order by master_rencana_keperawatan_kebidanan.kode_rencana");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new String[]{rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)});
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(
+                            new String[]{rs.getString(1), rs.getString(2),
+                                rs.getString(3), rs.getString(4)});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     private void emptTeks() {
@@ -732,30 +795,37 @@ public class MasterRencanaKeperawatanKebidanan extends javax.swing.JDialog {
         namarencana.setText("");
         TCari.setText("");
         kdrencana.requestFocus();
-        Valid.autoNomer(tabMode,"",3,kdrencana);
+        Valid.autoNomer(tabMode, "", 3, kdrencana);
         kdrencana.requestFocus();
     }
 
     private void getData() {
-        if(tbSpesialis.getSelectedRow()!= -1){
-            kdmasalah.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString());
-            nmmasalah.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),1).toString());
-            kdrencana.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),2).toString());
-            namarencana.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),3).toString());
+        if (tbSpesialis.getSelectedRow() != -1) {
+            kdmasalah.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 0).toString());
+            nmmasalah.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 1).toString());
+            kdrencana.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 2).toString());
+            namarencana.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 3).toString());
         }
     }
-    
+
     /**
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbSpesialis;
     }
-    
-    public void isCek(){
-       BtnSimpan.setEnabled(akses.getmaster_rencana_keperawatan());
-       BtnHapus.setEnabled(akses.getmaster_rencana_keperawatan());
-       BtnEdit.setEnabled(akses.getmaster_rencana_keperawatan());
+
+    public void isCek() {
+        BtnSimpan.setEnabled(akses.getmaster_rencana_keperawatan());
+        BtnHapus.setEnabled(akses.getmaster_rencana_keperawatan());
+        BtnEdit.setEnabled(akses.getmaster_rencana_keperawatan());
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            MasterRencanaKeperawatanKebidanan.class.getName());
 }

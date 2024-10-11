@@ -3,103 +3,124 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgPerawatan.java
  *
  * Created on May 23, 2010, 6:36:30 PM
  */
-
 package simrskhanza;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
-import javax.swing.*;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgUbahNilaiLab extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
+    private Connection koneksi = koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
-    private String tanggal="",jam="";
-    
+    private int i = 0;
+    private String tanggal = "", jam = "";
 
-    /** Creates new form DlgPerawatan
+    /**
+     * Creates new form DlgPerawatan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgUbahNilaiLab(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] row={"Pemeriksaan","Hasil","Satuan","Nilai Rujukan","Keterangan","ID Detail","Kode Periksa"};
-        tabMode=new DefaultTableModel(null,row){
-             Class[] types = new Class[] {
-                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class
-             };
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){
-                 boolean a = false;
-                 if ((colIndex==1)||(colIndex==3)||(colIndex==4)) {
-                     a=true;
-                 }
-                 return a;
-             }
-             @Override
-             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-             }              
+        Object[] row = {"Pemeriksaan", "Hasil", "Satuan", "Nilai Rujukan",
+            "Keterangan", "ID Detail", "Kode Periksa"};
+        tabMode = new DefaultTableModel(null, row) {
+            Class[] types = new Class[]{
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                boolean a = false;
+                if ((colIndex == 1) || (colIndex == 3) || (colIndex == 4)) {
+                    a = true;
+                }
+                return a;
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
         };
-        
+
         tbPemeriksaan.setModel(tabMode);
         //tampilPr();
 
-        tbPemeriksaan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbPemeriksaan.
+                setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPemeriksaan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
             TableColumn column = tbPemeriksaan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(230);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(90);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(70);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(130);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(130);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
         }
-        
+
         tbPemeriksaan.setDefaultRenderer(Object.class, new WarnaTable());
-        
+
         jam();
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -275,30 +296,48 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
         ChkJln.setSelected(false);
-        for(i=0;i<tbPemeriksaan.getRowCount();i++){ 
-            Sequel.mengedit("detail_periksa_lab","no_rawat=? and kd_jenis_prw=? and tgl_periksa=? and jam=? and id_template=?","nilai=?,nilai_rujukan=?,keterangan=?,tgl_periksa=?,jam=?",10,new String[]{
-                tbPemeriksaan.getValueAt(i,1).toString(),tbPemeriksaan.getValueAt(i,3).toString(),tbPemeriksaan.getValueAt(i,4).toString(),Valid.SetTgl(Tanggal.getSelectedItem()+""),
-                CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem(),TNoRw.getText(),tbPemeriksaan.getValueAt(i,6).toString(),tanggal,jam,tbPemeriksaan.getValueAt(i,5).toString()
-            });
+        for (i = 0; i < tbPemeriksaan.getRowCount(); i++) {
+            Sequel.mengedit("detail_periksa_lab",
+                    "no_rawat=? and kd_jenis_prw=? and tgl_periksa=? and jam=? and id_template=?",
+                    "nilai=?,nilai_rujukan=?,keterangan=?,tgl_periksa=?,jam=?",
+                    10, new String[]{
+                        tbPemeriksaan.getValueAt(i, 1).toString(),
+                        tbPemeriksaan.getValueAt(i, 3).toString(),
+                        tbPemeriksaan.getValueAt(i, 4).toString(), Valid.SetTgl(
+                        Tanggal.getSelectedItem() + ""),
+                        CmbJam.getSelectedItem() + ":" + CmbMenit.
+                        getSelectedItem() + ":" + CmbDetik.getSelectedItem(),
+                        TNoRw.getText(), tbPemeriksaan.getValueAt(i, 6).
+                        toString(), tanggal, jam,
+                        tbPemeriksaan.getValueAt(i, 5).toString()
+                    });
         }
-        
-        Sequel.mengedit("periksa_lab","no_rawat=? and tgl_periksa=? and jam=?","tgl_periksa=?,jam=?",5,new String[]{
-            Valid.SetTgl(Tanggal.getSelectedItem()+""),CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem(),TNoRw.getText(),tanggal,jam
-        });
-        
-        Sequel.mengedit("permintaan_lab","no_rawat=? and tgl_hasil=? and jam_hasil=?","tgl_hasil=?,jam_hasil=?",5,new String[]{
-            Valid.SetTgl(Tanggal.getSelectedItem()+""),CmbJam.getSelectedItem()+":"+CmbMenit.getSelectedItem()+":"+CmbDetik.getSelectedItem(),TNoRw.getText(),tanggal,jam
-        });
-        JOptionPane.showMessageDialog(null,"Proses update hasil pemeriksaan sudah selesai !!!");
+
+        Sequel.mengedit("periksa_lab", "no_rawat=? and tgl_periksa=? and jam=?",
+                "tgl_periksa=?,jam=?", 5, new String[]{
+                    Valid.SetTgl(Tanggal.getSelectedItem() + ""), CmbJam.
+                    getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                    getSelectedItem(), TNoRw.getText(), tanggal, jam
+                });
+
+        Sequel.mengedit("permintaan_lab",
+                "no_rawat=? and tgl_hasil=? and jam_hasil=?",
+                "tgl_hasil=?,jam_hasil=?", 5, new String[]{
+                    Valid.SetTgl(Tanggal.getSelectedItem() + ""), CmbJam.
+                    getSelectedItem() + ":" + CmbMenit.getSelectedItem() + ":" + CmbDetik.
+                    getSelectedItem(), TNoRw.getText(), tanggal, jam
+                });
+        JOptionPane.showMessageDialog(null,
+                "Proses update hasil pemeriksaan sudah selesai !!!");
         dispose();
         ChkJln.setSelected(true);
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-               //Valid.pindah(evt,Pemeriksaan,BtnHapus);
+        } else {
+            //Valid.pindah(evt,Pemeriksaan,BtnHapus);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -307,9 +346,11 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnSimpan,TNoRw);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, TNoRw);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkJlnActionPerformed
@@ -317,16 +358,18 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
     }//GEN-LAST:event_ChkJlnActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgUbahNilaiLab dialog = new DlgUbahNilaiLab(new javax.swing.JFrame(), true);
+            DlgUbahNilaiLab dialog = new DlgUbahNilaiLab(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -360,56 +403,64 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
      * @param tanggal
      * @param jam
      */
-    public void setNoRm(String norwt,String tanggal,String jam) {        
+    public void setNoRm(String norwt, String tanggal, String jam) {
         try {
             TNoRw.setText(norwt);
-            Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",TNoRM,TNoRw.getText());
-            Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",TPasien,TNoRM.getText());
-            this.tanggal=tanggal;
-            this.jam=jam;
-            ps=koneksi.prepareStatement(
-                    "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai,template_laboratorium.satuan,detail_periksa_lab.nilai_rujukan,"+
-                    "detail_periksa_lab.keterangan,detail_periksa_lab.kd_jenis_prw "+
-                    "from detail_periksa_lab inner join template_laboratorium on detail_periksa_lab.id_template=template_laboratorium.id_template "+
-                    "where detail_periksa_lab.no_rawat=? and detail_periksa_lab.tgl_periksa=? and detail_periksa_lab.jam=? order by template_laboratorium.urut");
+            Sequel.cariIsi(
+                    "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
+                    TNoRM, TNoRw.getText());
+            Sequel.cariIsi(
+                    "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
+                    TPasien, TNoRM.getText());
+            this.tanggal = tanggal;
+            this.jam = jam;
+            ps = koneksi.prepareStatement(
+                    "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai,template_laboratorium.satuan,detail_periksa_lab.nilai_rujukan,"
+                    + "detail_periksa_lab.keterangan,detail_periksa_lab.kd_jenis_prw "
+                    + "from detail_periksa_lab inner join template_laboratorium on detail_periksa_lab.id_template=template_laboratorium.id_template "
+                    + "where detail_periksa_lab.no_rawat=? and detail_periksa_lab.tgl_periksa=? and detail_periksa_lab.jam=? order by template_laboratorium.urut");
             try {
-                ps.setString(1,TNoRw.getText());
-                ps.setString(2,tanggal);
-                ps.setString(3,jam);
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                ps.setString(2, tanggal);
+                ps.setString(3, jam);
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                         "   "+rs.getString("Pemeriksaan"),rs.getString("nilai"),rs.getString("satuan"),
-                        rs.getString("nilai_rujukan"),rs.getString("keterangan"),rs.getString("id_template"),rs.getString("kd_jenis_prw")
+                        "   " + rs.getString("Pemeriksaan"), rs.getString(
+                        "nilai"), rs.getString("satuan"),
+                        rs.getString("nilai_rujukan"), rs.
+                        getString("keterangan"), rs.getString("id_template"),
+                        rs.getString("kd_jenis_prw")
                     });
-                } 
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                }
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e);
-        }         
+        }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getperiksa_lab());
     }
-    
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
+
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
             private int nilai_menit;
             private int nilai_detik;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
@@ -420,14 +471,14 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
-                if(ChkJln.isSelected()==true){
+                if (ChkJln.isSelected() == true) {
                     nilai_jam = now.getHours();
                     nilai_menit = now.getMinutes();
                     nilai_detik = now.getSeconds();
-                }else if(ChkJln.isSelected()==false){
-                    nilai_jam =CmbJam.getSelectedIndex();
-                    nilai_menit =CmbMenit.getSelectedIndex();
-                    nilai_detik =CmbDetik.getSelectedIndex();
+                } else if (ChkJln.isSelected() == false) {
+                    nilai_jam = CmbJam.getSelectedIndex();
+                    nilai_menit = CmbMenit.getSelectedIndex();
+                    nilai_detik = CmbDetik.getSelectedIndex();
                 }
 
                 // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
@@ -455,9 +506,13 @@ public class DlgUbahNilaiLab extends javax.swing.JDialog {
                 CmbMenit.setSelectedItem(menit);
                 CmbDetik.setSelectedItem(detik);
             }
+
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgUbahNilaiLab.class.
+            getName());
 
 }

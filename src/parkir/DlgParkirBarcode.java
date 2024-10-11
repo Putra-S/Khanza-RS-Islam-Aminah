@@ -1,104 +1,123 @@
-    /*
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgSpesialis.java
  *
  * Created on May 23, 2010, 1:25:13 AM
  */
-
 package parkir;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class DlgParkirBarcode extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
 
-    /** Creates new form DlgSpesialis
+    /**
+     * Creates new form DlgSpesialis
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgParkirBarcode(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,10);
-        setSize(459,539);
+        this.setLocation(10, 10);
+        setSize(459, 539);
 
-        Object[] row={"Kode Barcode","Nomer Kartu"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Barcode", "Nomer Kartu"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
 
         tbSpesialis.setModel(tabMode);
         //tampil();
         //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
-        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
             TableColumn column = tbSpesialis.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(250);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(250);
             }
         }
 
         tbSpesialis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        barcode.setDocument(new batasInput((byte)15).getKata(barcode));
-        nomer_kartu.setDocument(new batasInput((byte)5).getKata(nomer_kartu));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        barcode.setDocument(new batasInput((byte) 15).getKata(barcode));
+        nomer_kartu.setDocument(new batasInput((byte) 5).getKata(nomer_kartu));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
+        }
         try {
-            ps=koneksi.prepareStatement("select * from parkir_barcode where kode_barcode like ? or nomer_kartu like ? order by kode_barcode");
+            ps = koneksi.prepareStatement(
+                    "select * from parkir_barcode where kode_barcode like ? or nomer_kartu like ? order by kode_barcode");
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -396,28 +415,29 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void barcodeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barcodeKeyPressed
-        Valid.pindah(evt,TCari,nomer_kartu,TCari);
+        Valid.pindah(evt, TCari, nomer_kartu, TCari);
 }//GEN-LAST:event_barcodeKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(barcode.getText().trim().isEmpty()){
-            Valid.textKosong(barcode,"Kode Barcode");
-        }else if(nomer_kartu.getText().trim().isEmpty()){
-            Valid.textKosong(nomer_kartu,"Nomer Kartu");
-        }else{
-            Sequel.menyimpan("parkir_barcode","?,?","Kode Barcode",2,new String[]{
-                barcode.getText(),nomer_kartu.getText()
-            });
+        if (barcode.getText().trim().isEmpty()) {
+            Valid.textKosong(barcode, "Kode Barcode");
+        } else if (nomer_kartu.getText().trim().isEmpty()) {
+            Valid.textKosong(nomer_kartu, "Nomer Kartu");
+        } else {
+            Sequel.menyimpan("parkir_barcode", "?,?", "Kode Barcode", 2,
+                    new String[]{
+                        barcode.getText(), nomer_kartu.getText()
+                    });
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,nomer_kartu,BtnBatal);
+        } else {
+            Valid.pindah(evt, nomer_kartu, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -426,43 +446,49 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,barcode,"parkir_barcode","kode_barcode");
+        Valid.hapusTable(tabMode, barcode, "parkir_barcode", "kode_barcode");
         tampil();
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(barcode.getText().trim().isEmpty()){
-            Valid.textKosong(barcode,"Kode Barcode");
-        }else if(nomer_kartu.getText().trim().isEmpty()){
-            Valid.textKosong(nomer_kartu,"Nomer Kartu");
-        }else{
-            Sequel.mengedit("parkir_barcode","kode_barcode=?","kode_barcode=?,nomer_kartu=?",3,new String[]{
-                barcode.getText(),nomer_kartu.getText(),tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString()
-            });
-            if(tabMode.getRowCount()!=0){tampil();}
+        if (barcode.getText().trim().isEmpty()) {
+            Valid.textKosong(barcode, "Kode Barcode");
+        } else if (nomer_kartu.getText().trim().isEmpty()) {
+            Valid.textKosong(nomer_kartu, "Nomer Kartu");
+        } else {
+            Sequel.mengedit("parkir_barcode", "kode_barcode=?",
+                    "kode_barcode=?,nomer_kartu=?", 3, new String[]{
+                        barcode.getText(), nomer_kartu.getText(), tbSpesialis.
+                        getValueAt(tbSpesialis.getSelectedRow(), 0).toString()
+                    });
+            if (tabMode.getRowCount() != 0) {
+                tampil();
+            }
             emptTeks();
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -472,19 +498,21 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbSpesialis.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -494,9 +522,9 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -511,15 +539,15 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, barcode);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbSpesialisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSpesialisMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -528,16 +556,17 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 }//GEN-LAST:event_tbSpesialisMouseClicked
 
     private void tbSpesialisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbSpesialisKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
-            }            
+            }
         }
 }//GEN-LAST:event_tbSpesialisKeyPressed
 
@@ -550,7 +579,7 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowActivated
 
     private void nomer_kartuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nomer_kartuKeyPressed
-        Valid.pindah(evt,barcode,BtnSimpan);
+        Valid.pindah(evt, barcode, BtnSimpan);
     }//GEN-LAST:event_nomer_kartuKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
@@ -652,24 +681,26 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgParkirBarcode dialog = new DlgParkirBarcode(new javax.swing.JFrame(), true);
+            DlgParkirBarcode dialog = new DlgParkirBarcode(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -703,19 +734,19 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps.setString(1,"%"+TCari.getText().trim()+"%");
-            ps.setString(2,"%"+TCari.getText().trim()+"%");
-            rs=ps.executeQuery();
-            while(rs.next()){                
+        try {
+            ps.setString(1, "%" + TCari.getText().trim() + "%");
+            ps.setString(2, "%" + TCari.getText().trim() + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 tabMode.addRow(new Object[]{
-                    rs.getString(1),rs.getString(2)
+                    rs.getString(1), rs.getString(2)
                 });
-             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -725,14 +756,16 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
         barcode.setText("");
         TCari.setText("");
         barcode.requestFocus();
-        Valid.autoNomer(tabMode,"K",4,nomer_kartu);
+        Valid.autoNomer(tabMode, "K", 4, nomer_kartu);
         barcode.requestFocus();
     }
 
     private void getData() {
-        if(tbSpesialis.getSelectedRow()!= -1){
-            barcode.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),0).toString());
-            nomer_kartu.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),1).toString());
+        if (tbSpesialis.getSelectedRow() != -1) {
+            barcode.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
+                    0).toString());
+            nomer_kartu.setText(tbSpesialis.getValueAt(tbSpesialis.
+                    getSelectedRow(), 1).toString());
         }
     }
 
@@ -740,16 +773,19 @@ public class DlgParkirBarcode extends javax.swing.JDialog {
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbSpesialis;
     }
-    
+
     /**
      *
      */
-    public void isCek(){
-       BtnSimpan.setEnabled(akses.getparkir_barcode());
-       BtnHapus.setEnabled(akses.getparkir_barcode());
-       BtnEdit.setEnabled(akses.getparkir_barcode());
+    public void isCek() {
+        BtnSimpan.setEnabled(akses.getparkir_barcode());
+        BtnHapus.setEnabled(akses.getparkir_barcode());
+        BtnEdit.setEnabled(akses.getparkir_barcode());
     }
+
+    private static final Logger LOG = Logger.getLogger(DlgParkirBarcode.class.
+            getName());
 }

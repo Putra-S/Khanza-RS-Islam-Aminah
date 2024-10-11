@@ -3,112 +3,137 @@
  * and open the template in the editor.
  */
 
-/*
- * DlgJnsPerawatanRalan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+ /*
+* DlgJnsPerawatanRalan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
-
 package bridging;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private Connection koneksi=koneksiDB.condb();
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
-    private ResultSet rs;    
-    private int i=0;
-    /** Creates new form DlgJnsPerawatanRalan
+
+    private ResultSet rs;
+
+    private int i = 0;
+
+    /**
+     * Creates new form DlgJnsPerawatanRalan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public BPJSTaskIDJamDiambil(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        this.setLocation(8,1);
-        setSize(628,674);
 
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.Rawat","Tanggal","Jam","Nama Pasien","Poliklinik","Dokter","Cara Bayar","Task Id 3","Task Id 4","Task Id 5","Task Id 6","Task Id 7"
-            }){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        this.setLocation(8, 1);
+        setSize(628, 674);
+
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "Tanggal", "Jam", "Nama Pasien",
+                    "Poliklinik",
+                    "Dokter", "Cara Bayar", "Task Id 3", "Task Id 4",
+                    "Task Id 5", "Task Id 6", "Task Id 7"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         for (i = 0; i < 12; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(110);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(80);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(80);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(160);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(160);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(120);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(120);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(120);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(120);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(120);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(120);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
-        }  
+        }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -262,9 +287,11 @@ public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnCari,TCari);}
+        } else {
+            Valid.pindah(evt, BtnCari, TCari);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
@@ -272,10 +299,10 @@ public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
@@ -286,9 +313,9 @@ public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
@@ -298,26 +325,28 @@ public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
     }//GEN-LAST:event_TCariKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSTaskIDJamDiambil dialog = new BPJSTaskIDJamDiambil(new javax.swing.JFrame(), true);
+            BPJSTaskIDJamDiambil dialog = new BPJSTaskIDJamDiambil(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -343,53 +372,61 @@ public class BPJSTaskIDJamDiambil extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "SELECT reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pasien.nm_pasien,poliklinik.nm_poli," +
-                   "dokter.nm_dokter,penjab.png_jawab,(SELECT mutasi_berkas.dikirim FROM mutasi_berkas WHERE mutasi_berkas.no_rawat=reg_periksa.no_rawat) as Taskid3," +
-                   "(SELECT mutasi_berkas.diterima FROM mutasi_berkas WHERE mutasi_berkas.no_rawat=reg_periksa.no_rawat) as Taskid4," +
-                   "(SELECT CONCAT(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) FROM pemeriksaan_ralan WHERE pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat  ORDER BY pemeriksaan_ralan.jam_rawat ASC LIMIT 1) as Taskid5," +
-                   "(SELECT CONCAT(resep_obat.tgl_perawatan,' ',resep_obat.jam) FROM resep_obat WHERE resep_obat.no_rawat=reg_periksa.no_rawat ORDER BY resep_obat.jam ASC LIMIT 1) as Taskid6," +
-                   "(SELECT CONCAT(resep_obat.tgl_penyerahan,' ',resep_obat.jam_penyerahan) FROM resep_obat WHERE resep_obat.no_rawat=reg_periksa.no_rawat ORDER BY resep_obat.jam_penyerahan ASC LIMIT 1) as Taskid7 " +
-                   "FROM reg_periksa INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis INNER JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli " +
-                   "INNER JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj INNER JOIN maping_poli_bpjs ON reg_periksa.kd_poli=maping_poli_bpjs.kd_poli_rs " +
-                   "WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? AND reg_periksa.stts <>'Batal' AND reg_periksa.kd_poli <>'IGDK' "+(TCari.getText().isEmpty()?"":
-                   "and (reg_periksa.no_rawat LIKE ? OR pasien.nm_pasien LIKE ? OR "+
-                   "poliklinik.nm_poli LIKE ? OR dokter.nm_dokter LIKE ?) ")+ 
-                   "ORDER BY dokter.nm_dokter ASC");
+        try {
+            ps = koneksi.prepareStatement(
+                    "SELECT reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pasien.nm_pasien,poliklinik.nm_poli,"
+                    + "dokter.nm_dokter,penjab.png_jawab,(SELECT mutasi_berkas.dikirim FROM mutasi_berkas WHERE mutasi_berkas.no_rawat=reg_periksa.no_rawat) as Taskid3,"
+                    + "(SELECT mutasi_berkas.diterima FROM mutasi_berkas WHERE mutasi_berkas.no_rawat=reg_periksa.no_rawat) as Taskid4,"
+                    + "(SELECT CONCAT(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) FROM pemeriksaan_ralan WHERE pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat  ORDER BY pemeriksaan_ralan.jam_rawat ASC LIMIT 1) as Taskid5,"
+                    + "(SELECT CONCAT(resep_obat.tgl_perawatan,' ',resep_obat.jam) FROM resep_obat WHERE resep_obat.no_rawat=reg_periksa.no_rawat ORDER BY resep_obat.jam ASC LIMIT 1) as Taskid6,"
+                    + "(SELECT CONCAT(resep_obat.tgl_penyerahan,' ',resep_obat.jam_penyerahan) FROM resep_obat WHERE resep_obat.no_rawat=reg_periksa.no_rawat ORDER BY resep_obat.jam_penyerahan ASC LIMIT 1) as Taskid7 "
+                    + "FROM reg_periksa INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis INNER JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli "
+                    + "INNER JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj INNER JOIN maping_poli_bpjs ON reg_periksa.kd_poli=maping_poli_bpjs.kd_poli_rs "
+                    + "WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? AND reg_periksa.stts <>'Batal' AND reg_periksa.kd_poli <>'IGDK' "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat LIKE ? OR pasien.nm_pasien LIKE ? OR "
+                    + "poliklinik.nm_poli LIKE ? OR dokter.nm_dokter LIKE ?) ")
+                    + "ORDER BY dokter.nm_dokter ASC");
             try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().trim().isEmpty()){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().trim().isEmpty()) {
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
                 }
-                    
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_rawat"),rs.getString("tgl_registrasi"),rs.getString("jam_reg"),
-                        rs.getString("nm_pasien"),rs.getString("nm_poli"),rs.getString("nm_dokter"),
-                        rs.getString("png_jawab"),rs.getString("Taskid3"),rs.getString("Taskid4"),
-                        rs.getString("Taskid5"),rs.getString("Taskid6"),rs.getString("Taskid7")
-                    });          
+
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{rs.getString("no_rawat"), rs.
+                        getString("tgl_registrasi"),
+                        rs.getString("jam_reg"), rs.getString("nm_pasien"), rs.
+                        getString("nm_poli"),
+                        rs.getString("nm_dokter"), rs.getString("png_jawab"),
+                        rs.getString("Taskid3"),
+                        rs.getString("Taskid4"), rs.getString("Taskid5"), rs.
+                        getString("Taskid6"),
+                        rs.getString("Taskid7")});
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        
-        LCount.setText(""+tabMode.getRowCount());
+
+        LCount.setText("" + tabMode.getRowCount());
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            BPJSTaskIDJamDiambil.class.getName());
+
 }

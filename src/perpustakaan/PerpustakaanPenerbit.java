@@ -3,116 +3,138 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * DlgJnsPerawatan.java
  *
  * Created on May 22, 2010, 11:58:21 PM
  */
-
 package perpustakaan;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class PerpustakaanPenerbit extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private Connection koneksi=koneksiDB.condb();
+    private Connection koneksi = koneksiDB.condb();
 
-    /** Creates new form DlgJnsPerawatan
+    /**
+     * Creates new form DlgJnsPerawatan
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public PerpustakaanPenerbit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(628,674);
+        this.setLocation(8, 1);
+        setSize(628, 674);
 
-        Object[] row={"Kode Penerbit","Nama Penerbit","Alamat Penerbit","No.Telp","E-Mail","Website Penerbit"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"Kode Penerbit", "Nama Penerbit", "Alamat Penerbit",
+            "No.Telp", "E-Mail", "Website Penerbit"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbJnsPerawatan.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(
+                new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 6; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(200);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(300);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(130);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(150);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
             }
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TKd.setDocument(new batasInput((byte)10).getKata(TKd));
-        TNm.setDocument(new batasInput((byte)40).getKata(TNm));
-        TAlamat.setDocument(new batasInput((byte)70).getKata(TAlamat));
-        TTlp.setDocument(new batasInput((byte)13).getKata(TTlp));
-        TEmail.setDocument(new batasInput((byte)25).getKata(TEmail));
-        TWeb.setDocument(new batasInput((byte)30).getKata(TWeb));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
+        TKd.setDocument(new batasInput((byte) 10).getKata(TKd));
+        TNm.setDocument(new batasInput((byte) 40).getKata(TNm));
+        TAlamat.setDocument(new batasInput((byte) 70).getKata(TAlamat));
+        TTlp.setDocument(new batasInput((byte) 13).getKata(TTlp));
+        TEmail.setDocument(new batasInput((byte) 25).getKata(TEmail));
+        TWeb.setDocument(new batasInput((byte) 30).getKata(TWeb));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCari.requestFocus();
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-    
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+
         ChkInput.setSelected(false);
-        isForm(); 
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        isForm();
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
     }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -510,85 +532,92 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TKd.getText().trim().isEmpty()){
-            Valid.textKosong(TKd,"Kode Penerbit");
-        }else if(TNm.getText().trim().isEmpty()){
-            Valid.textKosong(TNm,"Nama Penerbit");
-        }else {
-                //menyimpan-------------------------------------------------
-                Sequel.menyimpan("perpustakaan_penerbit","'"+TKd.getText()+"','"+
-                        TNm.getText()+"','"+
-                        TAlamat.getText()+"','"+
-                        TTlp.getText()+"','"+
-                        TEmail.getText()+"','"+
-                        TWeb.getText()+"' ","Kode Penerbit");
-                //----------------------------------------------------------
-                TKd.requestFocus();
+        if (TKd.getText().trim().isEmpty()) {
+            Valid.textKosong(TKd, "Kode Penerbit");
+        } else if (TNm.getText().trim().isEmpty()) {
+            Valid.textKosong(TNm, "Nama Penerbit");
+        } else {
+            //menyimpan-------------------------------------------------
+            Sequel.menyimpan("perpustakaan_penerbit",
+                    "'" + TKd.getText() + "','"
+                    + TNm.getText() + "','"
+                    + TAlamat.getText() + "','"
+                    + TTlp.getText() + "','"
+                    + TEmail.getText() + "','"
+                    + TWeb.getText() + "' ", "Kode Penerbit");
+            //----------------------------------------------------------
+            TKd.requestFocus();
             tampil();
             emptTeks();
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,TWeb,BtnBatal);
+        } else {
+            Valid.pindah(evt, TWeb, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
+        isForm();
         emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,TKd,"perpustakaan_penerbit","kode_penerbit");
+        Valid.hapusTable(tabMode, TKd, "perpustakaan_penerbit", "kode_penerbit");
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TKd.getText().trim().isEmpty()){
-            Valid.textKosong(TKd,"Kode Penerbit");
-        }else if(TNm.getText().trim().isEmpty()){
-            Valid.textKosong(TNm,"Nama Penerbit");
-        }else {
-            if(tbJnsPerawatan.getSelectedRow()> -1){
+        if (TKd.getText().trim().isEmpty()) {
+            Valid.textKosong(TKd, "Kode Penerbit");
+        } else if (TNm.getText().trim().isEmpty()) {
+            Valid.textKosong(TNm, "Nama Penerbit");
+        } else {
+            if (tbJnsPerawatan.getSelectedRow() > -1) {
                 //menyimpan-------------------------------------------------
-                Sequel.mengedit("perpustakaan_penerbit","kode_penerbit='"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0) +"'","kode_penerbit='"+TKd.getText()+"',nama_penerbit='"+TNm.getText()+"',"+
-                        "alamat_penerbit='"+TAlamat.getText()+"',"+
-                        "no_telp='"+TTlp.getText()+"',"+
-                        "email='"+TEmail.getText()+"',"+
-                        "website_penerbit='"+TWeb.getText()+"'");
+                Sequel.mengedit("perpustakaan_penerbit",
+                        "kode_penerbit='" + tbJnsPerawatan.getValueAt(
+                                tbJnsPerawatan.getSelectedRow(), 0) + "'",
+                        "kode_penerbit='" + TKd.getText() + "',nama_penerbit='" + TNm.
+                        getText() + "',"
+                        + "alamat_penerbit='" + TAlamat.getText() + "',"
+                        + "no_telp='" + TTlp.getText() + "',"
+                        + "email='" + TEmail.getText() + "',"
+                        + "website_penerbit='" + TWeb.getText() + "'");
                 //----------------------------------------------------------
                 TKd.requestFocus();
                 tampil();
                 emptTeks();
             }
-                
+
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -598,56 +627,69 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(! TCari.getText().trim().isEmpty()){
+        if (!TCari.getText().trim().isEmpty()) {
             BtnCariActionPerformed(evt);
         }
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            Map<String, Object> param = new HashMap<>();  
-                    param.put("namars",akses.getnamars());
-                    param.put("alamatrs",akses.getalamatrs());
-                    param.put("kotars",akses.getkabupatenrs());
-                    param.put("propinsirs",akses.getpropinsirs());
-                    param.put("kontakrs",akses.getkontakrs());
-                    param.put("emailrs",akses.getemailrs());   
-                    param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReportqry("rptPenerbitPerpustakaan.jasper","report","::[ Data Penerbit Perpustakaan ]::","select perpustakaan_penerbit.kode_penerbit, perpustakaan_penerbit.nama_penerbit, perpustakaan_penerbit.alamat_penerbit, perpustakaan_penerbit.no_telp,"+
-                   "perpustakaan_penerbit.email, perpustakaan_penerbit.website_penerbit from perpustakaan_penerbit "+
-                   "where perpustakaan_penerbit.kode_penerbit like '%"+TCari.getText().trim()+"%' "+
-                    "or perpustakaan_penerbit.nama_penerbit like '%"+TCari.getText().trim()+"%' "+
-                    "or perpustakaan_penerbit.alamat_penerbit like '%"+TCari.getText().trim()+"%' "+
-                    "or perpustakaan_penerbit.no_telp like '%"+TCari.getText().trim()+"%' "+
-                    "or perpustakaan_penerbit.email like '%"+TCari.getText().trim()+"%' "+
-                    "or perpustakaan_penerbit.website_penerbit like '%"+TCari.getText().trim()+"%' order by perpustakaan_penerbit.kode_penerbit",param);
+        } else if (tabMode.getRowCount() != 0) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptPenerbitPerpustakaan.jasper", "report",
+                    "::[ Data Penerbit Perpustakaan ]::",
+                    "select perpustakaan_penerbit.kode_penerbit, perpustakaan_penerbit.nama_penerbit, perpustakaan_penerbit.alamat_penerbit, perpustakaan_penerbit.no_telp,"
+                    + "perpustakaan_penerbit.email, perpustakaan_penerbit.website_penerbit from perpustakaan_penerbit "
+                    + "where perpustakaan_penerbit.kode_penerbit like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_penerbit.nama_penerbit like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_penerbit.alamat_penerbit like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_penerbit.no_telp like '%" + TCari.
+                            getText().trim() + "%' "
+                    + "or perpustakaan_penerbit.email like '%" + TCari.getText().
+                            trim() + "%' "
+                    + "or perpustakaan_penerbit.website_penerbit like '%" + TCari.
+                            getText().trim() + "%' order by perpustakaan_penerbit.kode_penerbit",
+                    param);
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbJnsPerawatan.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -657,9 +699,9 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -670,16 +712,16 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             tampil();
             TCari.setText("");
-        }else{
-            Valid.pindah(evt, BtnPrint,BtnKeluar);
+        } else {
+            Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbJnsPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbJnsPerawatanMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -688,8 +730,8 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
 }//GEN-LAST:event_tbJnsPerawatanMouseClicked
 
     private void tbJnsPerawatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if(evt.getKeyCode()==KeyEvent.VK_SHIFT){
+        if (tabMode.getRowCount() != 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
                 TCari.setText("");
                 TCari.requestFocus();
             }
@@ -697,31 +739,31 @@ public class PerpustakaanPenerbit extends javax.swing.JDialog {
 }//GEN-LAST:event_tbJnsPerawatanKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
 private void TKdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-        Valid.pindah(evt,TWeb,TNm,TCari);
+    Valid.pindah(evt, TWeb, TNm, TCari);
 }//GEN-LAST:event_TKdKeyPressed
 
 private void TNmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNmKeyPressed
-        Valid.pindah(evt,TKd,TAlamat);
+    Valid.pindah(evt, TKd, TAlamat);
 }//GEN-LAST:event_TNmKeyPressed
 
 private void TWebKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TWebKeyPressed
-        Valid.pindah(evt,TEmail,BtnSimpan);
+    Valid.pindah(evt, TEmail, BtnSimpan);
 }//GEN-LAST:event_TWebKeyPressed
 
 private void TTlpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TTlpKeyPressed
-        Valid.pindah(evt,TAlamat,TEmail);
+    Valid.pindah(evt, TAlamat, TEmail);
 }//GEN-LAST:event_TTlpKeyPressed
 
 private void TEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TEmailKeyPressed
-        Valid.pindah(evt,TTlp,TWeb);
+    Valid.pindah(evt, TTlp, TWeb);
 }//GEN-LAST:event_TEmailKeyPressed
 
 private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TAlamatKeyPressed
-        Valid.pindah(evt,TNm,TTlp);
+    Valid.pindah(evt, TNm, TTlp);
 }//GEN-LAST:event_TAlamatKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -733,8 +775,9 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     }//GEN-LAST:event_formWindowActivated
 
     private void tbJnsPerawatanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbJnsPerawatanKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -744,16 +787,18 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     }//GEN-LAST:event_tbJnsPerawatanKeyReleased
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanPenerbit dialog = new PerpustakaanPenerbit(new javax.swing.JFrame(), true);
+            PerpustakaanPenerbit dialog = new PerpustakaanPenerbit(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -798,43 +843,44 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
 
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement("select perpustakaan_penerbit.kode_penerbit, perpustakaan_penerbit.nama_penerbit, perpustakaan_penerbit.alamat_penerbit, perpustakaan_penerbit.no_telp,"+
-                   "perpustakaan_penerbit.email, perpustakaan_penerbit.website_penerbit from perpustakaan_penerbit "+
-                   "where perpustakaan_penerbit.kode_penerbit like ? "+
-                    "or perpustakaan_penerbit.nama_penerbit like ? "+
-                    "or perpustakaan_penerbit.alamat_penerbit like ? "+
-                    "or perpustakaan_penerbit.no_telp like ? "+
-                    "or perpustakaan_penerbit.email like ? "+
-                    "or perpustakaan_penerbit.website_penerbit like ? order by perpustakaan_penerbit.kode_penerbit");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select perpustakaan_penerbit.kode_penerbit, perpustakaan_penerbit.nama_penerbit, perpustakaan_penerbit.alamat_penerbit, perpustakaan_penerbit.no_telp,"
+                    + "perpustakaan_penerbit.email, perpustakaan_penerbit.website_penerbit from perpustakaan_penerbit "
+                    + "where perpustakaan_penerbit.kode_penerbit like ? "
+                    + "or perpustakaan_penerbit.nama_penerbit like ? "
+                    + "or perpustakaan_penerbit.alamat_penerbit like ? "
+                    + "or perpustakaan_penerbit.no_telp like ? "
+                    + "or perpustakaan_penerbit.email like ? "
+                    + "or perpustakaan_penerbit.website_penerbit like ? order by perpustakaan_penerbit.kode_penerbit");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText().trim()+"%");
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText().trim() + "%");
+                ps.setString(6, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6)
+                        rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6)
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -849,18 +895,26 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
         TAlamat.setText("");
         TCari.setText("");
         TKd.requestFocus();
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kode_penerbit,4),signed)),0) from perpustakaan_penerbit  ","PK",8,TKd);
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(kode_penerbit,4),signed)),0) from perpustakaan_penerbit  ",
+                "PK", 8, TKd);
         TKd.requestFocus();
     }
 
     private void getData() {
-        if(tbJnsPerawatan.getSelectedRow()!= -1){
-            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString());
-            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
-            TAlamat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString());
-            TTlp.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
-            TEmail.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
-            TWeb.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 0).toString());
+            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 1).toString());
+            TAlamat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 2).toString());
+            TTlp.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 3).toString());
+            TEmail.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 4).toString());
+            TWeb.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
+                    getSelectedRow(), 5).toString());
         }
     }
 
@@ -868,33 +922,35 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
      *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbJnsPerawatan;
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,148));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 148));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
+
     /**
      *
      */
-    public void isCek(){
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getpenerbit_perpustakaan());
         BtnHapus.setEnabled(akses.getpenerbit_perpustakaan());
         BtnEdit.setEnabled(akses.getpenerbit_perpustakaan());
         BtnPrint.setEnabled(akses.getpenerbit_perpustakaan());
     }
 
-    
+    private static final Logger LOG = Logger.getLogger(
+            PerpustakaanPenerbit.class.getName());
+
 }

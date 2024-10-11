@@ -1,273 +1,338 @@
 /*
  * Kontribusi dari Abdul Wahid, RSUD Cipayung Jakarta Timur
  */
-
-
 package rekammedis;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariPegawai;
 
 /**
  *
  * @author perpustakaan
  */
 public class RMPenilaianFisioterapi extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
-    private DlgCariPegawai petugas=new DlgCariPegawai(null,false);
-    private String finger=""; 
+    private int i = 0;
+    private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
+    private String finger = "";
     private StringBuilder htmlContent;
-    
-    /** Creates new form DlgRujuk
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMPenilaianFisioterapi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rawat","No.RM","Nama Pasien","J.K.","Tgl.Lahir","Tanggal","Informasi","Keluhan Utama","Riwayat Peyakit Sekarang","Riwayat Penyakit Dahulu & Penyerta", 
-            "TD","HR","RR","Suhu","Nyeri Tekan","Nyeri Gerak","Nyeri Diam","Palpasi","Luas Gerak Sendi","Kekuatan Otot","Statis","Dinamis","Kognitif","Auskultasi",
-            "Alat Bantu","Ket Alat Bantu","Prothesa","Keteranga Prothesa","Deformitas","Keterangan Deformitas","Resiko Jatuh","Keterangan Resiko Jatuh","ADL","Fungsional Lain",
-            "Keterangan Fisik","Pemeriksaan Musculoskeletal","Pemeriksaan Neuromuscular","Pemeriksaan Cardiopulmonal","Pemeriksaan Integument","Pengukuran Musculoskeletal", 
-            "Pengukuran Neuromuscular","Pengukuran Cardiopulmonal","Pengukuran Integument","Pemeriksaan Penunjang", "Diagnosis Fisio", "Rencana Intervensi Fisioterapi",
-            "NIP","Nama Petugas"
-        }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Tgl.Lahir", "Tanggal",
+            "Informasi", "Keluhan Utama", "Riwayat Peyakit Sekarang",
+            "Riwayat Penyakit Dahulu & Penyerta",
+            "TD", "HR", "RR", "Suhu", "Nyeri Tekan", "Nyeri Gerak", "Nyeri Diam",
+            "Palpasi", "Luas Gerak Sendi", "Kekuatan Otot", "Statis", "Dinamis",
+            "Kognitif", "Auskultasi",
+            "Alat Bantu", "Ket Alat Bantu", "Prothesa", "Keteranga Prothesa",
+            "Deformitas", "Keterangan Deformitas", "Resiko Jatuh",
+            "Keterangan Resiko Jatuh", "ADL", "Fungsional Lain",
+            "Keterangan Fisik", "Pemeriksaan Musculoskeletal",
+            "Pemeriksaan Neuromuscular", "Pemeriksaan Cardiopulmonal",
+            "Pemeriksaan Integument", "Pengukuran Musculoskeletal",
+            "Pengukuran Neuromuscular", "Pengukuran Cardiopulmonal",
+            "Pengukuran Integument", "Pemeriksaan Penunjang", "Diagnosis Fisio",
+            "Rencana Intervensi Fisioterapi",
+            "NIP", "Nama Petugas"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbObat.setModel(tabMode);
 
         //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 48; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(105);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(65);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(160);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(50);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(60);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(120);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(85);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(270);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(184);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(184);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(50);
-            }else if(i==11){
+            } else if (i == 11) {
                 column.setPreferredWidth(30);
-            }else if(i==12){
+            } else if (i == 12) {
                 column.setPreferredWidth(30);
-            }else if(i==13){
+            } else if (i == 13) {
                 column.setPreferredWidth(35);
-            }else if(i==14){
+            } else if (i == 14) {
                 column.setPreferredWidth(70);
-            }else if(i==15){
+            } else if (i == 15) {
                 column.setPreferredWidth(70);
-            }else if(i==16){
+            } else if (i == 16) {
                 column.setPreferredWidth(70);
-            }else if(i==17){
+            } else if (i == 17) {
                 column.setPreferredWidth(130);
-            }else if(i==18){
+            } else if (i == 18) {
                 column.setPreferredWidth(130);
-            }else if(i==19){
+            } else if (i == 19) {
                 column.setPreferredWidth(130);
-            }else if(i==20){
+            } else if (i == 20) {
                 column.setPreferredWidth(130);
-            }else if(i==21){
+            } else if (i == 21) {
                 column.setPreferredWidth(130);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(130);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(130);
-            }else if(i==24){
+            } else if (i == 24) {
                 column.setPreferredWidth(60);
-            }else if(i==25){
+            } else if (i == 25) {
                 column.setPreferredWidth(100);
-            }else if(i==26){
+            } else if (i == 26) {
                 column.setPreferredWidth(53);
-            }else if(i==27){
+            } else if (i == 27) {
                 column.setPreferredWidth(105);
-            }else if(i==28){
+            } else if (i == 28) {
                 column.setPreferredWidth(62);
-            }else if(i==29){
+            } else if (i == 29) {
                 column.setPreferredWidth(120);
-            }else if(i==30){
+            } else if (i == 30) {
                 column.setPreferredWidth(70);
-            }else if(i==31){
+            } else if (i == 31) {
                 column.setPreferredWidth(130);
-            }else if(i==32){
+            } else if (i == 32) {
                 column.setPreferredWidth(55);
-            }else if(i==33){
+            } else if (i == 33) {
                 column.setPreferredWidth(120);
-            }else if(i==34){
+            } else if (i == 34) {
                 column.setPreferredWidth(270);
-            }else if(i==35){
+            } else if (i == 35) {
                 column.setPreferredWidth(160);
-            }else if(i==36){
+            } else if (i == 36) {
                 column.setPreferredWidth(160);
-            }else if(i==37){
+            } else if (i == 37) {
                 column.setPreferredWidth(160);
-            }else if(i==38){
+            } else if (i == 38) {
                 column.setPreferredWidth(160);
-            }else if(i==39){
+            } else if (i == 39) {
                 column.setPreferredWidth(160);
-            }else if(i==40){
+            } else if (i == 40) {
                 column.setPreferredWidth(160);
-            }else if(i==41){
+            } else if (i == 41) {
                 column.setPreferredWidth(160);
-            }else if(i==42){
+            } else if (i == 42) {
                 column.setPreferredWidth(160);
-            }else if(i==43){
+            } else if (i == 43) {
                 column.setPreferredWidth(200);
-            }else if(i==44){
+            } else if (i == 44) {
                 column.setPreferredWidth(150);
-            }else if(i==45){
+            } else if (i == 45) {
                 column.setPreferredWidth(200);
-            }else if(i==46){
+            } else if (i == 46) {
                 column.setPreferredWidth(80);
-            }else if(i==47){
+            } else if (i == 47) {
                 column.setPreferredWidth(150);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KeluhanUtama.setDocument(new batasInput(150).getKata(KeluhanUtama));
-        RiwayatPenyakitSekarang.setDocument(new batasInput(100).getKata(RiwayatPenyakitSekarang));
-        RiwayatPenyakitDahulu.setDocument(new batasInput(100).getKata(RiwayatPenyakitDahulu));
-        TD.setDocument(new batasInput((byte)8).getKata(TD));
-        HR.setDocument(new batasInput((byte)5).getKata(HR));
-        RR.setDocument(new batasInput((byte)5).getKata(RR));
-        Suhu.setDocument(new batasInput((byte)5).getKata(Suhu));
-        NyeriTekan.setDocument(new batasInput((byte)5).getKata(NyeriTekan));
-        NyeriGerak.setDocument(new batasInput((byte)5).getKata(NyeriGerak));
-        NyeriDiam.setDocument(new batasInput((byte)5).getKata(NyeriDiam));
-        Palpasi.setDocument(new batasInput((byte)50).getKata(Palpasi));
-        LuasGerakSendi.setDocument(new batasInput((byte)50).getKata(LuasGerakSendi));
-        KekuatanOtot.setDocument(new batasInput((byte)50).getKata(KekuatanOtot));
-        Statis.setDocument(new batasInput((byte)50).getKata(Statis));
-        Dinamis.setDocument(new batasInput((byte)50).getKata(Dinamis));
-        Kognitif.setDocument(new batasInput((byte)50).getKata(Kognitif));
-        Auskultasi.setDocument(new batasInput((byte)50).getKata(Auskultasi));
-        KetBantu.setDocument(new batasInput((byte)50).getKata(KetBantu));
-        KetProthesa.setDocument(new batasInput((byte)50).getKata(KetProthesa));
-        KetDeformitas.setDocument(new batasInput((byte)50).getKata(KetDeformitas));
-        KetResikoJatuh.setDocument(new batasInput((byte)50).getKata(KetResikoJatuh));
-        LainlainFungsioal.setDocument(new batasInput((byte)70).getKata(LainlainFungsioal));
+        RiwayatPenyakitSekarang.setDocument(new batasInput(100).getKata(
+                RiwayatPenyakitSekarang));
+        RiwayatPenyakitDahulu.setDocument(new batasInput(100).getKata(
+                RiwayatPenyakitDahulu));
+        TD.setDocument(new batasInput((byte) 8).getKata(TD));
+        HR.setDocument(new batasInput((byte) 5).getKata(HR));
+        RR.setDocument(new batasInput((byte) 5).getKata(RR));
+        Suhu.setDocument(new batasInput((byte) 5).getKata(Suhu));
+        NyeriTekan.setDocument(new batasInput((byte) 5).getKata(NyeriTekan));
+        NyeriGerak.setDocument(new batasInput((byte) 5).getKata(NyeriGerak));
+        NyeriDiam.setDocument(new batasInput((byte) 5).getKata(NyeriDiam));
+        Palpasi.setDocument(new batasInput((byte) 50).getKata(Palpasi));
+        LuasGerakSendi.setDocument(new batasInput((byte) 50).getKata(
+                LuasGerakSendi));
+        KekuatanOtot.
+                setDocument(new batasInput((byte) 50).getKata(KekuatanOtot));
+        Statis.setDocument(new batasInput((byte) 50).getKata(Statis));
+        Dinamis.setDocument(new batasInput((byte) 50).getKata(Dinamis));
+        Kognitif.setDocument(new batasInput((byte) 50).getKata(Kognitif));
+        Auskultasi.setDocument(new batasInput((byte) 50).getKata(Auskultasi));
+        KetBantu.setDocument(new batasInput((byte) 50).getKata(KetBantu));
+        KetProthesa.setDocument(new batasInput((byte) 50).getKata(KetProthesa));
+        KetDeformitas.setDocument(new batasInput((byte) 50).getKata(
+                KetDeformitas));
+        KetResikoJatuh.setDocument(new batasInput((byte) 50).getKata(
+                KetResikoJatuh));
+        LainlainFungsioal.setDocument(new batasInput((byte) 70).getKata(
+                LainlainFungsioal));
         KetFisik.setDocument(new batasInput(2000).getKata(KetFisik));
-        PemeriksaanMuscu.setDocument(new batasInput(200).getKata(PemeriksaanMuscu));
-        PemeriksaanNeuro.setDocument(new batasInput(200).getKata(PemeriksaanNeuro));
-        PemeriksaanCardio.setDocument(new batasInput(200).getKata(PemeriksaanCardio));
-        PemeriksaanInte.setDocument(new batasInput(200).getKata(PemeriksaanInte));
-        PengukuranMuscu.setDocument(new batasInput(200).getKata(PengukuranMuscu));
-        PengukuranNeuro.setDocument(new batasInput(200).getKata(PengukuranNeuro));
-        PengukuranCardio.setDocument(new batasInput(200).getKata(PengukuranCardio));
+        PemeriksaanMuscu.setDocument(new batasInput(200).getKata(
+                PemeriksaanMuscu));
+        PemeriksaanNeuro.setDocument(new batasInput(200).getKata(
+                PemeriksaanNeuro));
+        PemeriksaanCardio.setDocument(new batasInput(200).getKata(
+                PemeriksaanCardio));
+        PemeriksaanInte.
+                setDocument(new batasInput(200).getKata(PemeriksaanInte));
+        PengukuranMuscu.
+                setDocument(new batasInput(200).getKata(PengukuranMuscu));
+        PengukuranNeuro.
+                setDocument(new batasInput(200).getKata(PengukuranNeuro));
+        PengukuranCardio.setDocument(new batasInput(200).getKata(
+                PengukuranCardio));
         PengukuranInte.setDocument(new batasInput(200).getKata(PengukuranInte));
         Penunjang.setDocument(new batasInput(500).getKata(Penunjang));
         Diagnosis.setDocument(new batasInput(100).getKata(Diagnosis));
         Rencana.setDocument(new batasInput(200).getKata(Rencana));
-        
+
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         petugas.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(petugas.getTable().getSelectedRow()!= -1){ 
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(),1).toString());   
-                }              
+                if (petugas.getTable().getSelectedRow() != -1) {
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
+                            getTable().getSelectedRow(), 1).toString());
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1649,43 +1714,65 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
-        }else{            
-            Valid.pindah(evt,TCari,BtnDokter);
+        } else {
+            Valid.pindah(evt, TCari, BtnDokter);
         }
 }//GEN-LAST:event_TNoRwKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(KeluhanUtama.getText().trim().isEmpty()){
-            Valid.textKosong(KeluhanUtama,"Keluhan Utama");
-        }else if(RiwayatPenyakitSekarang.getText().trim().isEmpty()){
-            Valid.textKosong(RiwayatPenyakitSekarang,"Riwayat Penyakit Sekarang");
-        }else if(NmPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Petugas");
-        }else{
-           if(Sequel.menyimpantf("penilaian_fisioterapi","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","No.Rawat",43,new String[]{
-                    TNoRw.getText(),Valid.SetTgl(TglAsuhan.getSelectedItem()+"")+" "+TglAsuhan.getSelectedItem().toString().substring(11,19),Informasi.getSelectedItem().toString(),KeluhanUtama.getText(),
-                    RiwayatPenyakitSekarang.getText(),RiwayatPenyakitDahulu.getText(),TD.getText(),HR.getText(),RR.getText(),Suhu.getText(),NyeriTekan.getText(),NyeriGerak.getText(),NyeriDiam.getText(),
-                    Palpasi.getText(),LuasGerakSendi.getText(),KekuatanOtot.getText(),Statis.getText(),Dinamis.getText(),Kognitif.getText(),Auskultasi.getText(),AlatBantu.getSelectedItem().toString(),
-                    KetBantu.getText(),Prothesa.getSelectedItem().toString(),KetProthesa.getText(),Deformitas.getSelectedItem().toString(),KetDeformitas.getText(),ResikoJatuh.getSelectedItem().toString(),
-                    KetResikoJatuh.getText(),ADL.getSelectedItem().toString(),LainlainFungsioal.getText(),KetFisik.getText(),PemeriksaanMuscu.getText(),PemeriksaanNeuro.getText(),PemeriksaanCardio.getText(),
-                    PemeriksaanInte.getText(),PengukuranMuscu.getText(),PengukuranNeuro.getText(),PengukuranCardio.getText(),PengukuranInte.getText(),Penunjang.getText(),Diagnosis.getText(),Rencana.getText(),
-                    KdPetugas.getText()
-                })==true){
-                    emptTeks();
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (KeluhanUtama.getText().trim().isEmpty()) {
+            Valid.textKosong(KeluhanUtama, "Keluhan Utama");
+        } else if (RiwayatPenyakitSekarang.getText().trim().isEmpty()) {
+            Valid.textKosong(RiwayatPenyakitSekarang,
+                    "Riwayat Penyakit Sekarang");
+        } else if (NmPetugas.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Petugas");
+        } else {
+            if (Sequel.menyimpantf("penilaian_fisioterapi",
+                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                    "No.Rawat", 43, new String[]{
+                        TNoRw.getText(), Valid.SetTgl(TglAsuhan.
+                        getSelectedItem() + "") + " " + TglAsuhan.
+                                getSelectedItem().toString().substring(11, 19),
+                        Informasi.getSelectedItem().toString(), KeluhanUtama.
+                        getText(),
+                        RiwayatPenyakitSekarang.getText(),
+                        RiwayatPenyakitDahulu.getText(), TD.getText(), HR.
+                        getText(), RR.getText(), Suhu.getText(), NyeriTekan.
+                        getText(), NyeriGerak.getText(), NyeriDiam.getText(),
+                        Palpasi.getText(), LuasGerakSendi.getText(),
+                        KekuatanOtot.getText(), Statis.getText(), Dinamis.
+                        getText(), Kognitif.getText(), Auskultasi.getText(),
+                        AlatBantu.getSelectedItem().toString(),
+                        KetBantu.getText(), Prothesa.getSelectedItem().
+                        toString(), KetProthesa.getText(), Deformitas.
+                        getSelectedItem().toString(), KetDeformitas.getText(),
+                        ResikoJatuh.getSelectedItem().toString(),
+                        KetResikoJatuh.getText(), ADL.getSelectedItem().
+                        toString(), LainlainFungsioal.getText(), KetFisik.
+                        getText(), PemeriksaanMuscu.getText(), PemeriksaanNeuro.
+                        getText(), PemeriksaanCardio.getText(),
+                        PemeriksaanInte.getText(), PengukuranMuscu.getText(),
+                        PengukuranNeuro.getText(), PengukuranCardio.getText(),
+                        PengukuranInte.getText(), Penunjang.getText(),
+                        Diagnosis.getText(), Rencana.getText(),
+                        KdPetugas.getText()
+                    }) == true) {
+                emptTeks();
             }
         }
-    
+
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Rencana,BtnBatal);
+        } else {
+            Valid.pindah(evt, Rencana, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -1694,76 +1781,84 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else{
-                if(KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),46).toString())){
+            } else {
+                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 46).toString())) {
                     hapus();
-                }else{
-                    JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }            
-            
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(TD.getText().trim().isEmpty()){
-            Valid.textKosong(TD,"TD(mmHg)");
-        }else if(HR.getText().trim().isEmpty()){
-            Valid.textKosong(HR,"Nadi(x/menit)");
-        }else if(RR.getText().trim().isEmpty()){
-            Valid.textKosong(RR,"RR(x/menit)");
-        }else if(Suhu.getText().trim().isEmpty()){
-            Valid.textKosong(Suhu,"Suhu(C)");
-        }else if(NyeriTekan.getText().trim().isEmpty()){
-            Valid.textKosong(NyeriTekan,"GCS");
-        }else if(NyeriGerak.getText().trim().isEmpty()){
-            Valid.textKosong(NyeriGerak,"BB(Kg)");
-        }else if(NyeriDiam.getText().trim().isEmpty()){
-            Valid.textKosong(NyeriDiam,"TB(Cm)");
-        }else if(NmPetugas.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Petugas");
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (TD.getText().trim().isEmpty()) {
+            Valid.textKosong(TD, "TD(mmHg)");
+        } else if (HR.getText().trim().isEmpty()) {
+            Valid.textKosong(HR, "Nadi(x/menit)");
+        } else if (RR.getText().trim().isEmpty()) {
+            Valid.textKosong(RR, "RR(x/menit)");
+        } else if (Suhu.getText().trim().isEmpty()) {
+            Valid.textKosong(Suhu, "Suhu(C)");
+        } else if (NyeriTekan.getText().trim().isEmpty()) {
+            Valid.textKosong(NyeriTekan, "GCS");
+        } else if (NyeriGerak.getText().trim().isEmpty()) {
+            Valid.textKosong(NyeriGerak, "BB(Kg)");
+        } else if (NyeriDiam.getText().trim().isEmpty()) {
+            Valid.textKosong(NyeriDiam, "TB(Cm)");
+        } else if (NmPetugas.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Petugas");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else{
-                    if(KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),46).toString())){
+                } else {
+                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 46).toString())) {
                         ganti();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh petugas yang bersangkutan..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-            }   
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1773,192 +1868,297 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
-                if(TCari.getText().isEmpty()){
-                    ps=koneksi.prepareStatement(
-                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"+
-                            "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"+
-                            "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"+
-                            "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"+
-                            "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"+
-                            "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"+
-                            "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "+
-                            "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "+
-                            "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "+
-                            "penilaian_fisioterapi.tanggal between ? and ? order by penilaian_fisioterapi.tanggal");
-                }else{
-                    ps=koneksi.prepareStatement(
-                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"+
-                            "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"+
-                            "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"+
-                            "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"+
-                            "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"+
-                            "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"+
-                            "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "+
-                            "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                            "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "+
-                            "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "+
-                            "penilaian_fisioterapi.tanggal between ? and ? and reg_periksa.no_rawat like ? or "+
-                            "penilaian_fisioterapi.tanggal between ? and ? and pasien.no_rkm_medis like ? or "+
-                            "penilaian_fisioterapi.tanggal between ? and ? and pasien.nm_pasien like ? or "+
-                            "penilaian_fisioterapi.tanggal between ? and ? and penilaian_fisioterapi.nip like ? or "+
-                            "penilaian_fisioterapi.tanggal between ? and ? and petugas.nama like ? order by penilaian_fisioterapi.tanggal");
+        } else if (tabMode.getRowCount() != 0) {
+            try {
+                if (TCari.getText().isEmpty()) {
+                    ps = koneksi.prepareStatement(
+                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"
+                            + "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"
+                            + "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"
+                            + "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"
+                            + "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"
+                            + "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"
+                            + "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "
+                            + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "
+                            + "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "
+                            + "penilaian_fisioterapi.tanggal between ? and ? order by penilaian_fisioterapi.tanggal");
+                } else {
+                    ps = koneksi.prepareStatement(
+                            "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"
+                            + "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"
+                            + "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"
+                            + "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"
+                            + "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"
+                            + "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"
+                            + "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "
+                            + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "
+                            + "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "
+                            + "penilaian_fisioterapi.tanggal between ? and ? and reg_periksa.no_rawat like ? or "
+                            + "penilaian_fisioterapi.tanggal between ? and ? and pasien.no_rkm_medis like ? or "
+                            + "penilaian_fisioterapi.tanggal between ? and ? and pasien.nm_pasien like ? or "
+                            + "penilaian_fisioterapi.tanggal between ? and ? and penilaian_fisioterapi.nip like ? or "
+                            + "penilaian_fisioterapi.tanggal between ? and ? and petugas.nama like ? order by penilaian_fisioterapi.tanggal");
                 }
 
                 try {
-                    if(TCari.getText().isEmpty()){
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    }else{
-                        ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                        ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                        ps.setString(3,"%"+TCari.getText()+"%");
-                        ps.setString(4,"%"+TCari.getText()+"%");
-                        ps.setString(5,"%"+TCari.getText()+"%");
-                        ps.setString(6,"%"+TCari.getText()+"%");
-                        ps.setString(7,"%"+TCari.getText()+"%");
-                    }     
-                    rs=ps.executeQuery();
+                    if (TCari.getText().isEmpty()) {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    } else {
+                        ps.setString(1, Valid.SetTgl(
+                                DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                        ps.setString(2, Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                        ps.setString(3, "%" + TCari.getText() + "%");
+                        ps.setString(4, "%" + TCari.getText() + "%");
+                        ps.setString(5, "%" + TCari.getText() + "%");
+                        ps.setString(6, "%" + TCari.getText() + "%");
+                        ps.setString(7, "%" + TCari.getText() + "%");
+                    }
+                    rs = ps.executeQuery();
                     htmlContent = new StringBuilder();
-                    htmlContent.append(                             
-                        "<tr class='isi'>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'><b>No.Rawat</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'><b>No.RM</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Nama Pasien</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50px'><b>J.K.</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='60px'><b>Tgl.Lahir</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Tanggal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='85px'><b>Informasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='270px'><b>Keluhan Utama</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='184px'><b>Riwayat Peyakit Sekarang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='184px'><b>Riwayat Penyakit Dahulu & Penyerta</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50px'><b>TD</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='30px'><b>HR</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='30px'><b>RR</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='35px'><b>Suhu</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Tekan</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Gerak</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Diam</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Palpasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Luas Gerak Sendi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Kekuatan Otot</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Statis</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Dinamis</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Kognitif</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Auskultasi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='60px'><b>Alat Bantu</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='100px'><b>Ket Alat Bantu</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='53px'><b>Prothesa</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'><b>Keteranga Prothesa</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='62px'><b>Deformitas</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Keterangan Deformitas</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Resiko Jatuh</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Keterangan Resiko Jatuh</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='55px'><b>ADL</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Fungsional Lain</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='270px'><b>Keterangan Fisik</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Musculoskeletal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Neuromuscular</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Cardiopulmonal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Integument</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Musculoskeletal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Neuromuscular</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Cardiopulmonal</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Integument</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='200px'><b>Pemeriksaan Penunjang</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Diagnosis Fisio</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='200px'><b>Rencana Intervensi Fisioterapi</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>NIP</b></td>"+
-                            "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Nama Petugas</b></td>"+
-                        "</tr>"
+                    htmlContent.append(
+                            "<tr class='isi'>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'><b>No.Rawat</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'><b>No.RM</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Nama Pasien</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50px'><b>J.K.</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='60px'><b>Tgl.Lahir</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Tanggal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='85px'><b>Informasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='270px'><b>Keluhan Utama</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='184px'><b>Riwayat Peyakit Sekarang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='184px'><b>Riwayat Penyakit Dahulu & Penyerta</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50px'><b>TD</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='30px'><b>HR</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='30px'><b>RR</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='35px'><b>Suhu</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Tekan</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Gerak</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Nyeri Diam</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Palpasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Luas Gerak Sendi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Kekuatan Otot</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Statis</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Dinamis</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Kognitif</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Auskultasi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='60px'><b>Alat Bantu</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='100px'><b>Ket Alat Bantu</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='53px'><b>Prothesa</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'><b>Keteranga Prothesa</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='62px'><b>Deformitas</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Keterangan Deformitas</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>Resiko Jatuh</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'><b>Keterangan Resiko Jatuh</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='55px'><b>ADL</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Fungsional Lain</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='270px'><b>Keterangan Fisik</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Musculoskeletal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Neuromuscular</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Cardiopulmonal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pemeriksaan Integument</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Musculoskeletal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Neuromuscular</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Cardiopulmonal</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='160px'><b>Pengukuran Integument</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='200px'><b>Pemeriksaan Penunjang</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Diagnosis Fisio</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='200px'><b>Rencana Intervensi Fisioterapi</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>NIP</b></td>"
+                            + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Nama Petugas</b></td>"
+                            + "</tr>"
                     );
-                    while(rs.next()){
-                        htmlContent.append("<tr class='isi'><td valign='top'>").append(rs.getString("no_rawat")).append("</td><td valign='top'>").append(rs.getString("no_rkm_medis")).append("</td><td valign='top'>").append(rs.getString("nm_pasien")).append("</td><td valign='top'>").append(rs.getString("jk")).append("</td><td valign='top'>").append(rs.getString("tgl_lahir")).append("</td><td valign='top'>").append(rs.getString("tanggal")).append("</td><td valign='top'>").append(rs.getString("informasi")).append("</td><td valign='top'>").append(rs.getString("keluhan_utama")).append("</td><td valign='top'>").append(rs.getString("rps")).append("</td><td valign='top'>").append(rs.getString("rpd")).append("</td><td valign='top'>").append(rs.getString("td")).append("</td><td valign='top'>").append(rs.getString("hr")).append("</td><td valign='top'>").append(rs.getString("rr")).append("</td><td valign='top'>").append(rs.getString("suhu")).append("</td><td valign='top'>").append(rs.getString("nyeri_tekan")).append("</td><td valign='top'>").append(rs.getString("nyeri_gerak")).append("</td><td valign='top'>").append(rs.getString("nyeri_diam")).append("</td><td valign='top'>").append(rs.getString("palpasi")).append("</td><td valign='top'>").append(rs.getString("luas_gerak_sendi")).append("</td><td valign='top'>").append(rs.getString("kekuatan_otot")).append("</td><td valign='top'>").append(rs.getString("statis")).append("</td><td valign='top'>").append(rs.getString("dinamis")).append("</td><td valign='top'>").append(rs.getString("kognitif")).append("</td><td valign='top'>").append(rs.getString("auskultasi")).append("</td><td valign='top'>").append(rs.getString("alat_bantu")).append("</td><td valign='top'>").append(rs.getString("ket_bantu")).append("</td><td valign='top'>").append(rs.getString("prothesa")).append("</td><td valign='top'>").append(rs.getString("ket_pro")).append("</td><td valign='top'>").append(rs.getString("deformitas")).append("</td><td valign='top'>").append(rs.getString("ket_deformitas")).append("</td><td valign='top'>").append(rs.getString("resikojatuh")).append("</td><td valign='top'>").append(rs.getString("ket_resikojatuh")).append("</td><td valign='top'>").append(rs.getString("adl")).append("</td><td valign='top'>").append(rs.getString("lainlain_fungsional")).append("</td><td valign='top'>").append(rs.getString("ket_fisik")).append("</td><td valign='top'>").append(rs.getString("pemeriksaan_musculoskeletal")).append("</td><td valign='top'>").append(rs.getString("pemeriksaan_neuromuscular")).append("</td><td valign='top'>").append(rs.getString("pemeriksaan_cardiopulmonal")).append("</td><td valign='top'>").append(rs.getString("pemeriksaan_integument")).append("</td><td valign='top'>").append(rs.getString("pengukuran_musculoskeletal")).append("</td><td valign='top'>").append(rs.getString("pengukuran_neuromuscular")).append("</td><td valign='top'>").append(rs.getString("pengukuran_cardiopulmonal")).append("</td><td valign='top'>").append(rs.getString("pengukuran_integument")).append("</td><td valign='top'>").append(rs.getString("penunjang")).append("</td><td valign='top'>").append(rs.getString("diagnosis_fisio")).append("</td><td valign='top'>").append(rs.getString("rencana_terapi")).append("</td><td valign='top'>").append(rs.getString("nip")).append("</td><td valign='top'>").append(rs.getString("nama")).append("</td></tr>");
+                    while (rs.next()) {
+                        htmlContent.append("<tr class='isi'><td valign='top'>").
+                                append(rs.getString("no_rawat")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "no_rkm_medis")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("nm_pasien")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "jk")).append("</td><td valign='top'>").
+                                append(rs.getString("tgl_lahir")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "tanggal")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("informasi")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "keluhan_utama")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("rps")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "rpd")).append("</td><td valign='top'>").
+                                append(rs.getString("td")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "hr")).append("</td><td valign='top'>").
+                                append(rs.getString("rr")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "suhu")).
+                                append("</td><td valign='top'>").append(rs.
+                                getString("nyeri_tekan")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "nyeri_gerak")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("nyeri_diam")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "palpasi")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("luas_gerak_sendi")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "kekuatan_otot")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("statis")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "dinamis")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("kognitif")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "auskultasi")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("alat_bantu")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "ket_bantu")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("prothesa")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "ket_pro")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("deformitas")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "ket_deformitas")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("resikojatuh")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "ket_resikojatuh")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("adl")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "lainlain_fungsional")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("ket_fisik")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "pemeriksaan_musculoskeletal")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("pemeriksaan_neuromuscular")).
+                                append("</td><td valign='top'>").append(rs.
+                                getString("pemeriksaan_cardiopulmonal")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "pemeriksaan_integument")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("pengukuran_musculoskeletal")).
+                                append("</td><td valign='top'>").append(rs.
+                                getString("pengukuran_neuromuscular")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "pengukuran_cardiopulmonal")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("pengukuran_integument")).
+                                append("</td><td valign='top'>").append(rs.
+                                getString("penunjang")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "diagnosis_fisio")).append(
+                                        "</td><td valign='top'>").append(rs.
+                                        getString("rencana_terapi")).append(
+                                "</td><td valign='top'>").append(rs.getString(
+                                        "nip")).append("</td><td valign='top'>").
+                                append(rs.getString("nama")).
+                                append("</td></tr>");
                     }
                     LoadHTML.setText(
-                        "<html>"+
-                          "<table width='5500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                           htmlContent.toString()+
-                          "</table>"+
-                        "</html>"
+                            "<html>"
+                            + "<table width='5500px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                            + htmlContent.toString()
+                            + "</table>"
+                            + "</html>"
                     );
 
-                    File g = new File("file2.css");            
-                    try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                    File g = new File("file2.css");
+                    try (BufferedWriter bg = new BufferedWriter(
+                            new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                        ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                                        ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                        ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                                        ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                                        ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                                        ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                                        ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                                        ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
-                    File f = new File("DataPenilaianAwalMedisRanap.html");            
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                    bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                                "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                                "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                    "<tr class='isi2'>"+
-                                        "<td valign='top' align='center'>"+
-                                            "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                            akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                            akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                            "<font size='2' face='Tahoma'>DATA PENILAIAN AWAL MEDIS IGD<br><br></font>"+        
-                                        "</td>"+
-                                   "</tr>"+
-                                "</table>")
-                    );
-                    bw.close();                         
+                    File f = new File("DataPenilaianAwalMedisRanap.html");
+                    try (BufferedWriter bw = new BufferedWriter(
+                            new FileWriter(f))) {
+                        bw.write(LoadHTML.getText().replaceAll("<head>",
+                                "<head>"
+                                + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                                + "<table width='5500px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                                + "<tr class='isi2'>"
+                                + "<td valign='top' align='center'>"
+                                + "<font size='4' face='Tahoma'>" + akses.
+                                        getnamars() + "</font><br>"
+                                + akses.getalamatrs() + ", " + akses.
+                                getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                                + akses.getkontakrs() + ", E-mail : " + akses.
+                                getemailrs() + "<br><br>"
+                                + "<font size='2' face='Tahoma'>DATA PENILAIAN AWAL MEDIS IGD<br><br></font>"
+                                + "</td>"
+                                + "</tr>"
+                                + "</table>")
+                        );
+                    }
                     Desktop.getDesktop().browse(f.toURI());
-                } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                } catch (IOException | SQLException e) {
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
 
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (SQLException e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1968,9 +2168,9 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1981,34 +2181,35 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
             }
-            if((evt.getClickCount()==2)&&(tbObat.getSelectedColumn()==0)){
+            if ((evt.getClickCount() == 2) && (tbObat.getSelectedColumn() == 0)) {
                 TabRawat.setSelectedIndex(0);
             }
         }
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     getData();
                     TabRawat.setSelectedIndex(0);
@@ -2019,233 +2220,251 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
-        petugas.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setAlwaysOnTop(false);
         petugas.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void BtnDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnDokterKeyPressed
-        Valid.pindah(evt,Rencana,Informasi);
+        Valid.pindah(evt, Rencana, Informasi);
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void NyeriGerakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NyeriGerakKeyPressed
-        Valid.pindah(evt,NyeriTekan,NyeriDiam);
+        Valid.pindah(evt, NyeriTekan, NyeriDiam);
     }//GEN-LAST:event_NyeriGerakKeyPressed
 
     private void NyeriDiamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NyeriDiamKeyPressed
-        Valid.pindah(evt,NyeriGerak,Palpasi);
+        Valid.pindah(evt, NyeriGerak, Palpasi);
     }//GEN-LAST:event_NyeriDiamKeyPressed
 
     private void HRKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HRKeyPressed
-        Valid.pindah(evt,TD,RR);
+        Valid.pindah(evt, TD, RR);
     }//GEN-LAST:event_HRKeyPressed
 
     private void SuhuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SuhuKeyPressed
-        Valid.pindah(evt,RR,NyeriTekan);
+        Valid.pindah(evt, RR, NyeriTekan);
     }//GEN-LAST:event_SuhuKeyPressed
 
     private void TDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TDKeyPressed
-        Valid.pindah(evt,Informasi,HR);
+        Valid.pindah(evt, Informasi, HR);
     }//GEN-LAST:event_TDKeyPressed
 
     private void RRKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RRKeyPressed
-        Valid.pindah(evt,HR,Suhu);
+        Valid.pindah(evt, HR, Suhu);
     }//GEN-LAST:event_RRKeyPressed
 
     private void InformasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InformasiKeyPressed
-        Valid.pindah(evt,TglAsuhan,KeluhanUtama);
+        Valid.pindah(evt, TglAsuhan, KeluhanUtama);
     }//GEN-LAST:event_InformasiKeyPressed
 
     private void TglAsuhanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglAsuhanKeyPressed
-        Valid.pindah(evt,Rencana,Informasi);
+        Valid.pindah(evt, Rencana, Informasi);
     }//GEN-LAST:event_TglAsuhanKeyPressed
 
     private void NyeriTekanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NyeriTekanKeyPressed
-        Valid.pindah(evt,Suhu,NyeriGerak);
+        Valid.pindah(evt, Suhu, NyeriGerak);
     }//GEN-LAST:event_NyeriTekanKeyPressed
 
     private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==1){
+        if (TabRawat.getSelectedIndex() == 1) {
             tampil();
         }
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
+
     }//GEN-LAST:event_formWindowOpened
 
     private void KeluhanUtamaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeluhanUtamaKeyPressed
-        Valid.pindah2(evt,Informasi,RiwayatPenyakitSekarang);
+        Valid.pindah2(evt, Informasi, RiwayatPenyakitSekarang);
     }//GEN-LAST:event_KeluhanUtamaKeyPressed
 
     private void RiwayatPenyakitSekarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RiwayatPenyakitSekarangKeyPressed
-        Valid.pindah2(evt,KeluhanUtama,RiwayatPenyakitDahulu);
+        Valid.pindah2(evt, KeluhanUtama, RiwayatPenyakitDahulu);
     }//GEN-LAST:event_RiwayatPenyakitSekarangKeyPressed
 
     private void RiwayatPenyakitDahuluKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RiwayatPenyakitDahuluKeyPressed
-        Valid.pindah2(evt,RiwayatPenyakitSekarang,TD);
+        Valid.pindah2(evt, RiwayatPenyakitSekarang, TD);
     }//GEN-LAST:event_RiwayatPenyakitDahuluKeyPressed
 
     private void PalpasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PalpasiKeyPressed
-        Valid.pindah(evt,NyeriDiam,LuasGerakSendi);
+        Valid.pindah(evt, NyeriDiam, LuasGerakSendi);
     }//GEN-LAST:event_PalpasiKeyPressed
 
     private void LuasGerakSendiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LuasGerakSendiKeyPressed
-        Valid.pindah(evt,Palpasi,KekuatanOtot);
+        Valid.pindah(evt, Palpasi, KekuatanOtot);
     }//GEN-LAST:event_LuasGerakSendiKeyPressed
 
     private void KekuatanOtotKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KekuatanOtotKeyPressed
-        Valid.pindah(evt,LuasGerakSendi,Statis);
+        Valid.pindah(evt, LuasGerakSendi, Statis);
     }//GEN-LAST:event_KekuatanOtotKeyPressed
 
     private void StatisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatisKeyPressed
-        Valid.pindah(evt,KekuatanOtot,Dinamis);
+        Valid.pindah(evt, KekuatanOtot, Dinamis);
     }//GEN-LAST:event_StatisKeyPressed
 
     private void DinamisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DinamisKeyPressed
-        Valid.pindah(evt,Statis,Kognitif);
+        Valid.pindah(evt, Statis, Kognitif);
     }//GEN-LAST:event_DinamisKeyPressed
 
     private void KognitifKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KognitifKeyPressed
-        Valid.pindah(evt,Dinamis,Auskultasi);
+        Valid.pindah(evt, Dinamis, Auskultasi);
     }//GEN-LAST:event_KognitifKeyPressed
 
     private void AuskultasiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AuskultasiKeyPressed
-        Valid.pindah(evt,Kognitif,AlatBantu);
+        Valid.pindah(evt, Kognitif, AlatBantu);
     }//GEN-LAST:event_AuskultasiKeyPressed
 
     private void AlatBantuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlatBantuKeyPressed
-        Valid.pindah(evt,Auskultasi,KetBantu);
+        Valid.pindah(evt, Auskultasi, KetBantu);
     }//GEN-LAST:event_AlatBantuKeyPressed
 
     private void KetBantuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KetBantuKeyPressed
-        Valid.pindah(evt,AlatBantu,Prothesa);
+        Valid.pindah(evt, AlatBantu, Prothesa);
     }//GEN-LAST:event_KetBantuKeyPressed
 
     private void ProthesaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProthesaKeyPressed
-        Valid.pindah(evt,KetBantu,KetProthesa);
+        Valid.pindah(evt, KetBantu, KetProthesa);
     }//GEN-LAST:event_ProthesaKeyPressed
 
     private void KetProthesaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KetProthesaKeyPressed
-        Valid.pindah(evt,Prothesa,Deformitas);
+        Valid.pindah(evt, Prothesa, Deformitas);
     }//GEN-LAST:event_KetProthesaKeyPressed
 
     private void DeformitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DeformitasKeyPressed
-        Valid.pindah(evt,KetProthesa,KetDeformitas);
+        Valid.pindah(evt, KetProthesa, KetDeformitas);
     }//GEN-LAST:event_DeformitasKeyPressed
 
     private void KetDeformitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KetDeformitasKeyPressed
-        Valid.pindah(evt,Deformitas,ResikoJatuh);
+        Valid.pindah(evt, Deformitas, ResikoJatuh);
     }//GEN-LAST:event_KetDeformitasKeyPressed
 
     private void ResikoJatuhKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResikoJatuhKeyPressed
-        Valid.pindah(evt,KetDeformitas,KetResikoJatuh);
+        Valid.pindah(evt, KetDeformitas, KetResikoJatuh);
     }//GEN-LAST:event_ResikoJatuhKeyPressed
 
     private void KetResikoJatuhKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KetResikoJatuhKeyPressed
-        Valid.pindah(evt,ResikoJatuh,ADL);
+        Valid.pindah(evt, ResikoJatuh, ADL);
     }//GEN-LAST:event_KetResikoJatuhKeyPressed
 
     private void ADLKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ADLKeyPressed
-        Valid.pindah(evt,KetResikoJatuh,LainlainFungsioal);
+        Valid.pindah(evt, KetResikoJatuh, LainlainFungsioal);
     }//GEN-LAST:event_ADLKeyPressed
 
     private void LainlainFungsioalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LainlainFungsioalKeyPressed
-        Valid.pindah(evt,ADL,KetFisik);
+        Valid.pindah(evt, ADL, KetFisik);
     }//GEN-LAST:event_LainlainFungsioalKeyPressed
 
     private void KetFisikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KetFisikKeyPressed
-        Valid.pindah2(evt,LainlainFungsioal,PemeriksaanMuscu);
+        Valid.pindah2(evt, LainlainFungsioal, PemeriksaanMuscu);
     }//GEN-LAST:event_KetFisikKeyPressed
 
     private void PemeriksaanMuscuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemeriksaanMuscuKeyPressed
-        Valid.pindah2(evt,KetFisik,PemeriksaanNeuro);
+        Valid.pindah2(evt, KetFisik, PemeriksaanNeuro);
     }//GEN-LAST:event_PemeriksaanMuscuKeyPressed
 
     private void PemeriksaanNeuroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemeriksaanNeuroKeyPressed
-        Valid.pindah2(evt,PemeriksaanMuscu,PemeriksaanCardio);
+        Valid.pindah2(evt, PemeriksaanMuscu, PemeriksaanCardio);
     }//GEN-LAST:event_PemeriksaanNeuroKeyPressed
 
     private void PemeriksaanCardioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemeriksaanCardioKeyPressed
-        Valid.pindah2(evt,PemeriksaanNeuro,PemeriksaanInte);
+        Valid.pindah2(evt, PemeriksaanNeuro, PemeriksaanInte);
     }//GEN-LAST:event_PemeriksaanCardioKeyPressed
 
     private void PemeriksaanInteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PemeriksaanInteKeyPressed
-        Valid.pindah2(evt,PemeriksaanCardio,PengukuranMuscu);
+        Valid.pindah2(evt, PemeriksaanCardio, PengukuranMuscu);
     }//GEN-LAST:event_PemeriksaanInteKeyPressed
 
     private void PengukuranNeuroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengukuranNeuroKeyPressed
-        Valid.pindah2(evt,PengukuranMuscu,PengukuranCardio);
+        Valid.pindah2(evt, PengukuranMuscu, PengukuranCardio);
     }//GEN-LAST:event_PengukuranNeuroKeyPressed
 
     private void PengukuranMuscuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengukuranMuscuKeyPressed
-        Valid.pindah2(evt,PemeriksaanInte,PengukuranNeuro);
+        Valid.pindah2(evt, PemeriksaanInte, PengukuranNeuro);
     }//GEN-LAST:event_PengukuranMuscuKeyPressed
 
     private void PengukuranInteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengukuranInteKeyPressed
-        Valid.pindah2(evt,PengukuranCardio,Penunjang);
+        Valid.pindah2(evt, PengukuranCardio, Penunjang);
     }//GEN-LAST:event_PengukuranInteKeyPressed
 
     private void PengukuranCardioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PengukuranCardioKeyPressed
-        Valid.pindah2(evt,PengukuranNeuro,PengukuranInte);
+        Valid.pindah2(evt, PengukuranNeuro, PengukuranInte);
     }//GEN-LAST:event_PengukuranCardioKeyPressed
 
     private void PenunjangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PenunjangKeyPressed
-        Valid.pindah2(evt,PengukuranInte,Diagnosis);
+        Valid.pindah2(evt, PengukuranInte, Diagnosis);
     }//GEN-LAST:event_PenunjangKeyPressed
 
     private void DiagnosisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosisKeyPressed
-        Valid.pindah2(evt,Penunjang,Rencana);
+        Valid.pindah2(evt, Penunjang, Rencana);
     }//GEN-LAST:event_DiagnosisKeyPressed
 
     private void RencanaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RencanaKeyPressed
-        Valid.pindah2(evt,Diagnosis,BtnSimpan);
+        Valid.pindah2(evt, Diagnosis, BtnSimpan);
     }//GEN-LAST:event_RencanaKeyPressed
 
     private void MnPenilaianFisioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianFisioActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-            param.put("nyeri",Sequel.cariGambar("select gambar.nyeri from gambar"));
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            param.put("nyeri", Sequel.cariGambar(
+                    "select gambar.nyeri from gambar"));
             try {
-                param.put("lokalis",getClass().getResource("/picture/fisiobody.png").openStream());
+                param.put("lokalis", getClass().getResource(
+                        "/picture/fisiobody.png").openStream());
             } catch (Exception e) {
-            }   
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),46).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),47).toString()+"\nID "+(finger.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),46).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()));
+            }
+            finger = Sequel.cariIsi(
+                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
+            param.put("finger",
+                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 47).toString() + "\nID " + (finger.
+                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 46).
+                                    toString() : finger) + "\n" + Valid.SetTgl3(
+                            tbObat.getValueAt(tbObat.getSelectedRow(), 5).
+                                    toString()));
 
-            Valid.MyReportqry("rptCetakPenilaianAwalFisioterapi.jasper","report","::[ Laporan Penilaian Awal Fisioterapi ]::",
-                "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"+
-                "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"+
-                "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"+
-                "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"+
-                "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"+
-                "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"+
-                "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "+
-                "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "+
-                "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where reg_periksa.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'",param);
+            Valid.MyReportqry("rptCetakPenilaianAwalFisioterapi.jasper",
+                    "report", "::[ Laporan Penilaian Awal Fisioterapi ]::",
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"
+                    + "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"
+                    + "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"
+                    + "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"
+                    + "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"
+                    + "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"
+                    + "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "
+                    + "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where reg_periksa.no_rawat='" + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString() + "'",
+                    param);
         }
     }//GEN-LAST:event_MnPenilaianFisioActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianFisioterapi dialog = new RMPenilaianFisioterapi(new javax.swing.JFrame(), true);
+            RMPenilaianFisioterapi dialog = new RMPenilaianFisioterapi(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -2408,80 +2627,105 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().isEmpty()){
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"+
-                        "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"+
-                        "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"+
-                        "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"+
-                        "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"+
-                        "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"+
-                        "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "+
-                        "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "+
-                        "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "+
-                        "penilaian_fisioterapi.tanggal between ? and ? order by penilaian_fisioterapi.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"+
-                        "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"+
-                        "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"+
-                        "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"+
-                        "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"+
-                        "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"+
-                        "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "+
-                        "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "+
-                        "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where penilaian_fisioterapi.tanggal between ? and ? and "+
-                        "(reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                        "penilaian_fisioterapi.nip like ? or petugas.nama like ?) order by penilaian_fisioterapi.tanggal");
+        try {
+            if (TCari.getText().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"
+                        + "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"
+                        + "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"
+                        + "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"
+                        + "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"
+                        + "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"
+                        + "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "
+                        + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "
+                        + "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where "
+                        + "penilaian_fisioterapi.tanggal between ? and ? order by penilaian_fisioterapi.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_fisioterapi.tanggal,penilaian_fisioterapi.informasi,penilaian_fisioterapi.keluhan_utama,"
+                        + "penilaian_fisioterapi.rps,penilaian_fisioterapi.rpd,penilaian_fisioterapi.td,penilaian_fisioterapi.hr,penilaian_fisioterapi.rr,penilaian_fisioterapi.suhu,penilaian_fisioterapi.nyeri_tekan,penilaian_fisioterapi.nyeri_gerak,"
+                        + "penilaian_fisioterapi.nyeri_diam,penilaian_fisioterapi.palpasi,penilaian_fisioterapi.luas_gerak_sendi,penilaian_fisioterapi.kekuatan_otot,penilaian_fisioterapi.statis,penilaian_fisioterapi.dinamis,penilaian_fisioterapi.kognitif,"
+                        + "penilaian_fisioterapi.auskultasi,penilaian_fisioterapi.alat_bantu,penilaian_fisioterapi.ket_bantu,penilaian_fisioterapi.prothesa,penilaian_fisioterapi.ket_pro,penilaian_fisioterapi.deformitas,penilaian_fisioterapi.ket_deformitas,"
+                        + "penilaian_fisioterapi.resikojatuh,penilaian_fisioterapi.ket_resikojatuh,penilaian_fisioterapi.adl,penilaian_fisioterapi.lainlain_fungsional,penilaian_fisioterapi.ket_fisik,penilaian_fisioterapi.pemeriksaan_musculoskeletal,"
+                        + "penilaian_fisioterapi.pemeriksaan_neuromuscular,penilaian_fisioterapi.pemeriksaan_cardiopulmonal,penilaian_fisioterapi.pemeriksaan_integument,penilaian_fisioterapi.pengukuran_musculoskeletal,penilaian_fisioterapi.pengukuran_neuromuscular,"
+                        + "penilaian_fisioterapi.pengukuran_cardiopulmonal,penilaian_fisioterapi.pengukuran_integument,penilaian_fisioterapi.penunjang,penilaian_fisioterapi.diagnosis_fisio,penilaian_fisioterapi.rencana_terapi,penilaian_fisioterapi.nip,petugas.nama "
+                        + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join penilaian_fisioterapi on reg_periksa.no_rawat=penilaian_fisioterapi.no_rawat "
+                        + "inner join petugas on penilaian_fisioterapi.nip=petugas.nip where penilaian_fisioterapi.tanggal between ? and ? and "
+                        + "(reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                        + "penilaian_fisioterapi.nip like ? or petugas.nama like ?) order by penilaian_fisioterapi.tanggal");
             }
-                
+
             try {
-                if(TCari.getText().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("jk"),rs.getString("tgl_lahir"),
-                        rs.getString("tanggal"),rs.getString("informasi"),rs.getString("keluhan_utama"),rs.getString("rps"),rs.getString("rpd"),
-                        rs.getString("td"),rs.getString("hr"),rs.getString("rr"),rs.getString("suhu"),rs.getString("nyeri_tekan"),rs.getString("nyeri_gerak"),
-                        rs.getString("nyeri_diam"),rs.getString("palpasi"),rs.getString("luas_gerak_sendi"),rs.getString("kekuatan_otot"),rs.getString("statis"),
-                        rs.getString("dinamis"),rs.getString("kognitif"),rs.getString("auskultasi"),rs.getString("alat_bantu"),rs.getString("ket_bantu"),
-                        rs.getString("prothesa"),rs.getString("ket_pro"),rs.getString("deformitas"),rs.getString("ket_deformitas"),rs.getString("resikojatuh"),
-                        rs.getString("ket_resikojatuh"),rs.getString("adl"),rs.getString("lainlain_fungsional"),rs.getString("ket_fisik"),
-                        rs.getString("pemeriksaan_musculoskeletal"),rs.getString("pemeriksaan_neuromuscular"),rs.getString("pemeriksaan_cardiopulmonal"),
-                        rs.getString("pemeriksaan_integument"),rs.getString("pengukuran_musculoskeletal"),rs.getString("pengukuran_neuromuscular"),
-                        rs.getString("pengukuran_cardiopulmonal"),rs.getString("pengukuran_integument"),rs.getString("penunjang"),rs.getString("diagnosis_fisio"),
-                        rs.getString("rencana_terapi"),rs.getString("nip"),rs.getString("nama")
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("jk"), rs.
+                        getString("tgl_lahir"),
+                        rs.getString("tanggal"), rs.getString("informasi"), rs.
+                        getString("keluhan_utama"), rs.getString("rps"), rs.
+                        getString("rpd"),
+                        rs.getString("td"), rs.getString("hr"), rs.getString(
+                        "rr"), rs.getString("suhu"), rs.getString("nyeri_tekan"),
+                        rs.getString("nyeri_gerak"),
+                        rs.getString("nyeri_diam"), rs.getString("palpasi"), rs.
+                        getString("luas_gerak_sendi"), rs.getString(
+                        "kekuatan_otot"), rs.getString("statis"),
+                        rs.getString("dinamis"), rs.getString("kognitif"), rs.
+                        getString("auskultasi"), rs.getString("alat_bantu"), rs.
+                        getString("ket_bantu"),
+                        rs.getString("prothesa"), rs.getString("ket_pro"), rs.
+                        getString("deformitas"), rs.getString("ket_deformitas"),
+                        rs.getString("resikojatuh"),
+                        rs.getString("ket_resikojatuh"), rs.getString("adl"),
+                        rs.getString("lainlain_fungsional"), rs.getString(
+                        "ket_fisik"),
+                        rs.getString("pemeriksaan_musculoskeletal"), rs.
+                        getString("pemeriksaan_neuromuscular"), rs.getString(
+                        "pemeriksaan_cardiopulmonal"),
+                        rs.getString("pemeriksaan_integument"), rs.getString(
+                        "pengukuran_musculoskeletal"), rs.getString(
+                        "pengukuran_neuromuscular"),
+                        rs.getString("pengukuran_cardiopulmonal"), rs.getString(
+                        "pengukuran_integument"), rs.getString("penunjang"), rs.
+                        getString("diagnosis_fisio"),
+                        rs.getString("rencana_terapi"), rs.getString("nip"), rs.
+                        getString("nama")
                     });
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {
@@ -2524,92 +2768,140 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
         Penunjang.setText("");
         Diagnosis.setText("");
         Rencana.setText("");
-        
+
         TabRawat.setSelectedIndex(0);
         Informasi.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()); 
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString()); 
-            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString()); 
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString()); 
-            Informasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()); 
-            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()); 
-            RiwayatPenyakitSekarang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString()); 
-            RiwayatPenyakitDahulu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString()); 
-            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString()); 
-            HR.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString()); 
-            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString()); 
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString()); 
-            NyeriTekan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString()); 
-            NyeriGerak.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString()); 
-            NyeriDiam.setText(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString()); 
-            Palpasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString()); 
-            LuasGerakSendi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString()); 
-            KekuatanOtot.setText(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());  
-            Statis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());  
-            Dinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());  
-            Kognitif.setText(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());  
-            Auskultasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString()); 
-            AlatBantu.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),24).toString()); 
-            KetBantu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString()); 
-            Prothesa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),26).toString()); 
-            KetProthesa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),27).toString()); 
-            Deformitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),28).toString()); 
-            KetDeformitas.setText(tbObat.getValueAt(tbObat.getSelectedRow(),29).toString());
-            ResikoJatuh.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),30).toString()); 
-            KetResikoJatuh.setText(tbObat.getValueAt(tbObat.getSelectedRow(),31).toString());  
-            ADL.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),32).toString()); 
-            LainlainFungsioal.setText(tbObat.getValueAt(tbObat.getSelectedRow(),33).toString()); 
-            KetFisik.setText(tbObat.getValueAt(tbObat.getSelectedRow(),34).toString());  
-            PemeriksaanMuscu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),35).toString()); 
-            PemeriksaanNeuro.setText(tbObat.getValueAt(tbObat.getSelectedRow(),36).toString()); 
-            PemeriksaanCardio.setText(tbObat.getValueAt(tbObat.getSelectedRow(),37).toString()); 
-            PemeriksaanInte.setText(tbObat.getValueAt(tbObat.getSelectedRow(),38).toString()); 
-            PengukuranMuscu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),39).toString()); 
-            PengukuranNeuro.setText(tbObat.getValueAt(tbObat.getSelectedRow(),40).toString()); 
-            PengukuranCardio.setText(tbObat.getValueAt(tbObat.getSelectedRow(),41).toString()); 
-            PengukuranInte.setText(tbObat.getValueAt(tbObat.getSelectedRow(),42).toString()); 
-            Penunjang.setText(tbObat.getValueAt(tbObat.getSelectedRow(),43).toString()); 
-            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),44).toString()); 
-            Rencana.setText(tbObat.getValueAt(tbObat.getSelectedRow(),45).toString()); 
-            Valid.SetTgl2(TglAsuhan,tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
+                    toString());
+            Informasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    6).toString());
+            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
+                    toString());
+            RiwayatPenyakitSekarang.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 8).toString());
+            RiwayatPenyakitDahulu.setText(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 9).toString());
+            TD.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
+                            toString());
+            HR.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
+                            toString());
+            RR.
+                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
+                            toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
+                    toString());
+            NyeriTekan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
+                    toString());
+            NyeriGerak.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
+                    toString());
+            NyeriDiam.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
+                    toString());
+            Palpasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
+                    toString());
+            LuasGerakSendi.setText(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KekuatanOtot.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
+                    toString());
+            Statis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
+                    toString());
+            Dinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
+                    toString());
+            Kognitif.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
+                    toString());
+            Auskultasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
+                    toString());
+            AlatBantu.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    24).toString());
+            KetBantu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
+                    toString());
+            Prothesa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    26).toString());
+            KetProthesa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).
+                    toString());
+            Deformitas.setSelectedItem(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 28).toString());
+            KetDeformitas.setText(
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            ResikoJatuh.setSelectedItem(tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 30).toString());
+            KetResikoJatuh.setText(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 31).toString());
+            ADL.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
+                    toString());
+            LainlainFungsioal.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    33).toString());
+            KetFisik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
+                    toString());
+            PemeriksaanMuscu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    35).toString());
+            PemeriksaanNeuro.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    36).toString());
+            PemeriksaanCardio.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    37).toString());
+            PemeriksaanInte.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    38).toString());
+            PengukuranMuscu.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    39).toString());
+            PengukuranNeuro.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    40).toString());
+            PengukuranCardio.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    41).toString());
+            PengukuranInte.setText(tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Penunjang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
+                    toString());
+            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).
+                    toString());
+            Rencana.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).
+                    toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
+                    5).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi "+
-                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } catch (SQLException e) {
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notif : " + e);
         }
     }
-    
+
     /**
      *
      * @param norwt
@@ -2618,98 +2910,155 @@ public class RMPenilaianFisioterapi extends javax.swing.JDialog {
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        DTPCari2.setDate(tgl2);    
-        isRawat(); 
+        DTPCari2.setDate(tgl2);
+        isRawat();
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.getpenilaian_fisioterapi());
         BtnHapus.setEnabled(akses.getpenilaian_fisioterapi());
         BtnEdit.setEnabled(akses.getpenilaian_fisioterapi());
         BtnEdit.setEnabled(akses.getpenilaian_fisioterapi());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KdPetugas.setEditable(false);
             BtnDokter.setEnabled(false);
             KdPetugas.setText(akses.getkode());
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
-        }            
+        }
     }
 
-    public void setTampil(){
-       TabRawat.setSelectedIndex(1);
+    public void setTampil() {
+        TabRawat.setSelectedIndex(1);
     }
-    
+
     private void hapus() {
-        if(Sequel.queryu2tf("delete from penilaian_fisioterapi where no_rawat=?",1,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from penilaian_fisioterapi where no_rawat=?", 1,
+                new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
-            LCount.setText(""+tabMode.getRowCount());
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+            LCount.setText("" + tabMode.getRowCount());
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("penilaian_fisioterapi","no_rawat=?","no_rawat=?,tanggal=?,informasi=?,keluhan_utama=?,rps=?,rpd=?,td=?,hr=?,rr=?,suhu=?,nyeri_tekan=?,nyeri_gerak=?,nyeri_diam=?,palpasi=?,luas_gerak_sendi=?,kekuatan_otot=?,statis=?,dinamis=?,kognitif=?,auskultasi=?,alat_bantu=?,ket_bantu=?,prothesa=?,ket_pro=?,deformitas=?,ket_deformitas=?,resikojatuh=?,ket_resikojatuh=?,adl=?,lainlain_fungsional=?,ket_fisik=?,pemeriksaan_musculoskeletal=?,pemeriksaan_neuromuscular=?,pemeriksaan_cardiopulmonal=?,pemeriksaan_integument=?,pengukuran_musculoskeletal=?,pengukuran_neuromuscular=?,pengukuran_cardiopulmonal=?,pengukuran_integument=?,penunjang=?,diagnosis_fisio=?,rencana_terapi=?,nip=?",44,new String[]{
-                TNoRw.getText(),Valid.SetTgl(TglAsuhan.getSelectedItem()+"")+" "+TglAsuhan.getSelectedItem().toString().substring(11,19),Informasi.getSelectedItem().toString(),KeluhanUtama.getText(),
-                RiwayatPenyakitSekarang.getText(),RiwayatPenyakitDahulu.getText(),TD.getText(),HR.getText(),RR.getText(),Suhu.getText(),NyeriTekan.getText(),NyeriGerak.getText(),NyeriDiam.getText(),
-                Palpasi.getText(),LuasGerakSendi.getText(),KekuatanOtot.getText(),Statis.getText(),Dinamis.getText(),Kognitif.getText(),Auskultasi.getText(),AlatBantu.getSelectedItem().toString(),
-                KetBantu.getText(),Prothesa.getSelectedItem().toString(),KetProthesa.getText(),Deformitas.getSelectedItem().toString(),KetDeformitas.getText(),ResikoJatuh.getSelectedItem().toString(),
-                KetResikoJatuh.getText(),ADL.getSelectedItem().toString(),LainlainFungsioal.getText(),KetFisik.getText(),PemeriksaanMuscu.getText(),PemeriksaanNeuro.getText(),PemeriksaanCardio.getText(),
-                PemeriksaanInte.getText(),PengukuranMuscu.getText(),PengukuranNeuro.getText(),PengukuranCardio.getText(),PengukuranInte.getText(),Penunjang.getText(),Diagnosis.getText(),Rencana.getText(),
-                KdPetugas.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-             })==true){
-                tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
-                tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
-                tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),2);
-                tbObat.setValueAt(Jk.getText(),tbObat.getSelectedRow(),3);
-                tbObat.setValueAt(TglLahir.getText(),tbObat.getSelectedRow(),4);
-                tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem()+"")+" "+TglAsuhan.getSelectedItem().toString().substring(11,19),tbObat.getSelectedRow(),5);
-                tbObat.setValueAt(Informasi.getSelectedItem().toString(),tbObat.getSelectedRow(),6);
-                tbObat.setValueAt(KeluhanUtama.getText(),tbObat.getSelectedRow(),7);
-                tbObat.setValueAt(RiwayatPenyakitSekarang.getText(),tbObat.getSelectedRow(),8);
-                tbObat.setValueAt(RiwayatPenyakitDahulu.getText(),tbObat.getSelectedRow(),9);
-                tbObat.setValueAt(TD.getText(),tbObat.getSelectedRow(),10);
-                tbObat.setValueAt(HR.getText(),tbObat.getSelectedRow(),11);
-                tbObat.setValueAt(RR.getText(),tbObat.getSelectedRow(),12);
-                tbObat.setValueAt(Suhu.getText(),tbObat.getSelectedRow(),13);
-                tbObat.setValueAt(NyeriTekan.getText(),tbObat.getSelectedRow(),14);
-                tbObat.setValueAt(NyeriGerak.getText(),tbObat.getSelectedRow(),15);
-                tbObat.setValueAt(NyeriDiam.getText(),tbObat.getSelectedRow(),16);
-                tbObat.setValueAt(Palpasi.getText(),tbObat.getSelectedRow(),17);
-                tbObat.setValueAt(LuasGerakSendi.getText(),tbObat.getSelectedRow(),18);
-                tbObat.setValueAt(KekuatanOtot.getText(),tbObat.getSelectedRow(),19);
-                tbObat.setValueAt(Statis.getText(),tbObat.getSelectedRow(),20);
-                tbObat.setValueAt(Dinamis.getText(),tbObat.getSelectedRow(),21);
-                tbObat.setValueAt(Kognitif.getText(),tbObat.getSelectedRow(),22);
-                tbObat.setValueAt(Auskultasi.getText(),tbObat.getSelectedRow(),23);
-                tbObat.setValueAt(AlatBantu.getSelectedItem().toString(),tbObat.getSelectedRow(),24);
-                tbObat.setValueAt(KetBantu.getText(),tbObat.getSelectedRow(),25);
-                tbObat.setValueAt(Prothesa.getSelectedItem().toString(),tbObat.getSelectedRow(),26);
-                tbObat.setValueAt(KetProthesa.getText(),tbObat.getSelectedRow(),27);
-                tbObat.setValueAt(Deformitas.getSelectedItem().toString(),tbObat.getSelectedRow(),28);
-                tbObat.setValueAt(KetDeformitas.getText(),tbObat.getSelectedRow(),29);
-                tbObat.setValueAt(ResikoJatuh.getSelectedItem().toString(),tbObat.getSelectedRow(),30);
-                tbObat.setValueAt(KetResikoJatuh.getText(),tbObat.getSelectedRow(),31);
-                tbObat.setValueAt(ADL.getSelectedItem().toString(),tbObat.getSelectedRow(),32);
-                tbObat.setValueAt(LainlainFungsioal.getText(),tbObat.getSelectedRow(),33);
-                tbObat.setValueAt(KetFisik.getText(),tbObat.getSelectedRow(),34);
-                tbObat.setValueAt(PemeriksaanMuscu.getText(),tbObat.getSelectedRow(),35);
-                tbObat.setValueAt(PemeriksaanNeuro.getText(),tbObat.getSelectedRow(),36);
-                tbObat.setValueAt(PemeriksaanCardio.getText(),tbObat.getSelectedRow(),37);
-                tbObat.setValueAt(PemeriksaanInte.getText(),tbObat.getSelectedRow(),38);
-                tbObat.setValueAt(PengukuranMuscu.getText(),tbObat.getSelectedRow(),39);
-                tbObat.setValueAt(PengukuranNeuro.getText(),tbObat.getSelectedRow(),40);
-                tbObat.setValueAt(PengukuranCardio.getText(),tbObat.getSelectedRow(),41);
-                tbObat.setValueAt(PengukuranInte.getText(),tbObat.getSelectedRow(),42);
-                tbObat.setValueAt(Penunjang.getText(),tbObat.getSelectedRow(),43);
-                tbObat.setValueAt(Diagnosis.getText(),tbObat.getSelectedRow(),44);
-                tbObat.setValueAt(Rencana.getText(),tbObat.getSelectedRow(),45);
-                tbObat.setValueAt(KdPetugas.getText(),tbObat.getSelectedRow(),46);
-                tbObat.setValueAt(NmPetugas.getText(),tbObat.getSelectedRow(),47);
-                emptTeks();
-                TabRawat.setSelectedIndex(1);
+        if (Sequel.mengedittf("penilaian_fisioterapi", "no_rawat=?",
+                "no_rawat=?,tanggal=?,informasi=?,keluhan_utama=?,rps=?,rpd=?,td=?,hr=?,rr=?,suhu=?,nyeri_tekan=?,nyeri_gerak=?,nyeri_diam=?,palpasi=?,luas_gerak_sendi=?,kekuatan_otot=?,statis=?,dinamis=?,kognitif=?,auskultasi=?,alat_bantu=?,ket_bantu=?,prothesa=?,ket_pro=?,deformitas=?,ket_deformitas=?,resikojatuh=?,ket_resikojatuh=?,adl=?,lainlain_fungsional=?,ket_fisik=?,pemeriksaan_musculoskeletal=?,pemeriksaan_neuromuscular=?,pemeriksaan_cardiopulmonal=?,pemeriksaan_integument=?,pengukuran_musculoskeletal=?,pengukuran_neuromuscular=?,pengukuran_cardiopulmonal=?,pengukuran_integument=?,penunjang=?,diagnosis_fisio=?,rencana_terapi=?,nip=?",
+                44, new String[]{
+                    TNoRw.getText(), Valid.SetTgl(
+                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
+                    getSelectedItem().toString().substring(11, 19), Informasi.
+                    getSelectedItem().toString(), KeluhanUtama.getText(),
+                    RiwayatPenyakitSekarang.getText(), RiwayatPenyakitDahulu.
+                    getText(), TD.getText(), HR.getText(), RR.getText(), Suhu.
+                    getText(), NyeriTekan.getText(), NyeriGerak.getText(),
+                    NyeriDiam.getText(),
+                    Palpasi.getText(), LuasGerakSendi.getText(), KekuatanOtot.
+                    getText(), Statis.getText(), Dinamis.getText(), Kognitif.
+                    getText(), Auskultasi.getText(),
+                    AlatBantu.getSelectedItem().toString(),
+                    KetBantu.getText(), Prothesa.getSelectedItem().toString(),
+                    KetProthesa.getText(), Deformitas.getSelectedItem().
+                    toString(), KetDeformitas.getText(), ResikoJatuh.
+                    getSelectedItem().toString(),
+                    KetResikoJatuh.getText(), ADL.getSelectedItem().toString(),
+                    LainlainFungsioal.getText(), KetFisik.getText(),
+                    PemeriksaanMuscu.getText(), PemeriksaanNeuro.getText(),
+                    PemeriksaanCardio.getText(),
+                    PemeriksaanInte.getText(), PengukuranMuscu.getText(),
+                    PengukuranNeuro.getText(), PengukuranCardio.getText(),
+                    PengukuranInte.getText(), Penunjang.getText(), Diagnosis.
+                    getText(), Rencana.getText(),
+                    KdPetugas.getText(), tbObat.getValueAt(tbObat.
+                    getSelectedRow(), 0).toString()
+                }) == true) {
+            tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
+            tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
+            tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
+            tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 3);
+            tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 4);
+            tbObat.setValueAt(
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
+                    getSelectedItem().toString().substring(11, 19), tbObat.
+                    getSelectedRow(), 5);
+            tbObat.setValueAt(Informasi.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 6);
+            tbObat.
+                    setValueAt(KeluhanUtama.getText(), tbObat.getSelectedRow(),
+                            7);
+            tbObat.setValueAt(RiwayatPenyakitSekarang.getText(), tbObat.
+                    getSelectedRow(), 8);
+            tbObat.setValueAt(RiwayatPenyakitDahulu.getText(), tbObat.
+                    getSelectedRow(), 9);
+            tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(HR.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(RR.getText(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(NyeriTekan.getText(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(NyeriGerak.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(NyeriDiam.getText(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Palpasi.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(LuasGerakSendi.getText(), tbObat.getSelectedRow(),
+                    18);
+            tbObat.setValueAt(KekuatanOtot.getText(), tbObat.getSelectedRow(),
+                    19);
+            tbObat.setValueAt(Statis.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Dinamis.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Kognitif.getText(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Auskultasi.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(AlatBantu.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 24);
+            tbObat.setValueAt(KetBantu.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(Prothesa.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 26);
+            tbObat.
+                    setValueAt(KetProthesa.getText(), tbObat.getSelectedRow(),
+                            27);
+            tbObat.setValueAt(Deformitas.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 28);
+            tbObat.setValueAt(KetDeformitas.getText(), tbObat.getSelectedRow(),
+                    29);
+            tbObat.setValueAt(ResikoJatuh.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 30);
+            tbObat.setValueAt(KetResikoJatuh.getText(), tbObat.getSelectedRow(),
+                    31);
+            tbObat.setValueAt(ADL.getSelectedItem().toString(), tbObat.
+                    getSelectedRow(), 32);
+            tbObat.setValueAt(LainlainFungsioal.getText(), tbObat.
+                    getSelectedRow(), 33);
+            tbObat.setValueAt(KetFisik.getText(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(PemeriksaanMuscu.getText(), tbObat.
+                    getSelectedRow(), 35);
+            tbObat.setValueAt(PemeriksaanNeuro.getText(), tbObat.
+                    getSelectedRow(), 36);
+            tbObat.setValueAt(PemeriksaanCardio.getText(), tbObat.
+                    getSelectedRow(), 37);
+            tbObat.
+                    setValueAt(PemeriksaanInte.getText(), tbObat.
+                            getSelectedRow(), 38);
+            tbObat.
+                    setValueAt(PengukuranMuscu.getText(), tbObat.
+                            getSelectedRow(), 39);
+            tbObat.
+                    setValueAt(PengukuranNeuro.getText(), tbObat.
+                            getSelectedRow(), 40);
+            tbObat.setValueAt(PengukuranCardio.getText(), tbObat.
+                    getSelectedRow(), 41);
+            tbObat.setValueAt(PengukuranInte.getText(), tbObat.getSelectedRow(),
+                    42);
+            tbObat.setValueAt(Penunjang.getText(), tbObat.getSelectedRow(), 43);
+            tbObat.setValueAt(Diagnosis.getText(), tbObat.getSelectedRow(), 44);
+            tbObat.setValueAt(Rencana.getText(), tbObat.getSelectedRow(), 45);
+            tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 46);
+            tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 47);
+            emptTeks();
+            TabRawat.setSelectedIndex(1);
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            RMPenilaianFisioterapi.class.getName());
 }

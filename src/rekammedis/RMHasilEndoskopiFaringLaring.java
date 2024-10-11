@@ -1,120 +1,156 @@
 /*
  * By Mas Elkhanza
  */
-
-
 package rekammedis;
 
-import bridging.*;
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import bridging.ApiOrthanc;
+import bridging.OrthancDICOM;
+import com.fasterxml.jackson.databind.JsonNode;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import kepegawaian.*;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import kepegawaian.DlgCariDokter;
 
 /**
  *
  * @author perpustakaan
  */
 public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode,tabModeDicom;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private final DefaultTableModel tabMode, tabModeDicom;
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0;
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
+    private int i = 0;
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
     private StringBuilder htmlContent;
-    private String finger="";
+    private String finger = "";
     private JsonNode root;
-    private String TANGGALMUNDUR="yes";
-    
-    /** Creates new form DlgRujuk
+    private String TANGGALMUNDUR = "yes";
+
+    /**
+     * Creates new form DlgRujuk
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public RMHasilEndoskopiFaringLaring(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        tabMode=new DefaultTableModel(null,new Object[]{
-                "No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","Kode Dokter","Nama Dokter","Tanggal","Kiriman Dari","Diagnosa Klinis","Uvula","Arkus Faring",
-                "Dinding Posterior","Tonsil","Tonsil Lingual","Valekula","Sinus Piriformis","Epiglotis","Arytenoid","Ventrikularis","Pita Suara",
-                "Rima Vocalis","Lain-lain","Kesan","Saran"
-            }){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabMode = new DefaultTableModel(null, new Object[]{
+            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "Kode Dokter",
+            "Nama Dokter", "Tanggal", "Kiriman Dari", "Diagnosa Klinis", "Uvula",
+            "Arkus Faring",
+            "Dinding Posterior", "Tonsil", "Tonsil Lingual", "Valekula",
+            "Sinus Piriformis", "Epiglotis", "Arytenoid", "Ventrikularis",
+            "Pita Suara",
+            "Rima Vocalis", "Lain-lain", "Kesan", "Saran"
+        }) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
-        
+
         tbObat.setModel(tabMode);
-        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 24; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(105);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(70);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(150);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(65);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(80);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(115);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(150);
-            }else if(i==8){
+            } else if (i == 8) {
                 column.setPreferredWidth(150);
-            }else if(i==9){
+            } else if (i == 9) {
                 column.setPreferredWidth(250);
-            }else if(i==10){
+            } else if (i == 10) {
                 column.setPreferredWidth(250);
-            }else if(i==22){
+            } else if (i == 22) {
                 column.setPreferredWidth(250);
-            }else if(i==23){
+            } else if (i == 23) {
                 column.setPreferredWidth(250);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        tabModeDicom=new DefaultTableModel(null,new Object[]{
-            "UUID Pasien","ID Studies","ID Series"}){
-             @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+
+        tabModeDicom = new DefaultTableModel(null, new Object[]{
+            "UUID Pasien", "ID Studies", "ID Series"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbListDicom.setModel(tabModeDicom);
-        tbListDicom.setPreferredScrollableViewportSize(new Dimension(500,500));
+        tbListDicom.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbListDicom.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbListDicom.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(100);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(270);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(270);
             }
         }
         tbListDicom.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
+
+        TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KirimanDari.setDocument(new batasInput(50).getKata(KirimanDari));
         DiagnosaKlinis.setDocument(new batasInput(50).getKata(DiagnosaKlinis));
-        DindingPosterior.setDocument(new batasInput(50).getKata(DindingPosterior));
+        DindingPosterior.setDocument(new batasInput(50).
+                getKata(DindingPosterior));
         Uvula.setDocument(new batasInput(50).getKata(Uvula));
         ArkusFaring.setDocument(new batasInput(50).getKata(ArkusFaring));
         Tonsil.setDocument(new batasInput(50).getKata(Tonsil));
@@ -122,7 +158,8 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         Valekula.setDocument(new batasInput(50).getKata(Valekula));
         SinusPiriformis.setDocument(new batasInput(50).getKata(SinusPiriformis));
         Epiglitos.setDocument(new batasInput(50).getKata(Epiglitos));
-        PlikaVentrikulais.setDocument(new batasInput(50).getKata(PlikaVentrikulais));
+        PlikaVentrikulais.setDocument(new batasInput(50).getKata(
+                PlikaVentrikulais));
         Arytenoid.setDocument(new batasInput(50).getKata(Arytenoid));
         RimaVocalis.setDocument(new batasInput(50).getKata(RimaVocalis));
         PitaSuara.setDocument(new batasInput(50).getKata(PitaSuara));
@@ -130,99 +167,115 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         Kesan.setDocument(new batasInput(300).getKata(Kesan));
         Saran.setDocument(new batasInput(300).getKata(Saran));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
             });
         }
-        
+
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         ChkAccor.setSelected(false);
         isPhoto();
-        
+
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
         LoadHTML.setEditorKit(kit);
         LoadHTML2.setEditable(false);
         LoadHTML2.addHyperlinkListener(e -> {
             if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
-              Desktop desktop = Desktop.getDesktop();
-              try {
-                desktop.browse(e.getURL().toURI());
-              } catch (Exception ex) {
-                ex.printStackTrace();
-              }
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.browse(e.getURL().toURI());
+                } catch (IOException | URISyntaxException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         LoadHTML2.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
         );
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML2.setDocument(doc);
-        
+
         try {
-            TANGGALMUNDUR=koneksiDB.TANGGALMUNDUR();
+            TANGGALMUNDUR = koneksiDB.TANGGALMUNDUR();
         } catch (Exception e) {
-            TANGGALMUNDUR="yes";
+            TANGGALMUNDUR = "yes";
         }
     }
 
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1146,42 +1199,46 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             isRawat();
-        }else{            
-            Valid.pindah(evt,TCari,BtnDokter);
+        } else {
+            Valid.pindah(evt, TCari, BtnDokter);
         }
 }//GEN-LAST:event_TNoRwKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmDokter.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Dokter");
-        }else if(DiagnosaKlinis.getText().trim().isEmpty()){
-            Valid.textKosong(DiagnosaKlinis,"Diagnosa Klinis");
-        }else if(Kesan.getText().trim().isEmpty()){
-            Valid.textKosong(Kesan,"Kesan");
-        }else{
-            if(akses.getkode().equals("Admin Utama")){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmDokter.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Dokter");
+        } else if (DiagnosaKlinis.getText().trim().isEmpty()) {
+            Valid.textKosong(DiagnosaKlinis, "Diagnosa Klinis");
+        } else if (Kesan.getText().trim().isEmpty()) {
+            Valid.textKosong(Kesan, "Kesan");
+        } else {
+            if (akses.getkode().equals("Admin Utama")) {
                 simpan();
-            }else{
-                if(TanggalRegistrasi.getText().isEmpty()){
-                    TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",TNoRw.getText()));
+            } else {
+                if (TanggalRegistrasi.getText().isEmpty()) {
+                    TanggalRegistrasi.setText(Sequel.cariIsi(
+                            "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
+                            TNoRw.getText()));
                 }
-                if(Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19))==true){
+                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                        getSelectedItem().toString().substring(11, 19)) == true) {
                     simpan();
                 }
             }
         }
-    
+
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Saran,BtnBatal);
+        } else {
+            Valid.pindah(evt, Saran, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -1190,73 +1247,91 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-            if(akses.getkode().equals("Admin Utama")){
+        if (tbObat.getSelectedRow() > -1) {
+            if (akses.getkode().equals("Admin Utama")) {
                 hapus();
-            }else{
-                if(KdDokter.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString())){
-                    if(Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString(),Sequel.ambiltanggalsekarang())==true){
+            } else {
+                if (KdDokter.getText().equals(tbObat.getValueAt(tbObat.
+                        getSelectedRow(), 4).toString())) {
+                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 6).toString(), Sequel.
+                                    ambiltanggalsekarang()) == true) {
                         hapus();
-                    }  
-                }else{
-                    JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh dokter yang bersangkutan..!!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Hanya bisa dihapus oleh dokter yang bersangkutan..!!");
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
-        }              
-            
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih data terlebih dahulu..!!");
+        }
+
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(TNoRM.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRw,"Nama Pasien");
-        }else if(NmDokter.getText().trim().isEmpty()){
-            Valid.textKosong(BtnDokter,"Dokter");
-        }else if(DiagnosaKlinis.getText().trim().isEmpty()){
-            Valid.textKosong(DiagnosaKlinis,"Diagnosa Klinis");
-        }else{
-            if(tbObat.getSelectedRow()>-1){
-                if(akses.getkode().equals("Admin Utama")){
+        if (TNoRM.getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRw, "Nama Pasien");
+        } else if (NmDokter.getText().trim().isEmpty()) {
+            Valid.textKosong(BtnDokter, "Dokter");
+        } else if (DiagnosaKlinis.getText().trim().isEmpty()) {
+            Valid.textKosong(DiagnosaKlinis, "Diagnosa Klinis");
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
+                if (akses.getkode().equals("Admin Utama")) {
                     ganti();
-                }else{
-                    if(KdDokter.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString())){
-                        if(Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString(),Sequel.ambiltanggalsekarang())==true){
-                            if(TanggalRegistrasi.getText().isEmpty()){
-                                TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",TNoRw.getText()));
+                } else {
+                    if (KdDokter.getText().equals(tbObat.getValueAt(tbObat.
+                            getSelectedRow(), 4).toString())) {
+                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
+                                getSelectedRow(), 6).toString(), Sequel.
+                                        ambiltanggalsekarang()) == true) {
+                            if (TanggalRegistrasi.getText().isEmpty()) {
+                                TanggalRegistrasi.setText(Sequel.cariIsi(
+                                        "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
+                                        TNoRw.getText()));
                             }
-                            if(Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19))==true){
+                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.
+                                    getText(), Valid.SetTgl(Tanggal.
+                                            getSelectedItem() + "") + " " + Tanggal.
+                                            getSelectedItem().toString().
+                                            substring(11, 19)) == true) {
                                 ganti();
                             }
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh dokter yang bersangkutan..!!");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Hanya bisa diganti oleh dokter yang bersangkutan..!!");
                     }
                 }
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih data terlebih dahulu..!!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
@@ -1266,138 +1341,168 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,BtnEdit,TCari);}
+        } else {
+            Valid.pindah(evt, BtnEdit, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            try{
+        } else if (tabMode.getRowCount() != 0) {
+            try {
                 htmlContent = new StringBuilder();
-                htmlContent.append(                             
-                    "<tr class='isi'>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl.Lahir</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kode Dokter</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Dokter</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kiriman Dari</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Diagnosa Klinis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Uvula</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arkus Faring</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Dinding Posterior</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tonsil</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tonsil Lingual</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Valekula</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Sinus Piriformis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Epiglotis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arytenoid</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ventrikularis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pita Suara</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Rima Vocalis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lain-lain</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kesan</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Saran</b></td>"+
-                    "</tr>"
+                htmlContent.append(
+                        "<tr class='isi'>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.Rawat</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>No.RM</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pasien</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tgl.Lahir</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kode Dokter</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Dokter</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tanggal</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kiriman Dari</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Diagnosa Klinis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Uvula</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arkus Faring</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Dinding Posterior</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tonsil</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Tonsil Lingual</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Valekula</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Sinus Piriformis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Epiglotis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Arytenoid</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Ventrikularis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Pita Suara</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Rima Vocalis</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Lain-lain</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kesan</b></td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Saran</b></td>"
+                        + "</tr>"
                 );
                 for (i = 0; i < tabMode.getRowCount(); i++) {
                     htmlContent.append(
-                        "<tr class='isi'>"+
-                           "<td valign='top'>"+tbObat.getValueAt(i,0).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,1).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,2).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,3).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,4).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,5).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,6).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,7).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,8).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,9).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,10).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,11).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,12).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,13).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,14).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,15).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,16).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,17).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,18).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,19).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,20).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,21).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,22).toString()+"</td>"+
-                            "<td valign='top'>"+tbObat.getValueAt(i,23).toString()+"</td>"+
-                        "</tr>");
+                            "<tr class='isi'>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 22).
+                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 23).
+                                    toString() + "</td>"
+                            + "</tr>");
                 }
                 LoadHTML.setText(
-                    "<html>"+
-                      "<table width='2300px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"+
-                       htmlContent.toString()+
-                      "</table>"+
-                    "</html>"
+                        "<html>"
+                        + "<table width='2300px' border='0' align='center' cellpadding='1px' cellspacing='0' class='tbl_form'>"
+                        + htmlContent.toString()
+                        + "</table>"
+                        + "</html>"
                 );
 
-                File g = new File("file2.css");            
-                BufferedWriter bg = new BufferedWriter(new FileWriter(g));
-                bg.write(
-                    ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"+
-                    ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"+
-                    ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"+
-                    ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"+
-                    ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"+
-                    ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"+
-                    ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                );
-                bg.close();
+                File g = new File("file2.css");
+                try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
+                    bg.write(
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                            + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                            + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                            + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                            + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                    );
+                }
 
-                File f = new File("DataHasilEndoskopiFaringLaring.html");            
-                BufferedWriter bw = new BufferedWriter(new FileWriter(f));            
-                bw.write(LoadHTML.getText().replaceAll("<head>","<head>"+
-                            "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"+
-                            "<table width='2300px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"+
-                                "<tr class='isi2'>"+
-                                    "<td valign='top' align='center'>"+
-                                        "<font size='4' face='Tahoma'>"+akses.getnamars()+"</font><br>"+
-                                        akses.getalamatrs()+", "+akses.getkabupatenrs()+", "+akses.getpropinsirs()+"<br>"+
-                                        akses.getkontakrs()+", E-mail : "+akses.getemailrs()+"<br><br>"+
-                                        "<font size='2' face='Tahoma'>DATA HASIL PEMERIKSAAN TELE ENDOSKOPI FARING/TELE LARINGOSKOPI<br><br></font>"+        
-                                    "</td>"+
-                               "</tr>"+
-                            "</table>")
-                );
-                bw.close();                         
+                File f = new File("DataHasilEndoskopiFaringLaring.html");
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+                    bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                            + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                            + "<table width='2300px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                            + "<tr class='isi2'>"
+                            + "<td valign='top' align='center'>"
+                            + "<font size='4' face='Tahoma'>" + akses.
+                                    getnamars() + "</font><br>"
+                            + akses.getalamatrs() + ", " + akses.
+                            getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                            + akses.getkontakrs() + ", E-mail : " + akses.
+                            getemailrs() + "<br><br>"
+                            + "<font size='2' face='Tahoma'>DATA HASIL PEMERIKSAAN TELE ENDOSKOPI FARING/TELE LARINGOSKOPI<br><br></font>"
+                            + "</td>"
+                            + "</tr>"
+                            + "</table>")
+                    );
+                }
                 Desktop.getDesktop().browse(f.toURI());
 
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnEdit, BtnKeluar);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -1407,9 +1512,9 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
@@ -1420,16 +1525,16 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             TCari.setText("");
             tampil();
-        }else{
+        } else {
             Valid.pindah(evt, BtnCari, TPasien);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void tbObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbObatMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 isPhoto();
                 panggilPhoto();
@@ -1437,20 +1542,21 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                 tampilOrthanc();
             } catch (java.lang.NullPointerException e) {
             }
-            if((evt.getClickCount()==2)&&(tbObat.getSelectedColumn()==0)){
+            if ((evt.getClickCount() == 2) && (tbObat.getSelectedColumn() == 0)) {
                 TabRawat.setSelectedIndex(0);
             }
         }
 }//GEN-LAST:event_tbObatMouseClicked
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }else if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            } else if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     getData();
                     TabRawat.setSelectedIndex(0);
@@ -1462,112 +1568,145 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
         dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         dokter.setLocationRelativeTo(internalFrame1);
         dokter.setAlwaysOnTop(false);
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void BtnDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnDokterKeyPressed
-        Valid.pindah(evt,Saran,Tanggal);
+        Valid.pindah(evt, Saran, Tanggal);
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
-        Valid.pindah(evt,BtnDokter,KirimanDari);
+        Valid.pindah(evt, BtnDokter, KirimanDari);
     }//GEN-LAST:event_TanggalKeyPressed
 
     private void MnPenilaianMedisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPenilaianMedisActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());          
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()+"\nID "+(finger.isEmpty()?tbObat.getValueAt(tbObat.getSelectedRow(),4).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString())); 
-            
-            Valid.MyReportqry("rptCetakHasilEndoskipoFaringLaring.jasper","report","::[ Formulir Hasil Pemeriksaan Tele Endoskopi Faring/Tele Laringoskopi ]::",
-                "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"+
-                "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"+
-                "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"+
-                "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"+
-                "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"+
-                "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"+
-                "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "+
-                "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "+
-                "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where hasil_endoskopi_faring_laring.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'",param);
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            finger = Sequel.cariIsi(
+                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            param.put("finger",
+                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
+                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 5).toString() + "\nID " + (finger.
+                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 4).
+                                    toString() : finger) + "\n" + Valid.SetTgl3(
+                            tbObat.getValueAt(tbObat.getSelectedRow(), 6).
+                                    toString()));
+
+            Valid.MyReportqry("rptCetakHasilEndoskipoFaringLaring.jasper",
+                    "report",
+                    "::[ Formulir Hasil Pemeriksaan Tele Endoskopi Faring/Tele Laringoskopi ]::",
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"
+                    + "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"
+                    + "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"
+                    + "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"
+                    + "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"
+                    + "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"
+                    + "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "
+                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "
+                    + "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where hasil_endoskopi_faring_laring.no_rawat='" + tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString() + "'",
+                    param);
         }
     }//GEN-LAST:event_MnPenilaianMedisActionPerformed
 
     private void KirimanDariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KirimanDariKeyPressed
-       Valid.pindah(evt,BtnDokter,DiagnosaKlinis);
+        Valid.pindah(evt, BtnDokter, DiagnosaKlinis);
     }//GEN-LAST:event_KirimanDariKeyPressed
 
     private void DiagnosaKlinisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DiagnosaKlinisKeyPressed
-        Valid.pindah(evt,KirimanDari,DindingPosterior);
+        Valid.pindah(evt, KirimanDari, DindingPosterior);
     }//GEN-LAST:event_DiagnosaKlinisKeyPressed
 
     private void SaranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SaranKeyPressed
-        Valid.pindah2(evt,Kesan,BtnSimpan);
+        Valid.pindah2(evt, Kesan, BtnSimpan);
     }//GEN-LAST:event_SaranKeyPressed
 
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
-        if(tbObat.getSelectedRow()!= -1){
+        if (tbObat.getSelectedRow() != -1) {
             isPhoto();
             panggilPhoto();
-        }else{
+        } else {
             ChkAccor.setSelected(false);
-            JOptionPane.showMessageDialog(null,"Silahkan pilih No.Rawat..!!!");
+            JOptionPane.showMessageDialog(null, "Silahkan pilih No.Rawat..!!!");
         }
     }//GEN-LAST:event_ChkAccorActionPerformed
 
     private void btnAmbilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAmbilActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else{
-            if(tbObat.getSelectedRow()>-1){
+        } else {
+            if (tbObat.getSelectedRow() > -1) {
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Valid.panggilUrl("hasilpemeriksaanendoskopifaringlaring/login.php?act=login&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB()+"&no_rawat="+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                this.setCursor(Cursor.getDefaultCursor()); 
-            }else{
-                JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Rawat terlebih dahulu..!!");
+                Valid.panggilUrl(
+                        "hasilpemeriksaanendoskopifaringlaring/login.php?act=login&usere=" + koneksiDB.
+                                USERHYBRIDWEB() + "&passwordte=" + koneksiDB.
+                                PASHYBRIDWEB() + "&no_rawat=" + tbObat.
+                                getValueAt(tbObat.getSelectedRow(), 0).
+                                toString());
+                this.setCursor(Cursor.getDefaultCursor());
+            } else {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Silahkan anda pilih No.Rawat terlebih dahulu..!!");
             }
         }
     }//GEN-LAST:event_btnAmbilActionPerformed
 
     private void BtnRefreshPhoto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRefreshPhoto1ActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+        if (tbObat.getSelectedRow() > -1) {
             panggilPhoto();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"Silahkan anda pilih No.Rawat terlebih dahulu..!!");
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    "Silahkan anda pilih No.Rawat terlebih dahulu..!!");
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
 
     private void btnDicomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDicomActionPerformed
-        if(tabModeDicom.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        if (tabModeDicom.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
-        }else {
-            if(tbListDicom.getSelectedRow()!= -1){
+        } else {
+            if (tbListDicom.getSelectedRow() != -1) {
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                OrthancDICOM orthan=new OrthancDICOM(null,false);
-                orthan.setJudul("::[ DICOM Orthanc Pasien "+tbObat.getValueAt(tbObat.getSelectedRow(),1).toString()+" "+tbObat.getValueAt(tbObat.getSelectedRow(),2).toString()+", Series "+tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString()+" ]::",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/",""),tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString());
+                OrthancDICOM orthan = new OrthancDICOM(null, false);
+                orthan.setJudul("::[ DICOM Orthanc Pasien " + tbObat.getValueAt(
+                        tbObat.getSelectedRow(), 1).toString() + " " + tbObat.
+                        getValueAt(tbObat.getSelectedRow(), 2).toString() + ", Series " + tbListDicom.
+                        getValueAt(tbListDicom.getSelectedRow(), 2).toString() + " ]::",
+                        tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
+                                replaceAll("/", ""), tbListDicom.getValueAt(
+                        tbListDicom.getSelectedRow(), 2).toString());
                 try {
-                    orthan.loadURL(koneksiDB.URLORTHANC()+":"+koneksiDB.PORTORTHANC()+"/web-viewer/app/viewer.html?series="+tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString());
+                    orthan.loadURL(koneksiDB.URLORTHANC() + ":" + koneksiDB.
+                            PORTORTHANC() + "/web-viewer/app/viewer.html?series=" + tbListDicom.
+                                    getValueAt(tbListDicom.getSelectedRow(), 2).
+                                    toString());
                 } catch (Exception ex) {
-                    System.out.println("Notifikasi : "+ex);
+                    System.out.println("Notifikasi : " + ex);
                 }
-                orthan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                orthan.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                        getHeight() - 20);
                 orthan.setLocationRelativeTo(internalFrame1);
                 orthan.setVisible(true);
                 this.setCursor(Cursor.getDefaultCursor());
-            }else{
-                JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data..!!");
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Maaf, Silahkan pilih data..!!");
             }
         }
     }//GEN-LAST:event_btnDicomActionPerformed
@@ -1577,72 +1716,74 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
     }//GEN-LAST:event_TabDataMouseClicked
 
     private void KesanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KesanKeyPressed
-        Valid.pindah2(evt,Lainlain,Saran);
+        Valid.pindah2(evt, Lainlain, Saran);
     }//GEN-LAST:event_KesanKeyPressed
 
     private void DindingPosteriorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DindingPosteriorKeyPressed
-        Valid.pindah(evt,DiagnosaKlinis,Uvula);
+        Valid.pindah(evt, DiagnosaKlinis, Uvula);
     }//GEN-LAST:event_DindingPosteriorKeyPressed
 
     private void ArkusFaringKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ArkusFaringKeyPressed
-        Valid.pindah(evt,Uvula,Tonsil);
+        Valid.pindah(evt, Uvula, Tonsil);
     }//GEN-LAST:event_ArkusFaringKeyPressed
 
     private void UvulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_UvulaKeyPressed
-        Valid.pindah(evt,DindingPosterior,ArkusFaring);
+        Valid.pindah(evt, DindingPosterior, ArkusFaring);
     }//GEN-LAST:event_UvulaKeyPressed
 
     private void TonsilKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TonsilKeyPressed
-        Valid.pindah(evt,ArkusFaring,TonsilLingual);
+        Valid.pindah(evt, ArkusFaring, TonsilLingual);
     }//GEN-LAST:event_TonsilKeyPressed
 
     private void TonsilLingualKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TonsilLingualKeyPressed
-        Valid.pindah(evt,Tonsil,Valekula);
+        Valid.pindah(evt, Tonsil, Valekula);
     }//GEN-LAST:event_TonsilLingualKeyPressed
 
     private void ValekulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ValekulaKeyPressed
-        Valid.pindah(evt,TonsilLingual,SinusPiriformis);
+        Valid.pindah(evt, TonsilLingual, SinusPiriformis);
     }//GEN-LAST:event_ValekulaKeyPressed
 
     private void SinusPiriformisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SinusPiriformisKeyPressed
-        Valid.pindah(evt,Valekula,Epiglitos);
+        Valid.pindah(evt, Valekula, Epiglitos);
     }//GEN-LAST:event_SinusPiriformisKeyPressed
 
     private void EpiglitosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EpiglitosKeyPressed
-        Valid.pindah(evt,SinusPiriformis,PlikaVentrikulais);
+        Valid.pindah(evt, SinusPiriformis, PlikaVentrikulais);
     }//GEN-LAST:event_EpiglitosKeyPressed
 
     private void PlikaVentrikulaisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PlikaVentrikulaisKeyPressed
-        Valid.pindah(evt,Epiglitos,Arytenoid);
+        Valid.pindah(evt, Epiglitos, Arytenoid);
     }//GEN-LAST:event_PlikaVentrikulaisKeyPressed
 
     private void ArytenoidKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ArytenoidKeyPressed
-        Valid.pindah(evt,PlikaVentrikulais,RimaVocalis);
+        Valid.pindah(evt, PlikaVentrikulais, RimaVocalis);
     }//GEN-LAST:event_ArytenoidKeyPressed
 
     private void RimaVocalisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RimaVocalisKeyPressed
-        Valid.pindah(evt,Arytenoid,PitaSuara);
+        Valid.pindah(evt, Arytenoid, PitaSuara);
     }//GEN-LAST:event_RimaVocalisKeyPressed
 
     private void PitaSuaraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PitaSuaraKeyPressed
-        Valid.pindah(evt,RimaVocalis,Lainlain);
+        Valid.pindah(evt, RimaVocalis, Lainlain);
     }//GEN-LAST:event_PitaSuaraKeyPressed
 
     private void LainlainKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LainlainKeyPressed
-        Valid.pindah(evt,PitaSuara,Kesan);
+        Valid.pindah(evt, PitaSuara, Kesan);
     }//GEN-LAST:event_LainlainKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMHasilEndoskopiFaringLaring dialog = new RMHasilEndoskopiFaringLaring(new javax.swing.JFrame(), true);
+            RMHasilEndoskopiFaringLaring dialog = new RMHasilEndoskopiFaringLaring(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -1750,73 +1891,90 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 
     public void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            if(TCari.getText().trim().isEmpty()){
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"+
-                        "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"+
-                        "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"+
-                        "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"+
-                        "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"+
-                        "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"+
-                        "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "+
-                        "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "+
-                        "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where "+
-                        "hasil_endoskopi_faring_laring.tanggal between ? and ? order by hasil_endoskopi_faring_laring.tanggal");
-            }else{
-                ps=koneksi.prepareStatement(
-                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"+
-                        "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"+
-                        "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"+
-                        "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"+
-                        "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"+
-                        "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"+
-                        "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "+
-                        "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "+
-                        "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where "+
-                        "hasil_endoskopi_faring_laring.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                        "hasil_endoskopi_faring_laring.kd_dokter like ? or dokter.nm_dokter like ?) order by hasil_endoskopi_faring_laring.tanggal");
+        try {
+            if (TCari.getText().trim().isEmpty()) {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"
+                        + "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"
+                        + "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"
+                        + "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"
+                        + "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"
+                        + "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"
+                        + "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "
+                        + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "
+                        + "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where "
+                        + "hasil_endoskopi_faring_laring.tanggal between ? and ? order by hasil_endoskopi_faring_laring.tanggal");
+            } else {
+                ps = koneksi.prepareStatement(
+                        "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,hasil_endoskopi_faring_laring.tanggal,"
+                        + "hasil_endoskopi_faring_laring.kd_dokter,dokter.nm_dokter,hasil_endoskopi_faring_laring.diagnosa_klinis,hasil_endoskopi_faring_laring.kiriman_dari,"
+                        + "hasil_endoskopi_faring_laring.faring_uvula,hasil_endoskopi_faring_laring.faring_arkus_faring,hasil_endoskopi_faring_laring.faring_dinding_posterior,"
+                        + "hasil_endoskopi_faring_laring.faring_tonsil,hasil_endoskopi_faring_laring.laring_tonsil_lingual,hasil_endoskopi_faring_laring.laring_valekula,"
+                        + "hasil_endoskopi_faring_laring.laring_sinus_piriformis,hasil_endoskopi_faring_laring.laring_epiglotis,hasil_endoskopi_faring_laring.laring_arytenoid,"
+                        + "hasil_endoskopi_faring_laring.laring_plika_ventrikularis,hasil_endoskopi_faring_laring.laring_pita_suara,hasil_endoskopi_faring_laring.laring_rima_vocalis,"
+                        + "hasil_endoskopi_faring_laring.laring_lainlain,hasil_endoskopi_faring_laring.kesan,hasil_endoskopi_faring_laring.saran "
+                        + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join hasil_endoskopi_faring_laring on reg_periksa.no_rawat=hasil_endoskopi_faring_laring.no_rawat "
+                        + "inner join dokter on hasil_endoskopi_faring_laring.kd_dokter=dokter.kd_dokter where "
+                        + "hasil_endoskopi_faring_laring.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                        + "hasil_endoskopi_faring_laring.kd_dokter like ? or dokter.nm_dokter like ?) order by hasil_endoskopi_faring_laring.tanggal");
             }
-                
+
             try {
-                if(TCari.getText().trim().isEmpty()){
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                }else{
-                    ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+"")+" 00:00:00");
-                    ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+"")+" 23:59:59");
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                }   
-                rs=ps.executeQuery();
-                while(rs.next()){
+                if (TCari.getText().trim().isEmpty()) {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                } else {
+                    ps.setString(1, Valid.
+                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.
+                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(3, "%" + TCari.getText() + "%");
+                    ps.setString(4, "%" + TCari.getText() + "%");
+                    ps.setString(5, "%" + TCari.getText() + "%");
+                    ps.setString(6, "%" + TCari.getText() + "%");
+                    ps.setString(7, "%" + TCari.getText() + "%");
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("tgl_lahir"),rs.getString("kd_dokter"),rs.getString("nm_dokter"),rs.getString("tanggal"),
-                        rs.getString("kiriman_dari"),rs.getString("diagnosa_klinis"),rs.getString("faring_uvula"),rs.getString("faring_arkus_faring"),rs.getString("faring_dinding_posterior"),rs.getString("faring_tonsil"),
-                        rs.getString("laring_tonsil_lingual"),rs.getString("laring_valekula"),rs.getString("laring_sinus_piriformis"),rs.getString("laring_epiglotis"),rs.getString("laring_arytenoid"),
-                        rs.getString("laring_plika_ventrikularis"),rs.getString("laring_pita_suara"),rs.getString("laring_rima_vocalis"),rs.getString("laring_lainlain"),rs.getString("kesan"),rs.getString("saran")
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("tanggal"),
+                        rs.getString("kiriman_dari"), rs.getString(
+                        "diagnosa_klinis"), rs.getString("faring_uvula"), rs.
+                        getString("faring_arkus_faring"), rs.getString(
+                        "faring_dinding_posterior"), rs.getString(
+                        "faring_tonsil"),
+                        rs.getString("laring_tonsil_lingual"), rs.getString(
+                        "laring_valekula"), rs.getString(
+                        "laring_sinus_piriformis"), rs.getString(
+                        "laring_epiglotis"), rs.getString("laring_arytenoid"),
+                        rs.getString("laring_plika_ventrikularis"), rs.
+                        getString("laring_pita_suara"), rs.getString(
+                        "laring_rima_vocalis"), rs.getString("laring_lainlain"),
+                        rs.getString("kesan"), rs.getString("saran")
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-            
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -1843,237 +2001,328 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         Tanggal.setDate(new Date());
         TabRawat.setSelectedIndex(0);
         KirimanDari.requestFocus();
-    } 
+    }
 
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()); 
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            KirimanDari.setText(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString());
-            DiagnosaKlinis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
-            Uvula.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
-            ArkusFaring.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
-            DindingPosterior.setText(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
-            Tonsil.setText(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
-            TonsilLingual.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
-            Valekula.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
-            SinusPiriformis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
-            Epiglitos.setText(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
-            Arytenoid.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
-            PlikaVentrikulais.setText(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
-            PitaSuara.setText(tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
-            RimaVocalis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
-            Lainlain.setText(tbObat.getValueAt(tbObat.getSelectedRow(),21).toString());
-            Kesan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),22).toString());
-            Saran.setText(tbObat.getValueAt(tbObat.getSelectedRow(),23).toString());
-            Valid.SetTgl2(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
+        if (tbObat.getSelectedRow() != -1) {
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
+                    toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
+                    toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
+                    toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
+                    toString());
+            KirimanDari.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
+                    toString());
+            DiagnosaKlinis.setText(
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Uvula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
+                    toString());
+            ArkusFaring.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
+                    toString());
+            DindingPosterior.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    11).toString());
+            Tonsil.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
+                    toString());
+            TonsilLingual.setText(
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Valekula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
+                    toString());
+            SinusPiriformis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    15).toString());
+            Epiglitos.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
+                    toString());
+            Arytenoid.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
+                    toString());
+            PlikaVentrikulais.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
+                    18).toString());
+            PitaSuara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
+                    toString());
+            RimaVocalis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
+                    toString());
+            Lainlain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
+                    toString());
+            Kesan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
+                    toString());
+            Saran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
+                    toString());
+            Valid.SetTgl2(Tanggal,
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, pasien.tgl_lahir,reg_periksa.tgl_registrasi,"+
-                    "reg_periksa.jam_reg from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "where reg_periksa.no_rawat=?");
+            ps = koneksi.prepareStatement(
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, pasien.tgl_lahir,reg_periksa.tgl_registrasi,"
+                    + "reg_periksa.jam_reg from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                    + "where reg_periksa.no_rawat=?");
             try {
-                ps.setString(1,TNoRw.getText());
-                rs=ps.executeQuery();
-                if(rs.next()){
+                ps.setString(1, TNoRw.getText());
+                rs = ps.executeQuery();
+                if (rs.next()) {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"));
+                    TanggalRegistrasi.setText(
+                            rs.getString("tgl_registrasi") + " " + rs.getString(
+                            "jam_reg"));
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+                System.out.println("Notif : " + e);
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Notif : "+e);
+            System.out.println("Notif : " + e);
         }
     }
- 
-    public void setNoRm(String norwt,Date tgl2) {
+
+    public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        DTPCari2.setDate(tgl2);    
-        isRawat(); 
+        DTPCari2.setDate(tgl2);
+        isRawat();
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.gethasil_endoskopi_faring_laring());
         BtnHapus.setEnabled(akses.gethasil_endoskopi_faring_laring());
         BtnEdit.setEnabled(akses.gethasil_endoskopi_faring_laring());
         BtnEdit.setEnabled(akses.gethasil_endoskopi_faring_laring());
-        if(akses.getjml2()>=1){
+        if (akses.getjml2() >= 1) {
             KdDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KdDokter.setText(akses.getkode());
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
-            if(NmDokter.getText().isEmpty()){
+            if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,"User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null,
+                        "User login bukan Dokter...!!");
             }
-        }  
-        
-        if(TANGGALMUNDUR.equals("no")){
-            if(!akses.getkode().equals("Admin Utama")){
+        }
+
+        if (TANGGALMUNDUR.equals("no")) {
+            if (!akses.getkode().equals("Admin Utama")) {
                 Tanggal.setEditable(false);
                 Tanggal.setEnabled(false);
             }
         }
     }
-    
+
     /**
      *
      */
-    public void setTampil(){
-       TabRawat.setSelectedIndex(1);
+    public void setTampil() {
+        TabRawat.setSelectedIndex(1);
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from hasil_endoskopi_faring_laring where no_rawat=?",1,new String[]{
-            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-        })==true){
+        if (Sequel.queryu2tf(
+                "delete from hasil_endoskopi_faring_laring where no_rawat=?", 1,
+                new String[]{
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
-            LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
-        }else{
-            JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
         }
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("hasil_endoskopi_faring_laring","no_rawat=?","no_rawat=?,tanggal=?,kd_dokter=?,diagnosa_klinis=?,kiriman_dari=?,faring_uvula=?,faring_arkus_faring=?,faring_dinding_posterior=?,faring_tonsil=?,"+
-                "laring_tonsil_lingual=?,laring_valekula=?,laring_sinus_piriformis=?,laring_epiglotis=?,laring_arytenoid=?,laring_plika_ventrikularis=?,laring_pita_suara=?,laring_rima_vocalis=?,laring_lainlain=?,kesan=?,"+
-                "saran=?",21,new String[]{
-                TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),KdDokter.getText(),
-                DiagnosaKlinis.getText(),KirimanDari.getText(),Uvula.getText(),ArkusFaring.getText(),DindingPosterior.getText(),Tonsil.getText(),
-                TonsilLingual.getText(),Valekula.getText(),SinusPiriformis.getText(),Epiglitos.getText(),Arytenoid.getText(),PlikaVentrikulais.getText(),
-                PitaSuara.getText(),RimaVocalis.getText(),Lainlain.getText(),Kesan.getText(),Saran.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-            })==true){
-                tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
-                tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
-                tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),2);
-                tbObat.setValueAt(TglLahir.getText(),tbObat.getSelectedRow(),3);
-                tbObat.setValueAt(KdDokter.getText(),tbObat.getSelectedRow(),4);
-                tbObat.setValueAt(NmDokter.getText(),tbObat.getSelectedRow(),5);
-                tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),tbObat.getSelectedRow(),6);
-                tbObat.setValueAt(KirimanDari.getText(),tbObat.getSelectedRow(),7);
-                tbObat.setValueAt(DiagnosaKlinis.getText(),tbObat.getSelectedRow(),8);
-                tbObat.setValueAt(Uvula.getText(),tbObat.getSelectedRow(),9);
-                tbObat.setValueAt(ArkusFaring.getText(),tbObat.getSelectedRow(),10);
-                tbObat.setValueAt(DindingPosterior.getText(),tbObat.getSelectedRow(),11);
-                tbObat.setValueAt(Tonsil.getText(),tbObat.getSelectedRow(),12);
-                tbObat.setValueAt(TonsilLingual.getText(),tbObat.getSelectedRow(),13);
-                tbObat.setValueAt(Valekula.getText(),tbObat.getSelectedRow(),14);
-                tbObat.setValueAt(SinusPiriformis.getText(),tbObat.getSelectedRow(),15);
-                tbObat.setValueAt(Epiglitos.getText(),tbObat.getSelectedRow(),16);
-                tbObat.setValueAt(Arytenoid.getText(),tbObat.getSelectedRow(),17);
-                tbObat.setValueAt(PlikaVentrikulais.getText(),tbObat.getSelectedRow(),18);
-                tbObat.setValueAt(PitaSuara.getText(),tbObat.getSelectedRow(),19);
-                tbObat.setValueAt(RimaVocalis.getText(),tbObat.getSelectedRow(),20);
-                tbObat.setValueAt(Lainlain.getText(),tbObat.getSelectedRow(),21);
-                tbObat.setValueAt(Kesan.getText(),tbObat.getSelectedRow(),22);
-                tbObat.setValueAt(Saran.getText(),tbObat.getSelectedRow(),23);
-                emptTeks();
-                TabRawat.setSelectedIndex(1);
+        if (Sequel.mengedittf("hasil_endoskopi_faring_laring", "no_rawat=?",
+                "no_rawat=?,tanggal=?,kd_dokter=?,diagnosa_klinis=?,kiriman_dari=?,faring_uvula=?,faring_arkus_faring=?,faring_dinding_posterior=?,faring_tonsil=?,"
+                + "laring_tonsil_lingual=?,laring_valekula=?,laring_sinus_piriformis=?,laring_epiglotis=?,laring_arytenoid=?,laring_plika_ventrikularis=?,laring_pita_suara=?,laring_rima_vocalis=?,laring_lainlain=?,kesan=?,"
+                + "saran=?", 21, new String[]{
+                    TNoRw.getText(), Valid.
+                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19), KdDokter.
+                    getText(),
+                    DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.
+                    getText(), ArkusFaring.getText(), DindingPosterior.getText(),
+                    Tonsil.getText(),
+                    TonsilLingual.getText(), Valekula.getText(),
+                    SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.
+                    getText(), PlikaVentrikulais.getText(),
+                    PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
+                    getText(), Kesan.getText(), Saran.getText(), tbObat.
+                    getValueAt(tbObat.getSelectedRow(), 0).toString()
+                }) == true) {
+            tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
+            tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
+            tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
+            tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
+            tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 4);
+            tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19), tbObat.
+                    getSelectedRow(), 6);
+            tbObat.setValueAt(KirimanDari.getText(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(DiagnosaKlinis.getText(), tbObat.getSelectedRow(),
+                    8);
+            tbObat.setValueAt(Uvula.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.
+                    setValueAt(ArkusFaring.getText(), tbObat.getSelectedRow(),
+                            10);
+            tbObat.setValueAt(DindingPosterior.getText(), tbObat.
+                    getSelectedRow(), 11);
+            tbObat.setValueAt(Tonsil.getText(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(TonsilLingual.getText(), tbObat.getSelectedRow(),
+                    13);
+            tbObat.setValueAt(Valekula.getText(), tbObat.getSelectedRow(), 14);
+            tbObat.
+                    setValueAt(SinusPiriformis.getText(), tbObat.
+                            getSelectedRow(), 15);
+            tbObat.setValueAt(Epiglitos.getText(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Arytenoid.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(PlikaVentrikulais.getText(), tbObat.
+                    getSelectedRow(), 18);
+            tbObat.setValueAt(PitaSuara.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.
+                    setValueAt(RimaVocalis.getText(), tbObat.getSelectedRow(),
+                            20);
+            tbObat.setValueAt(Lainlain.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Kesan.getText(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Saran.getText(), tbObat.getSelectedRow(), 23);
+            emptTeks();
+            TabRawat.setSelectedIndex(1);
         }
     }
-    
-    private void isPhoto(){
-        if(ChkAccor.isSelected()==true){
+
+    private void isPhoto() {
+        if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(530,HEIGHT));
-            TabData.setVisible(true);  
+            PanelAccor.setPreferredSize(new Dimension(530, HEIGHT));
+            TabData.setVisible(true);
             ChkAccor.setVisible(true);
-        }else if(ChkAccor.isSelected()==false){    
+        } else if (ChkAccor.isSelected() == false) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(15,HEIGHT));
-            TabData.setVisible(false);  
+            PanelAccor.setPreferredSize(new Dimension(15, HEIGHT));
+            TabData.setVisible(false);
             ChkAccor.setVisible(true);
         }
     }
 
     private void panggilPhoto() {
-        if(FormPhoto.isVisible()==true){
+        if (FormPhoto.isVisible() == true) {
             try {
-                ps=koneksi.prepareStatement("select hasil_endoskopi_faring_laring_gambar.photo from hasil_endoskopi_faring_laring_gambar where hasil_endoskopi_faring_laring_gambar.no_rawat=?");
+                ps = koneksi.prepareStatement(
+                        "select hasil_endoskopi_faring_laring_gambar.photo from hasil_endoskopi_faring_laring_gambar where hasil_endoskopi_faring_laring_gambar.no_rawat=?");
                 try {
-                    ps.setString(1,tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                    rs=ps.executeQuery();
-                    if(rs.next()){
-                        if(rs.getString("photo").isEmpty()||rs.getString("photo").equals("-")){
-                            LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
-                        }else{
-                            LoadHTML2.setText("<html><body><center><a href='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/hasilpemeriksaanendoskopifaringlaring/"+rs.getString("photo")+"'><img src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/hasilpemeriksaanendoskopifaringlaring/"+rs.getString("photo")+"' alt='photo' width='550' height='550'/></a></center></body></html>");
-                        }  
-                    }else{
-                        LoadHTML2.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                    ps.setString(1, tbObat.
+                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        if (rs.getString("photo").isEmpty() || rs.getString(
+                                "photo").equals("-")) {
+                            LoadHTML2.setText(
+                                    "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                        } else {
+                            LoadHTML2.setText(
+                                    "<html><body><center><a href='http://" + koneksiDB.
+                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
+                                            PORTWEB() + "/" + koneksiDB.
+                                            HYBRIDWEB() + "/hasilpemeriksaanendoskopifaringlaring/" + rs.
+                                            getString("photo") + "'><img src='http://" + koneksiDB.
+                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
+                                    HYBRIDWEB() + "/hasilpemeriksaanendoskopifaringlaring/" + rs.
+                                            getString("photo") + "' alt='photo' width='550' height='550'/></a></center></body></html>");
+                        }
+                    } else {
+                        LoadHTML2.setText(
+                                "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                     }
                 } catch (Exception e) {
-                    System.out.println("Notif : "+e);
-                } finally{
-                    if(rs!=null){
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
                         rs.close();
                     }
-                    if(ps!=null){
+                    if (ps != null) {
                         ps.close();
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
+                System.out.println("Notif : " + e);
             }
         }
     }
-    
+
     private void tampilOrthanc() {
-        if(TabData.isVisible()==true){
-            if(tbObat.getSelectedRow()!= -1){
-                 if(TabData.getSelectedIndex()==1){
-                     try {
-                         Valid.tabelKosong(tabModeDicom);
-                         ApiOrthanc orthanc=new ApiOrthanc();
-                         root=orthanc.AmbilSeries(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),Valid.SetTgl(DTPCari1.getSelectedItem()+"").replaceAll("-",""),Valid.SetTgl(DTPCari2.getSelectedItem()+"").replaceAll("-",""));
-                         for(JsonNode list:root){
-                             for(JsonNode sublist:list.path("Series")){
-                                  tabModeDicom.addRow(new Object[]{
-                                       list.path("PatientMainDicomTags").path("PatientID").asText(),list.path("ID").asText(),sublist.asText()
-                                  });   
-                             }        
-                         }
-                     } catch (Exception e) {
-                         System.out.println("Notif : "+e);
-                     }
-                 }
+        if (TabData.isVisible() == true) {
+            if (tbObat.getSelectedRow() != -1) {
+                if (TabData.getSelectedIndex() == 1) {
+                    try {
+                        Valid.tabelKosong(tabModeDicom);
+                        ApiOrthanc orthanc = new ApiOrthanc();
+                        root = orthanc.AmbilSeries(tbObat.getValueAt(tbObat.
+                                getSelectedRow(), 1).toString(), Valid.SetTgl(
+                                        DTPCari1.getSelectedItem() + "").
+                                        replaceAll("-", ""), Valid.SetTgl(
+                                DTPCari2.getSelectedItem() + "").replaceAll("-",
+                                ""));
+                        for (JsonNode list : root) {
+                            for (JsonNode sublist : list.path("Series")) {
+                                tabModeDicom.addRow(new Object[]{
+                                    list.path("PatientMainDicomTags").path(
+                                    "PatientID").asText(), list.path("ID").
+                                    asText(), sublist.asText()
+                                });
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notif : " + e);
+                    }
+                }
             }
         }
     }
 
     private void simpan() {
-        if(Sequel.menyimpantf("hasil_endoskopi_faring_laring","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","No.Rawat",20,new String[]{
-                TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),KdDokter.getText(),
-                DiagnosaKlinis.getText(),KirimanDari.getText(),Uvula.getText(),ArkusFaring.getText(),DindingPosterior.getText(),Tonsil.getText(),
-                TonsilLingual.getText(),Valekula.getText(),SinusPiriformis.getText(),Epiglitos.getText(),Arytenoid.getText(),PlikaVentrikulais.getText(),
-                PitaSuara.getText(),RimaVocalis.getText(),Lainlain.getText(),Kesan.getText(),Saran.getText()
-            })==true){
-                tabMode.addRow(new String[]{
-                    TNoRw.getText(),TNoRM.getText(),TPasien.getText(),TglLahir.getText(),KdDokter.getText(),NmDokter.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Tanggal.getSelectedItem().toString().substring(11,19),
-                    KirimanDari.getText(),DiagnosaKlinis.getText(),Uvula.getText(),ArkusFaring.getText(),DindingPosterior.getText(),Tonsil.getText(),TonsilLingual.getText(),Valekula.getText(),SinusPiriformis.getText(),
-                    Epiglitos.getText(),Arytenoid.getText(),PlikaVentrikulais.getText(),PitaSuara.getText(),RimaVocalis.getText(),Lainlain.getText(),Kesan.getText(),Saran.getText()
-                });
-                emptTeks();
-                LCount.setText(""+tabMode.getRowCount());
+        if (Sequel.menyimpantf("hasil_endoskopi_faring_laring",
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 20,
+                new String[]{
+                    TNoRw.getText(), Valid.
+                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                    getSelectedItem().toString().substring(11, 19), KdDokter.
+                    getText(),
+                    DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.
+                    getText(), ArkusFaring.getText(), DindingPosterior.getText(),
+                    Tonsil.getText(),
+                    TonsilLingual.getText(), Valekula.getText(),
+                    SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.
+                    getText(), PlikaVentrikulais.getText(),
+                    PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
+                    getText(), Kesan.getText(), Saran.getText()
+                }) == true) {
+            tabMode.addRow(new String[]{
+                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
+                getText(), KdDokter.getText(), NmDokter.getText(), Valid.SetTgl(
+                Tanggal.getSelectedItem() + "") + " " + Tanggal.
+                getSelectedItem().toString().substring(11, 19),
+                KirimanDari.getText(), DiagnosaKlinis.getText(), Uvula.getText(),
+                ArkusFaring.getText(), DindingPosterior.getText(), Tonsil.
+                getText(), TonsilLingual.getText(), Valekula.getText(),
+                SinusPiriformis.getText(),
+                Epiglitos.getText(), Arytenoid.getText(), PlikaVentrikulais.
+                getText(), PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
+                getText(), Kesan.getText(), Saran.getText()
+            });
+            emptTeks();
+            LCount.setText("" + tabMode.getRowCount());
         }
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            RMHasilEndoskopiFaringLaring.class.getName());
 }

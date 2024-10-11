@@ -9,147 +9,214 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package simrskhanza;
 
-import fungsi.*;
-import java.awt.event.*;
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import kepegawaian.*;
+import fungsi.akses;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileInputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Logger;
+import kepegawaian.DlgCariDokter;
+import kepegawaian.DlgCariDokter2;
 
 /**
  *
  * @author perpustakaan
  */
 public class DlgRujukanPoliInternal extends javax.swing.JDialog {
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
-    private DlgCariDokter2 dokter2=new DlgCariDokter2(null,false);
-    private DlgCariPoli poli=new DlgCariPoli(null,false);
-    private DlgCariPoli2 poli2=new DlgCariPoli2(null,false);
-    private String aktifjadwal="";
+    private DlgCariDokter dokter = new DlgCariDokter(null, false);
+    private DlgCariDokter2 dokter2 = new DlgCariDokter2(null, false);
+    private DlgCariPoli poli = new DlgCariPoli(null, false);
+    private DlgCariPoli2 poli2 = new DlgCariPoli2(null, false);
+    private String aktifjadwal = "";
     private Properties prop = new Properties();
-    private int lebar=0,tinggi=0;
-    /** Creates new form DlgPemberianObat
+    private int lebar = 0, tinggi = 0;
+
+    /**
+     * Creates new form DlgPemberianObat
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public DlgRujukanPoliInternal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         dokter.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){   
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    TDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                if (dokter.getTable().getSelectedRow() != -1) {
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 0).toString());
+                    TDokter.setText(dokter.getTable().getValueAt(dokter.
+                            getTable().getSelectedRow(), 1).toString());
                     kddokter.requestFocus();
-                }                
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-                
+
         dokter2.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(dokter2.getTable().getSelectedRow()!= -1){   
-                    kddokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(),0).toString());
-                    TDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(),1).toString());
+                if (dokter2.getTable().getSelectedRow() != -1) {
+                    kddokter.setText(dokter2.getTable().getValueAt(dokter2.
+                            getTable().getSelectedRow(), 0).toString());
+                    TDokter.setText(dokter2.getTable().getValueAt(dokter2.
+                            getTable().getSelectedRow(), 1).toString());
                     kddokter.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         poli.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(poli.getTable().getSelectedRow()!= -1){   
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),0).toString());
-                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
-                    kdpoli.requestFocus();                        
+                if (poli.getTable().getSelectedRow() != -1) {
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
+                            getSelectedRow(), 0).toString());
+                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().
+                            getSelectedRow(), 1).toString());
+                    kdpoli.requestFocus();
                 }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });        
-                
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         poli2.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(poli2.getTable().getSelectedRow()!= -1){  
-                    kdpoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(),0).toString());
-                    TPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(),1).toString());
+                if (poli2.getTable().getSelectedRow() != -1) {
+                    kdpoli.setText(poli2.getTable().getValueAt(poli2.getTable().
+                            getSelectedRow(), 0).toString());
+                    TPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
+                            getSelectedRow(), 1).toString());
                     kdpoli.requestFocus();
-                }        
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });   
-        
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
         try {
             prop.loadFromXML(new FileInputStream("setting/database.xml"));
-            aktifjadwal=prop.getProperty("JADWALDOKTERDIREGISTRASI");
+            aktifjadwal = prop.getProperty("JADWALDOKTERDIREGISTRASI");
         } catch (Exception ex) {
-            aktifjadwal="";            
+            aktifjadwal = "";
         }
-        
-        setSize(755,156);
+
+        setSize(755, 156);
     }
 
     //private DlgCariObatPenyakit dlgobtpny=new DlgCariObatPenyakit(null,false);
-    
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -337,27 +404,31 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(TNoRw.getText().trim().isEmpty()||TNoRM.getText().trim().isEmpty()||TPasien.getText().trim().isEmpty()){
-            Valid.textKosong(TNoRM,"Pasien");
-        }else if(TPoli.getText().trim().isEmpty()||kdpoli.getText().trim().isEmpty()){
-            Valid.textKosong(kdpoli,"poliklinik");
-        }else if(kddokter.getText().trim().isEmpty()||TDokter.getText().trim().isEmpty()){
-            Valid.textKosong(kddokter,"dokter");
-        }else{          
-            if(Sequel.menyimpantf("rujukan_internal_poli","?,?,?","Rujukan Sama",3,new String[]{
-                    TNoRw.getText(),kddokter.getText(),kdpoli.getText()
-                })==true){
+        if (TNoRw.getText().trim().isEmpty() || TNoRM.getText().trim().isEmpty() || TPasien.
+                getText().trim().isEmpty()) {
+            Valid.textKosong(TNoRM, "Pasien");
+        } else if (TPoli.getText().trim().isEmpty() || kdpoli.getText().trim().
+                isEmpty()) {
+            Valid.textKosong(kdpoli, "poliklinik");
+        } else if (kddokter.getText().trim().isEmpty() || TDokter.getText().
+                trim().isEmpty()) {
+            Valid.textKosong(kddokter, "dokter");
+        } else {
+            if (Sequel.menyimpantf("rujukan_internal_poli", "?,?,?",
+                    "Rujukan Sama", 3, new String[]{
+                        TNoRw.getText(), kddokter.getText(), kdpoli.getText()
+                    }) == true) {
                 BtnKeluarActionPerformed(evt);
-            }                      
-        }  
+            }
+        }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
+        } else {
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
@@ -370,7 +441,7 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             kddokter.setText("");
             TDokter.setText("");
             kdpoli.setText("");
@@ -380,90 +451,94 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        
+
     }//GEN-LAST:event_formWindowActivated
 
     private void kddokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kddokterKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             TDokter.setText(dokter.tampil3(kddokter.getText()));
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnDokterActionPerformed(null);
         }
     }//GEN-LAST:event_kddokterKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
-        if(aktifjadwal.equals("aktif")){
-            if(akses.getkode().equals("Admin Utama")){
+        if (aktifjadwal.equals("aktif")) {
+            if (akses.getkode().equals("Admin Utama")) {
                 dokter.isCek();
                 dokter.TCari.requestFocus();
-                dokter.setSize(lebar-20,tinggi-20);
+                dokter.setSize(lebar - 20, tinggi - 20);
                 dokter.setLocationRelativeTo(internalFrame1);
                 dokter.setVisible(true);
-            }else{
+            } else {
                 dokter2.setPoli(TPoli.getText());
                 dokter2.isCek();
                 dokter2.tampil();
                 dokter2.TCari.requestFocus();
-                dokter2.setSize(lebar-20,tinggi-20);
+                dokter2.setSize(lebar - 20, tinggi - 20);
                 dokter2.setLocationRelativeTo(internalFrame1);
                 dokter2.setVisible(true);
             }
-        }else{
+        } else {
             dokter.isCek();
             dokter.TCari.requestFocus();
-            dokter.setSize(lebar-20,tinggi-20);
+            dokter.setSize(lebar - 20, tinggi - 20);
             dokter.setLocationRelativeTo(internalFrame1);
             dokter.setVisible(true);
         }
     }//GEN-LAST:event_BtnDokterActionPerformed
 
     private void BtnUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUnitActionPerformed
-        if(aktifjadwal.equals("aktif")){
-            if(akses.getkode().equals("Admin Utama")){
+        if (aktifjadwal.equals("aktif")) {
+            if (akses.getkode().equals("Admin Utama")) {
                 poli.isCek();
-                poli.setSize(lebar-20,tinggi-20);
+                poli.setSize(lebar - 20, tinggi - 20);
                 poli.setLocationRelativeTo(internalFrame1);
                 poli.setVisible(true);
-            }else{
+            } else {
                 poli2.isCek();
                 poli2.tampil();
-                poli2.setSize(lebar-20,tinggi-20);
+                poli2.setSize(lebar - 20, tinggi - 20);
                 poli2.setLocationRelativeTo(internalFrame1);
                 poli2.setVisible(true);
             }
-        }else{
+        } else {
             poli.isCek();
-            poli.setSize(lebar-20,tinggi-20);
+            poli.setSize(lebar - 20, tinggi - 20);
             poli.setLocationRelativeTo(internalFrame1);
             poli.setVisible(true);
         }
     }//GEN-LAST:event_BtnUnitActionPerformed
 
     private void kdpoliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpoliKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select poliklinik.nm_poli from poliklinik where poliklinik.kd_poli=?",TPoli,kdpoli.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            Sequel.cariIsi(
+                    "select poliklinik.nm_poli from poliklinik where poliklinik.kd_poli=?",
+                    TPoli, kdpoli.getText());
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             BtnUnitActionPerformed(null);
-        }else{
-            Valid.pindah(evt,kddokter,TNoRM);
+        } else {
+            Valid.pindah(evt, kddokter, TNoRM);
         }
     }//GEN-LAST:event_kdpoliKeyPressed
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
-        
+
     }//GEN-LAST:event_TNoRwKeyPressed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRujukanPoliInternal dialog = new DlgRujukanPoliInternal(new javax.swing.JFrame(), true);
+            DlgRujukanPoliInternal dialog = new DlgRujukanPoliInternal(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -489,23 +564,21 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
     private widget.TextBox kdpoli;
     private widget.panelisi panelGlass8;
     // End of variables declaration//GEN-END:variables
-    
 
- 
-
-    public void setNoRm(String norw,String norm,String namapasien,int lebar,int tinggi) {
+    public void setNoRm(String norw, String norm, String namapasien, int lebar,
+            int tinggi) {
         TNoRw.setText(norw);
         TNoRM.setText(norm);
-        TPasien.setText(namapasien);  
-        this.lebar=lebar;
-        this.tinggi=tinggi;
+        TPasien.setText(namapasien);
+        this.lebar = lebar;
+        this.tinggi = tinggi;
     }
-    
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(true);
     }
 
-
+    private static final Logger LOG = Logger.getLogger(
+            DlgRujukanPoliInternal.class.getName());
 
 }

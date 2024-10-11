@@ -8,131 +8,180 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package bridging;
 
-import com.fasterxml.jackson.databind.*;
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fungsi.WarnaTable;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileReader;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class YaskiReferensiKelurahan extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private validasi Valid=new validasi();
-    private YaskiReferensiKecamatan propinsi=new YaskiReferensiKecamatan(null,false);
-    private int i=0;
+
+    private validasi Valid = new validasi();
+
+    private YaskiReferensiKecamatan propinsi = new YaskiReferensiKecamatan(null,
+            false);
+
+    private int i = 0;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
-    private FileReader myObj;;
-    /** Creates new form DlgKamar
-     * @param parent
-     * @param modal */
-    public YaskiReferensiKelurahan(java.awt.Frame parent, boolean modal) {
+
+    private FileReader myObj;
+
+    ;
+
+	/**
+	 * Creates new form DlgKamar
+	 * @param parent
+	 * @param modal
+	 */
+	public YaskiReferensiKelurahan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(10,2);
-        setSize(628,674);
+        this.setLocation(10, 2);
+        setSize(628, 674);
 
-        tabMode=new DefaultTableModel(null,new String[]{"No.","Kode Kelurahan","Nama Kelurahan"}){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        tabMode = new DefaultTableModel(null, new String[]{"No.",
+            "Kode Kelurahan", "Nama Kelurahan"}) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbKamar.setModel(tabMode);
 
-        //tbKamar.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
-        tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbKamar.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbKamar.getBackground()));
+        tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 3; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(30);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(100);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(550);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        
-        Kabupaten.setDocument(new batasInput((byte)100).getKata(Kabupaten));
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            Kabupaten.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+
+        Kabupaten.setDocument(new batasInput((byte) 100).getKata(Kabupaten));
+
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            Kabupaten.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(Kabupaten.getText().length()>2){
+                    if (Kabupaten.getText().length() > 2) {
                         tampil(Kabupaten.getText());
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(Kabupaten.getText().length()>2){
+                    if (Kabupaten.getText().length() > 2) {
                         tampil(Kabupaten.getText());
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(Kabupaten.getText().length()>2){
+                    if (Kabupaten.getText().length() > 2) {
                         tampil(Kabupaten.getText());
                     }
                 }
+
             });
-        } 
-        
+        }
+
         propinsi.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
+
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
+
             @Override
             public void windowClosed(WindowEvent e) {
-                if(propinsi.getTable().getSelectedRow()!= -1){                   
-                    KdProp.setText(propinsi.getTable().getValueAt(propinsi.getTable().getSelectedRow(),1).toString());
-                    NmProp.setText(propinsi.getTable().getValueAt(propinsi.getTable().getSelectedRow(),2).toString());
+                if (propinsi.getTable().getSelectedRow() != -1) {
+                    KdProp.setText(propinsi.getTable().getValueAt(propinsi.
+                            getTable().getSelectedRow(), 1).toString());
+                    NmProp.setText(propinsi.getTable().getValueAt(propinsi.
+                            getTable().getSelectedRow(), 2).toString());
                     KdProp.requestFocus();
-                }                  
+                }
             }
+
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
+
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
+
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
+
         });
-        
+
         propinsi.getTable().addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     propinsi.dispose();
                 }
             }
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        }); 
-        
-    }
-    
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -268,59 +317,66 @@ public class YaskiReferensiKelurahan extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnKeluarActionPerformed(null);
-        }else{Valid.pindah(evt,Kabupaten,BtnKeluar);}
+        } else {
+            Valid.pindah(evt, Kabupaten, BtnKeluar);
+        }
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void KabupatenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KabupatenKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             tbKamar.requestFocus();
         }
     }//GEN-LAST:event_KabupatenKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        if(KdProp.getText().trim().isEmpty()||NmProp.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Silahkan pilih propinsi dulu..!!");
+        if (KdProp.getText().trim().isEmpty() || NmProp.getText().trim().
+                isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Silahkan pilih propinsi dulu..!!");
             BtnPropinsi.requestFocus();
-        }else{
+        } else {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             tampil(Kabupaten.getText());
             this.setCursor(Cursor.getDefaultCursor());
-        }            
+        }
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Kabupaten,BtnKeluar);
+        } else {
+            Valid.pindah(evt, Kabupaten, BtnKeluar);
         }
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnPropinsiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPropinsiActionPerformed
-        propinsi.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        propinsi.setSize(internalFrame1.getWidth() - 20, internalFrame1.
+                getHeight() - 20);
         propinsi.setLocationRelativeTo(internalFrame1);
         propinsi.setVisible(true);
     }//GEN-LAST:event_BtnPropinsiActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            YaskiReferensiKelurahan dialog = new YaskiReferensiKelurahan(new javax.swing.JFrame(), true);
+            YaskiReferensiKelurahan dialog = new YaskiReferensiKelurahan(
+                    new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -343,7 +399,6 @@ public class YaskiReferensiKelurahan extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param poli
      */
     public void tampil(String poli) {
@@ -352,34 +407,39 @@ public class YaskiReferensiKelurahan extends javax.swing.JDialog {
             root = mapper.readTree(myObj);
             Valid.tabelKosong(tabMode);
             response = root.path("kelurahan");
-            if(response.isArray()){
-                i=1;
-                for(JsonNode list:response){
-                    if(list.path("nama").asText().toLowerCase().contains(poli.toLowerCase())&&list.path("id_kecamatan").asText().equals(KdProp.getText())){
-                        tabMode.addRow(new Object[]{
-                            i+".",list.path("id").asText(),list.path("nama").asText()
-                        });
+            if (response.isArray()) {
+                i = 1;
+                for (JsonNode list : response) {
+                    if (list.path("nama").asText().toLowerCase().contains(poli.
+                            toLowerCase())
+                            && list.path("id_kecamatan").asText().equals(KdProp.
+                                    getText())) {
+                        tabMode.addRow(new Object[]{i + ".", list.path("id").
+                            asText(), list.path("nama").asText()});
                         i++;
                     }
                 }
             }
             myObj.close();
         } catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);
+            System.out.println("Notifikasi : " + ex);
         }
-    }    
+    }
 
     /**
-     *
      * @return
      */
-    public JTable getTable(){
+    public JTable getTable() {
         return tbKamar;
     }
-    
-    public void setPropinsi(String KdProp,String NmProp){
+
+    public void setPropinsi(String KdProp, String NmProp) {
         this.KdProp.setText(KdProp);
         this.NmProp.setText(NmProp);
         tampil("");
     }
+
+    private static final Logger LOG = Logger.getLogger(
+            YaskiReferensiKelurahan.class.getName());
+
 }

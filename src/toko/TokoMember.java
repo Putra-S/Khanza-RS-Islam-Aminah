@@ -9,114 +9,136 @@
   karena telah berdoa buruk, semua ini kami lakukan karena kami ti
   dak pernah rela karya kami dibajak tanpa ijin.
  */
-
 package toko;
 
-import fungsi.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
+import fungsi.WarnaTable;
+import fungsi.akses;
+import fungsi.batasInput;
+import fungsi.koneksiDB;
+import fungsi.sekuel;
+import fungsi.validasi;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author dosen
  */
 public class TokoMember extends javax.swing.JDialog {
+
     private final DefaultTableModel tabMode;
-    private Connection koneksi=koneksiDB.condb();
-    private sekuel Sequel=new sekuel();
-    private validasi Valid=new validasi();
+    private Connection koneksi = koneksiDB.condb();
+    private sekuel Sequel = new sekuel();
+    private validasi Valid = new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i,row;
+    private int i, row;
 
-    /** Creates new form DlgPetugas
+    /**
+     * Creates new form DlgPetugas
+     *
      * @param parent
-     * @param modal */
+     * @param modal
+     */
     public TokoMember(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
-        setSize(885,674);
+        this.setLocation(8, 1);
+        setSize(885, 674);
 
-        Object[] row={"No.Member","Nama Member","J.K.","Tmp.Lahir","Tgl.Lahir","Alamat","No.Telp","E-Mail"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        Object[] row = {"No.Member", "Nama Member", "J.K.", "Tmp.Lahir",
+            "Tgl.Lahir", "Alamat", "No.Telp", "E-Mail"};
+        tabMode = new DefaultTableModel(null, row) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;
+            }
+
         };
         tbPetugas.setModel(tabMode);
 
-
         //tbPetugas.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPetugas.getBackground()));
-        tbPetugas.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbPetugas.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbPetugas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 8; i++) {
             TableColumn column = tbPetugas.getColumnModel().getColumn(i);
-            if(i==0){
+            if (i == 0) {
                 column.setPreferredWidth(90);
-            }else if(i==1){
+            } else if (i == 1) {
                 column.setPreferredWidth(170);
-            }else if(i==2){
+            } else if (i == 2) {
                 column.setPreferredWidth(30);
-            }else if(i==3){
+            } else if (i == 3) {
                 column.setPreferredWidth(120);
-            }else if(i==4){
+            } else if (i == 4) {
                 column.setPreferredWidth(65);
-            }else if(i==5){
+            } else if (i == 5) {
                 column.setPreferredWidth(170);
-            }else if(i==6){
+            } else if (i == 6) {
                 column.setPreferredWidth(100);
-            }else if(i==7){
+            } else if (i == 7) {
                 column.setPreferredWidth(150);
             }
         }
         tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoMember.setDocument(new batasInput((byte)10).getKata(NoMember));
-        Email.setDocument(new batasInput((byte)60).getKata(Email));
-        NamaMember.setDocument(new batasInput((byte)50).getKata(NamaMember));
-        TmpLahir.setDocument(new batasInput((byte)20).getKata(TmpLahir));
-        Alamat.setDocument(new batasInput((byte)60).getKata(Alamat));
-        NoTelp.setDocument(new batasInput((byte)40).getOnlyAngka(NoTelp));
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+        NoMember.setDocument(new batasInput((byte) 10).getKata(NoMember));
+        Email.setDocument(new batasInput((byte) 60).getKata(Email));
+        NamaMember.setDocument(new batasInput((byte) 50).getKata(NamaMember));
+        TmpLahir.setDocument(new batasInput((byte) 20).getKata(TmpLahir));
+        Alamat.setDocument(new batasInput((byte) 60).getKata(Alamat));
+        NoTelp.setDocument(new batasInput((byte) 40).getOnlyAngka(NoTelp));
+        TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
+        if (koneksiDB.CARICEPAT().equals("aktif")) {
+            TCari.getDocument().addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
+                    if (TCari.getText().length() > 2) {
                         tampil();
                     }
                 }
-            });
-        }  
-        
-        ChkInput.setSelected(false);
-        isForm(); 
-    }
-    
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+            });
+        }
+
+        ChkInput.setSelected(false);
+        isForm();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -568,110 +590,122 @@ public class TokoMember extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TmpLahirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TmpLahirKeyPressed
-        Valid.pindah(evt,NamaMember,TglLahir);
+        Valid.pindah(evt, NamaMember, TglLahir);
 }//GEN-LAST:event_TmpLahirKeyPressed
 
     private void JKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JKKeyPressed
-        Valid.pindah(evt,NoMember,NamaMember);
+        Valid.pindah(evt, NoMember, NamaMember);
 }//GEN-LAST:event_JKKeyPressed
 
     private void NamaMemberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NamaMemberKeyPressed
-        Valid.pindah(evt,JK,TmpLahir);
+        Valid.pindah(evt, JK, TmpLahir);
 }//GEN-LAST:event_NamaMemberKeyPressed
 
     private void AlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AlamatKeyPressed
-        Valid.pindah(evt,TglLahir,NoTelp);
+        Valid.pindah(evt, TglLahir, NoTelp);
 }//GEN-LAST:event_AlamatKeyPressed
 
     private void NoTelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoTelpKeyPressed
-        Valid.pindah(evt,Alamat,Email);
+        Valid.pindah(evt, Alamat, Email);
 }//GEN-LAST:event_NoTelpKeyPressed
 
     private void NoMemberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoMemberKeyPressed
-        Valid.pindah(evt,NamaMember,JK);
+        Valid.pindah(evt, NamaMember, JK);
 }//GEN-LAST:event_NoMemberKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoMember.getText().trim().isEmpty()){
-            Valid.textKosong(NoMember,"No.Member");
-        }else if(NamaMember.getText().trim().isEmpty()){
-            Valid.textKosong(NamaMember,"Nama Member");
-        }else if(NoTelp.getText().trim().isEmpty()){
-            Valid.textKosong(NoTelp,"No.Telp/HP");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat");
-        }else{
-            if(Sequel.menyimpantf("tokomember","?,?,?,?,?,?,?,?","No.Member",8,new String[]{
-                NoMember.getText(),NamaMember.getText(),JK.getSelectedItem().toString().substring(0,1),TmpLahir.getText(),Valid.SetTgl(TglLahir.getSelectedItem()+""),Alamat.getText(),NoTelp.getText(),Email.getText()
-            })==true){
+        if (NoMember.getText().trim().isEmpty()) {
+            Valid.textKosong(NoMember, "No.Member");
+        } else if (NamaMember.getText().trim().isEmpty()) {
+            Valid.textKosong(NamaMember, "Nama Member");
+        } else if (NoTelp.getText().trim().isEmpty()) {
+            Valid.textKosong(NoTelp, "No.Telp/HP");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat");
+        } else {
+            if (Sequel.menyimpantf("tokomember", "?,?,?,?,?,?,?,?", "No.Member",
+                    8, new String[]{
+                        NoMember.getText(), NamaMember.getText(), JK.
+                        getSelectedItem().toString().substring(0, 1), TmpLahir.
+                        getText(), Valid.SetTgl(TglLahir.getSelectedItem() + ""),
+                        Alamat.getText(), NoTelp.getText(), Email.getText()
+                    }) == true) {
                 emptTeks();
                 tampil();
-            }         
+            }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnSimpanActionPerformed(null);
-        }else{
-            Valid.pindah(evt,Email,BtnBatal);
+        } else {
+            Valid.pindah(evt, Email, BtnBatal);
         }
 }//GEN-LAST:event_BtnSimpanKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
         ChkInput.setSelected(true);
-        isForm(); 
-        emptTeks();        
+        isForm();
+        emptTeks();
 }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             emptTeks();
-        }else{Valid.pindah(evt, BtnSimpan, BtnHapus);}
+        } else {
+            Valid.pindah(evt, BtnSimpan, BtnHapus);
+        }
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Sequel.meghapus("tokomember","no_member",NoMember.getText());
+        Sequel.meghapus("tokomember", "no_member", NoMember.getText());
         tampil();
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnHapusActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnBatal, BtnEdit);
         }
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Map<String, Object> param = new HashMap<>();  
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());   
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReportqry("rptMemberToko.jasper","report","::[ Data Member Toko ]::",
-                    "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "+
-                    "where no_member like '%"+TCari.getText().trim()+"%' or nama like '%"+TCari.getText().trim()+"%' "+
-                    "or alamat like '%"+TCari.getText().trim()+"%' or email like '%"+TCari.getText().trim()+"%' "+
-                    "or tgl_lahir like '%"+TCari.getText().trim()+"%' order by no_member",param);
-                this.setCursor(Cursor.getDefaultCursor());
+        } else if (tabMode.getRowCount() != 0) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("emailrs", akses.getemailrs());
+            param.put("logo", Sequel.cariGambar(
+                    "select setting.logo from setting"));
+            Valid.MyReportqry("rptMemberToko.jasper", "report",
+                    "::[ Data Member Toko ]::",
+                    "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "
+                    + "where no_member like '%" + TCari.getText().trim() + "%' or nama like '%" + TCari.
+                    getText().trim() + "%' "
+                    + "or alamat like '%" + TCari.getText().trim() + "%' or email like '%" + TCari.
+                    getText().trim() + "%' "
+                    + "or tgl_lahir like '%" + TCari.getText().trim() + "%' order by no_member",
+                    param);
+            this.setCursor(Cursor.getDefaultCursor());
         }
-        
+
 }//GEN-LAST:event_BtnPrintActionPerformed
 
     private void BtnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPrintKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnPrintActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnAll);
         }
 }//GEN-LAST:event_BtnPrintKeyPressed
@@ -681,9 +715,11 @@ public class TokoMember extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             dispose();
-        }else{Valid.pindah(evt,BtnPrint,TCari);}
+        } else {
+            Valid.pindah(evt, BtnPrint, TCari);
+        }
 }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
@@ -692,48 +728,55 @@ public class TokoMember extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnAllActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(NoMember.getText().trim().isEmpty()){
-            Valid.textKosong(NoMember,"No.Member");
-        }else if(NamaMember.getText().trim().isEmpty()){
-            Valid.textKosong(NamaMember,"Nama Member");
-        }else if(NoTelp.getText().trim().isEmpty()){
-            Valid.textKosong(NoTelp,"No.Telp/HP");
-        }else if(Alamat.getText().trim().isEmpty()){
-            Valid.textKosong(Alamat,"Alamat");
-        }else{
-            if(tbPetugas.getSelectedRow()> -1){
-                if(Sequel.mengedittf("tokomember","no_member=?","no_member=?,nama=?,jk=?,tmp_lahir=?,tgl_lahir=?,alamat=?,no_telp=?,email=?",9,new String[]{
-                    NoMember.getText(),NamaMember.getText(),JK.getSelectedItem().toString().substring(0,1),TmpLahir.getText(),Valid.SetTgl(TglLahir.getSelectedItem()+""),Alamat.getText(),NoTelp.getText(),Email.getText(),tbPetugas.getValueAt(tbPetugas.getSelectedRow(),0).toString()
-                })==true){
+        if (NoMember.getText().trim().isEmpty()) {
+            Valid.textKosong(NoMember, "No.Member");
+        } else if (NamaMember.getText().trim().isEmpty()) {
+            Valid.textKosong(NamaMember, "Nama Member");
+        } else if (NoTelp.getText().trim().isEmpty()) {
+            Valid.textKosong(NoTelp, "No.Telp/HP");
+        } else if (Alamat.getText().trim().isEmpty()) {
+            Valid.textKosong(Alamat, "Alamat");
+        } else {
+            if (tbPetugas.getSelectedRow() > -1) {
+                if (Sequel.mengedittf("tokomember", "no_member=?",
+                        "no_member=?,nama=?,jk=?,tmp_lahir=?,tgl_lahir=?,alamat=?,no_telp=?,email=?",
+                        9, new String[]{
+                            NoMember.getText(), NamaMember.getText(), JK.
+                            getSelectedItem().toString().substring(0, 1),
+                            TmpLahir.getText(), Valid.SetTgl(TglLahir.
+                            getSelectedItem() + ""), Alamat.getText(), NoTelp.
+                            getText(), Email.getText(), tbPetugas.getValueAt(
+                            tbPetugas.getSelectedRow(), 0).toString()
+                        }) == true) {
                     emptTeks();
                     tampil();
-                }  
-            }       
+                }
+            }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnEditActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, BtnHapus, BtnPrint);
         }
 }//GEN-LAST:event_BtnEditKeyPressed
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
-         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             BtnCariActionPerformed(null);
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             BtnCari.requestFocus();
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
+        } else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             BtnKeluar.requestFocus();
         }
 }//GEN-LAST:event_TCariKeyPressed
@@ -743,15 +786,15 @@ public class TokoMember extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
             BtnCariActionPerformed(null);
-        }else{
+        } else {
             Valid.pindah(evt, TCari, BtnAll);
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
     private void tbPetugasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPetugasMouseClicked
-        if(tabMode.getRowCount()!=0){
+        if (tabMode.getRowCount() != 0) {
             try {
                 getData();
             } catch (java.lang.NullPointerException e) {
@@ -760,11 +803,11 @@ public class TokoMember extends javax.swing.JDialog {
 }//GEN-LAST:event_tbPetugasMouseClicked
 
 private void EmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EmailKeyPressed
-    Valid.pindah(evt,NoTelp,BtnSimpan);
+    Valid.pindah(evt, NoTelp, BtnSimpan);
 }//GEN-LAST:event_EmailKeyPressed
 
 private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkInputActionPerformed
-  isForm();                
+    isForm();
 }//GEN-LAST:event_ChkInputActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -772,48 +815,53 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_formWindowOpened
 
     private void tbPetugasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPetugasKeyReleased
-        if(tabMode.getRowCount()!=0){
-            if((evt.getKeyCode()==KeyEvent.VK_ENTER)||(evt.getKeyCode()==KeyEvent.VK_UP)||(evt.getKeyCode()==KeyEvent.VK_DOWN)){
+        if (tabMode.getRowCount() != 0) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
+                    getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
                 }
-            }            
+            }
         }
     }//GEN-LAST:event_tbPetugasKeyReleased
 
     private void TglLahirKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglLahirKeyReleased
-        Valid.pindah(evt,TmpLahir,Alamat);
+        Valid.pindah(evt, TmpLahir, Alamat);
     }//GEN-LAST:event_TglLahirKeyReleased
 
     private void MnKartuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKartuActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        if(tabMode.getRowCount()==0){
-            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
-        }else if(tabMode.getRowCount()!=0){
-            if(tbPetugas.getSelectedRow()> -1){
+        } else if (tabMode.getRowCount() != 0) {
+            if (tbPetugas.getSelectedRow() > -1) {
                 Map<String, Object> param = new HashMap<>();
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-                Valid.MyReportqry("rptKartuMember.jasper","report","::[ Kartu Member Toko ]::",
-                    "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "+
-                    "where no_member='"+NoMember.getText()+"'",param);
-            }else{
-                JOptionPane.showMessageDialog(null,"Silahkan pilih data yang mau dicetak kartu anggotanya ..!!!");
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("emailrs", akses.getemailrs());
+                param.put("logo", Sequel.cariGambar(
+                        "select setting.logo from setting"));
+                Valid.MyReportqry("rptKartuMember.jasper", "report",
+                        "::[ Kartu Member Toko ]::",
+                        "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "
+                        + "where no_member='" + NoMember.getText() + "'", param);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Silahkan pilih data yang mau dicetak kartu anggotanya ..!!!");
             }
         }
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_MnKartuActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             TokoMember dialog = new TokoMember(new javax.swing.JFrame(), true);
@@ -822,6 +870,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
+
             });
             dialog.setVisible(true);
         });
@@ -871,37 +920,39 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                    "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "+
-                    "where no_member like ? or nama like ? or alamat like ? or email like ? or tgl_lahir like ? order by no_member");
+        try {
+            ps = koneksi.prepareStatement(
+                    "select no_member, nama, jk, tmp_lahir, tgl_lahir, alamat, no_telp, email from tokomember "
+                    + "where no_member like ? or nama like ? or alamat like ? or email like ? or tgl_lahir like ? order by no_member");
             try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                ps.setString(5,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
+                ps.setString(1, "%" + TCari.getText().trim() + "%");
+                ps.setString(2, "%" + TCari.getText().trim() + "%");
+                ps.setString(3, "%" + TCari.getText().trim() + "%");
+                ps.setString(4, "%" + TCari.getText().trim() + "%");
+                ps.setString(5, "%" + TCari.getText().trim() + "%");
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        rs.getString("no_member"),rs.getString("nama"),rs.getString("jk"),rs.getString("tmp_lahir"),
-                        rs.getString("tgl_lahir"),rs.getString("alamat"),rs.getString("no_telp"),rs.getString("email")
+                        rs.getString("no_member"), rs.getString("nama"), rs.
+                        getString("jk"), rs.getString("tmp_lahir"),
+                        rs.getString("tgl_lahir"), rs.getString("alamat"), rs.
+                        getString("no_telp"), rs.getString("email")
                     });
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println(e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if (rs != null) {
                     rs.close();
                 }
-                if(ps!=null){
+                if (ps != null) {
                     ps.close();
                 }
             }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+        } catch (SQLException e) {
+            System.out.println("Notifikasi : " + e);
         }
-        LCount.setText(""+tabMode.getRowCount());
+        LCount.setText("" + tabMode.getRowCount());
     }
 
     /**
@@ -917,21 +968,24 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         NoTelp.setText("");
         Email.setText("");
         TglLahir.setDate(new Date());
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(no_member,7),signed)),0) from tokomember ","M",7,NoMember);
+        Valid.autoNomer3(
+                "select ifnull(MAX(CONVERT(RIGHT(no_member,7),signed)),0) from tokomember ",
+                "M", 7, NoMember);
         NoMember.requestFocus();
     }
 
     private void getData() {
-        row=tbPetugas.getSelectedRow();
-        if(row!= -1){
-            NoMember.setText(tbPetugas.getValueAt(row,0).toString());
-            NamaMember.setText(tbPetugas.getValueAt(row,1).toString());
-            JK.setSelectedItem(tbPetugas.getValueAt(row,2).toString().replaceAll("L","LAKI-LAKI").replaceAll("P","Perempuan"));
-            TmpLahir.setText(tbPetugas.getValueAt(row,3).toString());
-            Alamat.setText(tbPetugas.getValueAt(row,5).toString());
-            NoTelp.setText(tbPetugas.getValueAt(row,6).toString());
-            Email.setText(tbPetugas.getValueAt(row,7).toString());
-            Valid.SetTgl(TglLahir,tbPetugas.getValueAt(row,4).toString());
+        row = tbPetugas.getSelectedRow();
+        if (row != -1) {
+            NoMember.setText(tbPetugas.getValueAt(row, 0).toString());
+            NamaMember.setText(tbPetugas.getValueAt(row, 1).toString());
+            JK.setSelectedItem(tbPetugas.getValueAt(row, 2).toString().
+                    replaceAll("L", "LAKI-LAKI").replaceAll("P", "Perempuan"));
+            TmpLahir.setText(tbPetugas.getValueAt(row, 3).toString());
+            Alamat.setText(tbPetugas.getValueAt(row, 5).toString());
+            NoTelp.setText(tbPetugas.getValueAt(row, 6).toString());
+            Email.setText(tbPetugas.getValueAt(row, 7).toString());
+            Valid.SetTgl(TglLahir, tbPetugas.getValueAt(row, 4).toString());
         }
     }
 
@@ -939,32 +993,35 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      *
      * @return
      */
-    public JTextField getTextField(){
+    public JTextField getTextField() {
         return NoMember;
     }
 
-    public JTable getTable(){
+    public JTable getTable() {
         return tbPetugas;
     }
-    
-    private void isForm(){
-        if(ChkInput.isSelected()==true){
+
+    private void isForm() {
+        if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,128));
-            FormInput.setVisible(true);      
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 128));
+            FormInput.setVisible(true);
             ChkInput.setVisible(true);
-        }else if(ChkInput.isSelected()==false){           
-            ChkInput.setVisible(false);            
-            PanelInput.setPreferredSize(new Dimension(WIDTH,20));
-            FormInput.setVisible(false);      
+        } else if (ChkInput.isSelected() == false) {
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH, 20));
+            FormInput.setVisible(false);
             ChkInput.setVisible(true);
         }
     }
-    
-    public void isCek(){
+
+    public void isCek() {
         BtnSimpan.setEnabled(akses.gettoko_member());
         BtnHapus.setEnabled(akses.gettoko_member());
         BtnEdit.setEnabled(akses.gettoko_member());
         BtnPrint.setEnabled(akses.gettoko_member());
     }
+
+    private static final Logger LOG = Logger.getLogger(TokoMember.class.
+            getName());
 }
